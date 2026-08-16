@@ -31,9 +31,9 @@ st.markdown(
         --sp-border: #d9e2ec;
         --sp-text: #102a43;
         --sp-muted: #627d98;
-        --sp-primary: #1f7a5c;
-        --sp-primary-dark: #14533f;
-        --sp-accent: #2f80ed;
+        --sp-primary: #018FC7;
+        --sp-primary-dark: #00658F;
+        --sp-accent: #38BDF8;
         --sp-warning: #d97706;
         --sp-danger: #c2410c;
         --sp-success: #15803d;
@@ -45,7 +45,7 @@ st.markdown(
     [data-testid="stAppViewContainer"] {
         background:
             radial-gradient(circle at top right, rgba(47, 128, 237, 0.08), transparent 28%),
-            radial-gradient(circle at top left, rgba(31, 122, 92, 0.08), transparent 30%),
+            radial-gradient(circle at top left, rgba(1, 143, 199, 0.09), transparent 30%),
             var(--sp-bg);
         color: var(--sp-text);
     }
@@ -59,7 +59,7 @@ st.markdown(
     /* Sidebar */
     [data-testid="stSidebar"] {
         background:
-            linear-gradient(180deg, #0f2e2a 0%, #123b35 55%, #102f2b 100%);
+            linear-gradient(180deg, #003F5C 0%, #00577D 55%, #003B57 100%);
         border-right: 1px solid rgba(255,255,255,0.08);
     }
 
@@ -68,7 +68,7 @@ st.markdown(
     }
 
     [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
-        color: #c9ddd7 !important;
+        color: #CBEAF6 !important;
         letter-spacing: 0.08em;
         font-weight: 700;
         font-size: 0.72rem;
@@ -160,14 +160,14 @@ st.markdown(
     }
 
     .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, var(--sp-primary), #23916c) !important;
+        background: linear-gradient(135deg, #018FC7, #007EAF) !important;
         border: none !important;
-        box-shadow: 0 6px 16px rgba(31, 122, 92, 0.22);
+        box-shadow: 0 6px 16px rgba(1, 143, 199, 0.22);
     }
 
     .stButton > button[kind="primary"]:hover {
         transform: translateY(-1px);
-        box-shadow: 0 9px 22px rgba(31, 122, 92, 0.28);
+        box-shadow: 0 9px 22px rgba(1, 143, 199, 0.28);
     }
 
     .stLinkButton > a {
@@ -192,7 +192,7 @@ st.markdown(
 
     [data-baseweb="tag"] {
         border-radius: 999px !important;
-        background: #e8f3ef !important;
+        background: #E6F6FC !important;
         color: var(--sp-primary-dark) !important;
     }
 
@@ -233,10 +233,10 @@ st.markdown(
     /* Custom hero */
     .sp-hero {
         background:
-            linear-gradient(135deg, rgba(15,46,42,0.98), rgba(31,122,92,0.94));
+            linear-gradient(135deg, rgba(0,63,92,0.99), rgba(1,143,199,0.95));
         border-radius: 24px;
         padding: 2.2rem 2.3rem;
-        box-shadow: 0 18px 40px rgba(15, 46, 42, 0.18);
+        box-shadow: 0 18px 40px rgba(0, 63, 92, 0.20);
         margin: 0.4rem 0 1.5rem 0;
         position: relative;
         overflow: hidden;
@@ -261,14 +261,14 @@ st.markdown(
     }
 
     .sp-hero p {
-        color: #d9eee8 !important;
+        color: #E1F5FC !important;
         margin: 0;
         font-size: 1.02rem;
         max-width: 760px;
     }
 
     .sp-kicker {
-        color: #aee2d3 !important;
+        color: #BDEBFA !important;
         text-transform: uppercase;
         letter-spacing: 0.13em;
         font-size: 0.74rem;
@@ -287,9 +287,9 @@ st.markdown(
         padding: 0.32rem 0.62rem;
         margin: 0.15rem 0.15rem 0.15rem 0;
         border-radius: 999px;
-        background: #e9f4f0;
-        color: #14533f;
-        border: 1px solid #cfe5dc;
+        background: #E7F6FC;
+        color: #00658F;
+        border: 1px solid #B9E5F5;
         font-size: 0.82rem;
         font-weight: 700;
     }
