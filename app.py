@@ -845,11 +845,99 @@ st.markdown(
     }
 
 
-    /* Keep sidebar permanently open: hide Streamlit's native collapse control */
+
+
+    /* =======================================================
+       SIDEBAR OPEN / CLOSE BUTTON
+       Dark button + white arrows for strong visibility
+       ======================================================= */
+
+    /* Native collapse button while sidebar is open */
     [data-testid="stSidebarCollapseButton"],
+    [data-testid="stSidebarCollapseButton"] button,
+    [data-testid="stSidebarCollapseButton"] [role="button"],
     button[aria-label*="collapse sidebar" i],
     button[title*="collapse sidebar" i] {
-        display: none !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        background: #0B1F33 !important;
+        background-color: #0B1F33 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #0B1F33 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.24) !important;
+    }
+
+    /* Native reopen control while sidebar is closed */
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="stSidebarCollapsedControl"] button,
+    [data-testid="stSidebarCollapsedControl"] [role="button"],
+    button[aria-label*="open sidebar" i],
+    button[aria-label*="expand sidebar" i],
+    button[title*="open sidebar" i],
+    button[title*="expand sidebar" i] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        background: #0B1F33 !important;
+        background-color: #0B1F33 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #0B1F33 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.24) !important;
+        z-index: 2147483647 !important;
+    }
+
+    /* White chevrons/icons */
+    [data-testid="stSidebarCollapseButton"] svg,
+    [data-testid="stSidebarCollapseButton"] svg *,
+    [data-testid="stSidebarCollapsedControl"] svg,
+    [data-testid="stSidebarCollapsedControl"] svg *,
+    button[aria-label*="sidebar" i] svg,
+    button[aria-label*="sidebar" i] svg *,
+    button[title*="sidebar" i] svg,
+    button[title*="sidebar" i] svg * {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+        opacity: 1 !important;
+    }
+
+    /* Fallback for Streamlit versions that place the reopen control in header */
+    [data-testid="stHeader"] button {
+        color: #FFFFFF !important;
+    }
+
+    [data-testid="stHeader"] button svg,
+    [data-testid="stHeader"] button svg * {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+    }
+
+    /* Specifically make the left-most header control dark if it exists */
+    [data-testid="stHeader"] button:first-of-type {
+        background: #0B1F33 !important;
+        background-color: #0B1F33 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #0B1F33 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.24) !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"]:hover,
+    [data-testid="stSidebarCollapsedControl"]:hover,
+    [data-testid="stSidebarCollapseButton"] button:hover,
+    [data-testid="stSidebarCollapsedControl"] button:hover,
+    button[aria-label*="sidebar" i]:hover,
+    button[title*="sidebar" i]:hover,
+    [data-testid="stHeader"] button:first-of-type:hover {
+        background: #071521 !important;
+        background-color: #071521 !important;
+        border-color: #071521 !important;
     }
 
     </style>
