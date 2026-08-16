@@ -18,6 +18,307 @@ st.set_page_config(
 
 
 # ============================================================
+# MODERN UI / BRAND STYLING
+# ============================================================
+
+st.markdown(
+    """
+    <style>
+    :root {
+        --sp-bg: #f7f9fc;
+        --sp-surface: #ffffff;
+        --sp-surface-soft: #f0f4f8;
+        --sp-border: #d9e2ec;
+        --sp-text: #102a43;
+        --sp-muted: #627d98;
+        --sp-primary: #1f7a5c;
+        --sp-primary-dark: #14533f;
+        --sp-accent: #2f80ed;
+        --sp-warning: #d97706;
+        --sp-danger: #c2410c;
+        --sp-success: #15803d;
+        --sp-radius: 18px;
+        --sp-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+    }
+
+    /* Main app background */
+    [data-testid="stAppViewContainer"] {
+        background:
+            radial-gradient(circle at top right, rgba(47, 128, 237, 0.08), transparent 28%),
+            radial-gradient(circle at top left, rgba(31, 122, 92, 0.08), transparent 30%),
+            var(--sp-bg);
+        color: var(--sp-text);
+    }
+
+    [data-testid="stMainBlockContainer"] {
+        max-width: 1220px;
+        padding-top: 2rem;
+        padding-bottom: 4rem;
+    }
+
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background:
+            linear-gradient(180deg, #0f2e2a 0%, #123b35 55%, #102f2b 100%);
+        border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    [data-testid="stSidebar"] * {
+        color: #f7fbfa;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+        color: #c9ddd7 !important;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        font-size: 0.72rem;
+    }
+
+    [data-testid="stSidebar"] hr {
+        border-color: rgba(255,255,255,0.12);
+    }
+
+    /* Sidebar buttons */
+    [data-testid="stSidebar"] .stButton > button {
+        background: rgba(255,255,255,0.06);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        min-height: 42px;
+        font-weight: 600;
+        transition: 0.18s ease;
+    }
+
+    [data-testid="stSidebar"] .stButton > button:hover {
+        background: rgba(255,255,255,0.13);
+        border-color: rgba(255,255,255,0.2);
+        transform: translateY(-1px);
+    }
+
+    /* Typography */
+    h1, h2, h3 {
+        color: var(--sp-text) !important;
+        letter-spacing: -0.02em;
+    }
+
+    h1 {
+        font-weight: 800 !important;
+    }
+
+    h2 {
+        font-weight: 750 !important;
+    }
+
+    h3 {
+        font-weight: 700 !important;
+    }
+
+    p, li, label {
+        color: var(--sp-text);
+    }
+
+    /* Bordered Streamlit containers become cards */
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        background: rgba(255,255,255,0.92);
+        border: 1px solid var(--sp-border) !important;
+        border-radius: var(--sp-radius) !important;
+        box-shadow: var(--sp-shadow);
+        overflow: hidden;
+    }
+
+    [data-testid="stVerticalBlockBorderWrapper"]:hover {
+        border-color: #b9c9d8 !important;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+    }
+
+    /* Metrics */
+    [data-testid="stMetric"] {
+        background: rgba(255,255,255,0.95);
+        border: 1px solid var(--sp-border);
+        border-radius: 16px;
+        padding: 1rem 1.05rem;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    [data-testid="stMetricLabel"] {
+        color: var(--sp-muted);
+        font-weight: 700;
+    }
+
+    [data-testid="stMetricValue"] {
+        color: var(--sp-text);
+        font-weight: 800;
+    }
+
+    /* Main buttons */
+    .stButton > button,
+    .stLinkButton > a {
+        border-radius: 12px !important;
+        min-height: 42px;
+        font-weight: 700 !important;
+        transition: 0.18s ease !important;
+    }
+
+    .stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, var(--sp-primary), #23916c) !important;
+        border: none !important;
+        box-shadow: 0 6px 16px rgba(31, 122, 92, 0.22);
+    }
+
+    .stButton > button[kind="primary"]:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 9px 22px rgba(31, 122, 92, 0.28);
+    }
+
+    .stLinkButton > a {
+        border-color: var(--sp-border) !important;
+        background: white !important;
+        color: var(--sp-text) !important;
+    }
+
+    .stLinkButton > a:hover {
+        border-color: var(--sp-accent) !important;
+        color: var(--sp-accent) !important;
+    }
+
+    /* Inputs */
+    [data-baseweb="input"] > div,
+    [data-baseweb="select"] > div,
+    [data-baseweb="textarea"] > div {
+        border-radius: 12px !important;
+        border-color: var(--sp-border) !important;
+        background: white !important;
+    }
+
+    [data-baseweb="tag"] {
+        border-radius: 999px !important;
+        background: #e8f3ef !important;
+        color: var(--sp-primary-dark) !important;
+    }
+
+    /* Expander */
+    [data-testid="stExpander"] {
+        border: 1px solid var(--sp-border) !important;
+        border-radius: 14px !important;
+        background: rgba(255,255,255,0.9);
+        overflow: hidden;
+    }
+
+    /* Alerts */
+    [data-testid="stAlert"] {
+        border-radius: 14px !important;
+        border-width: 1px !important;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    }
+
+    /* Dataframes */
+    [data-testid="stDataFrame"] {
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--sp-border);
+    }
+
+    /* Dividers */
+    hr {
+        border: none !important;
+        border-top: 1px solid #dfe7ef !important;
+        margin: 1.5rem 0 !important;
+    }
+
+    /* Progress bars */
+    [data-testid="stProgress"] > div > div > div > div {
+        background: linear-gradient(90deg, var(--sp-primary), var(--sp-accent)) !important;
+    }
+
+    /* Custom hero */
+    .sp-hero {
+        background:
+            linear-gradient(135deg, rgba(15,46,42,0.98), rgba(31,122,92,0.94));
+        border-radius: 24px;
+        padding: 2.2rem 2.3rem;
+        box-shadow: 0 18px 40px rgba(15, 46, 42, 0.18);
+        margin: 0.4rem 0 1.5rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sp-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        right: -70px;
+        top: -90px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+    }
+
+    .sp-hero h1 {
+        color: white !important;
+        margin: 0 0 0.45rem 0;
+        font-size: 2.25rem;
+        line-height: 1.05;
+    }
+
+    .sp-hero p {
+        color: #d9eee8 !important;
+        margin: 0;
+        font-size: 1.02rem;
+        max-width: 760px;
+    }
+
+    .sp-kicker {
+        color: #aee2d3 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.13em;
+        font-size: 0.74rem;
+        font-weight: 800;
+        margin-bottom: 0.7rem;
+    }
+
+    .sp-section-subtitle {
+        color: var(--sp-muted);
+        margin-top: -0.4rem;
+        margin-bottom: 1rem;
+    }
+
+    .sp-pill {
+        display: inline-block;
+        padding: 0.32rem 0.62rem;
+        margin: 0.15rem 0.15rem 0.15rem 0;
+        border-radius: 999px;
+        background: #e9f4f0;
+        color: #14533f;
+        border: 1px solid #cfe5dc;
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+
+    /* Mobile spacing */
+    @media (max-width: 768px) {
+        [data-testid="stMainBlockContainer"] {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-top: 1rem;
+        }
+
+        .sp-hero {
+            padding: 1.5rem;
+            border-radius: 18px;
+        }
+
+        .sp-hero h1 {
+            font-size: 1.7rem;
+        }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
+# ============================================================
 # SUPABASE
 # ============================================================
 
@@ -2154,16 +2455,19 @@ if page == "Dashboard":
     # HERO
     # --------------------------------------------------------
 
-    st.title(
-        f"Welcome back, {profile['first_name']} 👋"
+    st.markdown(
+        f"""
+        <div class="sp-hero">
+            <div class="sp-kicker">Your personalized STEM workspace</div>
+            <h1>Welcome back, {profile['first_name']} 👋</h1>
+            <p>
+                Explore careers, discover colleges and opportunities,
+                build projects, and keep your STEM journey organized in one place.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
-
-    st.write(
-        "Your STEM journey in one place — explore careers, build projects, "
-        "discover opportunities, and keep track of what matters next."
-    )
-
-    st.divider()
 
     # --------------------------------------------------------
     # JOURNEY SNAPSHOT
@@ -2171,6 +2475,11 @@ if page == "Dashboard":
 
     st.header(
         "Your STEM Journey"
+    )
+
+    st.markdown(
+        '<div class="sp-section-subtitle">A quick snapshot of where you are right now.</div>',
+        unsafe_allow_html=True
     )
 
     journey1, journey2, journey3, journey4 = (
@@ -2315,8 +2624,9 @@ if page == "Dashboard":
         "Continue Your Journey"
     )
 
-    st.write(
-        "Choose what you want to work on next."
+    st.markdown(
+        '<div class="sp-section-subtitle">Choose what you want to work on next.</div>',
+        unsafe_allow_html=True
     )
 
     action_row1 = st.columns(3)
@@ -2603,12 +2913,19 @@ if page == "Dashboard":
         "interests"
     ):
 
-        st.write(
-            " • ".join(
-                profile[
+        interest_pills = "".join(
+            [
+                f'<span class="sp-pill">{interest}</span>'
+                for interest
+                in profile[
                     "interests"
                 ]
-            )
+            ]
+        )
+
+        st.markdown(
+            interest_pills,
+            unsafe_allow_html=True
         )
 
     if st.button(
