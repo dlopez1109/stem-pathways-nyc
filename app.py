@@ -5526,6 +5526,257 @@ elif page == "Opportunities":
 
             st.divider()
 
+            # ----------------------------------------------------
+            # RECOMMENDED FOR YOU
+            # ----------------------------------------------------
+
+            st.header(
+                "Recommended for You"
+            )
+
+            st.write(
+                "These suggestions are based on your saved STEM interests, "
+                "grade, borough, and financial-support preferences — not just "
+                "the filters you selected above."
+            )
+
+            recommended_results = []
+
+            for _, recommended_opportunity in opportunities.iterrows():
+
+                try:
+
+                    # Keep recommendations relevant to the student's saved profile.
+                    if not is_eligible(
+                        recommended_opportunity
+                    ):
+
+                        continue
+
+                except Exception:
+
+                    pass
+
+                try:
+
+                    profile_age = str(
+                        profile.get(
+                            "age",
+                            "Any age"
+                        )
+                    )
+
+                    if not age_matches(
+                        recommended_opportunity.get(
+                            "age_range",
+                            "Check official eligibility"
+                        ),
+                        profile_age
+                    ):
+
+                        continue
+
+                except Exception:
+
+                    pass
+
+                try:
+
+                    recommended_score, recommended_reasons = (
+                        calculate_match(
+                            recommended_opportunity
+                        )
+                    )
+
+                except Exception:
+
+                    recommended_score = 50
+                    recommended_reasons = []
+
+                recommended_results.append(
+                    (
+                        recommended_score,
+                        recommended_reasons,
+                        recommended_opportunity
+                    )
+                )
+
+            recommended_results.sort(
+                key=lambda item:
+                    item[0],
+                reverse=True
+            )
+
+            if not recommended_results:
+
+                st.info(
+                    "No personalized recommendations are available yet. "
+                    "Try updating your profile interests or browsing the search results above."
+                )
+
+            for (
+                recommended_score,
+                recommended_reasons,
+                recommended_opportunity
+            ) in recommended_results[:4]:
+
+                with st.container(
+                    border=True
+                ):
+
+                    rec_title_col, rec_match_col = st.columns(
+                        [4, 1]
+                    )
+
+                    with rec_title_col:
+
+                        st.subheader(
+                            recommended_opportunity[
+                                "name"
+                            ]
+                        )
+
+                        st.caption(
+                            recommended_opportunity.get(
+                                "organization",
+                                ""
+                            )
+                        )
+
+                    with rec_match_col:
+
+                        st.metric(
+                            "Your Match",
+                            f"{recommended_score}%"
+                        )
+
+                    st.write(
+                        recommended_opportunity.get(
+                            "description",
+                            ""
+                        )
+                    )
+
+                    rec1, rec2, rec3 = st.columns(3)
+
+                    with rec1:
+
+                        st.write(
+                            f"**Type:** "
+                            f"{recommended_opportunity.get('opportunity_type', 'Not listed')}"
+                        )
+
+                        st.write(
+                            f"**Grades:** "
+                            f"{recommended_opportunity.get('grades', 'Check eligibility')}"
+                        )
+
+                        st.write(
+                            f"**Ages:** "
+                            f"{recommended_opportunity.get('age_range', 'Check official eligibility')}"
+                        )
+
+                    with rec2:
+
+                        rec_star_value = pd.to_numeric(
+                            recommended_opportunity.get(
+                                "selectivity_stars",
+                                0
+                            ),
+                            errors="coerce"
+                        )
+
+                        rec_star_count = (
+                            int(
+                                rec_star_value
+                            )
+                            if pd.notna(
+                                rec_star_value
+                            )
+                            else 0
+                        )
+
+                        st.write(
+                            f"**Selectivity:** "
+                            f"{'⭐' * rec_star_count} "
+                            f"{recommended_opportunity.get('selectivity', 'Not rated yet')}"
+                        )
+
+                        st.write(
+                            f"**Paid:** "
+                            f"{recommended_opportunity.get('paid_status', 'Check official site')}"
+                        )
+
+                    with rec3:
+
+                        st.write(
+                            f"**Deadline:** "
+                            f"{recommended_opportunity.get('deadline', 'Check official site')}"
+                        )
+
+                        st.write(
+                            f"**Internship Potential:** "
+                            f"{recommended_opportunity.get('internship_potential', 'Not specified')}"
+                        )
+
+                    with st.expander(
+                        "Why this is recommended"
+                    ):
+
+                        if recommended_reasons:
+
+                            for reason in recommended_reasons:
+
+                                st.write(
+                                    f"• {reason}"
+                                )
+
+                        else:
+
+                            st.write(
+                                "This opportunity fits information in your saved profile."
+                            )
+
+                        st.write(
+                            f"**Requirements:** "
+                            f"{recommended_opportunity.get('requirements', 'Check official site')}"
+                        )
+
+                    rec_action1, rec_action2 = st.columns(2)
+
+                    with rec_action1:
+
+                        if st.button(
+                            "📌 Save Opportunity",
+                            key=f"recommended_save_{recommended_opportunity['name']}",
+                            use_container_width=True
+                        ):
+
+                            if save_opportunity(
+                                user_sub,
+                                str(
+                                    recommended_opportunity[
+                                        "name"
+                                    ]
+                                )
+                            ):
+
+                                st.success(
+                                    "Saved to My Applications."
+                                )
+
+                    with rec_action2:
+
+                        st.link_button(
+                            "View Official Opportunity",
+                            recommended_opportunity[
+                                "url"
+                            ],
+                            use_container_width=True
+                        )
+
+            st.divider()
+
             st.caption(
                 "Profile Match measures fit with your interests and preferences; "
                 "it is not an admission probability. Always confirm age, grade, "
