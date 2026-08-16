@@ -1030,6 +1030,108 @@ def save_user_feedback(
 
 
 # ============================================================
+# ADMIN DASHBOARD
+# ============================================================
+
+def get_admin_emails():
+
+    try:
+
+        configured = st.secrets.get(
+            "admin_emails",
+            []
+        )
+
+        if isinstance(
+            configured,
+            str
+        ):
+
+            return {
+                configured.strip().lower()
+            }
+
+        return {
+            str(email).strip().lower()
+            for email in configured
+            if str(email).strip()
+        }
+
+    except Exception:
+
+        return set()
+
+
+def is_admin_user(email):
+
+    admin_emails = get_admin_emails()
+
+    return (
+        str(email).strip().lower()
+        in admin_emails
+    )
+
+
+def load_admin_metrics():
+
+    if not supabase_connected:
+
+        return {
+            "profiles": [],
+            "feedback": [],
+            "saved_opportunities": [],
+            "favorite_colleges": []
+        }
+
+    data = {
+        "profiles": [],
+        "feedback": [],
+        "saved_opportunities": [],
+        "favorite_colleges": []
+    }
+
+    table_map = {
+        "profiles":
+            "student_profiles",
+
+        "feedback":
+            "user_feedback",
+
+        "saved_opportunities":
+            "saved_opportunities",
+
+        "favorite_colleges":
+            "favorite_colleges"
+    }
+
+    for key, table_name in table_map.items():
+
+        try:
+
+            response = (
+                supabase
+                .table(
+                    table_name
+                )
+                .select("*")
+                .execute()
+            )
+
+            data[
+                key
+            ] = response.data or []
+
+        except Exception:
+
+            data[
+                key
+            ] = []
+
+    return data
+
+
+
+# ============================================================
 # GOOGLE LOGIN
 # ============================================================
 
@@ -1778,6 +1880,27 @@ with st.sidebar:
         use_container_width=True
     ):
         st.logout()
+
+    if is_admin_user(
+        user_email
+    ):
+
+        st.divider()
+
+        st.caption(
+            "ADMIN"
+        )
+
+        if st.button(
+            "⚙️ Admin Dashboard",
+            use_container_width=True
+        ):
+
+            st.session_state.current_page = (
+                "Admin Dashboard"
+            )
+
+            st.rerun()
 
     st.divider()
 
@@ -8113,6 +8236,631 @@ elif page == "GPA Calculator":
 
                 st.session_state.gpa_show_restart_confirmation = False
                 st.rerun()
+
+
+# ============================================================
+# ADMIN DASHBOARD
+# ============================================================
+
+elif page == "Admin Dashboard":
+
+    if not is_admin_user(
+        user_email
+    ):
+
+        st.error(
+            "You do not have permission to view this page."
+        )
+
+        st.stop()
+
+    st.title(
+        "Admin Dashboard"
+    )
+
+    st.write(
+        "Review platform activity, user feedback, and early usage trends "
+        "for STEM Pathways NYC."
+    )
+
+    st.warning(
+        "This dashboard contains user-submitted information. "
+        "Use it only to improve the platform and avoid sharing personally identifiable data publicly."
+    )
+
+    st.divider()
+
+    admin_data = load_admin_metrics()
+
+    profiles = admin_data[
+        "profiles"
+    ]
+
+    feedback_rows = admin_data[
+        "feedback"
+    ]
+
+    saved_rows = admin_data[
+        "saved_opportunities"
+    ]
+
+    favorite_rows = admin_data[
+        "favorite_colleges"
+    ]
+
+    # --------------------------------------------------------
+    # PLATFORM OVERVIEW
+    # --------------------------------------------------------
+
+    st.header(
+        "Platform Overview"
+    )
+
+    review_count = len(
+        feedback_rows
+    )
+
+    avg_rating = 0
+
+    if review_count:
+
+        ratings = [
+            int(
+                row.get(
+                    "rating",
+                    0
+                )
+                or 0
+            )
+            for row in feedback_rows
+            if row.get(
+                "rating"
+            )
+            is not None
+        ]
+
+        if ratings:
+
+            avg_rating = (
+                sum(
+                    ratings
+                )
+                /
+                len(
+                    ratings
+                )
+            )
+
+    recommend_yes = sum(
+        1
+        for row in feedback_rows
+        if str(
+            row.get(
+                "would_recommend",
+                ""
+            )
+        ).strip().lower()
+        ==
+        "yes"
+    )
+
+    recommend_rate = (
+        round(
+            (
+                recommend_yes
+                /
+                review_count
+            )
+            * 100
+        )
+        if review_count
+        else 0
+    )
+
+    metric1, metric2, metric3, metric4 = (
+        st.columns(4)
+    )
+
+    with metric1:
+
+        st.metric(
+            "Student Profiles",
+            len(
+                profiles
+            )
+        )
+
+    with metric2:
+
+        st.metric(
+            "Feedback Responses",
+            review_count
+        )
+
+    with metric3:
+
+        st.metric(
+            "Average Rating",
+            (
+                f"{avg_rating:.1f} / 5"
+                if review_count
+                else "No data"
+            )
+        )
+
+    with metric4:
+
+        st.metric(
+            "Would Recommend",
+            (
+                f"{recommend_rate}%"
+                if review_count
+                else "No data"
+            )
+        )
+
+    metric5, metric6 = (
+        st.columns(2)
+    )
+
+    with metric5:
+
+        st.metric(
+            "Saved Opportunities",
+            len(
+                saved_rows
+            )
+        )
+
+    with metric6:
+
+        st.metric(
+            "Favorite Colleges",
+            len(
+                favorite_rows
+            )
+        )
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # FEEDBACK ANALYTICS
+    # --------------------------------------------------------
+
+    st.header(
+        "Feedback Analytics"
+    )
+
+    if not feedback_rows:
+
+        st.info(
+            "No feedback has been submitted yet."
+        )
+
+    else:
+
+        ease_scores = [
+            int(
+                row.get(
+                    "ease_of_use",
+                    0
+                )
+                or 0
+            )
+            for row in feedback_rows
+            if row.get(
+                "ease_of_use"
+            )
+            is not None
+        ]
+
+        avg_ease = (
+            sum(
+                ease_scores
+            )
+            /
+            len(
+                ease_scores
+            )
+            if ease_scores
+            else 0
+        )
+
+        rating_counts = {
+            rating: 0
+            for rating in range(
+                1,
+                6
+            )
+        }
+
+        for row in feedback_rows:
+
+            try:
+
+                rating_counts[
+                    int(
+                        row.get(
+                            "rating",
+                            0
+                        )
+                    )
+                ] += 1
+
+            except Exception:
+
+                pass
+
+        feedback_col1, feedback_col2 = (
+            st.columns(2)
+        )
+
+        with feedback_col1:
+
+            st.metric(
+                "Average Ease of Use",
+                f"{avg_ease:.1f} / 5"
+            )
+
+            st.markdown(
+                "#### Rating Distribution"
+            )
+
+            for rating in range(
+                5,
+                0,
+                -1
+            ):
+
+                stars = (
+                    "★"
+                    * rating
+                    +
+                    "☆"
+                    * (
+                        5 - rating
+                    )
+                )
+
+                st.write(
+                    f"**{stars}** — "
+                    f"{rating_counts[rating]} response(s)"
+                )
+
+        with feedback_col2:
+
+            st.markdown(
+                "#### Recommendation"
+            )
+
+            recommend_counts = {
+                "Yes": 0,
+                "Maybe": 0,
+                "No": 0
+            }
+
+            for row in feedback_rows:
+
+                answer = str(
+                    row.get(
+                        "would_recommend",
+                        ""
+                    )
+                ).strip()
+
+                if answer in recommend_counts:
+
+                    recommend_counts[
+                        answer
+                    ] += 1
+
+            for answer, count in recommend_counts.items():
+
+                st.write(
+                    f"**{answer}:** {count}"
+                )
+
+        st.divider()
+
+        # ----------------------------------------------------
+        # POPULAR FEATURES
+        # ----------------------------------------------------
+
+        st.header(
+            "Most Useful Features"
+        )
+
+        feature_counts = {}
+
+        for row in feedback_rows:
+
+            features = text_to_list(
+                row.get(
+                    "favorite_features"
+                )
+            )
+
+            for feature in features:
+
+                feature_counts[
+                    feature
+                ] = (
+                    feature_counts.get(
+                        feature,
+                        0
+                    )
+                    + 1
+                )
+
+        if feature_counts:
+
+            feature_rankings = sorted(
+                feature_counts.items(),
+                key=lambda item:
+                    item[1],
+                reverse=True
+            )
+
+            for rank, (
+                feature,
+                count
+            ) in enumerate(
+                feature_rankings,
+                start=1
+            ):
+
+                st.write(
+                    f"**#{rank} {feature}** — "
+                    f"{count} vote(s)"
+                )
+
+        else:
+
+            st.info(
+                "Users have not selected favorite features yet."
+            )
+
+        st.divider()
+
+        # ----------------------------------------------------
+        # WRITTEN FEEDBACK
+        # ----------------------------------------------------
+
+        st.header(
+            "Recent Written Feedback"
+        )
+
+        sorted_feedback = sorted(
+            feedback_rows,
+            key=lambda row:
+                str(
+                    row.get(
+                        "updated_at",
+                        row.get(
+                            "created_at",
+                            ""
+                        )
+                    )
+                ),
+            reverse=True
+        )
+
+        for row in sorted_feedback[:20]:
+
+            rating = int(
+                row.get(
+                    "rating",
+                    0
+                )
+                or 0
+            )
+
+            stars = (
+                "★"
+                * rating
+                +
+                "☆"
+                * (
+                    5 - rating
+                )
+            )
+
+            with st.container(
+                border=True
+            ):
+
+                feedback_top1, feedback_top2 = (
+                    st.columns(2)
+                )
+
+                with feedback_top1:
+
+                    st.write(
+                        f"**Rating:** {stars}"
+                    )
+
+                with feedback_top2:
+
+                    st.write(
+                        f"**Recommend:** "
+                        f"{row.get('would_recommend', 'Not answered')}"
+                    )
+
+                improvement_text = str(
+                    row.get(
+                        "improvements",
+                        ""
+                    )
+                    or
+                    ""
+                ).strip()
+
+                comments_text = str(
+                    row.get(
+                        "additional_comments",
+                        ""
+                    )
+                    or
+                    ""
+                ).strip()
+
+                if improvement_text:
+
+                    st.markdown(
+                        "**What should improve**"
+                    )
+
+                    st.write(
+                        improvement_text
+                    )
+
+                if comments_text:
+
+                    st.markdown(
+                        "**Additional comments**"
+                    )
+
+                    st.write(
+                        comments_text
+                    )
+
+                if (
+                    not improvement_text
+                    and
+                    not comments_text
+                ):
+
+                    st.caption(
+                        "No written comments submitted."
+                    )
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # APPLICATION / COLLEGE ACTIVITY
+    # --------------------------------------------------------
+
+    st.header(
+        "Student Activity"
+    )
+
+    application_status_counts = {}
+
+    for row in saved_rows:
+
+        status = str(
+            row.get(
+                "status",
+                "Saved"
+            )
+        ).strip()
+
+        application_status_counts[
+            status
+        ] = (
+            application_status_counts.get(
+                status,
+                0
+            )
+            + 1
+        )
+
+    if application_status_counts:
+
+        st.markdown(
+            "#### Application Tracker Status"
+        )
+
+        for status, count in sorted(
+            application_status_counts.items(),
+            key=lambda item:
+                item[1],
+            reverse=True
+        ):
+
+            st.write(
+                f"**{status}:** {count}"
+            )
+
+    else:
+
+        st.info(
+            "No saved application activity yet."
+        )
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # PRIVACY-SAFE EXPORT VIEW
+    # --------------------------------------------------------
+
+    with st.expander(
+        "View feedback data"
+    ):
+
+        if feedback_rows:
+
+            feedback_df = pd.DataFrame(
+                feedback_rows
+            )
+
+            safe_columns = [
+                column
+                for column in [
+                    "rating",
+                    "ease_of_use",
+                    "overall_feeling",
+                    "favorite_features",
+                    "improvements",
+                    "additional_comments",
+                    "would_recommend",
+                    "created_at",
+                    "updated_at"
+                ]
+                if column
+                in feedback_df.columns
+            ]
+
+            st.dataframe(
+                feedback_df[
+                    safe_columns
+                ],
+                use_container_width=True,
+                hide_index=True
+            )
+
+            csv_export = (
+                feedback_df[
+                    safe_columns
+                ]
+                .to_csv(
+                    index=False
+                )
+                .encode(
+                    "utf-8"
+                )
+            )
+
+            st.download_button(
+                "Download Feedback CSV",
+                data=csv_export,
+                file_name="stem_pathways_feedback.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+
+        else:
+
+            st.write(
+                "No feedback data available."
+            )
+
+    st.caption(
+        "Admin dashboard data is intended for product improvement and should be handled responsibly."
+    )
+
+
+
 
 
 # ============================================================
