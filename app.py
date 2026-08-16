@@ -1009,10 +1009,287 @@ except Exception as e:
 # LOCAL DATABASES
 # ============================================================
 
+
 try:
     opportunities = pd.read_csv("data/opportunities.csv")
 except Exception:
     opportunities = pd.DataFrame()
+
+# ------------------------------------------------------------
+# CURATED OPPORTUNITY EXPANSION
+# These records give the Opportunities page a stronger mix of
+# selective programs, internships, research, paid work, and
+# accessible NYC opportunities.
+# ------------------------------------------------------------
+
+extra_opportunities = [
+    {
+        "name": "MITES Summer",
+        "age_range": "No simple age range publicly specified — rising seniors",
+        "organization": "MIT",
+        "description": (
+            "A six-week residential STEM program for rising high school "
+            "seniors featuring rigorous courses, hands-on projects, "
+            "mentorship, and college admissions guidance."
+        ),
+        "opportunity_type": "Summer Program",
+        "fields": "Engineering;Computer Science;Mathematics;Science",
+        "grades": "11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "2027 date not yet announced",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "No — academic STEM enrichment",
+        "format": "Residential",
+        "paid_status": "Unpaid / Free Program",
+        "requirements": "Rising senior; application; recommendations; academic information",
+        "url": "https://mites.mit.edu/discover-mites/faq-for-prospective-students/faqs-mites-semester-and-mites-summer/"
+    },
+    {
+        "name": "Columbia Engineering SHAPE",
+        "age_range": "14–18",
+        "organization": "Columbia University",
+        "description": (
+            "A selective pre-college engineering program where high school "
+            "students study engineering and technology through intensive "
+            "courses, projects, and collaboration."
+        ),
+        "opportunity_type": "Summer Program",
+        "fields": "Engineering;Computer Science;Biomedical Engineering;Technology",
+        "grades": "9;10;11;12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Tuition-based",
+        "financial_aid": "Available",
+        "application_status": "Future Cycle",
+        "deadline": "2027 date not yet announced",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "No — project-based pre-college program",
+        "format": "Commuter / Residential",
+        "paid_status": "Not paid",
+        "requirements": "Application; essays; transcript/report card; recommendation; resume",
+        "url": "https://outreach.engineering.columbia.edu/shape/apply"
+    },
+    {
+        "name": "NASA GISS / CCRI High School Research",
+        "age_range": "Varies by project — check official eligibility",
+        "organization": "NASA Goddard Institute for Space Studies",
+        "description": (
+            "Research opportunities in the NYC area where selected high "
+            "school students can work with NASA-supported research teams "
+            "on climate and Earth science projects."
+        ),
+        "opportunity_type": "Research",
+        "fields": "Earth Science;Climate Science;Data Science;Computer Science;Research",
+        "grades": "10;11;12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Check Official Site",
+        "deadline": "Check official site for next cycle",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — research internship experience",
+        "format": "NYC / project dependent",
+        "paid_status": "Varies by project",
+        "requirements": "Project-specific; some opportunities require U.S. citizenship and GPA eligibility",
+        "url": "https://www.giss.nasa.gov/edu/intern/"
+    },
+    {
+        "name": "NASA Glenn High School Engineering Institute",
+        "age_range": "16+ by program start",
+        "organization": "NASA Glenn Research Center",
+        "description": (
+            "A one-week engineering institute where students use the "
+            "engineering design process to build and test prototypes "
+            "connected to NASA aerospace and space missions."
+        ),
+        "opportunity_type": "Summer Program",
+        "fields": "Engineering;Aerospace;Mechanical Engineering;Electrical Engineering",
+        "grades": "11;12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "2027 date not yet announced",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "No — engineering work-based learning experience",
+        "format": "In person — Cleveland, Ohio",
+        "paid_status": "Not paid",
+        "requirements": "Upcoming junior/senior; age requirement; GPA threshold; recommendation; citizenship/LPR eligibility",
+        "url": "https://www.nasa.gov/learning-resources/for-students-grades-9-12/nasa-glenn-high-school-engineering-institute/"
+    },
+    {
+        "name": "Learn & Earn",
+        "age_range": "16–21",
+        "organization": "NYC Department of Youth & Community Development",
+        "description": (
+            "A year-round NYC program combining academic support, college "
+            "preparation, career exploration, work-readiness training, "
+            "leadership activities, and a paid summer internship."
+        ),
+        "opportunity_type": "Internship",
+        "fields": "Engineering;Computer Science;Healthcare;Business;Career Exploration",
+        "grades": "11;12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Seasonal",
+        "deadline": "Enrollment typically September 1–30",
+        "selectivity": "Eligibility Based",
+        "selectivity_stars": 2,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — paid six-week summer internship",
+        "format": "NYC / In person",
+        "paid_status": "Paid internship component",
+        "requirements": "NYC junior/senior; age and income/eligibility requirements apply",
+        "url": "https://www.nyc.gov/site/dycd/services/jobs-internships/learn-and-earn.page"
+    },
+    {
+        "name": "Work, Learn & Grow",
+        "age_range": "16–21",
+        "organization": "NYC Department of Youth & Community Development",
+        "description": (
+            "A paid NYC work-based learning program that can include "
+            "college coursework, career exploration, academic support, "
+            "and internships during the school year."
+        ),
+        "opportunity_type": "Internship",
+        "fields": "Engineering;Computer Science;Architecture;Healthcare;Career Exploration",
+        "grades": "10;11;12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Eligibility Based",
+        "deadline": "Check official site for current cycle",
+        "selectivity": "Eligibility Based",
+        "selectivity_stars": 2,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — paid work experience / internships",
+        "format": "NYC / In person",
+        "paid_status": "Paid",
+        "requirements": "NYC youth; age, school, and prior-program eligibility can apply",
+        "url": "https://www.nyc.gov/site/dycd/services/jobs-internships/work-learn-grow-employment-program.page"
+    },
+    {
+        "name": "NYC Summer Youth Employment Program (SYEP)",
+        "age_range": "14–24",
+        "organization": "NYC Department of Youth & Community Development",
+        "description": (
+            "NYC's large youth employment program connecting young people "
+            "with paid summer work experience and career exploration across "
+            "many industries, including technology and STEM-related fields."
+        ),
+        "opportunity_type": "Internship",
+        "fields": "Computer Science;Engineering;Healthcare;Business;Career Exploration",
+        "grades": "9;10;11;12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Seasonal",
+        "deadline": "Check official site for next application cycle",
+        "selectivity": "Accessible / Lottery or Placement Based",
+        "selectivity_stars": 1,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — paid summer work experience",
+        "format": "NYC",
+        "paid_status": "Paid",
+        "requirements": "NYC youth; program-specific age and work eligibility requirements",
+        "url": "https://www.nyc.gov/site/dycd/services/jobs-internships/summer-youth-employment-program-faqs.page"
+    },
+    {
+        "name": "STEM Matters NYC",
+        "age_range": "Varies by program and grade",
+        "organization": "New York City Public Schools",
+        "description": (
+            "Free STEM enrichment opportunities for NYC students, including "
+            "high school programs in areas such as engineering, aerospace, "
+            "marine science, mechanics, ecology, and other STEM fields."
+        ),
+        "opportunity_type": "Summer Program",
+        "fields": "Engineering;Science;Aerospace;Environmental Science;STEM",
+        "grades": "9;10;11;12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Seasonal",
+        "deadline": "Check official site for upcoming programs",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "No — STEM enrichment",
+        "format": "NYC / In person",
+        "paid_status": "Not paid",
+        "requirements": "NYC student; eligibility varies by individual program",
+        "url": "https://www.schools.nyc.gov/learning/subjects/stem"
+    }
+]
+
+extra_df = pd.DataFrame(
+    extra_opportunities
+)
+
+if opportunities.empty:
+    opportunities = extra_df.copy()
+else:
+    # Ensure older CSV rows support the new Opportunity 2.0 fields.
+    opportunity_defaults = {
+        "selectivity": "Not rated yet",
+        "selectivity_stars": 0,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Not specified",
+        "format": "Check official site",
+        "paid_status": "Check official site",
+        "requirements": "Check official site",
+        "deadline": "Check official site",
+        "age_range": "Check official eligibility"
+    }
+
+    for column, default_value in opportunity_defaults.items():
+        if column not in opportunities.columns:
+            opportunities[column] = default_value
+
+    # Avoid duplicates if a program already exists in the CSV.
+    existing_names = set(
+        opportunities["name"]
+        .astype(str)
+        .str.strip()
+        .str.lower()
+    )
+
+    extra_df = extra_df[
+        ~extra_df["name"]
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .isin(
+            existing_names
+        )
+    ]
+
+    opportunities = pd.concat(
+        [
+            opportunities,
+            extra_df
+        ],
+        ignore_index=True
+    )
 
 
 try:
@@ -4554,7 +4831,8 @@ elif page == "Opportunities":
 
     st.write(
         "Discover programs, internships, research, courses, "
-        "competitions, and scholarships."
+        "competitions, scholarships, and paid work experiences — "
+        "with selectivity and eligibility information to help you choose."
     )
 
     st.divider()
@@ -4569,13 +4847,43 @@ elif page == "Opportunities":
 
         opportunity_types = st.multiselect(
             "Filter by opportunity type",
+            sorted(
+                opportunities[
+                    "opportunity_type"
+                ]
+                .dropna()
+                .astype(str)
+                .unique()
+                .tolist()
+            )
+        )
+
+        selectivity_filter = st.multiselect(
+            "Filter by selectivity",
             [
-                "Summer Program",
-                "Internship",
-                "Research",
-                "College Course",
-                "Scholarship"
+                "Accessible / Lottery or Placement Based",
+                "Eligibility Based",
+                "Moderately Competitive",
+                "Highly Competitive",
+                "Extremely Competitive"
             ]
+        )
+
+        student_age = st.selectbox(
+            "Your age",
+            [
+                "Any age",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19+"
+            ],
+            help=(
+                "Age and grade are checked separately because some programs "
+                "require students to be a certain age even if they are in the eligible grade."
+            )
         )
 
         def is_eligible(
@@ -4894,6 +5202,73 @@ elif page == "Opportunities":
                         f"{opportunity['application_status']}"
                     )
 
+                    star_count = int(
+                        pd.to_numeric(
+                            opportunity.get(
+                                "selectivity_stars",
+                                0
+                            ),
+                            errors="coerce"
+                        )
+                        if pd.notna(
+                            pd.to_numeric(
+                                opportunity.get(
+                                    "selectivity_stars",
+                                    0
+                                ),
+                                errors="coerce"
+                            )
+                        )
+                        else 0
+                    )
+
+                    st.write(
+                        f"**Selectivity:** "
+                        f"{'⭐' * star_count} "
+                        f"{opportunity.get('selectivity', 'Not rated yet')}"
+                    )
+
+                    st.write(
+                        f"**Acceptance Rate:** "
+                        f"{opportunity.get('acceptance_rate', 'Not publicly reported')}"
+                    )
+
+                    st.write(
+                        f"**Age Eligibility:** "
+                        f"{opportunity.get('age_range', 'Check official eligibility')}"
+                    )
+
+                    st.write(
+                        f"**Internship Potential:** "
+                        f"{opportunity.get('internship_potential', 'Not specified')}"
+                    )
+
+                    detail_col1, detail_col2 = st.columns(2)
+
+                    with detail_col1:
+
+                        st.write(
+                            f"**Format:** "
+                            f"{opportunity.get('format', 'Check official site')}"
+                        )
+
+                        st.write(
+                            f"**Paid:** "
+                            f"{opportunity.get('paid_status', 'Check official site')}"
+                        )
+
+                    with detail_col2:
+
+                        st.write(
+                            f"**Deadline:** "
+                            f"{opportunity.get('deadline', 'Check official site')}"
+                        )
+
+                        st.write(
+                            f"**Requirements:** "
+                            f"{opportunity.get('requirements', 'Check official site')}"
+                        )
+
                     with st.expander(
                         "Why this matches"
                     ):
@@ -4960,6 +5335,20 @@ elif page == "Opportunities":
 
                 continue
 
+            if (
+                selectivity_filter
+                and
+                str(
+                    opportunity.get(
+                        "selectivity",
+                        "Not rated yet"
+                    )
+                )
+                not in selectivity_filter
+            ):
+
+                continue
+
             with st.expander(
                 f"{opportunity['name']} — "
                 f"{opportunity['organization']}"
@@ -5005,6 +5394,62 @@ elif page == "Opportunities":
                     st.write(
                         f"**Status:** "
                         f"{opportunity['application_status']}"
+                    )
+
+                    star_value = pd.to_numeric(
+                        opportunity.get(
+                            "selectivity_stars",
+                            0
+                        ),
+                        errors="coerce"
+                    )
+
+                    star_count = (
+                        int(star_value)
+                        if pd.notna(star_value)
+                        else 0
+                    )
+
+                    st.write(
+                        f"**Selectivity:** "
+                        f"{'⭐' * star_count} "
+                        f"{opportunity.get('selectivity', 'Not rated yet')}"
+                    )
+
+                    st.write(
+                        f"**Acceptance Rate:** "
+                        f"{opportunity.get('acceptance_rate', 'Not publicly reported')}"
+                    )
+
+
+                    st.write(
+                        f"**Age Eligibility:** "
+                        f"{opportunity.get('age_range', 'Check official eligibility')}"
+                    )
+
+                    st.write(
+                        f"**Internship Potential:** "
+                        f"{opportunity.get('internship_potential', 'Not specified')}"
+                    )
+
+                    st.write(
+                        f"**Format:** "
+                        f"{opportunity.get('format', 'Check official site')}"
+                    )
+
+                    st.write(
+                        f"**Paid:** "
+                        f"{opportunity.get('paid_status', 'Check official site')}"
+                    )
+
+                    st.write(
+                        f"**Deadline:** "
+                        f"{opportunity.get('deadline', 'Check official site')}"
+                    )
+
+                    st.write(
+                        f"**Requirements:** "
+                        f"{opportunity.get('requirements', 'Check official site')}"
                     )
 
                 browse_action1, browse_action2 = st.columns(2)
