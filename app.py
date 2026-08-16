@@ -25,9 +25,9 @@ st.markdown(
     """
     <style>
     :root {
-        --sp-bg: #F2F7FA;
+        --sp-bg: #E8F4FA;
         --sp-surface: #ffffff;
-        --sp-surface-soft: #EAF3F7;
+        --sp-surface-soft: #DDEFF7;
         --sp-border: #C9DCE6;
         --sp-text: #123047;
         --sp-muted: #5F7686;
@@ -316,6 +316,134 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
+
+
+# ============================================================
+# FINAL BLUE THEME OVERRIDES
+# ============================================================
+
+st.markdown(
+    """
+    <style>
+    /* Main page: visible soft blue */
+    .stApp,
+    [data-testid="stAppViewContainer"],
+    [data-testid="stMain"],
+    .main {
+        background: #E8F4FA !important;
+    }
+
+    [data-testid="stHeader"] {
+        background: rgba(232, 244, 250, 0.92) !important;
+    }
+
+    /* Regular buttons: white with strong blue text */
+    [data-testid="stMain"] .stButton > button,
+    [data-testid="stMain"] button[kind="secondary"],
+    [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"] {
+        background: #FFFFFF !important;
+        color: #00658F !important;
+        border: 1.5px solid #8DD4EF !important;
+        box-shadow: 0 4px 12px rgba(0, 101, 143, 0.08) !important;
+    }
+
+    [data-testid="stMain"] .stButton > button p,
+    [data-testid="stMain"] .stButton > button span,
+    [data-testid="stMain"] button[kind="secondary"] p,
+    [data-testid="stMain"] button[kind="secondary"] span {
+        color: #00658F !important;
+        font-weight: 700 !important;
+    }
+
+    [data-testid="stMain"] .stButton > button:hover,
+    [data-testid="stMain"] button[kind="secondary"]:hover {
+        background: #DDF3FC !important;
+        color: #004F70 !important;
+        border-color: #018FC7 !important;
+        transform: translateY(-1px);
+    }
+
+    /* Primary buttons: brand blue with white text */
+    [data-testid="stMain"] button[kind="primary"],
+    [data-testid="stMain"] button[data-testid^="stBaseButton-primary"] {
+        background: #018FC7 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #018FC7 !important;
+        box-shadow: 0 6px 16px rgba(1, 143, 199, 0.22) !important;
+    }
+
+    [data-testid="stMain"] button[kind="primary"] p,
+    [data-testid="stMain"] button[kind="primary"] span {
+        color: #FFFFFF !important;
+    }
+
+    [data-testid="stMain"] button[kind="primary"]:hover {
+        background: #007EAF !important;
+        border-color: #007EAF !important;
+    }
+
+    /* Download buttons */
+    [data-testid="stDownloadButton"] button {
+        background: #018FC7 !important;
+        color: #FFFFFF !important;
+        border-color: #018FC7 !important;
+    }
+
+    [data-testid="stDownloadButton"] button p,
+    [data-testid="stDownloadButton"] button span {
+        color: #FFFFFF !important;
+    }
+
+    /* Link buttons */
+    [data-testid="stMain"] .stLinkButton > a {
+        background: #FFFFFF !important;
+        color: #00658F !important;
+        border: 1.5px solid #8DD4EF !important;
+    }
+
+    [data-testid="stMain"] .stLinkButton > a p,
+    [data-testid="stMain"] .stLinkButton > a span {
+        color: #00658F !important;
+        font-weight: 700 !important;
+    }
+
+    /* Cards stay white so they contrast with the blue canvas */
+    [data-testid="stVerticalBlockBorderWrapper"],
+    [data-testid="stMetric"],
+    [data-testid="stExpander"] {
+        background: #FFFFFF !important;
+    }
+
+    /* Sidebar stays dark blue and readable */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(
+            180deg,
+            #003F5C 0%,
+            #00577D 55%,
+            #003B57 100%
+        ) !important;
+    }
+
+    [data-testid="stSidebar"] .stButton > button {
+        background: rgba(255,255,255,0.09) !important;
+        color: #FFFFFF !important;
+        border: 1px solid rgba(255,255,255,0.16) !important;
+    }
+
+    [data-testid="stSidebar"] .stButton > button p,
+    [data-testid="stSidebar"] .stButton > button span {
+        color: #FFFFFF !important;
+    }
+
+    [data-testid="stSidebar"] .stButton > button:hover {
+        background: #018FC7 !important;
+        border-color: #4FC3ED !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
 # ============================================================
