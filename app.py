@@ -1,27 +1,38 @@
 import streamlit as st
 import pandas as pd
 
-# Page configuration
+# -----------------------------
+# PAGE SETUP
+# -----------------------------
+
 st.set_page_config(
     page_title="STEM Pathways NYC",
     page_icon="🚀",
     layout="centered"
 )
 
-# Load opportunity database
+# Load database
 opportunities = pd.read_csv("data/opportunities.csv")
 
-# Header
+
+# -----------------------------
+# HEADER
+# -----------------------------
+
 st.title("🚀 STEM Pathways NYC")
 
 st.write(
-    "Find STEM programs and opportunities that match your "
-    "interests, experience, and goals."
+    "Discover STEM programs, internships, research opportunities, "
+    "college programs, and more based on your interests and goals."
 )
 
 st.divider()
 
-# Student questionnaire
+
+# -----------------------------
+# STUDENT PROFILE
+# -----------------------------
+
 st.header("Build Your STEM Pathway")
 
 grade = st.selectbox(
@@ -39,9 +50,27 @@ interests = st.multiselect(
     [
         "Engineering",
         "Computer Science",
+        "Electrical Engineering",
+        "Mechanical Engineering",
+        "Biomedical Engineering",
         "AI",
+        "Data Science",
         "Biology",
-        "Biomedical Engineering"
+        "Physics",
+        "Mathematics"
+    ]
+)
+
+opportunity_types = st.multiselect(
+    "What kinds of opportunities are you looking for?",
+    [
+        "Summer Program",
+        "Internship",
+        "Research",
+        "College Course",
+        "Competition",
+        "Scholarship",
+        "Mentorship"
     ]
 )
 
@@ -50,45 +79,105 @@ experience = st.selectbox(
     ["Beginner", "Intermediate", "Advanced"]
 )
 
-needs_free = st.checkbox(
-    "I am looking for free opportunities"
+needs_financial_support = st.checkbox(
+    "I prefer free programs or programs with financial aid"
 )
 
 
-# Matching algorithm
+# -----------------------------
+# ELIGIBILITY
+# -----------------------------
+
+def is_eligible(opportunity):
+
+    eligible_grades = str(opportunity["grades"]).split(";")
+
+    # Student must be in an eligible grade
+    if grade not in eligible_grades:
+        return False
+
+    # Location restrictions
+    program_location = str(opportunity["location"]).lower()
+
+    if program_location == "nyc" and location.lower() != "nyc":
+        return False
+
+    return True
+
+
+# -----------------------------
+# MATCHING ALGORITHM
+# -----------------------------
+
 def calculate_match(opportunity):
 
     score = 0
+    maximum_score = 0
 
-    grades = str(opportunity["grades"]).split(";")
-    fields = str(opportunity["fields"]).split(";")
+    fields = [
+        field.strip()
+        for field in str(opportunity["fields"]).split(";")
+    ]
 
-    if grade in grades:
-        score += 25
-
-    if location.lower() == str(opportunity["location"]).lower():
-        score += 20
+    # STEM interest match
+    maximum_score += 40
 
     if any(interest in fields for interest in interests):
-        score += 25
+        score += 40
 
-    if experience.lower() == str(
-        opportunity["experience_level"]
-    ).lower():
+    # Opportunity type match
+    if opportunity_types:
+
+        maximum_score += 25
+
+        if opportunity["opportunity_type"] in opportunity_types:
+            score += 25
+
+    # Experience match
+    maximum_score += 15
+
+    if (
+        experience.lower()
+        == str(opportunity["experience_level"]).lower()
+    ):
         score += 15
 
-    if needs_free and str(opportunity["cost"]).lower() == "free":
-        score += 15
+    # Financial accessibility
+    if needs_financial_support:
 
-    return score
+        maximum_score += 20
+
+        cost = str(opportunity["cost"]).lower()
+        aid = str(opportunity["financial_aid"]).lower()
+
+        if cost == "free" or aid == "available":
+            score += 20
+
+    # Convert score to percentage
+    if maximum_score == 0:
+        return 0
+
+    percentage = round(
+        (score / maximum_score) * 100
+    )
+
+    return percentage
 
 
-# Recommendation button
-if st.button("Find My Opportunities", type="primary"):
+# -----------------------------
+# RESULTS
+# -----------------------------
+
+if st.button(
+    "Find My Opportunities",
+    type="primary"
+):
 
     if not interests:
 
-        st.warning("Please select at least one STEM interest.")
+        st.warning(
+            "Please select at least one STEM interest."
+        )
 
     else:
 
@@ -96,18 +185,25 @@ if st.button("Find My Opportunities", type="primary"):
 
         for _, opportunity in opportunities.iterrows():
 
+            # First check eligibility
+            if not is_eligible(opportunity):
+                continue
+
             score = calculate_match(opportunity)
 
             results.append({
                 "name": opportunity["name"],
+                "organization": opportunity["organization"],
                 "score": score,
                 "fields": opportunity["fields"],
+                "type": opportunity["opportunity_type"],
                 "cost": opportunity["cost"],
-                "deadline": opportunity["deadline"],
+                "financial_aid": opportunity["financial_aid"],
+                "status": opportunity["application_status"],
+                "description": opportunity["description"],
                 "url": opportunity["url"]
             })
 
-        # Highest match first
         results = sorted(
             results,
             key=lambda x: x["score"],
@@ -118,19 +214,64 @@ if st.button("Find My Opportunities", type="primary"):
 
         st.header("🎯 Your Top Matches")
 
-        for result in results:
+        if not results:
 
-            st.subheader(
-                f'{result["name"]} — {result["score"]}% Match'
+            st.info(
+                "No eligible opportunities were found yet. "
+                "As the STEM Pathways database grows, "
+                "more opportunities will appear here."
             )
 
-            st.write(f'**Fields:** {result["fields"]}')
-            st.write(f'**Cost:** {result["cost"]}')
-            st.write(f'**Deadline:** {result["deadline"]}')
+        else:
 
-            st.link_button(
-                "View Opportunity",
-                result["url"]
-            )
+            for result in results:
 
-            st.divider()
+                st.subheader(
+                    f'{result["name"]}'
+                )
+
+                st.metric(
+                    "Match Score",
+                    f'{result["score"]}%'
+                )
+
+                st.write(
+                    f'**Organization:** '
+                    f'{result["organization"]}'
+                )
+
+                st.write(
+                    f'**Opportunity Type:** '
+                    f'{result["type"]}'
+                )
+
+                st.write(
+                    f'**STEM Fields:** '
+                    f'{result["fields"]}'
+                )
+
+                st.write(
+                    f'**Cost:** '
+                    f'{result["cost"]}'
+                )
+
+                st.write(
+                    f'**Financial Aid:** '
+                    f'{result["financial_aid"]}'
+                )
+
+                st.write(
+                    f'**Application Status:** '
+                    f'{result["status"]}'
+                )
+
+                st.write(
+                    result["description"]
+                )
+
+                st.link_button(
+                    "View Official Opportunity",
+                    result["url"]
+                )
+
+                st.divider()
