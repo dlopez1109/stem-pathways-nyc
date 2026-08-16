@@ -4966,6 +4966,101 @@ elif page == "Opportunities":
         )
 
 
+        def selectivity_to_stars(
+            opportunity
+        ):
+
+            raw_stars = pd.to_numeric(
+                opportunity.get(
+                    "selectivity_stars",
+                    0
+                ),
+                errors="coerce"
+            )
+
+            if (
+                pd.notna(
+                    raw_stars
+                )
+                and
+                int(
+                    raw_stars
+                )
+                > 0
+            ):
+
+                stars = max(
+                    1,
+                    min(
+                        5,
+                        int(
+                            raw_stars
+                        )
+                    )
+                )
+
+            else:
+
+                label = str(
+                    opportunity.get(
+                        "selectivity",
+                        ""
+                    )
+                ).strip().lower()
+
+                if (
+                    "extremely competitive"
+                    in label
+                ):
+                    stars = 5
+
+                elif (
+                    "highly competitive"
+                    in label
+                ):
+                    stars = 4
+
+                elif (
+                    "moderately competitive"
+                    in label
+                    or
+                    "competitive"
+                    in label
+                ):
+                    stars = 3
+
+                elif (
+                    "eligibility based"
+                    in label
+                ):
+                    stars = 2
+
+                elif (
+                    "accessible"
+                    in label
+                    or
+                    "lottery"
+                    in label
+                    or
+                    "placement based"
+                    in label
+                ):
+                    stars = 1
+
+                else:
+                    # Legacy opportunities without a rating get a neutral
+                    # middle rating instead of displaying "Not rated".
+                    stars = 3
+
+            return (
+                "★" * stars
+                +
+                "☆" * (
+                    5 - stars
+                )
+            )
+
+
         def age_matches(
             age_value,
             selected_age
@@ -5299,8 +5394,8 @@ elif page == "Opportunities":
             )
 
             st.caption(
-                f"{len(search_results)} opportunity"
-                f"{'' if len(search_results) == 1 else 'ies'} found."
+                f"{len(search_results)} "
+                f"{'opportunity' if len(search_results) == 1 else 'opportunities'} found."
             )
 
             modify_col, reset_col = st.columns(2)
@@ -5418,32 +5513,10 @@ elif page == "Opportunities":
 
                     with details2:
 
-                        star_value = pd.to_numeric(
-                            opportunity.get(
-                                "selectivity_stars",
-                                0
-                            ),
-                            errors="coerce"
-                        )
-
-                        star_count = (
-                            int(
-                                star_value
-                            )
-                            if pd.notna(
-                                star_value
-                            )
-                            else 0
-                        )
-
                         search_star_display = (
-                            "★" * star_count
-                            +
-                            "☆" * (
-                                5 - star_count
+                            selectivity_to_stars(
+                                opportunity
                             )
-                            if star_count > 0
-                            else "Not rated"
                         )
 
                         st.write(
@@ -5709,35 +5782,11 @@ elif page == "Opportunities":
 
                 with rec2:
 
-                    rec_star_value = pd.to_numeric(
-                        recommended_opportunity.get(
-                            "selectivity_stars",
-                            0
-                        ),
-                        errors="coerce"
+                    rec_star_display = (
+                        selectivity_to_stars(
+                            recommended_opportunity
+                        )
                     )
-
-                    rec_star_count = (
-                        int(
-                            rec_star_value
-                        )
-                        if pd.notna(
-                            rec_star_value
-                        )
-                        else 0
-                    )
-
-                    # Always show a full 1–5 star scale.
-                    if rec_star_count > 0:
-                        rec_star_display = (
-                            "★" * rec_star_count
-                            +
-                            "☆" * (
-                                5 - rec_star_count
-                            )
-                        )
-                    else:
-                        rec_star_display = "Not rated"
 
                     st.write(
                         f"**Selectivity:** "
