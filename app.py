@@ -4924,6 +4924,144 @@ elif page == "Opportunities":
                 type="primary"
             )
 
+        if search_opportunities:
+
+            st.session_state[
+                "opportunity_search_submitted"
+            ] = True
+
+            st.session_state[
+                "opportunity_search_types"
+            ] = opportunity_types
+
+            st.session_state[
+                "opportunity_search_selectivity"
+            ] = selectivity_filter
+
+            st.session_state[
+                "opportunity_search_age"
+            ] = student_age
+
+        active_types = st.session_state.get(
+            "opportunity_search_types",
+            []
+        )
+
+        active_selectivity = st.session_state.get(
+            "opportunity_search_selectivity",
+            []
+        )
+
+        active_age = st.session_state.get(
+            "opportunity_search_age",
+            "Any age"
+        )
+
+        search_submitted = st.session_state.get(
+            "opportunity_search_submitted",
+            False
+        )
+
+
+        def age_matches(
+            age_value,
+            selected_age
+        ):
+
+            if selected_age == "Any age":
+                return True
+
+            age_text = str(
+                age_value
+            ).strip().lower()
+
+            # Unknown/variable age requirements should not be silently excluded.
+            if (
+                not age_text
+                or
+                age_text == "nan"
+                or
+                any(
+                    phrase in age_text
+                    for phrase in [
+                        "check official",
+                        "varies",
+                        "not publicly",
+                        "no simple age"
+                    ]
+                )
+            ):
+                return True
+
+            try:
+
+                age_num = (
+                    19
+                    if selected_age == "19+"
+                    else int(
+                        selected_age
+                    )
+                )
+
+            except Exception:
+                return True
+
+            # Handle ranges such as 14–18 or 16-21.
+            range_match = re.search(
+                r"(\d{1,2})\s*[–-]\s*(\d{1,2})",
+                age_text
+            )
+
+            if range_match:
+
+                minimum = int(
+                    range_match.group(1)
+                )
+
+                maximum = int(
+                    range_match.group(2)
+                )
+
+                return (
+                    minimum
+                    <= age_num
+                    <= maximum
+                )
+
+            # Handle requirements such as 16+.
+            plus_match = re.search(
+                r"(\d{1,2})\s*\+",
+                age_text
+            )
+
+            if plus_match:
+
+                return (
+                    age_num
+                    >= int(
+                        plus_match.group(1)
+                    )
+                )
+
+            # Handle a single explicit age.
+            numbers = [
+                int(value)
+                for value in re.findall(
+                    r"\b\d{1,2}\b",
+                    age_text
+                )
+            ]
+
+            if len(
+                numbers
+            ) == 1:
+
+                return (
+                    age_num
+                    == numbers[0]
+                )
+
+            return True
         def is_eligible(
             opportunity
         ):
@@ -5068,39 +5206,121 @@ elif page == "Opportunities":
                 reasons
             )
 
-        if (
-            profile["borough"]
-            == "Bronx"
-        ):
+        # ----------------------------------------------------
+        # SEARCH RESULTS
+        # ----------------------------------------------------
 
-            st.header(
-                "Featured for Bronx Students"
+        if not search_submitted:
+
+            st.info(
+                "Choose your filters above, then press **Search Opportunities**."
             )
 
-            featured = opportunities[
-                opportunities[
-                    "bronx_priority"
-                ]
-                .astype(str)
-                .str.lower()
-                == "yes"
-            ]
+        else:
 
-            if featured.empty:
+            search_results = []
 
-                st.info(
-                    "More Bronx-focused opportunities will be added."
-                )
+            for _, opportunity in opportunities.iterrows():
 
-            else:
-
-                for _, opportunity in (
-                    featured.head(3).iterrows()
+                if (
+                    active_types
+                    and
+                    str(
+                        opportunity.get(
+                            "opportunity_type",
+                            ""
+                        )
+                    )
+                    not in active_types
                 ):
 
-                    with st.container(
-                        border=True
-                    ):
+                    continue
+
+                if (
+                    active_selectivity
+                    and
+                    str(
+                        opportunity.get(
+                            "selectivity",
+                            "Not rated yet"
+                        )
+                    )
+                    not in active_selectivity
+                ):
+
+                    continue
+
+                if not age_matches(
+                    opportunity.get(
+                        "age_range",
+                        "Check official eligibility"
+                    ),
+                    active_age
+                ):
+
+                    continue
+
+                # Use the student's profile for personalization, but do not
+                # hide a search result solely because the saved profile grade
+                # may reflect the student's current rather than entering grade.
+                try:
+
+                    score, reasons = (
+                        calculate_match(
+                            opportunity
+                        )
+                    )
+
+                except Exception:
+
+                    score = 50
+                    reasons = []
+
+                search_results.append(
+                    (
+                        score,
+                        reasons,
+                        opportunity
+                    )
+                )
+
+            search_results.sort(
+                key=lambda item:
+                    item[0],
+                reverse=True
+            )
+
+            st.header(
+                "Search Results"
+            )
+
+            st.caption(
+                f"{len(search_results)} opportunity"
+                f"{'' if len(search_results) == 1 else 'ies'} found."
+            )
+
+            if not search_results:
+
+                st.warning(
+                    "No opportunities matched every filter. Try removing one "
+                    "selectivity level or opportunity type and search again."
+                )
+
+            for (
+                score,
+                reasons,
+                opportunity
+            ) in search_results:
+
+                with st.container(
+                    border=True
+                ):
+
+                    title_col, match_col = st.columns(
+                        [4, 1]
+                    )
+
+                    with title_col:
 
                         st.subheader(
                             opportunity[
@@ -5109,185 +5329,74 @@ elif page == "Opportunities":
                         )
 
                         st.caption(
-                            opportunity[
-                                "organization"
-                            ]
+                            opportunity.get(
+                                "organization",
+                                ""
+                            )
+                        )
+
+                    with match_col:
+
+                        st.metric(
+                            "Profile Match",
+                            f"{score}%"
+                        )
+
+                    st.write(
+                        opportunity.get(
+                            "description",
+                            ""
+                        )
+                    )
+
+                    details1, details2, details3 = st.columns(3)
+
+                    with details1:
+
+                        st.write(
+                            f"**Type:** "
+                            f"{opportunity.get('opportunity_type', 'Not listed')}"
                         )
 
                         st.write(
-                            opportunity[
-                                "description"
-                            ]
+                            f"**Grades:** "
+                            f"{opportunity.get('grades', 'Check eligibility')}"
                         )
 
-                        col1, col2 = st.columns(2)
-
-                        with col1:
-
-                            st.write(
-                                f"**Type:** "
-                                f"{opportunity['opportunity_type']}"
-                            )
-
-                        with col2:
-
-                            st.write(
-                                f"**Cost:** "
-                                f"{opportunity['cost']}"
-                            )
-
-                        st.link_button(
-                            "View Opportunity",
-                            opportunity[
-                                "url"
-                            ],
-                            use_container_width=True
+                        st.write(
+                            f"**Ages:** "
+                            f"{opportunity.get('age_range', 'Check official eligibility')}"
                         )
 
-            st.divider()
+                    with details2:
 
-        st.header(
-            "Recommended for You"
-        )
-
-        if st.button(
-            "Generate My Opportunity Matches",
-            type="primary",
-            use_container_width=True
-        ):
-
-            results = []
-
-            for _, opportunity in (
-                opportunities.iterrows()
-            ):
-
-                if not is_eligible(
-                    opportunity
-                ):
-                    continue
-
-                score, reasons = (
-                    calculate_match(
-                        opportunity
-                    )
-                )
-
-                results.append(
-                    (
-                        score,
-                        reasons,
-                        opportunity
-                    )
-                )
-
-            results.sort(
-                key=lambda item: item[0],
-                reverse=True
-            )
-
-            if not results:
-
-                st.info(
-                    "No eligible opportunities were found for your current profile."
-                )
-
-            for (
-                score,
-                reasons,
-                opportunity
-            ) in results:
-
-                with st.container(
-                    border=True
-                ):
-
-                    st.subheader(
-                        opportunity[
-                            "name"
-                        ]
-                    )
-
-                    st.caption(
-                        opportunity[
-                            "organization"
-                        ]
-                    )
-
-                    st.metric(
-                        "Match Score",
-                        f"{score}%"
-                    )
-
-                    st.write(
-                        opportunity[
-                            "description"
-                        ]
-                    )
-
-                    st.write(
-                        f"**Fields:** "
-                        f"{opportunity['fields']}"
-                    )
-
-                    st.write(
-                        f"**Cost:** "
-                        f"{opportunity['cost']}"
-                    )
-
-                    st.write(
-                        f"**Application Status:** "
-                        f"{opportunity['application_status']}"
-                    )
-
-                    star_count = int(
-                        pd.to_numeric(
+                        star_value = pd.to_numeric(
                             opportunity.get(
                                 "selectivity_stars",
                                 0
                             ),
                             errors="coerce"
                         )
-                        if pd.notna(
-                            pd.to_numeric(
-                                opportunity.get(
-                                    "selectivity_stars",
-                                    0
-                                ),
-                                errors="coerce"
+
+                        star_count = (
+                            int(
+                                star_value
                             )
+                            if pd.notna(
+                                star_value
+                            )
+                            else 0
                         )
-                        else 0
-                    )
-
-                    st.write(
-                        f"**Selectivity:** "
-                        f"{'⭐' * star_count} "
-                        f"{opportunity.get('selectivity', 'Not rated yet')}"
-                    )
-
-                    st.write(
-                        f"**Acceptance Rate:** "
-                        f"{opportunity.get('acceptance_rate', 'Not publicly reported')}"
-                    )
-
-                    st.write(
-                        f"**Age Eligibility:** "
-                        f"{opportunity.get('age_range', 'Check official eligibility')}"
-                    )
-
-                    st.write(
-                        f"**Internship Potential:** "
-                        f"{opportunity.get('internship_potential', 'Not specified')}"
-                    )
-
-                    detail_col1, detail_col2 = st.columns(2)
-
-                    with detail_col1:
 
                         st.write(
-                            f"**Format:** "
-                            f"{opportunity.get('format', 'Check official site')}"
+                            f"**Selectivity:** "
+                            f"{'⭐' * star_count} "
+                            f"{opportunity.get('selectivity', 'Not rated yet')}"
+                        )
+
+                        st.write(
+                            f"**Acceptance Rate:** "
+                            f"{opportunity.get('acceptance_rate', 'Not publicly reported')}"
                         )
 
                         st.write(
@@ -5295,7 +5404,7 @@ elif page == "Opportunities":
                             f"{opportunity.get('paid_status', 'Check official site')}"
                         )
 
-                    with detail_col2:
+                    with details3:
 
                         st.write(
                             f"**Deadline:** "
@@ -5303,27 +5412,45 @@ elif page == "Opportunities":
                         )
 
                         st.write(
+                            f"**Format:** "
+                            f"{opportunity.get('format', 'Check official site')}"
+                        )
+
+                        st.write(
+                            f"**Internship Potential:** "
+                            f"{opportunity.get('internship_potential', 'Not specified')}"
+                        )
+
+                    with st.expander(
+                        "Why this may match you"
+                    ):
+
+                        if reasons:
+
+                            for reason in reasons:
+
+                                st.write(
+                                    f"• {reason}"
+                                )
+
+                        else:
+
+                            st.write(
+                                "This result matches the filters you selected."
+                            )
+
+                        st.write(
                             f"**Requirements:** "
                             f"{opportunity.get('requirements', 'Check official site')}"
                         )
 
-                    with st.expander(
-                        "Why this matches"
-                    ):
+                    action1, action2 = st.columns(2)
 
-                        for reason in reasons:
-
-                            st.write(
-                                f"• {reason}"
-                            )
-
-                    action_col1, action_col2 = st.columns(2)
-
-                    with action_col1:
+                    with action1:
 
                         if st.button(
                             "📌 Save Opportunity",
-                            key=f"save_recommended_{opportunity['name']}",
+                            key=f"search_save_{opportunity['name']}",
                             use_container_width=True
                         ):
 
@@ -5337,10 +5464,10 @@ elif page == "Opportunities":
                             ):
 
                                 st.success(
-                                    "Opportunity saved to My Applications."
+                                    "Saved to My Applications."
                                 )
 
-                    with action_col2:
+                    with action2:
 
                         st.link_button(
                             "View Official Opportunity",
@@ -5350,180 +5477,13 @@ elif page == "Opportunities":
                             use_container_width=True
                         )
 
-        st.divider()
+            st.divider()
 
-        st.header(
-            "Browse All Opportunities"
-        )
-
-        for _, opportunity in (
-            opportunities.iterrows()
-        ):
-
-            if (
-                opportunity_types
-                and
-                str(
-                    opportunity[
-                        "opportunity_type"
-                    ]
-                )
-                not in opportunity_types
-            ):
-
-                continue
-
-            if (
-                selectivity_filter
-                and
-                str(
-                    opportunity.get(
-                        "selectivity",
-                        "Not rated yet"
-                    )
-                )
-                not in selectivity_filter
-            ):
-
-                continue
-
-            with st.expander(
-                f"{opportunity['name']} — "
-                f"{opportunity['organization']}"
-            ):
-
-                st.write(
-                    opportunity[
-                        "description"
-                    ]
-                )
-
-                col1, col2 = st.columns(2)
-
-                with col1:
-
-                    st.write(
-                        f"**Type:** "
-                        f"{opportunity['opportunity_type']}"
-                    )
-
-                    st.write(
-                        f"**Fields:** "
-                        f"{opportunity['fields']}"
-                    )
-
-                    st.write(
-                        f"**Grades:** "
-                        f"{opportunity['grades']}"
-                    )
-
-                with col2:
-
-                    st.write(
-                        f"**Cost:** "
-                        f"{opportunity['cost']}"
-                    )
-
-                    st.write(
-                        f"**Financial Aid:** "
-                        f"{opportunity['financial_aid']}"
-                    )
-
-                    st.write(
-                        f"**Status:** "
-                        f"{opportunity['application_status']}"
-                    )
-
-                    star_value = pd.to_numeric(
-                        opportunity.get(
-                            "selectivity_stars",
-                            0
-                        ),
-                        errors="coerce"
-                    )
-
-                    star_count = (
-                        int(star_value)
-                        if pd.notna(star_value)
-                        else 0
-                    )
-
-                    st.write(
-                        f"**Selectivity:** "
-                        f"{'⭐' * star_count} "
-                        f"{opportunity.get('selectivity', 'Not rated yet')}"
-                    )
-
-                    st.write(
-                        f"**Acceptance Rate:** "
-                        f"{opportunity.get('acceptance_rate', 'Not publicly reported')}"
-                    )
-
-
-                    st.write(
-                        f"**Age Eligibility:** "
-                        f"{opportunity.get('age_range', 'Check official eligibility')}"
-                    )
-
-                    st.write(
-                        f"**Internship Potential:** "
-                        f"{opportunity.get('internship_potential', 'Not specified')}"
-                    )
-
-                    st.write(
-                        f"**Format:** "
-                        f"{opportunity.get('format', 'Check official site')}"
-                    )
-
-                    st.write(
-                        f"**Paid:** "
-                        f"{opportunity.get('paid_status', 'Check official site')}"
-                    )
-
-                    st.write(
-                        f"**Deadline:** "
-                        f"{opportunity.get('deadline', 'Check official site')}"
-                    )
-
-                    st.write(
-                        f"**Requirements:** "
-                        f"{opportunity.get('requirements', 'Check official site')}"
-                    )
-
-                browse_action1, browse_action2 = st.columns(2)
-
-                with browse_action1:
-
-                    if st.button(
-                        "📌 Save Opportunity",
-                        key=f"save_browse_{opportunity['name']}",
-                        use_container_width=True
-                    ):
-
-                        if save_opportunity(
-                            user_sub,
-                            str(
-                                opportunity[
-                                    "name"
-                                ]
-                            )
-                        ):
-
-                            st.success(
-                                "Opportunity saved to My Applications."
-                            )
-
-                with browse_action2:
-
-                    st.link_button(
-                        "View Official Opportunity",
-                        opportunity[
-                            "url"
-                        ],
-                        use_container_width=True
-                    )
-
-
+            st.caption(
+                "Profile Match measures fit with your interests and preferences; "
+                "it is not an admission probability. Always confirm age, grade, "
+                "deadline, and eligibility requirements on the official website."
+            )
 # ============================================================
 # DEADLINE CALENDAR
 # ============================================================
