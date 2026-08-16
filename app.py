@@ -788,6 +788,62 @@ st.markdown(
         border-color: #111111 !important;
     }
 
+
+    /* =======================================================
+       ABSOLUTE FINAL FIX: collapsed sidebar reopen control
+       ======================================================= */
+
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="stSidebarCollapsedControl"] *,
+    [data-testid="stSidebarCollapsedControl"] button,
+    [data-testid="stSidebarCollapsedControl"] button *,
+    button[aria-label*="sidebar" i],
+    button[aria-label*="sidebar" i] *,
+    button[title*="sidebar" i],
+    button[title*="sidebar" i] * {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="stSidebarCollapsedControl"] button,
+    button[aria-label="Open sidebar"],
+    button[aria-label="Expand sidebar"],
+    button[title="Open sidebar"],
+    button[title="Expand sidebar"] {
+        background: #000000 !important;
+        background-color: #000000 !important;
+        color: #FFFFFF !important;
+        border: 2px solid #000000 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 5px 16px rgba(0,0,0,0.35) !important;
+        width: 46px !important;
+        height: 46px !important;
+        min-width: 46px !important;
+        min-height: 46px !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"] svg,
+    [data-testid="stSidebarCollapsedControl"] svg *,
+    [data-testid="stSidebarCollapsedControl"] button svg,
+    [data-testid="stSidebarCollapsedControl"] button svg *,
+    button[aria-label*="sidebar" i] svg,
+    button[aria-label*="sidebar" i] svg * {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+        opacity: 1 !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"]:hover,
+    [data-testid="stSidebarCollapsedControl"] button:hover,
+    button[aria-label="Open sidebar"]:hover,
+    button[aria-label="Expand sidebar"]:hover {
+        background: #111111 !important;
+        background-color: #111111 !important;
+        border-color: #111111 !important;
+    }
+
     </style>
     """,
     unsafe_allow_html=True
