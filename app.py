@@ -3364,14 +3364,37 @@ elif page == "GPA Calculator":
             "The calculator will estimate both unweighted and weighted GPA."
         )
 
-        number_of_courses = st.number_input(
-            "Number of courses",
-            min_value=1,
-            max_value=12,
-            value=6,
-            step=1,
-            key="gpa_number_of_courses"
-        )
+        # Dynamic course list: starts with 5 courses and allows up to 15.
+        if "gpa_course_ids" not in st.session_state:
+            st.session_state.gpa_course_ids = [0, 1, 2, 3, 4]
+
+        if "gpa_next_course_id" not in st.session_state:
+            st.session_state.gpa_next_course_id = 5
+
+        course_control_col1, course_control_col2 = st.columns([1, 2])
+
+        with course_control_col1:
+            if st.button(
+                "➕ Add Course",
+                use_container_width=True,
+                key="gpa_add_course",
+                disabled=len(st.session_state.gpa_course_ids) >= 15
+            ):
+                new_course_id = st.session_state.gpa_next_course_id
+                st.session_state.gpa_course_ids.append(new_course_id)
+                st.session_state.gpa_next_course_id += 1
+                st.session_state.gpa_results_confirmed = False
+                st.rerun()
+
+        with course_control_col2:
+            st.caption(
+                f"{len(st.session_state.gpa_course_ids)} of 15 courses added"
+            )
+
+        if len(st.session_state.gpa_course_ids) >= 15:
+            st.info(
+                "You reached the 15-course maximum. Remove a course if you want to add a different one."
+            )
 
         grade_points = {
             "A+": 4.0,
@@ -3401,17 +3424,42 @@ elif page == "GPA Calculator":
             "#### Your Courses"
         )
 
-        for course_index in range(
-            int(number_of_courses)
+        for display_index, course_id in enumerate(
+            list(st.session_state.gpa_course_ids),
+            start=1
         ):
 
             with st.container(
                 border=True
             ):
 
-                st.caption(
-                    f"Course {course_index + 1}"
-                )
+                title_col, remove_col = st.columns([4, 1])
+
+                with title_col:
+                    st.caption(
+                        f"Course {display_index}"
+                    )
+
+                with remove_col:
+                    if st.button(
+                        "Remove",
+                        key=f"gpa_remove_course_{course_id}",
+                        use_container_width=True,
+                        disabled=len(st.session_state.gpa_course_ids) <= 1
+                    ):
+                        st.session_state.gpa_course_ids.remove(course_id)
+
+                        for course_key in [
+                            f"gpa_course_name_{course_id}",
+                            f"gpa_letter_grade_{course_id}",
+                            f"gpa_course_level_{course_id}",
+                            f"gpa_credits_{course_id}",
+                        ]:
+                            st.session_state.pop(course_key, None)
+
+                        st.session_state.gpa_calculation_result = None
+                        st.session_state.gpa_results_confirmed = False
+                        st.rerun()
 
                 name_col, grade_col, level_col, credit_col = st.columns(
                     [2.4, 1, 1.6, 1]
@@ -3423,7 +3471,7 @@ elif page == "GPA Calculator":
                         "Course",
                         value="",
                         placeholder="e.g. AP Biology",
-                        key=f"gpa_course_name_{course_index}"
+                        key=f"gpa_course_name_{course_id}"
                     )
 
                 with grade_col:
@@ -3432,7 +3480,7 @@ elif page == "GPA Calculator":
                         "Grade",
                         list(grade_points.keys()),
                         index=1,
-                        key=f"gpa_letter_grade_{course_index}"
+                        key=f"gpa_letter_grade_{course_id}"
                     )
 
                 with level_col:
@@ -3440,7 +3488,7 @@ elif page == "GPA Calculator":
                     course_level = st.selectbox(
                         "Level",
                         list(level_bonus.keys()),
-                        key=f"gpa_course_level_{course_index}"
+                        key=f"gpa_course_level_{course_id}"
                     )
 
                 with credit_col:
@@ -3451,12 +3499,12 @@ elif page == "GPA Calculator":
                         max_value=4.0,
                         value=1.0,
                         step=0.25,
-                        key=f"gpa_credits_{course_index}"
+                        key=f"gpa_credits_{course_id}"
                     )
 
                 course_rows.append(
                     {
-                        "name": course_name.strip() or f"Course {course_index + 1}",
+                        "name": course_name.strip() or f"Course {display_index}",
                         "grade": letter_grade,
                         "level": course_level,
                         "credits": float(credits)
