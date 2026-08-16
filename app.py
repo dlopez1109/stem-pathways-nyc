@@ -8224,6 +8224,17 @@ elif page == "Projects":
         key="project_style_choices"
     )
 
+    project_skill = st.selectbox(
+        "What is your current skill level?",
+        [
+            "Beginner — I'm just getting started",
+            "Intermediate — I've completed a few projects",
+            "Advanced — I'm comfortable building independently"
+        ],
+        help="This helps prioritize projects that fit your current experience.",
+        key="project_skill_choice"
+    )
+
     col1, col2 = st.columns(2)
 
     with col1:
@@ -8352,6 +8363,47 @@ elif page == "Projects":
             or project_level == project["level"]
         ):
             score += 12
+
+        # Use the student's current experience to favor realistic projects.
+        skill_target = {
+            "Beginner — I'm just getting started": "Beginner",
+            "Intermediate — I've completed a few projects": "Intermediate",
+            "Advanced — I'm comfortable building independently": "Advanced"
+        }.get(
+            project_skill,
+            "Beginner"
+        )
+
+        level_rank = {
+            "Beginner": 1,
+            "Intermediate": 2,
+            "Advanced": 3
+        }
+
+        skill_rank = level_rank.get(
+            skill_target,
+            1
+        )
+
+        project_rank = level_rank.get(
+            project["level"],
+            1
+        )
+
+        if project_rank == skill_rank:
+            score += 16
+            reasons.append(
+                "Matches your current skill level."
+            )
+        elif project_rank < skill_rank:
+            score += 10
+            reasons.append(
+                "Should be manageable with your current experience."
+            )
+        elif project_rank == skill_rank + 1:
+            score += 3
+        else:
+            score -= 10
 
         if (
             project_time == "Any amount of time"
@@ -10501,5 +10553,5 @@ elif page == "My Profile":
 st.divider()
 
 st.caption(
-    "STEM Pathways NYC • Explore • Build • Discover"
+    ""
 )
