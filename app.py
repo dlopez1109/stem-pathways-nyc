@@ -8,7 +8,7 @@ from supabase import create_client
 
 # ============================================================
 # PAGE CONFIG
-# ============================================================
+x# ============================================================
 
 st.set_page_config(
     page_title="STEM Pathways NYC",
@@ -326,12 +326,24 @@ st.markdown(
 st.markdown(
     """
     <style>
-    /* Main page: visible soft blue */
+    /* Main page: visible soft blue across EVERY page */
+    html,
+    body,
     .stApp,
     [data-testid="stAppViewContainer"],
     [data-testid="stMain"],
-    .main {
+    [data-testid="stMainBlockContainer"],
+    .main,
+    section.main,
+    section[data-testid="stMain"] {
         background: #E8F4FA !important;
+    }
+
+    /* Prevent white page sections from appearing behind widgets */
+    [data-testid="stAppViewBlockContainer"],
+    [data-testid="stVerticalBlock"],
+    [data-testid="stHorizontalBlock"] {
+        background: transparent !important;
     }
 
     [data-testid="stHeader"] {
@@ -415,6 +427,118 @@ st.markdown(
         background: #FFFFFF !important;
     }
 
+    /* Tabs, radio groups, and generic wrappers should not create white page slabs */
+    [data-testid="stTabs"],
+    [data-testid="stRadio"],
+    [data-testid="stSelectbox"],
+    [data-testid="stMultiSelect"],
+    [data-testid="stTextInput"],
+    [data-testid="stTextArea"],
+    [data-testid="stNumberInput"],
+    [data-testid="stSlider"],
+    [data-testid="stCheckbox"] {
+        background: transparent !important;
+    }
+
+    /* Top toolbar/header should visually blend with the blue page */
+    [data-testid="stHeader"] {
+        background: rgba(232, 244, 250, 0.96) !important;
+        backdrop-filter: blur(8px);
+    }
+
+
+    /* Premium sidebar branding */
+    .sp-sidebar-brand {
+        padding: 0.25rem 0 0.85rem 0;
+    }
+
+    .sp-sidebar-brand-title {
+        color: #FFFFFF !important;
+        font-size: 1.55rem;
+        line-height: 1.15;
+        font-weight: 850;
+        letter-spacing: -0.025em;
+        margin-bottom: 0.65rem;
+    }
+
+    .sp-sidebar-brand-line {
+        width: 56px;
+        height: 4px;
+        border-radius: 999px;
+        background: #018FC7;
+        box-shadow: 0 0 14px rgba(1, 143, 199, 0.45);
+    }
+
+    .sp-sidebar-profile {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        padding: 1rem;
+        margin: 0.25rem 0 0.6rem 0;
+        border-radius: 16px;
+        background: linear-gradient(
+            135deg,
+            rgba(255,255,255,0.10),
+            rgba(255,255,255,0.055)
+        );
+        border: 1px solid rgba(255,255,255,0.13);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .sp-sidebar-avatar {
+        min-width: 48px;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #018FC7;
+        color: #FFFFFF !important;
+        font-size: 1.45rem;
+        box-shadow: 0 6px 16px rgba(1,143,199,0.28);
+    }
+
+    .sp-sidebar-profile-content {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .sp-sidebar-name {
+        color: #FFFFFF !important;
+        font-size: 1.13rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 0.45rem;
+    }
+
+    .sp-sidebar-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        align-items: center;
+        color: #CDEAF5 !important;
+        font-size: 0.84rem;
+        font-weight: 600;
+        margin-bottom: 0.42rem;
+    }
+
+    .sp-sidebar-meta span {
+        color: #CDEAF5 !important;
+    }
+
+    .sp-meta-dot {
+        opacity: 0.65;
+    }
+
+    .sp-sidebar-email {
+        color: #64C9EE !important;
+        font-size: 0.78rem;
+        font-weight: 600;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+    }
+
     /* Sidebar stays dark blue and readable */
     [data-testid="stSidebar"] {
         background: linear-gradient(
@@ -423,6 +547,20 @@ st.markdown(
             #00577D 55%,
             #003B57 100%
         ) !important;
+    }
+
+
+    [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+        color: #72D2F2 !important;
+        font-size: 0.72rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.12em !important;
+        text-transform: uppercase;
+        margin-top: 0.15rem;
+    }
+
+    [data-testid="stSidebar"] .stButton {
+        margin-bottom: 0.18rem;
     }
 
     [data-testid="stSidebar"] .stButton > button {
@@ -2131,21 +2269,32 @@ else:
 
 with st.sidebar:
 
-    st.title(
-        "STEM Pathways NYC"
-    )
+    st.markdown(
+        f"""
+        <div class="sp-sidebar-brand">
+            <div class="sp-sidebar-brand-title">STEM Pathways NYC</div>
+            <div class="sp-sidebar-brand-line"></div>
+        </div>
 
-    st.write(
-        f"**{full_name}**"
-    )
+        <div class="sp-sidebar-profile">
+            <div class="sp-sidebar-avatar">👤</div>
 
-    st.caption(
-        f"Grade {profile['grade']} "
-        f"• {profile['borough']}"
-    )
+            <div class="sp-sidebar-profile-content">
+                <div class="sp-sidebar-name">{full_name}</div>
 
-    st.caption(
-        user_email
+                <div class="sp-sidebar-meta">
+                    <span>🎓 Grade {profile['grade']}</span>
+                    <span class="sp-meta-dot">•</span>
+                    <span>📍 {profile['borough']}</span>
+                </div>
+
+                <div class="sp-sidebar-email">
+                    ✉️ {user_email}
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
     st.divider()
