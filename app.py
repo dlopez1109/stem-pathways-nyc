@@ -4887,7 +4887,8 @@ elif page == "Opportunities":
                     .astype(str)
                     .unique()
                     .tolist()
-                )
+                ),
+                key="opportunity_filter_types"
             )
 
             selectivity_filter = st.multiselect(
@@ -4898,7 +4899,8 @@ elif page == "Opportunities":
                     "Moderately Competitive",
                     "Highly Competitive",
                     "Extremely Competitive"
-                ]
+                ],
+                key="opportunity_filter_selectivity"
             )
 
             student_age = st.selectbox(
@@ -4915,11 +4917,12 @@ elif page == "Opportunities":
                 help=(
                     "Age and grade are checked separately because some programs "
                     "require students to be a certain age even if they are in the eligible grade."
-                )
+                ),
+                key="opportunity_filter_age"
             )
 
             search_opportunities = st.form_submit_button(
-                "Search Opportunities",
+                "Search / Update Results",
                 use_container_width=True,
                 type="primary"
             )
@@ -5299,6 +5302,50 @@ elif page == "Opportunities":
                 f"{'' if len(search_results) == 1 else 'ies'} found."
             )
 
+            modify_col, reset_col = st.columns(2)
+
+            with modify_col:
+
+                if st.button(
+                    "🔄 Change My Search",
+                    key="opportunity_change_search",
+                    use_container_width=True
+                ):
+
+                    st.session_state[
+                        "opportunity_search_submitted"
+                    ] = False
+
+                    st.rerun()
+
+            with reset_col:
+
+                if st.button(
+                    "Clear Filters",
+                    key="opportunity_clear_filters",
+                    use_container_width=True
+                ):
+
+                    for key in [
+                        "opportunity_filter_types",
+                        "opportunity_filter_selectivity",
+                        "opportunity_filter_age",
+                        "opportunity_search_types",
+                        "opportunity_search_selectivity",
+                        "opportunity_search_age"
+                    ]:
+
+                        st.session_state.pop(
+                            key,
+                            None
+                        )
+
+                    st.session_state[
+                        "opportunity_search_submitted"
+                    ] = False
+
+                    st.rerun()
+
             if not search_results:
 
                 st.warning(
@@ -5484,6 +5531,18 @@ elif page == "Opportunities":
                 "it is not an admission probability. Always confirm age, grade, "
                 "deadline, and eligibility requirements on the official website."
             )
+
+            if st.button(
+                "🔄 Search Again",
+                key="opportunity_search_again_bottom",
+                use_container_width=True
+            ):
+
+                st.session_state[
+                    "opportunity_search_submitted"
+                ] = False
+
+                st.rerun()
 # ============================================================
 # DEADLINE CALENDAR
 # ============================================================
