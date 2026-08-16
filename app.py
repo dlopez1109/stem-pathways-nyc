@@ -876,6 +876,160 @@ def remove_favorite_college(
 
 
 # ============================================================
+# USER FEEDBACK / REVIEWS
+# ============================================================
+
+def load_user_feedback(user_sub):
+
+    if not supabase_connected:
+        return None
+
+    try:
+
+        response = (
+            supabase
+            .table("user_feedback")
+            .select("*")
+            .eq("user_sub", user_sub)
+            .limit(1)
+            .execute()
+        )
+
+        if response.data:
+            return response.data[0]
+
+        return None
+
+    except Exception:
+        return None
+
+
+def save_user_feedback(
+    user_sub,
+    email,
+    feedback
+):
+
+    if not supabase_connected:
+        return False
+
+    now = datetime.now(
+        timezone.utc
+    ).isoformat()
+
+    data = {
+        "user_sub":
+            user_sub,
+
+        "email":
+            email,
+
+        "rating":
+            int(
+                feedback[
+                    "rating"
+                ]
+            ),
+
+        "ease_of_use":
+            int(
+                feedback[
+                    "ease_of_use"
+                ]
+            ),
+
+        "overall_feeling":
+            feedback[
+                "overall_feeling"
+            ],
+
+        "favorite_features":
+            list_to_text(
+                feedback[
+                    "favorite_features"
+                ]
+            ),
+
+        "improvements":
+            feedback[
+                "improvements"
+            ],
+
+        "additional_comments":
+            feedback[
+                "additional_comments"
+            ],
+
+        "would_recommend":
+            feedback[
+                "would_recommend"
+            ],
+
+        "updated_at":
+            now
+    }
+
+    try:
+
+        existing = (
+            supabase
+            .table("user_feedback")
+            .select("id")
+            .eq("user_sub", user_sub)
+            .limit(1)
+            .execute()
+        )
+
+        if existing.data:
+
+            (
+                supabase
+                .table("user_feedback")
+                .update(data)
+                .eq(
+                    "id",
+                    existing.data[0][
+                        "id"
+                    ]
+                )
+                .execute()
+            )
+
+        else:
+
+            data[
+                "created_at"
+            ] = now
+
+            (
+                supabase
+                .table("user_feedback")
+                .insert(
+                    data
+                )
+                .execute()
+            )
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "Your feedback could not be saved."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(
+                str(e)
+            )
+
+        return False
+
+
+
+# ============================================================
 # GOOGLE LOGIN
 # ============================================================
 
@@ -1596,6 +1750,17 @@ with st.sidebar:
     st.caption(
         "ACCOUNT"
     )
+
+    if st.button(
+        "💬 Feedback",
+        use_container_width=True
+    ):
+
+        st.session_state.current_page = (
+            "Feedback"
+        )
+
+        st.rerun()
 
     if st.button(
         "👤 My Profile",
@@ -7948,6 +8113,330 @@ elif page == "GPA Calculator":
 
                 st.session_state.gpa_show_restart_confirmation = False
                 st.rerun()
+
+
+# ============================================================
+# FEEDBACK
+# ============================================================
+
+elif page == "Feedback":
+
+    st.title(
+        "Share Your Feedback"
+    )
+
+    st.write(
+        "Help improve STEM Pathways NYC by telling us what worked, "
+        "what felt confusing, and what you would like to see next."
+    )
+
+    st.info(
+        "Your feedback is used to improve the platform. "
+        "You can return and update your response later."
+    )
+
+    st.divider()
+
+    existing_feedback = load_user_feedback(
+        user_sub
+    ) or {}
+
+    # --------------------------------------------------------
+    # STAR RATING
+    # --------------------------------------------------------
+
+    st.header(
+        "Overall Experience"
+    )
+
+    rating_options = {
+        "★☆☆☆☆  1 — Poor": 1,
+        "★★☆☆☆  2 — Fair": 2,
+        "★★★☆☆  3 — Good": 3,
+        "★★★★☆  4 — Very Good": 4,
+        "★★★★★  5 — Excellent": 5
+    }
+
+    existing_rating = int(
+        existing_feedback.get(
+            "rating",
+            5
+        )
+        or 5
+    )
+
+    default_rating_label = next(
+        (
+            label
+            for label, value
+            in rating_options.items()
+            if value
+            ==
+            existing_rating
+        ),
+        "★★★★★  5 — Excellent"
+    )
+
+    rating_label = st.radio(
+        "How would you rate STEM Pathways NYC overall?",
+        list(
+            rating_options.keys()
+        ),
+        index=list(
+            rating_options.keys()
+        ).index(
+            default_rating_label
+        ),
+        key="feedback_rating"
+    )
+
+    rating = rating_options[
+        rating_label
+    ]
+
+    st.metric(
+        "Your Rating",
+        "★" * rating
+        +
+        "☆" * (
+            5 - rating
+        )
+    )
+
+    # --------------------------------------------------------
+    # EASE OF USE / FEELING
+    # --------------------------------------------------------
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        existing_ease = int(
+            existing_feedback.get(
+                "ease_of_use",
+                4
+            )
+            or 4
+        )
+
+        ease_of_use = st.slider(
+            "How easy is the website to use?",
+            1,
+            5,
+            existing_ease,
+            help=(
+                "1 = very difficult to navigate, "
+                "5 = very easy to navigate"
+            ),
+            key="feedback_ease"
+        )
+
+    with col2:
+
+        feeling_options = [
+            "I really like it",
+            "I like it",
+            "It's okay",
+            "I'm unsure about it",
+            "I don't like it yet"
+        ]
+
+        saved_feeling = (
+            existing_feedback.get(
+                "overall_feeling",
+                "I really like it"
+            )
+            or
+            "I really like it"
+        )
+
+        overall_feeling = st.selectbox(
+            "How do you feel about the website overall?",
+            feeling_options,
+            index=(
+                feeling_options.index(
+                    saved_feeling
+                )
+                if saved_feeling
+                in feeling_options
+                else 0
+            ),
+            key="feedback_feeling"
+        )
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # FAVORITE FEATURES
+    # --------------------------------------------------------
+
+    st.header(
+        "What Is Working?"
+    )
+
+    feature_options = [
+        "Dashboard",
+        "My STEM Pathway",
+        "Career recommendations",
+        "Salary information",
+        "Opportunities",
+        "Deadline Calendar",
+        "College Suggestions",
+        "College match scores",
+        "Favorite Colleges",
+        "Application Tracker",
+        "Project Explorer",
+        "GPA Calculator",
+        "Resources",
+        "Profile"
+    ]
+
+    saved_features = text_to_list(
+        existing_feedback.get(
+            "favorite_features"
+        )
+    )
+
+    favorite_features = st.multiselect(
+        "Which parts of STEM Pathways NYC have been most useful to you?",
+        feature_options,
+        default=[
+            feature
+            for feature
+            in saved_features
+            if feature
+            in feature_options
+        ],
+        key="feedback_features"
+    )
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # IMPROVEMENTS
+    # --------------------------------------------------------
+
+    st.header(
+        "What Should We Improve?"
+    )
+
+    improvements = st.text_area(
+        "What felt confusing, difficult, missing, or could be better?",
+        value=(
+            existing_feedback.get(
+                "improvements",
+                ""
+            )
+            or
+            ""
+        ),
+        placeholder=(
+            "Example: I want more filters for colleges, "
+            "the sidebar feels crowded, or I want more beginner projects..."
+        ),
+        height=140,
+        key="feedback_improvements"
+    )
+
+    additional_comments = st.text_area(
+        "Anything else you want us to know? (optional)",
+        value=(
+            existing_feedback.get(
+                "additional_comments",
+                ""
+            )
+            or
+            ""
+        ),
+        placeholder=(
+            "Share ideas, feature requests, or anything you liked."
+        ),
+        height=120,
+        key="feedback_comments"
+    )
+
+    recommend_options = [
+        "Yes",
+        "Maybe",
+        "No"
+    ]
+
+    saved_recommend = (
+        existing_feedback.get(
+            "would_recommend",
+            "Yes"
+        )
+        or
+        "Yes"
+    )
+
+    would_recommend = st.radio(
+        "Would you recommend STEM Pathways NYC to another student?",
+        recommend_options,
+        index=(
+            recommend_options.index(
+                saved_recommend
+            )
+            if saved_recommend
+            in recommend_options
+            else 0
+        ),
+        horizontal=True,
+        key="feedback_recommend"
+    )
+
+    st.divider()
+
+    if st.button(
+        "Submit Feedback",
+        type="primary",
+        use_container_width=True
+    ):
+
+        feedback_payload = {
+            "rating":
+                rating,
+
+            "ease_of_use":
+                ease_of_use,
+
+            "overall_feeling":
+                overall_feeling,
+
+            "favorite_features":
+                favorite_features,
+
+            "improvements":
+                improvements.strip(),
+
+            "additional_comments":
+                additional_comments.strip(),
+
+            "would_recommend":
+                would_recommend
+        }
+
+        if save_user_feedback(
+            user_sub,
+            user_email,
+            feedback_payload
+        ):
+
+            st.success(
+                "Thank you — your feedback has been saved."
+            )
+
+            st.balloons()
+
+    if existing_feedback:
+
+        st.caption(
+            "You have already submitted feedback before. "
+            "Submitting again will update your existing response."
+        )
+
+
+
 
 
 # ============================================================
