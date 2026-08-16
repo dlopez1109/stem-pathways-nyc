@@ -603,12 +603,22 @@ st.markdown(
         height: 42px !important;
         align-items: center !important;
         justify-content: center !important;
-        background: #018FC7 !important;
+        background: #000000 !important;
         color: #FFFFFF !important;
-        border: 1px solid #63CBEF !important;
+        border: 1px solid #000000 !important;
         border-radius: 11px !important;
         box-shadow: 0 6px 18px rgba(0, 63, 92, 0.28) !important;
         z-index: 2147483647 !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"]:hover,
+    button[data-testid="stSidebarCollapsedControl"]:hover,
+    button[aria-label="Open sidebar"]:hover,
+    button[aria-label="Expand sidebar"]:hover,
+    button[title="Open sidebar"]:hover,
+    button[title="Expand sidebar"]:hover {
+        background: #111111 !important;
+        border-color: #111111 !important;
     }
 
     [data-testid="stSidebarCollapsedControl"] svg,
