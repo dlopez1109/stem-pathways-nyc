@@ -1173,6 +1173,17 @@ with st.sidebar:
         st.rerun()
 
     if st.button(
+        "🎓 College Suggestions",
+        use_container_width=True
+    ):
+
+        st.session_state.current_page = (
+            "College Suggestions"
+        )
+
+        st.rerun()
+
+    if st.button(
         "🛠️ Projects",
         use_container_width=True
     ):
@@ -3202,6 +3213,1193 @@ elif page == "Opportunities":
                         ],
                         use_container_width=True
                     )
+
+
+# ============================================================
+# COLLEGE SUGGESTIONS
+# ============================================================
+
+elif page == "College Suggestions":
+
+    st.title(
+        "College Suggestions"
+    )
+
+    st.write(
+        "Explore colleges connected to the majors and STEM fields "
+        "you may want to pursue."
+    )
+
+    st.info(
+        "These are exploration suggestions, not admissions predictions "
+        "or official rankings. Always verify majors, costs, financial aid, "
+        "and admissions requirements on each college's official website."
+    )
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # BUILD MAJOR LIST FROM CAREER DATABASE
+    # --------------------------------------------------------
+
+    major_options = set()
+
+    if not careers.empty:
+
+        if "recommended_major" in careers.columns:
+
+            for major in careers[
+                "recommended_major"
+            ].dropna():
+
+                major = str(
+                    major
+                ).strip()
+
+                if major:
+                    major_options.add(
+                        major
+                    )
+
+        if "related_majors" in careers.columns:
+
+            for related in careers[
+                "related_majors"
+            ].dropna():
+
+                for major in str(
+                    related
+                ).split(";"):
+
+                    major = major.strip()
+
+                    if major:
+                        major_options.add(
+                            major
+                        )
+
+    major_options = sorted(
+        major_options
+    )
+
+    if not major_options:
+
+        st.warning(
+            "College suggestions are unavailable because the "
+            "career database could not be loaded."
+        )
+
+    else:
+
+        # ----------------------------------------------------
+        # DEFAULT MAJOR FROM STUDENT INTEREST
+        # ----------------------------------------------------
+
+        interest_to_major = {
+
+            "Engineering":
+                "Engineering",
+
+            "Electrical Engineering":
+                "Electrical Engineering",
+
+            "Mechanical Engineering":
+                "Mechanical Engineering",
+
+            "Computer Engineering":
+                "Computer Engineering",
+
+            "Computer Science":
+                "Computer Science",
+
+            "Artificial Intelligence":
+                "Computer Science",
+
+            "Data Science":
+                "Data Science",
+
+            "Biomedical Engineering":
+                "Biomedical Engineering",
+
+            "Biology":
+                "Biology",
+
+            "Physics":
+                "Physics",
+
+            "Mathematics":
+                "Mathematics",
+
+            "Environmental Science":
+                "Environmental Science",
+
+            "Robotics":
+                "Robotics Engineering"
+        }
+
+        suggested_default_major = None
+
+        for interest in profile.get(
+            "interests",
+            []
+        ):
+
+            possible_major = (
+                interest_to_major.get(
+                    interest
+                )
+            )
+
+            if (
+                possible_major
+                in major_options
+            ):
+
+                suggested_default_major = (
+                    possible_major
+                )
+
+                break
+
+        default_index = 0
+
+        if (
+            suggested_default_major
+            in major_options
+        ):
+
+            default_index = (
+                major_options.index(
+                    suggested_default_major
+                )
+            )
+
+        # ----------------------------------------------------
+        # STUDENT PREFERENCES
+        # ----------------------------------------------------
+
+        st.header(
+            "What are you looking for?"
+        )
+
+        selected_major = st.selectbox(
+            "What would you like to study?",
+            major_options,
+            index=default_index
+        )
+
+        location_preference = st.selectbox(
+            "Where would you like to focus?",
+            [
+                "Show me both national and NYC options",
+                "Prioritize NYC / nearby options",
+                "Focus on nationally notable programs"
+            ]
+        )
+
+        priorities = st.multiselect(
+            "What matters most to you?",
+            [
+                "Strong program for my major",
+                "Close to NYC",
+                "Urban environment",
+                "Smaller college",
+                "Large university",
+                "Research opportunities",
+                "Internships / industry connections",
+                "Financial aid / affordability"
+            ],
+            default=[
+                "Strong program for my major"
+            ]
+        )
+
+        with st.expander(
+            "Optional academic planning information"
+        ):
+
+            st.caption(
+                "Your GPA and SAT are shown only as planning context. "
+                "STEM Pathways NYC does not calculate admission chances."
+            )
+
+            academic_scale = st.radio(
+                "GPA scale",
+                [
+                    "100-point scale",
+                    "4.0 scale"
+                ],
+                horizontal=True
+            )
+
+            if (
+                academic_scale
+                ==
+                "100-point scale"
+            ):
+
+                planning_gpa = st.number_input(
+                    "Current GPA / average",
+                    min_value=0.0,
+                    max_value=100.0,
+                    value=90.0,
+                    step=0.1
+                )
+
+            else:
+
+                planning_gpa = st.number_input(
+                    "Current GPA",
+                    min_value=0.0,
+                    max_value=4.0,
+                    value=3.5,
+                    step=0.01
+                )
+
+            planning_sat = st.number_input(
+                "SAT score (optional)",
+                min_value=0,
+                max_value=1600,
+                value=0,
+                step=10,
+                help="Leave this at 0 if you do not want to include an SAT score."
+            )
+
+        # ----------------------------------------------------
+        # MATCH CAREER ROWS TO SELECTED MAJOR
+        # ----------------------------------------------------
+
+        def major_matches_row(
+            row,
+            major
+        ):
+
+            recommended = str(
+                row.get(
+                    "recommended_major",
+                    ""
+                )
+            ).strip()
+
+            related = [
+                item.strip()
+                for item in str(
+                    row.get(
+                        "related_majors",
+                        ""
+                    )
+                ).split(";")
+                if item.strip()
+            ]
+
+            return (
+                recommended == major
+                or
+                major in related
+            )
+
+        matching_rows = careers[
+            careers.apply(
+                lambda row:
+                    major_matches_row(
+                        row,
+                        selected_major
+                    ),
+                axis=1
+            )
+        ]
+
+        # ----------------------------------------------------
+        # COLLECT SCHOOLS
+        # ----------------------------------------------------
+
+        notable_schools = []
+        nyc_schools = []
+
+        for _, row in matching_rows.iterrows():
+
+            if (
+                "colleges_notable"
+                in matching_rows.columns
+            ):
+
+                for school in str(
+                    row.get(
+                        "colleges_notable",
+                        ""
+                    )
+                ).split(";"):
+
+                    school = school.strip()
+
+                    if (
+                        school
+                        and
+                        school.lower()
+                        != "nan"
+                        and
+                        school
+                        not in notable_schools
+                    ):
+
+                        notable_schools.append(
+                            school
+                        )
+
+            if (
+                "nyc_colleges"
+                in matching_rows.columns
+            ):
+
+                for school in str(
+                    row.get(
+                        "nyc_colleges",
+                        ""
+                    )
+                ).split(";"):
+
+                    school = school.strip()
+
+                    if (
+                        school
+                        and
+                        school.lower()
+                        != "nan"
+                        and
+                        school
+                        not in nyc_schools
+                    ):
+
+                        nyc_schools.append(
+                            school
+                        )
+
+        # ----------------------------------------------------
+        # BROAD COLLEGE METADATA FOR PERSONALIZATION
+        # ----------------------------------------------------
+
+        college_metadata = {
+
+            "MIT": {
+                "location":
+                    "Cambridge, MA",
+                "setting":
+                    "Urban",
+                "size":
+                    "Medium",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "Stanford University": {
+                "location":
+                    "Stanford, CA",
+                "setting":
+                    "Suburban",
+                "size":
+                    "Large",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "UC Berkeley": {
+                "location":
+                    "Berkeley, CA",
+                "setting":
+                    "Urban",
+                "size":
+                    "Large",
+                "type":
+                    "Public",
+                "research":
+                    True
+            },
+
+            "Georgia Tech": {
+                "location":
+                    "Atlanta, GA",
+                "setting":
+                    "Urban",
+                "size":
+                    "Large",
+                "type":
+                    "Public",
+                "research":
+                    True
+            },
+
+            "UIUC": {
+                "location":
+                    "Champaign-Urbana, IL",
+                "setting":
+                    "College town",
+                "size":
+                    "Large",
+                "type":
+                    "Public",
+                "research":
+                    True
+            },
+
+            "Carnegie Mellon University": {
+                "location":
+                    "Pittsburgh, PA",
+                "setting":
+                    "Urban",
+                "size":
+                    "Medium",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "University of Michigan": {
+                "location":
+                    "Ann Arbor, MI",
+                "setting":
+                    "College town",
+                "size":
+                    "Large",
+                "type":
+                    "Public",
+                "research":
+                    True
+            },
+
+            "Purdue University": {
+                "location":
+                    "West Lafayette, IN",
+                "setting":
+                    "College town",
+                "size":
+                    "Large",
+                "type":
+                    "Public",
+                "research":
+                    True
+            },
+
+            "Cornell University": {
+                "location":
+                    "Ithaca, NY",
+                "setting":
+                    "College town",
+                "size":
+                    "Large",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "Johns Hopkins University": {
+                "location":
+                    "Baltimore, MD",
+                "setting":
+                    "Urban",
+                "size":
+                    "Medium",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "Duke University": {
+                "location":
+                    "Durham, NC",
+                "setting":
+                    "Urban / suburban",
+                "size":
+                    "Medium",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "Harvard University": {
+                "location":
+                    "Cambridge, MA",
+                "setting":
+                    "Urban",
+                "size":
+                    "Medium",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "Princeton University": {
+                "location":
+                    "Princeton, NJ",
+                "setting":
+                    "Suburban / college town",
+                "size":
+                    "Small",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "Caltech": {
+                "location":
+                    "Pasadena, CA",
+                "setting":
+                    "Suburban",
+                "size":
+                    "Small",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "WPI": {
+                "location":
+                    "Worcester, MA",
+                "setting":
+                    "Urban",
+                "size":
+                    "Medium",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "Columbia University": {
+                "location":
+                    "New York, NY",
+                "setting":
+                    "Urban",
+                "size":
+                    "Large",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "The Cooper Union": {
+                "location":
+                    "New York, NY",
+                "setting":
+                    "Urban",
+                "size":
+                    "Small",
+                "type":
+                    "Private",
+                "research":
+                    False
+            },
+
+            "NYU Tandon": {
+                "location":
+                    "Brooklyn, NY",
+                "setting":
+                    "Urban",
+                "size":
+                    "Large university",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "NYU": {
+                "location":
+                    "New York, NY",
+                "setting":
+                    "Urban",
+                "size":
+                    "Large",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "CCNY": {
+                "location":
+                    "New York, NY",
+                "setting":
+                    "Urban",
+                "size":
+                    "Large",
+                "type":
+                    "Public",
+                "research":
+                    True
+            },
+
+            "Stony Brook University": {
+                "location":
+                    "Stony Brook, NY",
+                "setting":
+                    "Suburban",
+                "size":
+                    "Large",
+                "type":
+                    "Public",
+                "research":
+                    True
+            },
+
+            "Fordham University": {
+                "location":
+                    "New York, NY",
+                "setting":
+                    "Urban",
+                "size":
+                    "Medium",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "Yeshiva University": {
+                "location":
+                    "New York, NY",
+                "setting":
+                    "Urban",
+                "size":
+                    "Small",
+                "type":
+                    "Private",
+                "research":
+                    True
+            },
+
+            "Cornell Tech": {
+                "location":
+                    "New York, NY",
+                "setting":
+                    "Urban",
+                "size":
+                    "Graduate-focused",
+                "type":
+                    "Private",
+                "research":
+                    True
+            }
+        }
+
+        # ----------------------------------------------------
+        # SCORE SUGGESTIONS
+        # ----------------------------------------------------
+
+        candidate_schools = []
+
+        for school in (
+            notable_schools
+            +
+            nyc_schools
+        ):
+
+            if school not in candidate_schools:
+                candidate_schools.append(
+                    school
+                )
+
+        def college_score(
+            school
+        ):
+
+            score = 0
+            reasons = []
+
+            is_notable = (
+                school
+                in notable_schools
+            )
+
+            is_nyc = (
+                school
+                in nyc_schools
+            )
+
+            meta = college_metadata.get(
+                school,
+                {}
+            )
+
+            if is_notable:
+
+                score += 35
+
+                reasons.append(
+                    f"Listed in your career database as a notable "
+                    f"program to explore for {selected_major}."
+                )
+
+            if is_nyc:
+
+                score += 30
+
+                reasons.append(
+                    "Included as an NYC / nearby option for this pathway."
+                )
+
+            if (
+                "Close to NYC"
+                in priorities
+                and
+                is_nyc
+            ):
+
+                score += 25
+
+            if (
+                "Urban environment"
+                in priorities
+                and
+                "Urban"
+                in str(
+                    meta.get(
+                        "setting",
+                        ""
+                    )
+                )
+            ):
+
+                score += 15
+
+                reasons.append(
+                    "Matches your preference for an urban environment."
+                )
+
+            if (
+                "Smaller college"
+                in priorities
+                and
+                meta.get(
+                    "size"
+                )
+                ==
+                "Small"
+            ):
+
+                score += 15
+
+                reasons.append(
+                    "Matches your preference for a smaller college environment."
+                )
+
+            if (
+                "Large university"
+                in priorities
+                and
+                (
+                    meta.get(
+                        "size"
+                    )
+                    in [
+                        "Large",
+                        "Large university"
+                    ]
+                )
+            ):
+
+                score += 15
+
+                reasons.append(
+                    "Matches your preference for a larger university."
+                )
+
+            if (
+                "Research opportunities"
+                in priorities
+                and
+                meta.get(
+                    "research"
+                )
+                is True
+            ):
+
+                score += 10
+
+                reasons.append(
+                    "The institution is research-oriented."
+                )
+
+            if (
+                "Strong program for my major"
+                in priorities
+                and
+                is_notable
+            ):
+
+                score += 15
+
+            return (
+                score,
+                reasons
+            )
+
+        ranked_colleges = []
+
+        for school in candidate_schools:
+
+            score, reasons = (
+                college_score(
+                    school
+                )
+            )
+
+            ranked_colleges.append(
+                (
+                    score,
+                    school,
+                    reasons
+                )
+            )
+
+        ranked_colleges.sort(
+            key=lambda item:
+                item[0],
+            reverse=True
+        )
+
+        if (
+            location_preference
+            ==
+            "Prioritize NYC / nearby options"
+        ):
+
+            ranked_colleges.sort(
+                key=lambda item:
+                    (
+                        item[1]
+                        not in nyc_schools,
+                        -item[0]
+                    )
+            )
+
+        elif (
+            location_preference
+            ==
+            "Focus on nationally notable programs"
+        ):
+
+            ranked_colleges = [
+                item
+                for item in ranked_colleges
+                if item[1]
+                in notable_schools
+            ]
+
+        # ----------------------------------------------------
+        # RESULTS
+        # ----------------------------------------------------
+
+        if st.button(
+            "Find Colleges",
+            type="primary",
+            use_container_width=True
+        ):
+
+            st.session_state[
+                "college_suggestion_major"
+            ] = selected_major
+
+            st.session_state[
+                "college_suggestion_results"
+            ] = ranked_colleges
+
+            st.session_state[
+                "college_suggestion_priorities"
+            ] = priorities
+
+            st.session_state[
+                "college_planning_gpa"
+            ] = planning_gpa
+
+            st.session_state[
+                "college_planning_sat"
+            ] = planning_sat
+
+            st.rerun()
+
+        saved_results = st.session_state.get(
+            "college_suggestion_results"
+        )
+
+        saved_major = st.session_state.get(
+            "college_suggestion_major"
+        )
+
+        if (
+            saved_results
+            and
+            saved_major
+        ):
+
+            st.divider()
+
+            st.header(
+                f"Colleges to Explore for {saved_major}"
+            )
+
+            st.caption(
+                "Ordered using your selected preferences and the "
+                "college lists in the STEM Pathways career database."
+            )
+
+            if (
+                "Financial aid / affordability"
+                in st.session_state.get(
+                    "college_suggestion_priorities",
+                    []
+                )
+            ):
+
+                st.warning(
+                    "Financial aid varies substantially by college and "
+                    "family circumstances. These results do not rank schools "
+                    "by affordability. Use each college's official financial "
+                    "aid page and net price calculator before making decisions."
+                )
+
+            top_results = (
+                saved_results[:10]
+            )
+
+            for rank, (
+                score,
+                school,
+                reasons
+            ) in enumerate(
+                top_results,
+                start=1
+            ):
+
+                meta = (
+                    college_metadata.get(
+                        school,
+                        {}
+                    )
+                )
+
+                with st.container(
+                    border=True
+                ):
+
+                    st.subheader(
+                        f"{rank}. {school}"
+                    )
+
+                    if meta:
+
+                        info1, info2, info3 = (
+                            st.columns(3)
+                        )
+
+                        with info1:
+
+                            st.write(
+                                f"**Location:** "
+                                f"{meta.get('location', 'Not listed')}"
+                            )
+
+                        with info2:
+
+                            st.write(
+                                f"**Setting:** "
+                                f"{meta.get('setting', 'Not listed')}"
+                            )
+
+                        with info3:
+
+                            st.write(
+                                f"**Institution:** "
+                                f"{meta.get('type', 'Not listed')}"
+                            )
+
+                    if school in notable_schools:
+
+                        st.success(
+                            "Notable program to explore for this pathway"
+                        )
+
+                    if school in nyc_schools:
+
+                        st.info(
+                            "NYC / nearby option"
+                        )
+
+                    with st.expander(
+                        "Why this college was suggested"
+                    ):
+
+                        if reasons:
+
+                            for reason in reasons:
+
+                                st.write(
+                                    f"• {reason}"
+                                )
+
+                        else:
+
+                            st.write(
+                                "This college appears in the major and career "
+                                "data associated with your selected field."
+                            )
+
+            # ------------------------------------------------
+            # CAREERS / INDUSTRIES CONNECTED TO MAJOR
+            # ------------------------------------------------
+
+            st.divider()
+
+            st.header(
+                "Where This Major Can Lead"
+            )
+
+            related_careers = []
+
+            related_companies = []
+
+            related_industries = []
+
+            for _, row in matching_rows.iterrows():
+
+                career_name = str(
+                    row.get(
+                        "career",
+                        ""
+                    )
+                ).strip()
+
+                if (
+                    career_name
+                    and
+                    career_name
+                    not in related_careers
+                ):
+
+                    related_careers.append(
+                        career_name
+                    )
+
+                for company in str(
+                    row.get(
+                        "companies",
+                        ""
+                    )
+                ).split(";"):
+
+                    company = company.strip()
+
+                    if (
+                        company
+                        and
+                        company.lower()
+                        != "nan"
+                        and
+                        company
+                        not in related_companies
+                    ):
+
+                        related_companies.append(
+                            company
+                        )
+
+                for industry in str(
+                    row.get(
+                        "industries",
+                        ""
+                    )
+                ).split(";"):
+
+                    industry = industry.strip()
+
+                    if (
+                        industry
+                        and
+                        industry.lower()
+                        != "nan"
+                        and
+                        industry
+                        not in related_industries
+                    ):
+
+                        related_industries.append(
+                            industry
+                        )
+
+            outcome_col1, outcome_col2 = (
+                st.columns(2)
+            )
+
+            with outcome_col1:
+
+                with st.container(
+                    border=True
+                ):
+
+                    st.subheader(
+                        "Related Careers"
+                    )
+
+                    for career_name in (
+                        related_careers[:8]
+                    ):
+
+                        st.write(
+                            f"• {career_name}"
+                        )
+
+            with outcome_col2:
+
+                with st.container(
+                    border=True
+                ):
+
+                    st.subheader(
+                        "Example Employers"
+                    )
+
+                    for company in (
+                        related_companies[:8]
+                    ):
+
+                        st.write(
+                            f"• {company}"
+                        )
+
+            if related_industries:
+
+                st.markdown(
+                    "**Industries connected to this major:**"
+                )
+
+                st.write(
+                    " • ".join(
+                        related_industries[:8]
+                    )
+                )
+
+            st.divider()
+
+            st.caption(
+                "College suggestions are for exploration only. "
+                "STEM Pathways NYC does not estimate acceptance probability "
+                "or guarantee that a college currently offers every related "
+                "major shown in the career database."
+            )
+
+
+
 
 
 # ============================================================
