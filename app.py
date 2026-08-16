@@ -70,43 +70,6 @@ def format_salary(value):
         return "Data unavailable"
 
 
-def safe_value(row, column, default="Not listed"):
-    if column not in row.index:
-        return default
-
-    value = row[column]
-
-    if pd.isna(value):
-        return default
-
-    text = str(value).strip()
-
-    if not text or text.lower() == "nan":
-        return default
-
-    return text
-
-
-def semicolon_items(value):
-    if value is None or pd.isna(value):
-        return []
-
-    return [
-        item.strip()
-        for item in str(value).split(";")
-        if item.strip()
-    ]
-
-
-def star_rating(value):
-    try:
-        rating = max(1, min(5, int(float(value))))
-    except Exception:
-        return "Not rated"
-
-    return "★" * rating + "☆" * (5 - rating)
-
-
 def list_to_text(items):
     return json.dumps(
         items,
@@ -1024,6 +987,23 @@ with st.sidebar:
 
         st.session_state.current_page = (
             "Resources"
+        )
+
+        st.rerun()
+
+    st.divider()
+
+    st.caption(
+        "TOOLS"
+    )
+
+    if st.button(
+        "📊 GPA Calculator",
+        use_container_width=True
+    ):
+
+        st.session_state.current_page = (
+            "GPA Calculator"
         )
 
         st.rerun()
@@ -2311,12 +2291,6 @@ elif page == "My STEM Pathway":
             "Specific Careers to Explore"
         )
 
-        st.write(
-            "Explore what each career involves, how much it pays, "
-            "which majors connect to it, where people work, and colleges "
-            "with strong programs in the field."
-        )
-
         career_columns = st.columns(2)
 
         for index, career_name in enumerate(
@@ -2364,44 +2338,14 @@ elif page == "My STEM Pathway":
 
                     st.caption(
                         f"Recommended major: "
-                        f"{safe_value(career_data, 'recommended_major')}"
+                        f"{career_data['recommended_major']}"
                     )
 
                     st.write(
-                        safe_value(
-                            career_data,
-                            "description",
-                            "Career description coming soon."
-                        )
+                        career_data[
+                            "description"
+                        ]
                     )
-
-                    related_majors = semicolon_items(
-                        safe_value(
-                            career_data,
-                            "related_majors",
-                            ""
-                        )
-                    )
-
-                    if related_majors:
-
-                        st.markdown(
-                            "#### Related Majors"
-                        )
-
-                        major_cols = st.columns(2)
-
-                        for major_index, major in enumerate(
-                            related_majors
-                        ):
-
-                            with major_cols[
-                                major_index % 2
-                            ]:
-
-                                st.write(
-                                    f"• {major}"
-                                )
 
                     st.markdown(
                         "#### Salary & Career Pay"
@@ -2462,29 +2406,8 @@ elif page == "My STEM Pathway":
 
                     with salary_col4:
 
-                        local_label = (
-                            "NYC / NY Average"
-                        )
-
-                        salary_area = safe_value(
-                            career_data,
-                            "salary_area",
-                            ""
-                        )
-
-                        if (
-                            salary_area
-                            and
-                            "New York State"
-                            not in salary_area
-                        ):
-
-                            local_label = (
-                                "NYC Metro Average"
-                            )
-
                         st.metric(
-                            local_label,
+                            "NYC / NY Average",
                             format_salary(
                                 career_data[
                                     "average_salary"
@@ -2501,230 +2424,62 @@ elif page == "My STEM Pathway":
                     )
 
                     st.write(
-                        safe_value(
-                            career_data,
+                        career_data[
                             "education"
-                        )
+                        ]
                     )
 
-                    skills = semicolon_items(
-                        safe_value(
-                            career_data,
-                            "skills",
-                            ""
-                        )
+                    st.markdown(
+                        "#### Skills to Explore"
                     )
 
-                    if skills:
-
-                        st.markdown(
-                            "#### Skills to Explore"
-                        )
-
-                        skill_cols = st.columns(2)
-
-                        for skill_index, skill in enumerate(
-                            skills
-                        ):
-
-                            with skill_cols[
-                                skill_index % 2
-                            ]:
-
-                                st.write(
-                                    f"• {skill}"
-                                )
-
-                    companies = semicolon_items(
-                        safe_value(
-                            career_data,
-                            "companies",
-                            ""
-                        )
-                    )
-
-                    if companies:
-
-                        st.markdown(
-                            "#### Companies & Organizations to Explore"
-                        )
+                    for skill in str(
+                        career_data["skills"]
+                    ).split(";"):
 
                         st.write(
-                            " • ".join(
-                                companies
-                            )
+                            f"• {skill.strip()}"
                         )
 
-                    industries = semicolon_items(
-                        safe_value(
-                            career_data,
-                            "industries",
-                            ""
+                    if (
+                        "salary_mapping_note"
+                        in career_data.index
+                        and
+                        pd.notna(
+                            career_data[
+                                "salary_mapping_note"
+                            ]
                         )
-                    )
-
-                    if industries:
-
-                        st.markdown(
-                            "#### Industries"
-                        )
-
-                        st.write(
-                            " • ".join(
-                                industries
-                            )
-                        )
-
-                    colleges = semicolon_items(
-                        safe_value(
-                            career_data,
-                            "colleges_notable",
-                            ""
-                        )
-                    )
-
-                    nyc_colleges = semicolon_items(
-                        safe_value(
-                            career_data,
-                            "nyc_colleges",
-                            ""
-                        )
-                    )
-
-                    if colleges:
-
-                        st.markdown(
-                            "#### Notable Colleges for This Field"
-                        )
-
-                        college_cols = st.columns(2)
-
-                        for college_index, college in enumerate(
-                            colleges
-                        ):
-
-                            with college_cols[
-                                college_index % 2
-                            ]:
-
-                                st.write(
-                                    f"🎓 {college}"
-                                )
-
-                    if nyc_colleges:
-
-                        st.markdown(
-                            "#### NYC / Nearby Options"
-                        )
-
-                        for college in nyc_colleges:
-
-                            st.write(
-                                f"• {college}"
-                            )
-
-                    college_note = safe_value(
-                        career_data,
-                        "college_notes",
-                        ""
-                    )
-
-                    if college_note:
-
-                        st.caption(
-                            college_note
-                        )
-
-                    outlook = safe_value(
-                        career_data,
-                        "job_outlook",
-                        ""
-                    )
-
-                    if outlook:
-
-                        st.markdown(
-                            "#### Career Outlook"
-                        )
-
-                        st.write(
-                            outlook
-                        )
-
-                    career_note = safe_value(
-                        career_data,
-                        "career_level_note",
-                        ""
-                    )
-
-                    if career_note:
-
-                        st.caption(
-                            career_note
-                        )
-
-                    mapping_note = safe_value(
-                        career_data,
-                        "salary_mapping_note",
-                        ""
-                    )
-
-                    if mapping_note:
-
-                        st.info(
-                            mapping_note
-                        )
-
-                    with st.expander(
-                        "Salary Data Details"
+                        and
+                        str(
+                            career_data[
+                                "salary_mapping_note"
+                            ]
+                        ).strip()
                     ):
 
-                        st.write(
-                            f"**BLS occupation:** "
-                            f"{safe_value(career_data, 'bls_occupation')}"
+                        st.info(
+                            career_data[
+                                "salary_mapping_note"
+                            ]
                         )
 
-                        st.write(
-                            f"**SOC code:** "
-                            f"{safe_value(career_data, 'soc_code')}"
+                    if (
+                        "source_url"
+                        in career_data.index
+                        and
+                        pd.notna(
+                            career_data[
+                                "source_url"
+                            ]
                         )
-
-                        st.write(
-                            f"**Benchmark area:** "
-                            f"{safe_value(career_data, 'benchmark_area')}"
-                        )
-
-                        st.write(
-                            f"**Local salary area:** "
-                            f"{safe_value(career_data, 'salary_area')}"
-                        )
-
-                        st.write(
-                            f"**Data year:** "
-                            f"{safe_value(career_data, 'source_year')}"
-                        )
-
-                        st.write(
-                            f"**Data type:** "
-                            f"{safe_value(career_data, 'data_type')}"
-                        )
-
-                        st.write(
-                            f"**Source:** "
-                            f"{safe_value(career_data, 'salary_source')}"
-                        )
-
-                    source_url = safe_value(
-                        career_data,
-                        "source_url",
-                        ""
-                    )
-
-                    if source_url:
+                    ):
 
                         st.link_button(
                             "View Official BLS Source",
-                            source_url,
+                            career_data[
+                                "source_url"
+                            ],
                             use_container_width=True
                         )
 
@@ -2732,9 +2487,7 @@ elif page == "My STEM Pathway":
 
         st.caption(
             "Salary benchmarks represent wage distributions, not "
-            "guaranteed salaries after a specific number of years. "
-            "College and employer examples are for exploration and are "
-            "not rankings or guarantees of employment."
+            "guaranteed salaries after a specific number of years."
         )
 
 
@@ -2749,9 +2502,8 @@ elif page == "Opportunities":
     )
 
     st.write(
-        "Discover real STEM programs, internships, research experiences, "
-        "college courses, and competitions. Match score measures how well "
-        "an opportunity fits your profile — not your chance of admission."
+        "Discover programs, internships, research, courses, "
+        "competitions, and scholarships."
     )
 
     st.divider()
@@ -2764,81 +2516,44 @@ elif page == "Opportunities":
 
     else:
 
-        filter_col1, filter_col2 = st.columns(2)
-
-        with filter_col1:
-
-            opportunity_types = st.multiselect(
-                "Filter by opportunity type",
-                sorted(
-                    opportunities[
-                        "opportunity_type"
-                    ]
-                    .dropna()
-                    .astype(str)
-                    .unique()
-                    .tolist()
-                )
-            )
-
-        with filter_col2:
-
-            selectivity_filter = st.multiselect(
-                "Filter by selectivity",
-                [
-                    "1 - Accessible",
-                    "2 - Moderately Competitive",
-                    "3 - Competitive",
-                    "4 - Highly Competitive",
-                    "5 - Extremely Competitive"
-                ]
-            )
-
-        st.caption(
-            "Selectivity and academic-intensity ratings are STEM Pathways NYC "
-            "estimates based on published eligibility, application requirements, "
-            "program structure, available selection information, and competitiveness. "
-            "They are not official ratings from the organizations."
+        opportunity_types = st.multiselect(
+            "Filter by opportunity type",
+            [
+                "Summer Program",
+                "Internship",
+                "Research",
+                "College Course",
+                "Competition",
+                "Scholarship"
+            ]
         )
 
         def is_eligible(
             opportunity
         ):
 
-            eligible_grades = semicolon_items(
-                safe_value(
-                    opportunity,
-                    "grades",
-                    ""
-                )
-            )
+            eligible_grades = [
+                item.strip()
+                for item in str(
+                    opportunity["grades"]
+                ).split(";")
+            ]
 
-            boroughs_served = semicolon_items(
-                safe_value(
-                    opportunity,
-                    "boroughs_served",
-                    ""
-                )
-            )
-
-            grade_ok = (
-                not eligible_grades
-                or
-                profile["grade"]
-                in eligible_grades
-            )
-
-            borough_ok = (
-                not boroughs_served
-                or
-                profile["borough"]
-                in boroughs_served
-            )
+            boroughs_served = [
+                item.strip()
+                for item in str(
+                    opportunity[
+                        "boroughs_served"
+                    ]
+                ).split(";")
+            ]
 
             return (
-                grade_ok
+                profile["grade"]
+                in eligible_grades
                 and
-                borough_ok
+                profile["borough"]
+                in boroughs_served
             )
 
         def calculate_match(
@@ -2849,514 +2564,113 @@ elif page == "Opportunities":
             max_score = 0
             reasons = []
 
-            fields = semicolon_items(
-                safe_value(
-                    opportunity,
-                    "fields",
-                    ""
-                )
-            )
+            fields = [
+                item.strip()
+                for item in str(
+                    opportunity["fields"]
+                ).split(";")
+            ]
 
-            boroughs_served = semicolon_items(
-                safe_value(
-                    opportunity,
-                    "boroughs_served",
-                    ""
-                )
-            )
+            boroughs_served = [
+                item.strip()
+                for item in str(
+                    opportunity[
+                        "boroughs_served"
+                    ]
+                ).split(";")
+            ]
 
-            max_score += 45
+            max_score += 40
 
-            matching_interests = [
-                interest
+            if any(
+                interest in fields
                 for interest in profile[
                     "interests"
                 ]
-                if interest in fields
-            ]
-
-            if matching_interests:
-
-                score += 45
-
-                reasons.append(
-                    "Matches your STEM interests: "
-                    + ", ".join(
-                        matching_interests
-                    )
-                )
-
-            max_score += 20
-
-            goal_text = " ".join(
-                profile["goals"]
-            ).lower()
-
-            opportunity_type = safe_value(
-                opportunity,
-                "opportunity_type",
-                ""
-            ).lower()
-
-            if (
-                "research"
-                in opportunity_type
-                and
-                "research"
-                in goal_text
             ):
 
-                score += 20
+                score += 40
 
                 reasons.append(
-                    "You said you want research experience."
+                    "Your STEM interests align with this opportunity."
                 )
 
-            elif (
-                "internship"
-                in opportunity_type
-                and
-                "intern"
-                in goal_text
-            ):
-
-                score += 20
-
-                reasons.append(
-                    "You said you want to find internships."
-                )
-
-            elif (
-                "college course"
-                in opportunity_type
-                and
-                "college"
-                in goal_text
-            ):
-
-                score += 20
-
-                reasons.append(
-                    "You said you want to take college courses."
-                )
-
-            elif (
-                "competition"
-                in opportunity_type
-                and
-                "competition"
-                in goal_text
-            ):
-
-                score += 20
-
-                reasons.append(
-                    "You said you want to enter competitions."
-                )
-
-            elif (
-                "summer"
-                in opportunity_type
-                and
-                "summer"
-                in goal_text
-            ):
-
-                score += 20
-
-                reasons.append(
-                    "You said you want to find summer programs."
-                )
-
-            max_score += 20
+            max_score += 15
 
             if profile[
                 "financial_support"
             ]:
 
-                cost = safe_value(
-                    opportunity,
-                    "cost",
-                    ""
+                cost = str(
+                    opportunity[
+                        "cost"
+                    ]
                 ).lower()
 
-                aid = safe_value(
-                    opportunity,
-                    "financial_aid",
-                    ""
-                ).lower()
-
-                stipend = safe_value(
-                    opportunity,
-                    "stipend",
-                    ""
+                aid = str(
+                    opportunity[
+                        "financial_aid"
+                    ]
                 ).lower()
 
                 if (
-                    "free" in cost
+                    cost == "free"
                     or
-                    "available" in aid
-                    or
-                    "paid" in stipend
-                    or
-                    "$" in stipend
+                    aid == "available"
                 ):
 
-                    score += 20
+                    score += 15
 
                     reasons.append(
-                        "Matches your preference for free, funded, or paid opportunities."
+                        "This opportunity is free or offers financial support."
                     )
 
             else:
 
-                score += 20
+                score += 15
 
             max_score += 15
 
-            if profile[
-                "borough"
-            ] in boroughs_served:
+            if (
+                profile["borough"]
+                in boroughs_served
+            ):
 
                 score += 15
 
                 reasons.append(
-                    f"Serves students in the "
+                    f"This opportunity serves students in the "
                     f"{profile['borough']}."
                 )
 
             if (
                 profile["borough"]
                 == "Bronx"
-                and
-                safe_value(
-                    opportunity,
-                    "bronx_priority",
-                    ""
-                ).lower()
-                == "yes"
             ):
 
-                score = min(
-                    max_score,
-                    score + 5
-                )
+                max_score += 10
 
-                reasons.append(
-                    "Has a Bronx or NYC-focused access component."
-                )
+                if str(
+                    opportunity[
+                        "bronx_priority"
+                    ]
+                ).lower() == "yes":
 
-            percentage = round(
-                (
-                    score /
-                    max_score
-                ) * 100
-            ) if max_score else 0
+                    score += 10
+
+                    reasons.append(
+                        "This opportunity has a specific focus on Bronx students."
+                    )
 
             return (
-                percentage,
+                round(
+                    (
+                        score /
+                        max_score
+                    ) * 100
+                ),
                 reasons
             )
-
-        def opportunity_passes_filters(
-            opportunity
-        ):
-
-            if (
-                opportunity_types
-                and
-                safe_value(
-                    opportunity,
-                    "opportunity_type",
-                    ""
-                )
-                not in opportunity_types
-            ):
-
-                return False
-
-            if selectivity_filter:
-
-                try:
-                    level = int(
-                        float(
-                            safe_value(
-                                opportunity,
-                                "selectivity",
-                                "0"
-                            )
-                        )
-                    )
-                except Exception:
-                    level = 0
-
-                selected_levels = [
-                    int(
-                        item.split(
-                            " - "
-                        )[0]
-                    )
-                    for item
-                    in selectivity_filter
-                ]
-
-                if level not in selected_levels:
-                    return False
-
-            return True
-
-        def render_opportunity_card(
-            opportunity,
-            match_score=None,
-            match_reasons=None,
-            key_prefix="opportunity"
-        ):
-
-            st.subheader(
-                safe_value(
-                    opportunity,
-                    "name"
-                )
-            )
-
-            st.caption(
-                f"{safe_value(opportunity, 'organization')} "
-                f"• {safe_value(opportunity, 'opportunity_type')}"
-            )
-
-            metric_cols = st.columns(3)
-
-            if match_score is not None:
-
-                with metric_cols[0]:
-
-                    st.metric(
-                        "Profile Match",
-                        f"{match_score}%"
-                    )
-
-            else:
-
-                with metric_cols[0]:
-
-                    st.metric(
-                        "Eligible Grades",
-                        safe_value(
-                            opportunity,
-                            "grades"
-                        ).replace(
-                            ";",
-                            ", "
-                        )
-                    )
-
-            with metric_cols[1]:
-
-                selectivity = safe_value(
-                    opportunity,
-                    "selectivity",
-                    ""
-                )
-
-                st.metric(
-                    "Selectivity",
-                    star_rating(
-                        selectivity
-                    )
-                )
-
-                st.caption(
-                    safe_value(
-                        opportunity,
-                        "selectivity_label",
-                        "Estimated selectivity"
-                    )
-                )
-
-            with metric_cols[2]:
-
-                st.metric(
-                    "Academic Intensity",
-                    star_rating(
-                        safe_value(
-                            opportunity,
-                            "academic_intensity",
-                            ""
-                        )
-                    )
-                )
-
-                st.caption(
-                    "STEM Pathways estimate"
-                )
-
-            st.write(
-                safe_value(
-                    opportunity,
-                    "description",
-                    "Description unavailable."
-                )
-            )
-
-            status = safe_value(
-                opportunity,
-                "application_status",
-                ""
-            )
-
-            if status:
-
-                upper_status = status.upper()
-
-                if (
-                    "OPEN NOW"
-                    in upper_status
-                ):
-
-                    st.success(
-                        f"**Application Status:** "
-                        f"{status}"
-                    )
-
-                elif (
-                    "OPEN"
-                    in upper_status
-                    or
-                    "LAUNCH"
-                    in upper_status
-                    or
-                    "EXPECTED"
-                    in upper_status
-                ):
-
-                    st.info(
-                        f"**Application Status:** "
-                        f"{status}"
-                    )
-
-                else:
-
-                    st.write(
-                        f"**Application Status:** "
-                        f"{status}"
-                    )
-
-            detail_col1, detail_col2 = (
-                st.columns(2)
-            )
-
-            with detail_col1:
-
-                st.write(
-                    f"**📍 Location:** "
-                    f"{safe_value(opportunity, 'location')}"
-                )
-
-                st.write(
-                    f"**🎓 Grades:** "
-                    f"{safe_value(opportunity, 'grades').replace(';', ', ')}"
-                )
-
-                st.write(
-                    f"**🔬 Fields:** "
-                    f"{safe_value(opportunity, 'fields').replace(';', ', ')}"
-                )
-
-                st.write(
-                    f"**💰 Cost:** "
-                    f"{safe_value(opportunity, 'cost')}"
-                )
-
-                st.write(
-                    f"**Financial Aid:** "
-                    f"{safe_value(opportunity, 'financial_aid')}"
-                )
-
-                st.write(
-                    f"**Stipend / Award:** "
-                    f"{safe_value(opportunity, 'stipend')}"
-                )
-
-            with detail_col2:
-
-                st.write(
-                    f"**📅 Opens:** "
-                    f"{safe_value(opportunity, 'application_opens')}"
-                )
-
-                st.write(
-                    f"**⏰ Deadline:** "
-                    f"{safe_value(opportunity, 'deadline')}"
-                )
-
-                st.write(
-                    f"**Program Dates:** "
-                    f"{safe_value(opportunity, 'program_dates')}"
-                )
-
-                st.write(
-                    f"**Recommendation Required:** "
-                    f"{safe_value(opportunity, 'recommendation_required')}"
-                )
-
-                st.write(
-                    f"**Last Verified:** "
-                    f"{safe_value(opportunity, 'last_verified')}"
-                )
-
-            requirements = safe_value(
-                opportunity,
-                "application_requirements",
-                ""
-            )
-
-            if requirements:
-
-                with st.expander(
-                    "Application Requirements"
-                ):
-
-                    st.write(
-                        requirements
-                    )
-
-                    difficulty_note = safe_value(
-                        opportunity,
-                        "difficulty_note",
-                        ""
-                    )
-
-                    if difficulty_note:
-
-                        st.caption(
-                            difficulty_note
-                        )
-
-            if match_reasons:
-
-                with st.expander(
-                    "Why this matches your profile"
-                ):
-
-                    for reason in match_reasons:
-
-                        st.write(
-                            f"✓ {reason}"
-                        )
-
-            url = safe_value(
-                opportunity,
-                "url",
-                ""
-            )
-
-            if url:
-
-                st.link_button(
-                    "View Official Opportunity",
-                    url,
-                    use_container_width=True
-                )
 
         if (
             profile["borough"]
@@ -3365,10 +2679,6 @@ elif page == "Opportunities":
 
             st.header(
                 "Featured for Bronx Students"
-            )
-
-            st.write(
-                "Programs with a Bronx or NYC-focused access component."
             )
 
             featured = opportunities[
@@ -3380,56 +2690,68 @@ elif page == "Opportunities":
                 == "yes"
             ]
 
-            featured = featured[
-                featured.apply(
-                    opportunity_passes_filters,
-                    axis=1
-                )
-            ]
-
             if featured.empty:
 
                 st.info(
-                    "No Bronx-focused opportunities match your current filters."
+                    "More Bronx-focused opportunities will be added."
                 )
 
             else:
 
-                for featured_index, (
-                    _,
-                    opportunity
-                ) in enumerate(
-                    featured.head(
-                        4
-                    ).iterrows()
+                for _, opportunity in (
+                    featured.head(3).iterrows()
                 ):
 
                     with st.container(
                         border=True
                     ):
 
-                        score, reasons = (
-                            calculate_match(
-                                opportunity
-                            )
+                        st.subheader(
+                            opportunity[
+                                "name"
+                            ]
                         )
 
-                        render_opportunity_card(
-                            opportunity,
-                            match_score=score,
-                            match_reasons=reasons,
-                            key_prefix=f"featured_{featured_index}"
+                        st.caption(
+                            opportunity[
+                                "organization"
+                            ]
+                        )
+
+                        st.write(
+                            opportunity[
+                                "description"
+                            ]
+                        )
+
+                        col1, col2 = st.columns(2)
+
+                        with col1:
+
+                            st.write(
+                                f"**Type:** "
+                                f"{opportunity['opportunity_type']}"
+                            )
+
+                        with col2:
+
+                            st.write(
+                                f"**Cost:** "
+                                f"{opportunity['cost']}"
+                            )
+
+                        st.link_button(
+                            "View Opportunity",
+                            opportunity[
+                                "url"
+                            ],
+                            use_container_width=True
                         )
 
             st.divider()
 
         st.header(
             "Recommended for You"
-        )
-
-        st.write(
-            "Recommendations only include opportunities for which your "
-            "current grade and borough appear eligible."
         )
 
         if st.button(
@@ -3444,16 +2766,9 @@ elif page == "Opportunities":
                 opportunities.iterrows()
             ):
 
-                if not opportunity_passes_filters(
-                    opportunity
-                ):
-
-                    continue
-
                 if not is_eligible(
                     opportunity
                 ):
-
                     continue
 
                 score, reasons = (
@@ -3471,37 +2786,81 @@ elif page == "Opportunities":
                 )
 
             results.sort(
-                key=lambda item:
-                    item[0],
+                key=lambda item: item[0],
                 reverse=True
             )
 
             if not results:
 
                 st.info(
-                    "No eligible opportunities were found for your profile and filters."
+                    "No eligible opportunities were found for your current profile."
                 )
 
-            else:
+            for (
+                score,
+                reasons,
+                opportunity
+            ) in results:
 
-                for result_index, (
-                    score,
-                    reasons,
-                    opportunity
-                ) in enumerate(
-                    results
+                with st.container(
+                    border=True
                 ):
 
-                    with st.container(
-                        border=True
+                    st.subheader(
+                        opportunity[
+                            "name"
+                        ]
+                    )
+
+                    st.caption(
+                        opportunity[
+                            "organization"
+                        ]
+                    )
+
+                    st.metric(
+                        "Match Score",
+                        f"{score}%"
+                    )
+
+                    st.write(
+                        opportunity[
+                            "description"
+                        ]
+                    )
+
+                    st.write(
+                        f"**Fields:** "
+                        f"{opportunity['fields']}"
+                    )
+
+                    st.write(
+                        f"**Cost:** "
+                        f"{opportunity['cost']}"
+                    )
+
+                    st.write(
+                        f"**Application Status:** "
+                        f"{opportunity['application_status']}"
+                    )
+
+                    with st.expander(
+                        "Why this matches"
                     ):
 
-                        render_opportunity_card(
-                            opportunity,
-                            match_score=score,
-                            match_reasons=reasons,
-                            key_prefix=f"recommended_{result_index}"
-                        )
+                        for reason in reasons:
+
+                            st.write(
+                                f"• {reason}"
+                            )
+
+                    st.link_button(
+                        "View Official Opportunity",
+                        opportunity[
+                            "url"
+                        ],
+                        use_container_width=True
+                    )
 
         st.divider()
 
@@ -3509,37 +2868,75 @@ elif page == "Opportunities":
             "Browse All Opportunities"
         )
 
-        st.write(
-            "Use this section to explore opportunities even if they are "
-            "not currently eligible for your profile."
-        )
-
-        browse_results = opportunities[
-            opportunities.apply(
-                opportunity_passes_filters,
-                axis=1
-            )
-        ]
-
-        for browse_index, (
-            _,
-            opportunity
-        ) in enumerate(
-            browse_results.iterrows()
+        for _, opportunity in (
+            opportunities.iterrows()
         ):
 
-            title = (
-                f"{safe_value(opportunity, 'name')} — "
-                f"{safe_value(opportunity, 'organization')}"
-            )
-
-            with st.expander(
-                title
+            if (
+                opportunity_types
+                and
+                str(
+                    opportunity[
+                        "opportunity_type"
+                    ]
+                )
+                not in opportunity_types
             ):
 
-                render_opportunity_card(
-                    opportunity,
-                    key_prefix=f"browse_{browse_index}"
+                continue
+
+            with st.expander(
+                f"{opportunity['name']} — "
+                f"{opportunity['organization']}"
+            ):
+
+                st.write(
+                    opportunity[
+                        "description"
+                    ]
+                )
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+
+                    st.write(
+                        f"**Type:** "
+                        f"{opportunity['opportunity_type']}"
+                    )
+
+                    st.write(
+                        f"**Fields:** "
+                        f"{opportunity['fields']}"
+                    )
+
+                    st.write(
+                        f"**Grades:** "
+                        f"{opportunity['grades']}"
+                    )
+
+                with col2:
+
+                    st.write(
+                        f"**Cost:** "
+                        f"{opportunity['cost']}"
+                    )
+
+                    st.write(
+                        f"**Financial Aid:** "
+                        f"{opportunity['financial_aid']}"
+                    )
+
+                    st.write(
+                        f"**Status:** "
+                        f"{opportunity['application_status']}"
+                    )
+
+                st.link_button(
+                    "View Official Opportunity",
+                    opportunity[
+                        "url"
+                    ]
                 )
 
 
@@ -3898,6 +3295,477 @@ elif page == "Resources":
                 "Compare possible majors and careers before deciding "
                 "which directions you want to explore further."
             )
+
+
+# ============================================================
+# GPA CALCULATOR & CONVERTER
+# ============================================================
+
+elif page == "GPA Calculator":
+
+    st.title(
+        "📊 GPA Calculator & Converter"
+    )
+
+    st.write(
+        "Estimate your unweighted and weighted GPA, then convert between "
+        "a 4.0 scale and a 100-point average."
+    )
+
+    st.info(
+        "GPA policies vary by high school, college, and university. "
+        "Weighted GPA and scale conversions on this page are estimates "
+        "for planning purposes, not official transcript calculations."
+    )
+
+    st.divider()
+
+    calculator_tab, converter_tab = st.tabs(
+        [
+            "🧮 Course GPA Calculator",
+            "🔄 GPA Scale Converter"
+        ]
+    )
+
+    # --------------------------------------------------------
+    # COURSE GPA CALCULATOR
+    # --------------------------------------------------------
+
+    with calculator_tab:
+
+        st.header(
+            "Calculate Your GPA"
+        )
+
+        st.write(
+            "Enter your courses, letter grades, course levels, and credits. "
+            "The calculator will estimate both unweighted and weighted GPA."
+        )
+
+        number_of_courses = st.number_input(
+            "Number of courses",
+            min_value=1,
+            max_value=12,
+            value=6,
+            step=1
+        )
+
+        grade_points = {
+            "A+": 4.0,
+            "A": 4.0,
+            "A-": 3.7,
+            "B+": 3.3,
+            "B": 3.0,
+            "B-": 2.7,
+            "C+": 2.3,
+            "C": 2.0,
+            "C-": 1.7,
+            "D+": 1.3,
+            "D": 1.0,
+            "F": 0.0
+        }
+
+        level_bonus = {
+            "Regular": 0.0,
+            "Honors": 0.5,
+            "AP / IB": 1.0,
+            "Dual Enrollment": 1.0
+        }
+
+        course_rows = []
+
+        st.markdown(
+            "#### Your Courses"
+        )
+
+        for course_index in range(
+            int(number_of_courses)
+        ):
+
+            with st.container(
+                border=True
+            ):
+
+                st.caption(
+                    f"Course {course_index + 1}"
+                )
+
+                name_col, grade_col, level_col, credit_col = st.columns(
+                    [2.4, 1, 1.6, 1]
+                )
+
+                with name_col:
+
+                    course_name = st.text_input(
+                        "Course",
+                        value="",
+                        placeholder="e.g. AP Biology",
+                        key=f"gpa_course_name_{course_index}"
+                    )
+
+                with grade_col:
+
+                    letter_grade = st.selectbox(
+                        "Grade",
+                        list(grade_points.keys()),
+                        index=1,
+                        key=f"gpa_letter_grade_{course_index}"
+                    )
+
+                with level_col:
+
+                    course_level = st.selectbox(
+                        "Level",
+                        list(level_bonus.keys()),
+                        key=f"gpa_course_level_{course_index}"
+                    )
+
+                with credit_col:
+
+                    credits = st.number_input(
+                        "Credits",
+                        min_value=0.25,
+                        max_value=4.0,
+                        value=1.0,
+                        step=0.25,
+                        key=f"gpa_credits_{course_index}"
+                    )
+
+                course_rows.append(
+                    {
+                        "name": course_name.strip() or f"Course {course_index + 1}",
+                        "grade": letter_grade,
+                        "level": course_level,
+                        "credits": float(credits)
+                    }
+                )
+
+        if st.button(
+            "Calculate My GPA",
+            type="primary",
+            use_container_width=True,
+            key="calculate_course_gpa"
+        ):
+
+            total_credits = sum(
+                course["credits"]
+                for course in course_rows
+            )
+
+            if total_credits <= 0:
+
+                st.warning(
+                    "Please enter at least one course with credits."
+                )
+
+            else:
+
+                unweighted_quality_points = sum(
+                    grade_points[course["grade"]]
+                    * course["credits"]
+                    for course in course_rows
+                )
+
+                weighted_quality_points = sum(
+                    (
+                        grade_points[course["grade"]]
+                        + level_bonus[course["level"]]
+                    )
+                    * course["credits"]
+                    for course in course_rows
+                )
+
+                unweighted_gpa = (
+                    unweighted_quality_points
+                    / total_credits
+                )
+
+                weighted_gpa = (
+                    weighted_quality_points
+                    / total_credits
+                )
+
+                st.divider()
+
+                st.subheader(
+                    "Your Estimated Results"
+                )
+
+                result_col1, result_col2, result_col3 = st.columns(3)
+
+                with result_col1:
+
+                    st.metric(
+                        "Unweighted GPA",
+                        f"{unweighted_gpa:.2f} / 4.00"
+                    )
+
+                with result_col2:
+
+                    st.metric(
+                        "Estimated Weighted GPA",
+                        f"{weighted_gpa:.2f}"
+                    )
+
+                with result_col3:
+
+                    if unweighted_gpa >= 4.0:
+                        estimated_100 = "93–100"
+                    elif unweighted_gpa >= 3.7:
+                        estimated_100 = "90–92"
+                    elif unweighted_gpa >= 3.3:
+                        estimated_100 = "87–89"
+                    elif unweighted_gpa >= 3.0:
+                        estimated_100 = "83–86"
+                    elif unweighted_gpa >= 2.7:
+                        estimated_100 = "80–82"
+                    elif unweighted_gpa >= 2.3:
+                        estimated_100 = "77–79"
+                    elif unweighted_gpa >= 2.0:
+                        estimated_100 = "73–76"
+                    elif unweighted_gpa >= 1.7:
+                        estimated_100 = "70–72"
+                    elif unweighted_gpa >= 1.3:
+                        estimated_100 = "67–69"
+                    elif unweighted_gpa >= 1.0:
+                        estimated_100 = "65–66"
+                    else:
+                        estimated_100 = "Below 65"
+
+                    st.metric(
+                        "Approx. 100-Point Range",
+                        estimated_100
+                    )
+
+                st.caption(
+                    "Weighted estimate used here: Regular +0.0, Honors +0.5, "
+                    "AP/IB +1.0, Dual Enrollment +1.0. Your school may use a different system."
+                )
+
+                with st.expander(
+                    "See course-by-course calculation"
+                ):
+
+                    calculation_rows = []
+
+                    for course in course_rows:
+
+                        base = grade_points[
+                            course["grade"]
+                        ]
+
+                        weighted = (
+                            base
+                            + level_bonus[
+                                course["level"]
+                            ]
+                        )
+
+                        calculation_rows.append(
+                            {
+                                "Course": course["name"],
+                                "Grade": course["grade"],
+                                "Level": course["level"],
+                                "Credits": course["credits"],
+                                "Unweighted Points": round(base, 2),
+                                "Weighted Points": round(weighted, 2)
+                            }
+                        )
+
+                    st.dataframe(
+                        pd.DataFrame(
+                            calculation_rows
+                        ),
+                        use_container_width=True,
+                        hide_index=True
+                    )
+
+    # --------------------------------------------------------
+    # GPA SCALE CONVERTER
+    # --------------------------------------------------------
+
+    with converter_tab:
+
+        st.header(
+            "GPA Scale Converter"
+        )
+
+        st.write(
+            "Use this tool when you know your GPA on one scale and want an "
+            "approximate equivalent on another."
+        )
+
+        conversion_direction = st.radio(
+            "Convert from",
+            [
+                "4.0 GPA → 100-Point Scale",
+                "100-Point Average → 4.0 GPA"
+            ],
+            horizontal=True
+        )
+
+        st.divider()
+
+        if conversion_direction == "4.0 GPA → 100-Point Scale":
+
+            four_point_gpa = st.number_input(
+                "Enter your GPA on a 4.0 scale",
+                min_value=0.0,
+                max_value=4.0,
+                value=3.50,
+                step=0.01,
+                format="%.2f"
+            )
+
+            if four_point_gpa >= 4.0:
+                hundred_range = "93–100"
+                letter_equivalent = "A / A+"
+            elif four_point_gpa >= 3.7:
+                hundred_range = "90–92"
+                letter_equivalent = "A-"
+            elif four_point_gpa >= 3.3:
+                hundred_range = "87–89"
+                letter_equivalent = "B+"
+            elif four_point_gpa >= 3.0:
+                hundred_range = "83–86"
+                letter_equivalent = "B"
+            elif four_point_gpa >= 2.7:
+                hundred_range = "80–82"
+                letter_equivalent = "B-"
+            elif four_point_gpa >= 2.3:
+                hundred_range = "77–79"
+                letter_equivalent = "C+"
+            elif four_point_gpa >= 2.0:
+                hundred_range = "73–76"
+                letter_equivalent = "C"
+            elif four_point_gpa >= 1.7:
+                hundred_range = "70–72"
+                letter_equivalent = "C-"
+            elif four_point_gpa >= 1.3:
+                hundred_range = "67–69"
+                letter_equivalent = "D+"
+            elif four_point_gpa >= 1.0:
+                hundred_range = "65–66"
+                letter_equivalent = "D"
+            else:
+                hundred_range = "Below 65"
+                letter_equivalent = "F"
+
+            result_col1, result_col2 = st.columns(2)
+
+            with result_col1:
+
+                st.metric(
+                    "Estimated 100-Point Equivalent",
+                    hundred_range
+                )
+
+            with result_col2:
+
+                st.metric(
+                    "Approximate Letter Grade",
+                    letter_equivalent
+                )
+
+        else:
+
+            hundred_average = st.number_input(
+                "Enter your average on a 100-point scale",
+                min_value=0.0,
+                max_value=100.0,
+                value=90.0,
+                step=0.1,
+                format="%.1f"
+            )
+
+            if hundred_average >= 93:
+                converted_gpa = 4.0
+                letter_equivalent = "A / A+"
+            elif hundred_average >= 90:
+                converted_gpa = 3.7
+                letter_equivalent = "A-"
+            elif hundred_average >= 87:
+                converted_gpa = 3.3
+                letter_equivalent = "B+"
+            elif hundred_average >= 83:
+                converted_gpa = 3.0
+                letter_equivalent = "B"
+            elif hundred_average >= 80:
+                converted_gpa = 2.7
+                letter_equivalent = "B-"
+            elif hundred_average >= 77:
+                converted_gpa = 2.3
+                letter_equivalent = "C+"
+            elif hundred_average >= 73:
+                converted_gpa = 2.0
+                letter_equivalent = "C"
+            elif hundred_average >= 70:
+                converted_gpa = 1.7
+                letter_equivalent = "C-"
+            elif hundred_average >= 67:
+                converted_gpa = 1.3
+                letter_equivalent = "D+"
+            elif hundred_average >= 65:
+                converted_gpa = 1.0
+                letter_equivalent = "D"
+            else:
+                converted_gpa = 0.0
+                letter_equivalent = "F"
+
+            result_col1, result_col2 = st.columns(2)
+
+            with result_col1:
+
+                st.metric(
+                    "Estimated 4.0 GPA",
+                    f"{converted_gpa:.1f} / 4.0"
+                )
+
+            with result_col2:
+
+                st.metric(
+                    "Approximate Letter Grade",
+                    letter_equivalent
+                )
+
+        st.divider()
+
+        st.markdown(
+            "#### Approximate Conversion Guide"
+        )
+
+        conversion_table = pd.DataFrame(
+            [
+                ["93–100", "A / A+", "4.0"],
+                ["90–92", "A-", "3.7"],
+                ["87–89", "B+", "3.3"],
+                ["83–86", "B", "3.0"],
+                ["80–82", "B-", "2.7"],
+                ["77–79", "C+", "2.3"],
+                ["73–76", "C", "2.0"],
+                ["70–72", "C-", "1.7"],
+                ["67–69", "D+", "1.3"],
+                ["65–66", "D", "1.0"],
+                ["Below 65", "F", "0.0"]
+            ],
+            columns=[
+                "100-Point Range",
+                "Letter Grade",
+                "Approx. 4.0 GPA"
+            ]
+        )
+
+        st.dataframe(
+            conversion_table,
+            use_container_width=True,
+            hide_index=True
+        )
+
+        st.warning(
+            "There is no universal official conversion between a 4.0 GPA "
+            "and a 100-point average. Colleges may recalculate grades using "
+            "their own methods, so use these results only as an estimate."
+        )
 
 
 # ============================================================
