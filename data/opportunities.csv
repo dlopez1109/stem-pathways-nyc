@@ -1,4 +1,2 @@
-name,grades,location,fields,cost,experience_level,deadline,url
-Sample Engineering Program,"10;11",NYC,"Engineering;Computer Science",Free,Beginner,TBD,https://example.com
-Sample Research Program,"11;12",NYC,"Biology;Biomedical Engineering",Free,Intermediate,TBD,https://example.com
-Sample Technology Program,"9;10;11",NYC,"Computer Science;AI",Free,Beginner,TBD,https://example.com
+name,organization,grades,location,fields,opportunity_type,cost,financial_aid,experience_level,deadline,application_status,description,url
+Cooper Union Summer STEM,The Cooper Union,"9;10;11",NYC,"Engineering;Computer Science",Summer Program,Paid,Available,Beginner,2026-12-11,Opens December 2026,"College-level engineering and computer science summer courses with hands-on projects and teamwork.",https://cooper.edu/engineering/stem/summer
