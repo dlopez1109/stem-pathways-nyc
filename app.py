@@ -579,6 +579,45 @@ st.markdown(
         border-color: #4FC3ED !important;
     }
 
+
+    /* Keep Streamlit's sidebar collapse / expand control visible */
+    [data-testid="stSidebarCollapseButton"],
+    [data-testid="stSidebarCollapsedControl"] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        z-index: 999999 !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"] button,
+    [data-testid="stSidebarCollapsedControl"] button {
+        background: #018FC7 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #4FC3ED !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(1, 143, 199, 0.22) !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"] button svg,
+    [data-testid="stSidebarCollapsedControl"] button svg {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"] button:hover,
+    [data-testid="stSidebarCollapsedControl"] button:hover {
+        background: #007EAF !important;
+        border-color: #8DD4EF !important;
+    }
+
+    /* Avoid any global rule accidentally covering or clipping the reopen control */
+    [data-testid="stHeader"] {
+        z-index: 1000 !important;
+    }
+
+
     /* Native sidebar header — avoids raw HTML profile-card rendering issues */
     .sp-sidebar-title {
         color: #FFFFFF !important;
