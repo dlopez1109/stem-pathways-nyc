@@ -751,6 +751,43 @@ st.markdown(
         border-color: #4FC3ED !important;
     }
 
+
+    /* FINAL sidebar reopen control override — wrapper + nested button */
+    [data-testid="stSidebarCollapsedControl"] {
+        background: #000000 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #000000 !important;
+        border-radius: 11px !important;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.28) !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"] > div,
+    [data-testid="stSidebarCollapsedControl"] button,
+    [data-testid="stSidebarCollapsedControl"] [role="button"],
+    [data-testid="stSidebarCollapsedControl"] [data-testid*="Button"] {
+        background-color: #000000 !important;
+        background: #000000 !important;
+        color: #FFFFFF !important;
+        border-color: #000000 !important;
+        box-shadow: none !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"] svg,
+    [data-testid="stSidebarCollapsedControl"] button svg,
+    [data-testid="stSidebarCollapsedControl"] [role="button"] svg {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"]:hover,
+    [data-testid="stSidebarCollapsedControl"] button:hover,
+    [data-testid="stSidebarCollapsedControl"] [role="button"]:hover {
+        background-color: #111111 !important;
+        background: #111111 !important;
+        border-color: #111111 !important;
+    }
+
     </style>
     """,
     unsafe_allow_html=True
