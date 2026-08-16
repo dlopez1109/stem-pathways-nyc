@@ -977,6 +977,34 @@ st.markdown(
         text-decoration: underline !important;
     }
 
+
+    /* Opportunity Search button */
+    [data-testid="stFormSubmitButton"] button,
+    [data-testid="stFormSubmitButton"] button:focus,
+    [data-testid="stFormSubmitButton"] button:active {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #018FC7 !important;
+        border-radius: 10px !important;
+        font-weight: 800 !important;
+        min-height: 46px !important;
+        box-shadow: none !important;
+    }
+
+    [data-testid="stFormSubmitButton"] button:hover {
+        background: #0178A8 !important;
+        background-color: #0178A8 !important;
+        border-color: #0178A8 !important;
+        color: #FFFFFF !important;
+    }
+
+    [data-testid="stFormSubmitButton"] button p,
+    [data-testid="stFormSubmitButton"] button span {
+        color: #FFFFFF !important;
+        font-weight: 800 !important;
+    }
+
     </style>
     """,
     unsafe_allow_html=True
@@ -4845,46 +4873,56 @@ elif page == "Opportunities":
 
     else:
 
-        opportunity_types = st.multiselect(
-            "Filter by opportunity type",
-            sorted(
-                opportunities[
-                    "opportunity_type"
+        with st.form(
+            "opportunity_search_form",
+            clear_on_submit=False
+        ):
+            opportunity_types = st.multiselect(
+                "Filter by opportunity type",
+                sorted(
+                    opportunities[
+                        "opportunity_type"
+                    ]
+                    .dropna()
+                    .astype(str)
+                    .unique()
+                    .tolist()
+                )
+            )
+
+            selectivity_filter = st.multiselect(
+                "Filter by selectivity",
+                [
+                    "Accessible / Lottery or Placement Based",
+                    "Eligibility Based",
+                    "Moderately Competitive",
+                    "Highly Competitive",
+                    "Extremely Competitive"
                 ]
-                .dropna()
-                .astype(str)
-                .unique()
-                .tolist()
             )
-        )
 
-        selectivity_filter = st.multiselect(
-            "Filter by selectivity",
-            [
-                "Accessible / Lottery or Placement Based",
-                "Eligibility Based",
-                "Moderately Competitive",
-                "Highly Competitive",
-                "Extremely Competitive"
-            ]
-        )
-
-        student_age = st.selectbox(
-            "Your age",
-            [
-                "Any age",
-                "14",
-                "15",
-                "16",
-                "17",
-                "18",
-                "19+"
-            ],
-            help=(
-                "Age and grade are checked separately because some programs "
-                "require students to be a certain age even if they are in the eligible grade."
+            student_age = st.selectbox(
+                "Your age",
+                [
+                    "Any age",
+                    "14",
+                    "15",
+                    "16",
+                    "17",
+                    "18",
+                    "19+"
+                ],
+                help=(
+                    "Age and grade are checked separately because some programs "
+                    "require students to be a certain age even if they are in the eligible grade."
+                )
             )
-        )
+
+            search_opportunities = st.form_submit_button(
+                "Search Opportunities",
+                use_container_width=True,
+                type="primary"
+            )
 
         def is_eligible(
             opportunity
