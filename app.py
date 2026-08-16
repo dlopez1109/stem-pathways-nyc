@@ -578,6 +578,100 @@ st.markdown(
         background: #018FC7 !important;
         border-color: #4FC3ED !important;
     }
+
+    /* Native sidebar header — avoids raw HTML profile-card rendering issues */
+    .sp-sidebar-title {
+        color: #FFFFFF !important;
+        font-size: 1.65rem;
+        line-height: 1.12;
+        font-weight: 850;
+        letter-spacing: -0.03em;
+        margin: 0.2rem 0 0.65rem 0;
+    }
+
+    .sp-sidebar-accent {
+        width: 72px;
+        height: 5px;
+        border-radius: 999px;
+        background: #018FC7;
+        margin-bottom: 1.15rem;
+        box-shadow: 0 0 14px rgba(1,143,199,0.38);
+    }
+
+    [data-testid="stSidebar"] h3 {
+        color: #FFFFFF !important;
+        font-size: 1.15rem !important;
+        margin-bottom: 0.15rem !important;
+    }
+
+    [data-testid="stSidebar"] a {
+        color: #65D1F5 !important;
+        font-weight: 600 !important;
+    }
+
+    /* Keep buttons blue/white even while clicked, focused, or active */
+    [data-testid="stMain"] .stButton > button,
+    [data-testid="stMain"] .stButton > button:active,
+    [data-testid="stMain"] .stButton > button:focus,
+    [data-testid="stMain"] .stButton > button:focus-visible {
+        background: #FFFFFF !important;
+        color: #00658F !important;
+        border: 1.5px solid #8DD4EF !important;
+        outline: none !important;
+    }
+
+    [data-testid="stMain"] .stButton > button p,
+    [data-testid="stMain"] .stButton > button span,
+    [data-testid="stMain"] .stButton > button:active p,
+    [data-testid="stMain"] .stButton > button:active span,
+    [data-testid="stMain"] .stButton > button:focus p,
+    [data-testid="stMain"] .stButton > button:focus span {
+        color: #00658F !important;
+    }
+
+    [data-testid="stMain"] button[kind="primary"],
+    [data-testid="stMain"] button[kind="primary"]:active,
+    [data-testid="stMain"] button[kind="primary"]:focus,
+    [data-testid="stMain"] button[kind="primary"]:focus-visible {
+        background: #018FC7 !important;
+        color: #FFFFFF !important;
+        border-color: #018FC7 !important;
+        outline: none !important;
+    }
+
+    [data-testid="stMain"] button[kind="primary"] p,
+    [data-testid="stMain"] button[kind="primary"] span,
+    [data-testid="stMain"] button[kind="primary"]:active p,
+    [data-testid="stMain"] button[kind="primary"]:active span,
+    [data-testid="stMain"] button[kind="primary"]:focus p,
+    [data-testid="stMain"] button[kind="primary"]:focus span {
+        color: #FFFFFF !important;
+    }
+
+    [data-testid="stSidebar"] .stButton > button,
+    [data-testid="stSidebar"] .stButton > button:active,
+    [data-testid="stSidebar"] .stButton > button:focus,
+    [data-testid="stSidebar"] .stButton > button:focus-visible {
+        background: rgba(255,255,255,0.09) !important;
+        color: #FFFFFF !important;
+        border: 1px solid rgba(255,255,255,0.16) !important;
+        outline: none !important;
+    }
+
+    [data-testid="stSidebar"] .stButton > button p,
+    [data-testid="stSidebar"] .stButton > button span,
+    [data-testid="stSidebar"] .stButton > button:active p,
+    [data-testid="stSidebar"] .stButton > button:active span,
+    [data-testid="stSidebar"] .stButton > button:focus p,
+    [data-testid="stSidebar"] .stButton > button:focus span {
+        color: #FFFFFF !important;
+    }
+
+    [data-testid="stSidebar"] .stButton > button:hover {
+        background: #018FC7 !important;
+        border-color: #4FC3ED !important;
+    }
+
     </style>
     """,
     unsafe_allow_html=True
@@ -2270,31 +2364,19 @@ else:
 with st.sidebar:
 
     st.markdown(
-        f"""
-        <div class="sp-sidebar-brand">
-            <div class="sp-sidebar-brand-title">STEM Pathways NYC</div>
-            <div class="sp-sidebar-brand-line"></div>
-        </div>
-
-        <div class="sp-sidebar-profile">
-            <div class="sp-sidebar-avatar">👤</div>
-
-            <div class="sp-sidebar-profile-content">
-                <div class="sp-sidebar-name">{full_name}</div>
-
-                <div class="sp-sidebar-meta">
-                    <span>🎓 Grade {profile['grade']}</span>
-                    <span class="sp-meta-dot">•</span>
-                    <span>📍 {profile['borough']}</span>
-                </div>
-
-                <div class="sp-sidebar-email">
-                    ✉️ {user_email}
-                </div>
-            </div>
-        </div>
-        """,
+        '<div class="sp-sidebar-title">STEM Pathways NYC</div>'
+        '<div class="sp-sidebar-accent"></div>',
         unsafe_allow_html=True
+    )
+
+    st.subheader(full_name)
+
+    st.caption(
+        f"🎓 Grade {profile['grade']}  •  📍 {profile['borough']}"
+    )
+
+    st.markdown(
+        f"✉️ [{user_email}](mailto:{user_email})"
     )
 
     st.divider()
