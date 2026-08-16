@@ -940,6 +940,43 @@ st.markdown(
         border-color: #071521 !important;
     }
 
+
+    /* Sidebar contact card */
+    .sp-contact-card {
+        margin: 0.25rem 0 0.85rem 0;
+        padding: 0.95rem;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .sp-contact-title {
+        color: #FFFFFF !important;
+        font-size: 0.95rem;
+        font-weight: 800;
+        margin-bottom: 0.3rem;
+    }
+
+    .sp-contact-text {
+        color: #CDEAF5 !important;
+        font-size: 0.78rem;
+        line-height: 1.4;
+        margin-bottom: 0.5rem;
+    }
+
+    .sp-contact-email {
+        color: #63D2F6 !important;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-decoration: none !important;
+        overflow-wrap: anywhere;
+    }
+
+    .sp-contact-email:hover {
+        color: #FFFFFF !important;
+        text-decoration: underline !important;
+    }
+
     </style>
     """,
     unsafe_allow_html=True
@@ -2838,6 +2875,21 @@ with st.sidebar:
             st.rerun()
 
     st.divider()
+
+    st.markdown(
+        """
+        <div class="sp-contact-card">
+            <div class="sp-contact-title">Contact</div>
+            <div class="sp-contact-text">
+                Have feedback, questions, or suggestions?
+            </div>
+            <a class="sp-contact-email" href="mailto:danlopez0911@gmail.com">
+                ✉️ danlopez0911@gmail.com
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.caption(
         "Explore • Build • Discover"
