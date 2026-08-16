@@ -10,7 +10,7 @@ from supabase import create_client
 # ============================================================
 
 st.set_page_config(
-    page_title="STEM Pathways NYC",
+    page_title="STEM Pathways NYC",xa
     page_icon="🧭",
     layout="wide"
 )
@@ -536,6 +536,341 @@ def saved_opportunity_names(user_sub):
         str(item.get("opportunity_name", ""))
         for item in saved
     }
+
+
+
+# ============================================================
+# FAVORITE COLLEGES
+# ============================================================
+
+def load_favorite_colleges(user_sub):
+
+    if not supabase_connected:
+        return []
+
+    try:
+
+        response = (
+            supabase
+            .table("favorite_colleges")
+            .select("*")
+            .eq("user_sub", user_sub)
+            .order("rank_order")
+            .execute()
+        )
+
+        return response.data or []
+
+    except Exception as e:
+
+        st.error(
+            "We could not load your favorite colleges."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(str(e))
+
+        return []
+
+
+def add_favorite_college(
+    user_sub,
+    college_name
+):
+
+    if not supabase_connected:
+        return False
+
+    try:
+
+        existing = (
+            supabase
+            .table("favorite_colleges")
+            .select("id")
+            .eq("user_sub", user_sub)
+            .eq("college_name", college_name)
+            .limit(1)
+            .execute()
+        )
+
+        if existing.data:
+            return True
+
+        current = load_favorite_colleges(
+            user_sub
+        )
+
+        next_rank = len(current) + 1
+
+        now = datetime.now(
+            timezone.utc
+        ).isoformat()
+
+        (
+            supabase
+            .table("favorite_colleges")
+            .insert({
+                "user_sub":
+                    user_sub,
+
+                "college_name":
+                    college_name,
+
+                "rank_order":
+                    next_rank,
+
+                "notes":
+                    "",
+
+                "saved_at":
+                    now,
+
+                "updated_at":
+                    now
+            })
+            .execute()
+        )
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "This college could not be added to your favorites."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(str(e))
+
+        return False
+
+
+def update_favorite_college_notes(
+    favorite_id,
+    notes
+):
+
+    if not supabase_connected:
+        return False
+
+    try:
+
+        (
+            supabase
+            .table("favorite_colleges")
+            .update({
+                "notes":
+                    notes,
+
+                "updated_at":
+                    datetime.now(
+                        timezone.utc
+                    ).isoformat()
+            })
+            .eq("id", favorite_id)
+            .execute()
+        )
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "Your college notes could not be updated."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(str(e))
+
+        return False
+
+
+def reorder_favorite_colleges(
+    user_sub,
+    favorite_id,
+    direction
+):
+
+    favorites = load_favorite_colleges(
+        user_sub
+    )
+
+    if not favorites:
+        return False
+
+    current_index = next(
+        (
+            index
+            for index, item
+            in enumerate(favorites)
+            if item["id"] == favorite_id
+        ),
+        None
+    )
+
+    if current_index is None:
+        return False
+
+    if (
+        direction == "up"
+        and
+        current_index == 0
+    ):
+        return True
+
+    if (
+        direction == "down"
+        and
+        current_index
+        == len(favorites) - 1
+    ):
+        return True
+
+    swap_index = (
+        current_index - 1
+        if direction == "up"
+        else current_index + 1
+    )
+
+    current_item = favorites[
+        current_index
+    ]
+
+    swap_item = favorites[
+        swap_index
+    ]
+
+    try:
+
+        (
+            supabase
+            .table("favorite_colleges")
+            .update({
+                "rank_order":
+                    swap_item[
+                        "rank_order"
+                    ],
+
+                "updated_at":
+                    datetime.now(
+                        timezone.utc
+                    ).isoformat()
+            })
+            .eq(
+                "id",
+                current_item["id"]
+            )
+            .execute()
+        )
+
+        (
+            supabase
+            .table("favorite_colleges")
+            .update({
+                "rank_order":
+                    current_item[
+                        "rank_order"
+                    ],
+
+                "updated_at":
+                    datetime.now(
+                        timezone.utc
+                    ).isoformat()
+            })
+            .eq(
+                "id",
+                swap_item["id"]
+            )
+            .execute()
+        )
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "Your favorite college order could not be updated."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(str(e))
+
+        return False
+
+
+def remove_favorite_college(
+    user_sub,
+    favorite_id
+):
+
+    if not supabase_connected:
+        return False
+
+    try:
+
+        (
+            supabase
+            .table("favorite_colleges")
+            .delete()
+            .eq("id", favorite_id)
+            .execute()
+        )
+
+        # Re-number remaining favorites so the order stays clean.
+        remaining = load_favorite_colleges(
+            user_sub
+        )
+
+        for index, item in enumerate(
+            remaining,
+            start=1
+        ):
+
+            if item.get(
+                "rank_order"
+            ) != index:
+
+                (
+                    supabase
+                    .table("favorite_colleges")
+                    .update({
+                        "rank_order":
+                            index,
+
+                        "updated_at":
+                            datetime.now(
+                                timezone.utc
+                            ).isoformat()
+                    })
+                    .eq(
+                        "id",
+                        item["id"]
+                    )
+                    .execute()
+                )
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "This college could not be removed from your favorites."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(str(e))
+
+        return False
 
 
 
@@ -1179,6 +1514,17 @@ with st.sidebar:
 
         st.session_state.current_page = (
             "College Suggestions"
+        )
+
+        st.rerun()
+
+    if st.button(
+        "⭐ My Favorite Colleges",
+        use_container_width=True
+    ):
+
+        st.session_state.current_page = (
+            "My Favorite Colleges"
         )
 
         st.rerun()
@@ -3224,18 +3570,23 @@ elif page == "College Suggestions":
     st.title("College & Major Discovery")
 
     st.write(
-        "Not sure what you want to study yet? Start with a few simple "
-        "questions about what you enjoy. STEM Pathways NYC will suggest "
-        "fields, majors, and colleges for you to explore."
+        "Answer a few simple questions about what you enjoy. "
+        "STEM Pathways NYC will suggest fields, majors, and colleges "
+        "that may be worth exploring."
     )
 
     st.info(
-        "This tool is for exploration, not admissions prediction or an official college ranking."
+        "Match score measures how well a college fits your interests and preferences. "
+        "It is NOT your chance of admission."
     )
 
     st.divider()
 
-    st.header("Tell us what sounds like you")
+    # --------------------------------------------------------
+    # SIMPLE INTEREST QUESTIONS
+    # --------------------------------------------------------
+
+    st.header("1. Explore What You Might Like")
 
     q1 = st.multiselect(
         "What kinds of things sound interesting to you?",
@@ -3252,11 +3603,11 @@ elif page == "College Suggestions":
             "Designing or creating new things",
             "I'm not sure yet"
         ],
-        key="college_discovery_interests"
+        key="college_discovery_interests_v2"
     )
 
     q2 = st.selectbox(
-        "Which school subjects do you enjoy most?",
+        "Which school subject do you enjoy most?",
         [
             "I'm not sure",
             "Math",
@@ -3266,7 +3617,7 @@ elif page == "College Suggestions":
             "Physics",
             "A mix of math and science"
         ],
-        key="college_discovery_subject"
+        key="college_discovery_subject_v2"
     )
 
     q3 = st.selectbox(
@@ -3281,7 +3632,7 @@ elif page == "College Suggestions":
             "Helping people through science or technology",
             "Analyzing information and finding patterns"
         ],
-        key="college_discovery_work"
+        key="college_discovery_work_v2"
     )
 
     q4 = st.selectbox(
@@ -3296,7 +3647,7 @@ elif page == "College Suggestions":
             "The environment",
             "A mix of hardware and software"
         ],
-        key="college_discovery_environment"
+        key="college_discovery_environment_v2"
     )
 
     q5 = st.select_slider(
@@ -3309,10 +3660,14 @@ elif page == "College Suggestions":
             "I really like it"
         ],
         value="It's okay",
-        key="college_discovery_math"
+        key="college_discovery_math_v2"
     )
 
-    with st.expander("College preferences (optional)"):
+    # --------------------------------------------------------
+    # OPTIONAL COLLEGE PREFERENCES
+    # --------------------------------------------------------
+
+    with st.expander("2. College Preferences (optional)"):
 
         college_location = st.selectbox(
             "Where would you be interested in going to college?",
@@ -3322,7 +3677,7 @@ elif page == "College Suggestions":
                 "Northeast U.S.",
                 "Anywhere in the U.S."
             ],
-            key="college_discovery_location"
+            key="college_discovery_location_v2"
         )
 
         college_setting = st.selectbox(
@@ -3334,16 +3689,25 @@ elif page == "College Suggestions":
                 "Small college",
                 "Large university"
             ],
-            key="college_discovery_setting"
+            key="college_discovery_setting_v2"
+        )
+
+        research_priority = st.checkbox(
+            "Research opportunities are important to me",
+            value=True,
+            key="college_discovery_research_v2"
         )
 
         aid_priority = st.checkbox(
             "Financial aid / affordability is very important to me",
-            value=bool(profile.get("needs_aid", False)),
-            key="college_discovery_aid"
+            value=bool(profile.get("financial_support", False)),
+            key="college_discovery_aid_v2"
         )
 
-    # Simple discovery scoring: interests first, colleges second.
+    # --------------------------------------------------------
+    # FIELD DISCOVERY SCORING
+    # --------------------------------------------------------
+
     field_scores = {
         "Engineering": 0,
         "Electrical Engineering": 0,
@@ -3367,25 +3731,25 @@ elif page == "College Suggestions":
 
     for answer in q1:
         if answer == "Building or fixing things":
-            add_points(["Mechanical Engineering", "Engineering", "Robotics"], 4)
+            add_points(["Mechanical Engineering", "Engineering", "Robotics"], 5)
         elif answer == "Computers and technology":
-            add_points(["Computer Science", "Computer Engineering", "Artificial Intelligence"], 4)
+            add_points(["Computer Science", "Computer Engineering", "Artificial Intelligence"], 5)
         elif answer == "Coding or making apps":
-            add_points(["Computer Science", "Artificial Intelligence", "Data Science"], 5)
+            add_points(["Computer Science", "Artificial Intelligence", "Data Science"], 6)
         elif answer == "Robots and electronics":
-            add_points(["Robotics", "Electrical Engineering", "Computer Engineering"], 5)
+            add_points(["Robotics", "Electrical Engineering", "Computer Engineering"], 6)
         elif answer == "Math and solving puzzles":
-            add_points(["Mathematics", "Physics", "Data Science", "Engineering"], 4)
+            add_points(["Mathematics", "Physics", "Data Science", "Engineering"], 5)
         elif answer == "Science and experiments":
-            add_points(["Biology", "Physics", "Biomedical Engineering", "Environmental Science"], 4)
+            add_points(["Biology", "Physics", "Biomedical Engineering", "Environmental Science"], 5)
         elif answer == "Medicine and the human body":
-            add_points(["Biomedical Engineering", "Biology"], 5)
+            add_points(["Biomedical Engineering", "Biology"], 6)
         elif answer == "Nature, climate, and the environment":
-            add_points(["Environmental Science", "Biology"], 5)
+            add_points(["Environmental Science", "Biology"], 6)
         elif answer == "Working with data and patterns":
-            add_points(["Data Science", "Artificial Intelligence", "Mathematics"], 5)
+            add_points(["Data Science", "Artificial Intelligence", "Mathematics"], 6)
         elif answer == "Designing or creating new things":
-            add_points(["Engineering", "Mechanical Engineering", "Robotics"], 4)
+            add_points(["Engineering", "Mechanical Engineering", "Robotics"], 5)
 
     subject_map = {
         "Math": ["Mathematics", "Data Science", "Engineering", "Physics"],
@@ -3395,6 +3759,7 @@ elif page == "College Suggestions":
         "Physics": ["Physics", "Electrical Engineering", "Mechanical Engineering", "Engineering"],
         "A mix of math and science": ["Engineering", "Biomedical Engineering", "Physics", "Data Science"]
     }
+
     add_points(subject_map.get(q2, []), 4)
 
     work_map = {
@@ -3406,6 +3771,7 @@ elif page == "College Suggestions":
         "Helping people through science or technology": ["Biomedical Engineering", "Biology", "Engineering"],
         "Analyzing information and finding patterns": ["Data Science", "Artificial Intelligence", "Mathematics"]
     }
+
     add_points(work_map.get(q3, []), 4)
 
     environment_map = {
@@ -3417,6 +3783,7 @@ elif page == "College Suggestions":
         "The environment": ["Environmental Science", "Biology"],
         "A mix of hardware and software": ["Computer Engineering", "Robotics", "Electrical Engineering"]
     }
+
     add_points(environment_map.get(q4, []), 4)
 
     math_points = {
@@ -3428,13 +3795,441 @@ elif page == "College Suggestions":
     }[q5]
 
     add_points(
-        ["Engineering", "Electrical Engineering", "Mechanical Engineering",
-         "Computer Engineering", "Computer Science", "Artificial Intelligence",
-         "Data Science", "Physics", "Mathematics", "Robotics"],
+        [
+            "Engineering",
+            "Electrical Engineering",
+            "Mechanical Engineering",
+            "Computer Engineering",
+            "Computer Science",
+            "Artificial Intelligence",
+            "Data Science",
+            "Physics",
+            "Mathematics",
+            "Robotics"
+        ],
         math_points
     )
 
-    if st.button("Discover My Options", type="primary", use_container_width=True):
+    # --------------------------------------------------------
+    # COLLEGE DATABASE
+    # --------------------------------------------------------
+
+    college_catalog = [
+        {
+            "name": "MIT",
+            "location": "Cambridge, MA",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Physics", "Mathematics", "Robotics"
+            ],
+            "admit_rate": 4.5,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://ir.mit.edu/projects/2024-25-common-data-set/",
+            "research": True
+        },
+        {
+            "name": "Stanford University",
+            "location": "Stanford, CA",
+            "region": "West",
+            "setting": "Traditional college campus",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Science", "Artificial Intelligence", "Data Science",
+                "Biomedical Engineering", "Biology", "Physics", "Mathematics", "Robotics"
+            ],
+            "admit_rate": None,
+            "rate_label": "See official Stanford CDS",
+            "source_url": "https://irds.stanford.edu/data-findings/cds",
+            "research": True
+        },
+        {
+            "name": "Carnegie Mellon University",
+            "location": "Pittsburgh, PA",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Computer Engineering",
+                "Computer Science", "Artificial Intelligence", "Data Science",
+                "Mathematics", "Robotics"
+            ],
+            "admit_rate": 11.1,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.cmu.edu/ira/CDS/",
+            "research": True
+        },
+        {
+            "name": "UC Berkeley",
+            "location": "Berkeley, CA",
+            "region": "West",
+            "setting": "City / urban",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Science", "Artificial Intelligence", "Data Science",
+                "Biomedical Engineering", "Biology", "Physics", "Mathematics",
+                "Environmental Science"
+            ],
+            "admit_rate": 11.0,
+            "rate_label": "2026 first-year overall",
+            "source_url": "https://admissions.berkeley.edu/apply-to-berkeley/student-profile/",
+            "research": True
+        },
+        {
+            "name": "Georgia Tech",
+            "location": "Atlanta, GA",
+            "region": "South",
+            "setting": "City / urban",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
+            ],
+            "admit_rate": 9.0,
+            "rate_label": "2026 non-Georgia admit rate",
+            "source_url": "https://admission.gatech.edu/",
+            "research": True
+        },
+        {
+            "name": "University of Michigan",
+            "location": "Ann Arbor, MI",
+            "region": "Midwest",
+            "setting": "Traditional college campus",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
+                "Environmental Science", "Robotics"
+            ],
+            "admit_rate": 14.0,
+            "rate_label": "Fall 2025 Michigan Engineering",
+            "source_url": "https://www.engin.umich.edu/about/facts-figures/",
+            "research": True
+        },
+        {
+            "name": "Purdue University",
+            "location": "West Lafayette, IN",
+            "region": "Midwest",
+            "setting": "Traditional college campus",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
+            ],
+            "admit_rate": 34.7,
+            "rate_label": "2025 College of Engineering",
+            "source_url": "https://admissions.purdue.edu/become-student/class-profile/",
+            "research": True
+        },
+        {
+            "name": "Cornell University",
+            "location": "Ithaca, NY",
+            "region": "Northeast",
+            "setting": "Traditional college campus",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Biology", "Physics",
+                "Mathematics", "Environmental Science", "Robotics"
+            ],
+            "admit_rate": 7.9,
+            "rate_label": "Fall 2023 overall",
+            "source_url": "https://irp.cornell.edu/common-data-set",
+            "research": True
+        },
+        {
+            "name": "Columbia University",
+            "location": "New York, NY",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Biology", "Physics",
+                "Mathematics", "Environmental Science"
+            ],
+            "admit_rate": 3.9,
+            "rate_label": "Class of 2027 overall",
+            "source_url": "https://undergrad.admissions.columbia.edu/",
+            "research": True
+        },
+        {
+            "name": "Princeton University",
+            "location": "Princeton, NJ",
+            "region": "Northeast",
+            "setting": "Traditional college campus",
+            "size": "Small",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Science", "Artificial Intelligence", "Physics",
+                "Mathematics", "Biology", "Environmental Science"
+            ],
+            "admit_rate": 4.4,
+            "rate_label": "Class of 2029 overall",
+            "source_url": "https://profile.princeton.edu/admission-and-costs",
+            "research": True
+        },
+        {
+            "name": "Harvard University",
+            "location": "Cambridge, MA",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Biology", "Physics",
+                "Mathematics", "Environmental Science"
+            ],
+            "admit_rate": 4.2,
+            "rate_label": "Class of 2029 overall",
+            "source_url": "https://college.harvard.edu/admissions/admissions-statistics",
+            "research": True
+        },
+        {
+            "name": "Duke University",
+            "location": "Durham, NC",
+            "region": "South",
+            "setting": "Traditional college campus",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Science", "Artificial Intelligence", "Data Science",
+                "Biomedical Engineering", "Biology", "Mathematics"
+            ],
+            "admit_rate": 5.2,
+            "rate_label": "Class of 2029 overall",
+            "source_url": "https://admissions.duke.edu/",
+            "research": True
+        },
+        {
+            "name": "Johns Hopkins University",
+            "location": "Baltimore, MD",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Biology", "Physics",
+                "Mathematics", "Environmental Science"
+            ],
+            "admit_rate": 4.2,
+            "rate_label": "Class of 2029 Regular Decision",
+            "source_url": "https://apply.jhu.edu/",
+            "research": True
+        },
+        {
+            "name": "Caltech",
+            "location": "Pasadena, CA",
+            "region": "West",
+            "setting": "Small college",
+            "size": "Small",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Science", "Artificial Intelligence", "Physics",
+                "Mathematics", "Biology"
+            ],
+            "admit_rate": 3.1,
+            "rate_label": "Fall 2023 overall",
+            "source_url": "https://iro.caltech.edu/",
+            "research": True
+        },
+        {
+            "name": "The Cooper Union",
+            "location": "New York, NY",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Small",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering"
+            ],
+            "admit_rate": 23.0,
+            "rate_label": "2024-25 School of Engineering",
+            "source_url": "https://cooper.edu/admissions/faq",
+            "research": True
+        },
+        {
+            "name": "NYU Tandon",
+            "location": "Brooklyn, NY",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Robotics"
+            ],
+            "admit_rate": 13.0,
+            "rate_label": "NYU university-wide",
+            "source_url": "https://bulletins.nyu.edu/nyu/enrollment-graduation-statistics/",
+            "research": True
+        },
+        {
+            "name": "Stevens Institute of Technology",
+            "location": "Hoboken, NJ",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
+                "Robotics"
+            ],
+            "admit_rate": 51.0,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.stevens.edu/discover-stevens/stevens-by-the-numbers/facts-statistics",
+            "research": True
+        },
+        {
+            "name": "CCNY",
+            "location": "New York, NY",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Biomedical Engineering",
+                "Biology", "Physics", "Mathematics", "Environmental Science"
+            ],
+            "admit_rate": None,
+            "rate_label": "See official CCNY admissions data",
+            "source_url": "https://www.ccny.cuny.edu/admissions",
+            "research": True
+        },
+        {
+            "name": "Stony Brook University",
+            "location": "Stony Brook, NY",
+            "region": "Northeast",
+            "setting": "Traditional college campus",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Biology", "Physics",
+                "Mathematics", "Environmental Science"
+            ],
+            "admit_rate": None,
+            "rate_label": "See official Stony Brook admissions data",
+            "source_url": "https://www.stonybrook.edu/undergraduate-admissions/",
+            "research": True
+        }
+    ]
+
+    # --------------------------------------------------------
+    # COMPETITIVENESS
+    # --------------------------------------------------------
+
+    def competitiveness_from_rate(rate):
+        if rate is None:
+            return None, "Not rated"
+
+        if rate < 7:
+            return 5, "Extremely Competitive"
+        elif rate < 15:
+            return 4, "Highly Competitive"
+        elif rate < 30:
+            return 3, "Competitive"
+        elif rate < 50:
+            return 2, "Moderately Competitive"
+        else:
+            return 1, "More Accessible"
+
+    # --------------------------------------------------------
+    # PERSONALIZED COLLEGE MATCH
+    # --------------------------------------------------------
+
+    def college_match_score(college, top_fields):
+
+        score = 0
+        max_score = 100
+        reasons = []
+
+        # Field fit: up to 50 points
+        field_points = 0
+
+        for rank, (field, field_score) in enumerate(top_fields, start=1):
+            if field in college["fields"]:
+                bonus = max(22 - ((rank - 1) * 5), 7)
+                field_points += bonus
+
+        field_points = min(field_points, 50)
+        score += field_points
+
+        if field_points >= 35:
+            reasons.append("Very strong match with your top STEM interests.")
+        elif field_points >= 20:
+            reasons.append("Good match with several of your STEM interests.")
+
+        # Location fit: up to 20 points
+        if college_location == "NYC / close to home":
+            if college["location"] in ["New York, NY", "Brooklyn, NY", "Hoboken, NJ"]:
+                score += 20
+                reasons.append("Matches your preference to stay in or near NYC.")
+            elif college["region"] == "Northeast":
+                score += 10
+
+        elif college_location == "Northeast U.S.":
+            if college["region"] == "Northeast":
+                score += 20
+                reasons.append("Matches your Northeast location preference.")
+
+        elif college_location in ["I'm open to anywhere", "Anywhere in the U.S."]:
+            score += 12
+
+        # Campus setting: up to 15 points
+        if college_setting == "I'm not sure":
+            score += 8
+        elif college_setting == college["setting"]:
+            score += 15
+            reasons.append("Matches the type of college environment you selected.")
+        elif (
+            college_setting == "Large university"
+            and college["size"] == "Large"
+        ):
+            score += 15
+        elif (
+            college_setting == "Small college"
+            and college["size"] == "Small"
+        ):
+            score += 15
+        else:
+            score += 4
+
+        # Research: up to 10 points
+        if research_priority:
+            if college.get("research"):
+                score += 10
+                reasons.append("Offers a strong research-oriented environment.")
+        else:
+            score += 5
+
+        # Affordability preference: 5 points for local public-ish option,
+        # otherwise do not pretend to know individualized net price.
+        if aid_priority:
+            if college["name"] in ["CCNY", "Stony Brook University"]:
+                score += 5
+                reasons.append("May be worth exploring as a lower-cost public option.")
+        else:
+            score += 5
+
+        return min(round(score), max_score), reasons
+
+    if st.button(
+        "Discover My Best-Fit Colleges",
+        type="primary",
+        use_container_width=True
+    ):
 
         ranked_fields = sorted(
             field_scores.items(),
@@ -3442,142 +4237,497 @@ elif page == "College Suggestions":
             reverse=True
         )
 
-        st.session_state["college_discovery_results"] = ranked_fields[:4]
-        st.session_state["college_discovery_location_pref"] = college_location
-        st.session_state["college_discovery_setting_pref"] = college_setting
-        st.session_state["college_discovery_aid_pref"] = aid_priority
+        top_fields = ranked_fields[:4]
+
+        results = []
+
+        for college in college_catalog:
+            match_score, reasons = college_match_score(
+                college,
+                top_fields
+            )
+
+            stars, competitive_label = competitiveness_from_rate(
+                college["admit_rate"]
+            )
+
+            results.append({
+                "college": college,
+                "match_score": match_score,
+                "reasons": reasons,
+                "stars": stars,
+                "competitive_label": competitive_label
+            })
+
+        results.sort(
+            key=lambda item: item["match_score"],
+            reverse=True
+        )
+
+        st.session_state["college_discovery_results_v3"] = top_fields
+        st.session_state["college_match_results_v3"] = results
         st.rerun()
 
-    discovery_results = st.session_state.get("college_discovery_results")
+    discovery_results = st.session_state.get(
+        "college_discovery_results_v3"
+    )
 
-    if discovery_results:
+    college_results = st.session_state.get(
+        "college_match_results_v3"
+    )
 
-        st.divider()
-        st.header("Fields You May Want to Explore")
-
-        field_to_major = {
-            "Engineering": "Engineering",
-            "Electrical Engineering": "Electrical Engineering",
-            "Mechanical Engineering": "Mechanical Engineering",
-            "Computer Engineering": "Computer Engineering",
-            "Computer Science": "Computer Science",
-            "Artificial Intelligence": "Computer Science",
-            "Data Science": "Data Science",
-            "Biomedical Engineering": "Biomedical Engineering",
-            "Biology": "Biology",
-            "Physics": "Physics",
-            "Mathematics": "Mathematics",
-            "Environmental Science": "Environmental Science",
-            "Robotics": "Robotics Engineering"
-        }
-
-        top_score = max(discovery_results[0][1], 1)
-
-        for rank, (field, score) in enumerate(discovery_results, start=1):
-            with st.container(border=True):
-                st.subheader(f"{rank}. {field}")
-                st.progress(min(score / top_score, 1.0))
-                st.write(
-                    f"Based on your answers, **{field}** may be worth exploring."
-                )
-
-                matching = careers[
-                    careers["field"].astype(str).str.strip() == field
-                ] if (not careers.empty and "field" in careers.columns) else pd.DataFrame()
-
-                if not matching.empty:
-                    majors = []
-                    careers_list = []
-                    companies = []
-
-                    for _, row in matching.iterrows():
-                        major = str(row.get("recommended_major", "")).strip()
-                        if major and major.lower() != "nan" and major not in majors:
-                            majors.append(major)
-
-                        career_name = str(row.get("career", "")).strip()
-                        if career_name and career_name not in careers_list:
-                            careers_list.append(career_name)
-
-                        for company in str(row.get("companies", "")).split(";"):
-                            company = company.strip()
-                            if company and company.lower() != "nan" and company not in companies:
-                                companies.append(company)
-
-                    if majors:
-                        st.write("**Majors to explore:** " + " • ".join(majors[:4]))
-                    if careers_list:
-                        st.write("**Possible careers:** " + " • ".join(careers_list[:5]))
-                    if companies:
-                        st.write("**Example employers:** " + " • ".join(companies[:5]))
+    if discovery_results and college_results:
 
         st.divider()
-        st.header("Colleges Connected to Your Top Matches")
 
-        # Pull colleges directly from the enriched career CSV.
-        college_results = []
+        st.header("Your Top STEM Directions")
 
-        for field, score in discovery_results:
-            matching = careers[
-                careers["field"].astype(str).str.strip() == field
-            ] if (not careers.empty and "field" in careers.columns) else pd.DataFrame()
+        top_field_score = max(
+            discovery_results[0][1],
+            1
+        )
 
-            for _, row in matching.iterrows():
-                for column, category in [
-                    ("colleges_notable", "Notable program to explore"),
-                    ("nyc_colleges", "NYC / nearby option")
-                ]:
-                    if column not in careers.columns:
-                        continue
+        field_columns = st.columns(4)
 
-                    for school in str(row.get(column, "")).split(";"):
-                        school = school.strip()
-                        if not school or school.lower() == "nan":
-                            continue
+        for index, (field, score) in enumerate(discovery_results):
 
-                        existing = next(
-                            (item for item in college_results if item["school"] == school),
-                            None
-                        )
+            with field_columns[index]:
 
-                        bonus = score
-                        if category == "NYC / nearby option":
-                            if st.session_state.get("college_discovery_location_pref") == "NYC / close to home":
-                                bonus += 8
+                with st.container(border=True):
 
-                        if existing:
-                            existing["score"] += bonus
-                            if field not in existing["fields"]:
-                                existing["fields"].append(field)
-                            if category not in existing["categories"]:
-                                existing["categories"].append(category)
-                        else:
-                            college_results.append({
-                                "school": school,
-                                "score": bonus,
-                                "fields": [field],
-                                "categories": [category]
-                            })
-
-        college_results.sort(key=lambda x: x["score"], reverse=True)
-
-        for item in college_results[:10]:
-            with st.container(border=True):
-                st.subheader(item["school"])
-                st.write("**Why it appears:** " + ", ".join(item["categories"]))
-                st.write("**Connected fields:** " + " • ".join(item["fields"]))
-
-                if st.session_state.get("college_discovery_aid_pref"):
-                    st.caption(
-                        "Affordability matters to you. Check this college's official "
-                        "financial aid page and net price calculator before comparing costs."
+                    st.subheader(
+                        f"#{index + 1}"
                     )
 
-        st.caption(
-            "These suggestions are meant to help you discover possibilities. "
-            "They are not a ranking, admissions prediction, or guarantee that a "
-            "specific major is currently offered. Verify programs on official college websites."
+                    st.write(
+                        f"**{field}**"
+                    )
+
+                    relative = round(
+                        (score / top_field_score) * 100
+                    )
+
+                    st.metric(
+                        "Interest Match",
+                        f"{relative}%"
+                    )
+
+        st.divider()
+
+        st.header("Best College Matches")
+
+        st.write(
+            "Schools are ordered by your personalized **match score**, "
+            "not by prestige or acceptance rate."
         )
+
+        for rank, result in enumerate(
+            college_results[:15],
+            start=1
+        ):
+
+            college = result["college"]
+            match_score = result["match_score"]
+            reasons = result["reasons"]
+            stars = result["stars"]
+            competitive_label = result["competitive_label"]
+
+            with st.container(border=True):
+
+                title_col, match_col = st.columns(
+                    [3, 1]
+                )
+
+                with title_col:
+
+                    st.subheader(
+                        f"{rank}. {college['name']}"
+                    )
+
+                    st.caption(
+                        f"{college['location']} • {college['setting']} • {college['size']}"
+                    )
+
+                with match_col:
+
+                    st.metric(
+                        "Your Match",
+                        f"{match_score}%"
+                    )
+
+                info1, info2, info3 = st.columns(3)
+
+                with info1:
+
+                    if college["admit_rate"] is not None:
+
+                        st.metric(
+                            "Recent Admit Rate",
+                            f"{college['admit_rate']:.1f}%"
+                        )
+
+                    else:
+
+                        st.metric(
+                            "Recent Admit Rate",
+                            "See source"
+                        )
+
+                    st.caption(
+                        college["rate_label"]
+                    )
+
+                with info2:
+
+                    if stars is not None:
+
+                        star_display = (
+                            "★" * stars
+                            +
+                            "☆" * (5 - stars)
+                        )
+
+                        st.metric(
+                            "Competition",
+                            star_display
+                        )
+
+                        st.caption(
+                            competitive_label
+                        )
+
+                    else:
+
+                        st.metric(
+                            "Competition",
+                            "Not rated"
+                        )
+
+                with info3:
+
+                    matching_fields = [
+                        field
+                        for field, _
+                        in discovery_results
+                        if field in college["fields"]
+                    ]
+
+                    st.write(
+                        "**Matching fields**"
+                    )
+
+                    if matching_fields:
+                        st.write(
+                            " • ".join(
+                                matching_fields[:4]
+                            )
+                        )
+                    else:
+                        st.write(
+                            "General STEM option"
+                        )
+
+                with st.expander(
+                    "Why this school matches you"
+                ):
+
+                    if reasons:
+                        for reason in reasons:
+                            st.write(
+                                f"• {reason}"
+                            )
+                    else:
+                        st.write(
+                            "This school is included as a STEM option "
+                            "but has fewer direct matches with your current answers."
+                        )
+
+                favorite_action1, favorite_action2 = st.columns(2)
+
+                with favorite_action1:
+
+                    if st.button(
+                        "⭐ Add to Favorites",
+                        key=f"favorite_college_{college['name']}",
+                        use_container_width=True
+                    ):
+
+                        if add_favorite_college(
+                            user_sub,
+                            college["name"]
+                        ):
+
+                            st.success(
+                                "Added to My Favorite Colleges."
+                            )
+
+                with favorite_action2:
+
+                    st.link_button(
+                        "View Admissions / Data Source",
+                        college["source_url"],
+                        use_container_width=True
+                    )
+
+        st.divider()
+
+        st.caption(
+            "Important: admit rates are recent institution- or school-level figures "
+            "where official data was available. Some colleges admit by school or residency, "
+            "so a single percentage may not describe every applicant. Competitiveness stars "
+            "are a STEM Pathways NYC category based on the displayed admit rate. "
+            "Match score reflects your interests and preferences only — it is not an admission chance."
+        )
+
+
+# ============================================================
+# MY FAVORITE COLLEGES
+# ============================================================
+
+elif page == "My Favorite Colleges":
+
+    st.title(
+        "My Favorite Colleges"
+    )
+
+    st.write(
+        "Build your own college list and arrange schools in the "
+        "order you personally like them."
+    )
+
+    st.info(
+        "Your ranking is your personal preference list. "
+        "It does not represent an admissions ranking."
+    )
+
+    st.divider()
+
+    favorite_colleges = load_favorite_colleges(
+        user_sub
+    )
+
+    if not favorite_colleges:
+
+        st.header(
+            "Your favorites list is empty"
+        )
+
+        st.write(
+            "Go to **College Suggestions** and click "
+            "**⭐ Add to Favorites** on schools you want to remember."
+        )
+
+        if st.button(
+            "Explore College Suggestions",
+            type="primary",
+            use_container_width=True
+        ):
+
+            st.session_state.current_page = (
+                "College Suggestions"
+            )
+
+            st.rerun()
+
+    else:
+
+        st.header(
+            "Your Ranked College List"
+        )
+
+        st.caption(
+            "Use the arrows to move schools up or down. "
+            "#1 is currently your favorite."
+        )
+
+        for index, favorite in enumerate(
+            favorite_colleges,
+            start=1
+        ):
+
+            favorite_id = favorite[
+                "id"
+            ]
+
+            college_name = favorite[
+                "college_name"
+            ]
+
+            with st.container(
+                border=True
+            ):
+
+                title_col, rank_col = (
+                    st.columns(
+                        [4, 1]
+                    )
+                )
+
+                with title_col:
+
+                    st.subheader(
+                        college_name
+                    )
+
+                with rank_col:
+
+                    st.metric(
+                        "Your Rank",
+                        f"#{index}"
+                    )
+
+                notes_value = st.text_area(
+                    "Why do you like this school? (optional)",
+                    value=(
+                        favorite.get(
+                            "notes",
+                            ""
+                        )
+                        or
+                        ""
+                    ),
+                    placeholder=(
+                        "Example: Strong Computer Engineering, "
+                        "close to NYC, research opportunities..."
+                    ),
+                    key=f"favorite_college_notes_{favorite_id}"
+                )
+
+                move_col1, move_col2, save_col, remove_col = (
+                    st.columns(4)
+                )
+
+                with move_col1:
+
+                    if st.button(
+                        "⬆️ Move Up",
+                        key=f"favorite_up_{favorite_id}",
+                        disabled=(
+                            index == 1
+                        ),
+                        use_container_width=True
+                    ):
+
+                        if reorder_favorite_colleges(
+                            user_sub,
+                            favorite_id,
+                            "up"
+                        ):
+
+                            st.rerun()
+
+                with move_col2:
+
+                    if st.button(
+                        "⬇️ Move Down",
+                        key=f"favorite_down_{favorite_id}",
+                        disabled=(
+                            index
+                            ==
+                            len(
+                                favorite_colleges
+                            )
+                        ),
+                        use_container_width=True
+                    ):
+
+                        if reorder_favorite_colleges(
+                            user_sub,
+                            favorite_id,
+                            "down"
+                        ):
+
+                            st.rerun()
+
+                with save_col:
+
+                    if st.button(
+                        "💾 Save Notes",
+                        key=f"favorite_save_notes_{favorite_id}",
+                        use_container_width=True
+                    ):
+
+                        if update_favorite_college_notes(
+                            favorite_id,
+                            notes_value
+                        ):
+
+                            st.success(
+                                "Notes saved."
+                            )
+
+                with remove_col:
+
+                    if st.button(
+                        "Remove",
+                        key=f"favorite_remove_{favorite_id}",
+                        use_container_width=True
+                    ):
+
+                        st.session_state[
+                            "confirm_remove_favorite_college"
+                        ] = favorite_id
+
+                if (
+                    st.session_state.get(
+                        "confirm_remove_favorite_college"
+                    )
+                    ==
+                    favorite_id
+                ):
+
+                    st.warning(
+                        f"Remove {college_name} from your favorites?"
+                    )
+
+                    confirm_col1, confirm_col2 = (
+                        st.columns(2)
+                    )
+
+                    with confirm_col1:
+
+                        if st.button(
+                            "Yes, Remove",
+                            key=f"favorite_confirm_remove_{favorite_id}",
+                            use_container_width=True
+                        ):
+
+                            if remove_favorite_college(
+                                user_sub,
+                                favorite_id
+                            ):
+
+                                st.session_state.pop(
+                                    "confirm_remove_favorite_college",
+                                    None
+                                )
+
+                                st.rerun()
+
+                    with confirm_col2:
+
+                        if st.button(
+                            "Cancel",
+                            key=f"favorite_cancel_remove_{favorite_id}",
+                            use_container_width=True
+                        ):
+
+                            st.session_state.pop(
+                                "confirm_remove_favorite_college",
+                                None
+                            )
+
+                            st.rerun()
+
+        st.divider()
+
+        st.caption(
+            "Tip: Your favorite list can change as you learn more. "
+            "Move schools whenever your priorities change."
+        )
+
+
+
 
 
 # ============================================================
