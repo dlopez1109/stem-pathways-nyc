@@ -25,12 +25,12 @@ st.markdown(
     """
     <style>
     :root {
-        --sp-bg: #f7f9fc;
+        --sp-bg: #F2F7FA;
         --sp-surface: #ffffff;
-        --sp-surface-soft: #f0f4f8;
-        --sp-border: #d9e2ec;
-        --sp-text: #102a43;
-        --sp-muted: #627d98;
+        --sp-surface-soft: #EAF3F7;
+        --sp-border: #C9DCE6;
+        --sp-text: #123047;
+        --sp-muted: #5F7686;
         --sp-primary: #018FC7;
         --sp-primary-dark: #00658F;
         --sp-accent: #38BDF8;
@@ -119,7 +119,7 @@ st.markdown(
 
     /* Bordered Streamlit containers become cards */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        background: rgba(255,255,255,0.92);
+        background: rgba(255,255,255,0.97);
         border: 1px solid var(--sp-border) !important;
         border-radius: var(--sp-radius) !important;
         box-shadow: var(--sp-shadow);
@@ -133,7 +133,7 @@ st.markdown(
 
     /* Metrics */
     [data-testid="stMetric"] {
-        background: rgba(255,255,255,0.95);
+        background: rgba(255,255,255,0.98);
         border: 1px solid var(--sp-border);
         border-radius: 16px;
         padding: 1rem 1.05rem;
@@ -200,7 +200,7 @@ st.markdown(
     [data-testid="stExpander"] {
         border: 1px solid var(--sp-border) !important;
         border-radius: 14px !important;
-        background: rgba(255,255,255,0.9);
+        background: rgba(255,255,255,0.96);
         overflow: hidden;
     }
 
@@ -221,7 +221,7 @@ st.markdown(
     /* Dividers */
     hr {
         border: none !important;
-        border-top: 1px solid #dfe7ef !important;
+        border-top: 1px solid #D7E5EC !important;
         margin: 1.5rem 0 !important;
     }
 
