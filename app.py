@@ -2523,7 +2523,6 @@ elif page == "Opportunities":
                 "Internship",
                 "Research",
                 "College Course",
-                "Competition",
                 "Scholarship"
             ]
         )
@@ -3303,6 +3302,29 @@ elif page == "Resources":
 
 elif page == "GPA Calculator":
 
+    # --------------------------------------------------------
+    # GPA SESSION STATE + RESET HELPERS
+    # --------------------------------------------------------
+
+    if "gpa_calculation_result" not in st.session_state:
+        st.session_state.gpa_calculation_result = None
+
+    if "gpa_results_confirmed" not in st.session_state:
+        st.session_state.gpa_results_confirmed = False
+
+    if "gpa_show_restart_confirmation" not in st.session_state:
+        st.session_state.gpa_show_restart_confirmation = False
+
+    def reset_gpa_tools():
+        keys_to_remove = [
+            key
+            for key in list(st.session_state.keys())
+            if key.startswith("gpa_")
+        ]
+
+        for key in keys_to_remove:
+            del st.session_state[key]
+
     st.title(
         "📊 GPA Calculator & Converter"
     )
@@ -3347,7 +3369,8 @@ elif page == "GPA Calculator":
             min_value=1,
             max_value=12,
             value=6,
-            step=1
+            step=1,
+            key="gpa_number_of_courses"
         )
 
         grade_points = {
@@ -3444,7 +3467,7 @@ elif page == "GPA Calculator":
             "Calculate My GPA",
             type="primary",
             use_container_width=True,
-            key="calculate_course_gpa"
+            key="gpa_calculate_course_gpa"
         ):
 
             total_credits = sum(
@@ -3485,100 +3508,139 @@ elif page == "GPA Calculator":
                     / total_credits
                 )
 
-                st.divider()
+                if unweighted_gpa >= 4.0:
+                    estimated_100 = "93–100"
+                elif unweighted_gpa >= 3.7:
+                    estimated_100 = "90–92"
+                elif unweighted_gpa >= 3.3:
+                    estimated_100 = "87–89"
+                elif unweighted_gpa >= 3.0:
+                    estimated_100 = "83–86"
+                elif unweighted_gpa >= 2.7:
+                    estimated_100 = "80–82"
+                elif unweighted_gpa >= 2.3:
+                    estimated_100 = "77–79"
+                elif unweighted_gpa >= 2.0:
+                    estimated_100 = "73–76"
+                elif unweighted_gpa >= 1.7:
+                    estimated_100 = "70–72"
+                elif unweighted_gpa >= 1.3:
+                    estimated_100 = "67–69"
+                elif unweighted_gpa >= 1.0:
+                    estimated_100 = "65–66"
+                else:
+                    estimated_100 = "Below 65"
 
-                st.subheader(
-                    "Your Estimated Results"
+                calculation_rows = []
+
+                for course in course_rows:
+
+                    base = grade_points[
+                        course["grade"]
+                    ]
+
+                    weighted = (
+                        base
+                        + level_bonus[
+                            course["level"]
+                        ]
+                    )
+
+                    calculation_rows.append(
+                        {
+                            "Course": course["name"],
+                            "Grade": course["grade"],
+                            "Level": course["level"],
+                            "Credits": course["credits"],
+                            "Unweighted Points": round(base, 2),
+                            "Weighted Points": round(weighted, 2)
+                        }
+                    )
+
+                st.session_state.gpa_calculation_result = {
+                    "unweighted_gpa": unweighted_gpa,
+                    "weighted_gpa": weighted_gpa,
+                    "estimated_100": estimated_100,
+                    "calculation_rows": calculation_rows
+                }
+
+                st.session_state.gpa_results_confirmed = False
+
+        if st.session_state.gpa_calculation_result:
+
+            result = st.session_state.gpa_calculation_result
+
+            st.divider()
+
+            st.subheader(
+                "Your Estimated Results"
+            )
+
+            result_col1, result_col2, result_col3 = st.columns(3)
+
+            with result_col1:
+
+                st.metric(
+                    "Unweighted GPA",
+                    f"{result['unweighted_gpa']:.2f} / 4.00"
                 )
 
-                result_col1, result_col2, result_col3 = st.columns(3)
+            with result_col2:
 
-                with result_col1:
-
-                    st.metric(
-                        "Unweighted GPA",
-                        f"{unweighted_gpa:.2f} / 4.00"
-                    )
-
-                with result_col2:
-
-                    st.metric(
-                        "Estimated Weighted GPA",
-                        f"{weighted_gpa:.2f}"
-                    )
-
-                with result_col3:
-
-                    if unweighted_gpa >= 4.0:
-                        estimated_100 = "93–100"
-                    elif unweighted_gpa >= 3.7:
-                        estimated_100 = "90–92"
-                    elif unweighted_gpa >= 3.3:
-                        estimated_100 = "87–89"
-                    elif unweighted_gpa >= 3.0:
-                        estimated_100 = "83–86"
-                    elif unweighted_gpa >= 2.7:
-                        estimated_100 = "80–82"
-                    elif unweighted_gpa >= 2.3:
-                        estimated_100 = "77–79"
-                    elif unweighted_gpa >= 2.0:
-                        estimated_100 = "73–76"
-                    elif unweighted_gpa >= 1.7:
-                        estimated_100 = "70–72"
-                    elif unweighted_gpa >= 1.3:
-                        estimated_100 = "67–69"
-                    elif unweighted_gpa >= 1.0:
-                        estimated_100 = "65–66"
-                    else:
-                        estimated_100 = "Below 65"
-
-                    st.metric(
-                        "Approx. 100-Point Range",
-                        estimated_100
-                    )
-
-                st.caption(
-                    "Weighted estimate used here: Regular +0.0, Honors +0.5, "
-                    "AP/IB +1.0, Dual Enrollment +1.0. Your school may use a different system."
+                st.metric(
+                    "Estimated Weighted GPA",
+                    f"{result['weighted_gpa']:.2f}"
                 )
 
-                with st.expander(
-                    "See course-by-course calculation"
+            with result_col3:
+
+                st.metric(
+                    "Approx. 100-Point Range",
+                    result["estimated_100"]
+                )
+
+            st.caption(
+                "Weighted estimate used here: Regular +0.0, Honors +0.5, "
+                "AP/IB +1.0, Dual Enrollment +1.0. Your school may use a different system."
+            )
+
+            with st.expander(
+                "See course-by-course calculation"
+            ):
+
+                st.dataframe(
+                    pd.DataFrame(
+                        result["calculation_rows"]
+                    ),
+                    use_container_width=True,
+                    hide_index=True
+                )
+
+            st.divider()
+
+            if st.session_state.gpa_results_confirmed:
+
+                st.success(
+                    "✅ GPA results confirmed. You can still restart the calculator "
+                    "below if you want to try different courses or grades."
+                )
+
+            else:
+
+                st.write(
+                    "If these courses and grades look correct, confirm your results. "
+                    "Nothing is saved to your official school record."
+                )
+
+                if st.button(
+                    "✅ Confirm My GPA Results",
+                    type="primary",
+                    use_container_width=True,
+                    key="gpa_confirm_results"
                 ):
 
-                    calculation_rows = []
-
-                    for course in course_rows:
-
-                        base = grade_points[
-                            course["grade"]
-                        ]
-
-                        weighted = (
-                            base
-                            + level_bonus[
-                                course["level"]
-                            ]
-                        )
-
-                        calculation_rows.append(
-                            {
-                                "Course": course["name"],
-                                "Grade": course["grade"],
-                                "Level": course["level"],
-                                "Credits": course["credits"],
-                                "Unweighted Points": round(base, 2),
-                                "Weighted Points": round(weighted, 2)
-                            }
-                        )
-
-                    st.dataframe(
-                        pd.DataFrame(
-                            calculation_rows
-                        ),
-                        use_container_width=True,
-                        hide_index=True
-                    )
+                    st.session_state.gpa_results_confirmed = True
+                    st.rerun()
 
     # --------------------------------------------------------
     # GPA SCALE CONVERTER
@@ -3601,7 +3663,8 @@ elif page == "GPA Calculator":
                 "4.0 GPA → 100-Point Scale",
                 "100-Point Average → 4.0 GPA"
             ],
-            horizontal=True
+            horizontal=True,
+            key="gpa_conversion_direction"
         )
 
         st.divider()
@@ -3614,7 +3677,8 @@ elif page == "GPA Calculator":
                 max_value=4.0,
                 value=3.50,
                 step=0.01,
-                format="%.2f"
+                format="%.2f",
+                key="gpa_four_point_input"
             )
 
             if four_point_gpa >= 4.0:
@@ -3675,7 +3739,8 @@ elif page == "GPA Calculator":
                 max_value=100.0,
                 value=90.0,
                 step=0.1,
-                format="%.1f"
+                format="%.1f",
+                key="gpa_hundred_point_input"
             )
 
             if hundred_average >= 93:
@@ -3766,6 +3831,63 @@ elif page == "GPA Calculator":
             "and a 100-point average. Colleges may recalculate grades using "
             "their own methods, so use these results only as an estimate."
         )
+
+    # --------------------------------------------------------
+    # CONFIRM / RESTART AREA
+    # --------------------------------------------------------
+
+    st.divider()
+
+    st.subheader(
+        "Finished?"
+    )
+
+    st.write(
+        "If you entered something incorrectly or want to test a different set "
+        "of grades, you can restart the GPA tools without affecting your profile."
+    )
+
+    if not st.session_state.gpa_show_restart_confirmation:
+
+        if st.button(
+            "↻ Start Over",
+            use_container_width=True,
+            key="gpa_restart_request"
+        ):
+
+            st.session_state.gpa_show_restart_confirmation = True
+            st.rerun()
+
+    else:
+
+        st.warning(
+            "Start over? This will clear the courses, grades, calculator results, "
+            "and converter inputs on this page."
+        )
+
+        restart_col1, restart_col2 = st.columns(2)
+
+        with restart_col1:
+
+            if st.button(
+                "Yes, Start Over",
+                type="primary",
+                use_container_width=True,
+                key="gpa_restart_confirm",
+                on_click=reset_gpa_tools
+            ):
+                pass
+
+        with restart_col2:
+
+            if st.button(
+                "Cancel",
+                use_container_width=True,
+                key="gpa_restart_cancel"
+            ):
+
+                st.session_state.gpa_show_restart_confirmation = False
+                st.rerun()
 
 
 # ============================================================
