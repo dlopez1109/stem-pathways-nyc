@@ -27,7 +27,7 @@ if "student_profile" not in st.session_state:
 
 
 # --------------------------------------------------
-# WELCOME + QUESTIONNAIRE
+# WELCOME + STEM EXPLORER QUESTIONNAIRE
 # --------------------------------------------------
 
 if not st.session_state.profile_completed:
@@ -46,7 +46,7 @@ if not st.session_state.profile_completed:
 
     st.info(
         "Start by completing your STEM Explorer Profile. "
-        "Your responses will help personalize your pathway."
+        "Your responses will help personalize your experience."
     )
 
     st.divider()
@@ -54,12 +54,34 @@ if not st.session_state.profile_completed:
     st.header("Create Your STEM Explorer Profile")
 
     st.write(
-        "There are no right or wrong answers. "
-        "This is designed to understand what you want to explore."
+        "Tell us about yourself, your interests, and what you hope to explore. "
+        "There are no right or wrong answers."
     )
 
-    name = st.text_input(
+    # --------------------------------------------------
+    # BASIC INFORMATION
+    # --------------------------------------------------
+
+    st.subheader("About You")
+
+    first_name = st.text_input(
         "First name"
+    )
+
+    middle_name = st.text_input(
+        "Middle name (optional)"
+    )
+
+    last_name = st.text_input(
+        "Last name"
+    )
+
+    age = st.number_input(
+        "Age",
+        min_value=13,
+        max_value=19,
+        value=15,
+        step=1
     )
 
     grade = st.selectbox(
@@ -82,6 +104,14 @@ if not st.session_state.profile_completed:
             "Staten Island"
         ]
     )
+
+    st.divider()
+
+    # --------------------------------------------------
+    # STEM INTERESTS
+    # --------------------------------------------------
+
+    st.subheader("Your STEM Interests")
 
     interests = st.multiselect(
         "Which STEM fields currently interest you?",
@@ -121,6 +151,14 @@ if not st.session_state.profile_completed:
         ]
     )
 
+    st.divider()
+
+    # --------------------------------------------------
+    # GOALS
+    # --------------------------------------------------
+
+    st.subheader("Your Goals")
+
     goals = st.multiselect(
         "What would you like to do next?",
         [
@@ -150,9 +188,9 @@ if not st.session_state.profile_completed:
     confidence = st.slider(
         "How confident are you about your current STEM interests?",
         min_value=1,
-        max_value=5,
-        value=3,
-        help="1 = Still figuring it out, 5 = Very confident"
+        max_value=10,
+        value=5,
+        help="1 = Still exploring, 10 = Very confident in my current interests"
     )
 
     weekly_time = st.selectbox(
@@ -171,16 +209,26 @@ if not st.session_state.profile_completed:
 
     st.divider()
 
+    # --------------------------------------------------
+    # CREATE PROFILE
+    # --------------------------------------------------
+
     if st.button(
         "Create My STEM Profile",
         type="primary",
         use_container_width=True
     ):
 
-        if not name.strip():
+        if not first_name.strip():
 
             st.warning(
                 "Please enter your first name."
+            )
+
+        elif not last_name.strip():
+
+            st.warning(
+                "Please enter your last name."
             )
 
         elif not interests:
@@ -198,7 +246,10 @@ if not st.session_state.profile_completed:
         else:
 
             st.session_state.student_profile = {
-                "name": name.strip(),
+                "first_name": first_name.strip(),
+                "middle_name": middle_name.strip(),
+                "last_name": last_name.strip(),
+                "age": age,
                 "grade": grade,
                 "borough": borough,
                 "interests": interests,
@@ -216,25 +267,45 @@ if not st.session_state.profile_completed:
 
 
 # --------------------------------------------------
-# PERSONALIZED PLATFORM
+# PERSONALIZED STUDENT PLATFORM
 # --------------------------------------------------
 
 else:
 
     profile = st.session_state.student_profile
 
+    # Create full name
+
+    if profile["middle_name"]:
+
+        full_name = (
+            f"{profile['first_name']} "
+            f"{profile['middle_name']} "
+            f"{profile['last_name']}"
+        )
+
+    else:
+
+        full_name = (
+            f"{profile['first_name']} "
+            f"{profile['last_name']}"
+        )
+
+    # --------------------------------------------------
+    # DASHBOARD HEADER
+    # --------------------------------------------------
+
     st.title(
-        f"Welcome, {profile['name']} 👋"
+        f"Welcome, {profile['first_name']} 👋"
     )
 
     st.write(
         "Your STEM pathway begins with exploration. "
-        "Use your profile to discover fields, skills, projects, "
-        "and opportunities that can help you keep progressing."
+        "Use your profile to discover fields, develop skills, build projects, "
+        "and find opportunities that can help you continue progressing."
     )
 
     st.divider()
-
 
     # --------------------------------------------------
     # PROFILE SUMMARY
@@ -242,26 +313,41 @@ else:
 
     st.header("Your STEM Explorer Profile")
 
-    col1, col2 = st.columns(2)
+    st.subheader(full_name)
+
+    col1, col2, col3 = st.columns(3)
 
     with col1:
+
+        st.metric(
+            "Age",
+            profile["age"]
+        )
+
+    with col2:
 
         st.metric(
             "Grade",
             profile["grade"]
         )
 
+    with col3:
+
         st.metric(
             "Borough",
             profile["borough"]
         )
 
-    with col2:
+    col4, col5 = st.columns(2)
+
+    with col4:
 
         st.metric(
             "Interest Confidence",
-            f"{profile['confidence']}/5"
+            f"{profile['confidence']}/10"
         )
+
+    with col5:
 
         st.metric(
             "Weekly Exploration",
@@ -271,13 +357,31 @@ else:
     st.write("### Current STEM Interests")
 
     for interest in profile["interests"]:
+
         st.write(
             f"• {interest}"
+        )
+
+    st.write("### Previous STEM Experience")
+
+    if profile["experience_areas"]:
+
+        for activity in profile["experience_areas"]:
+
+            st.write(
+                f"• {activity}"
+            )
+
+    else:
+
+        st.write(
+            "No previous experience selected."
         )
 
     st.write("### Your Goals")
 
     for goal in profile["goals"]:
+
         st.write(
             f"• {goal}"
         )
@@ -290,12 +394,16 @@ else:
 
     st.divider()
 
-
     # --------------------------------------------------
-    # STARTING PATHWAY
+    # STARTING STEM PATHWAY
     # --------------------------------------------------
 
-    st.header("Your Starting Pathway")
+    st.header("Your Starting STEM Pathway")
+
+    st.write(
+        "Based on your current interests, here is one area you can begin "
+        "exploring. Your pathway can change as you discover new interests."
+    )
 
     primary_interest = profile["interests"][0]
 
@@ -315,13 +423,13 @@ else:
 
         "Computer Engineering": {
             "skill": "Python and digital electronics",
-            "project": "Build a small hardware + software project",
+            "project": "Build a small hardware and software system",
             "explore": "Embedded systems and computer architecture"
         },
 
         "Computer Science": {
             "skill": "Python programming",
-            "project": "Build your first interactive web application",
+            "project": "Build an interactive web application",
             "explore": "Software engineering and algorithms"
         },
 
@@ -346,24 +454,24 @@ else:
         "Biology": {
             "skill": "Experimental design",
             "project": "Investigate a biological research question",
-            "explore": "Biotechnology and research"
+            "explore": "Biotechnology and scientific research"
         },
 
         "Physics": {
             "skill": "Mathematical modeling",
             "project": "Build a physics simulation",
-            "explore": "Engineering and applied physics"
+            "explore": "Applied physics and engineering"
         },
 
         "Mathematics": {
             "skill": "Problem solving and mathematical modeling",
             "project": "Use mathematics to model a real-world problem",
-            "explore": "Applied mathematics and engineering"
+            "explore": "Applied mathematics"
         },
 
         "Engineering": {
-            "skill": "Engineering design process",
-            "project": "Identify a problem and prototype a solution",
+            "skill": "The engineering design process",
+            "project": "Identify a real problem and prototype a solution",
             "explore": "Different engineering disciplines"
         },
 
@@ -375,8 +483,8 @@ else:
 
         "Environmental Science": {
             "skill": "Data collection and analysis",
-            "project": "Analyze an environmental issue in NYC",
-            "explore": "Environmental engineering"
+            "project": "Analyze an environmental issue affecting NYC",
+            "explore": "Environmental engineering and sustainability"
         },
 
         "Not sure yet": {
@@ -406,24 +514,24 @@ else:
         )
 
         st.write(
-            f"**Suggested starter project:** {pathway['project']}"
+            f"**Suggested project:** {pathway['project']}"
         )
 
         st.write(
-            f"**Area to explore:** {pathway['explore']}"
+            f"**Explore further:** {pathway['explore']}"
         )
 
     st.divider()
 
-
     # --------------------------------------------------
-    # OPPORTUNITY FINDER
+    # OPPORTUNITIES
     # --------------------------------------------------
 
     st.header("Explore Opportunities")
 
     st.write(
-        "Find opportunities based on the information in your STEM profile."
+        "Discover STEM opportunities that match your grade, borough, "
+        "interests, goals, and accessibility preferences."
     )
 
     opportunity_types = st.multiselect(
@@ -438,9 +546,8 @@ else:
         ]
     )
 
-
     # --------------------------------------------------
-    # ELIGIBILITY
+    # ELIGIBILITY CHECK
     # --------------------------------------------------
 
     def is_eligible(opportunity):
@@ -463,9 +570,8 @@ else:
 
         return True
 
-
     # --------------------------------------------------
-    # MATCHING
+    # MATCHING ALGORITHM
     # --------------------------------------------------
 
     def calculate_match(opportunity):
@@ -484,6 +590,8 @@ else:
             for item in str(opportunity["boroughs_served"]).split(";")
         ]
 
+        # STEM interest alignment
+
         max_score += 40
 
         if any(
@@ -496,6 +604,8 @@ else:
             reasons.append(
                 "Your STEM interests align with this opportunity."
             )
+
+        # Opportunity type alignment
 
         if opportunity_types:
 
@@ -510,6 +620,8 @@ else:
                 reasons.append(
                     "This matches the opportunity type you selected."
                 )
+
+        # Financial accessibility
 
         max_score += 15
 
@@ -535,6 +647,8 @@ else:
 
             score += 15
 
+        # Borough accessibility
+
         max_score += 15
 
         if profile["borough"] in boroughs_served:
@@ -542,8 +656,11 @@ else:
             score += 15
 
             reasons.append(
-                f"This opportunity serves students in the {profile['borough']}."
+                f"This opportunity is available to students in the "
+                f"{profile['borough']}."
             )
+
+        # Bronx-focused opportunities
 
         if profile["borough"] == "Bronx":
 
@@ -565,9 +682,8 @@ else:
 
         return percentage, reasons
 
-
     # --------------------------------------------------
-    # RESULTS
+    # OPPORTUNITY RESULTS
     # --------------------------------------------------
 
     if st.button(
@@ -615,7 +731,8 @@ else:
 
             st.info(
                 "No eligible opportunities are currently available "
-                "for this profile in our database."
+                "for this profile in our database. "
+                "The STEM Pathways NYC database is still growing."
             )
 
         else:
@@ -632,17 +749,24 @@ else:
                         result["organization"]
                     )
 
-                    st.metric(
-                        "Match",
-                        f"{result['score']}%"
-                    )
+                    col1, col2 = st.columns(2)
+
+                    with col1:
+
+                        st.metric(
+                            "Match",
+                            f"{result['score']}%"
+                        )
+
+                    with col2:
+
+                        st.metric(
+                            "Type",
+                            result["type"]
+                        )
 
                     st.write(
                         result["description"]
-                    )
-
-                    st.write(
-                        f"**Type:** {result['type']}"
                     )
 
                     st.write(
@@ -677,7 +801,6 @@ else:
                         use_container_width=True
                     )
 
-
     # --------------------------------------------------
     # PROFILE CONTROLS
     # --------------------------------------------------
@@ -692,12 +815,25 @@ else:
 
         st.rerun()
 
-
     # --------------------------------------------------
-    # FOOTER
+    # ABOUT
     # --------------------------------------------------
 
     st.divider()
+
+    st.header("About STEM Pathways NYC")
+
+    st.write(
+        "STEM Pathways NYC is a student-built platform designed to help "
+        "high school students explore STEM beyond the classroom and discover "
+        "pathways they can continue pursuing over time."
+    )
+
+    st.write(
+        "The platform is being developed with a particular focus on expanding "
+        "access for students in the Bronx while remaining available to "
+        "students throughout New York City."
+    )
 
     st.caption(
         "STEM Pathways NYC • Explore • Build • Discover"
