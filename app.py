@@ -28,12 +28,12 @@ careers = pd.read_csv("data/careers.csv")
 def format_salary(value):
 
     if pd.isna(value):
-        return "Data coming soon"
+        return "Data unavailable"
 
     try:
         return f"${int(float(value)):,}"
     except:
-        return "Data coming soon"
+        return "Data unavailable"
 
 
 # --------------------------------------------------
@@ -90,14 +90,10 @@ if not st.session_state.profile_completed:
     col1, col2 = st.columns(2)
 
     with col1:
-        first_name = st.text_input(
-            "First name"
-        )
+        first_name = st.text_input("First name")
 
     with col2:
-        last_name = st.text_input(
-            "Last name"
-        )
+        last_name = st.text_input("Last name")
 
     middle_name = st.text_input(
         "Middle name (optional)"
@@ -106,7 +102,6 @@ if not st.session_state.profile_completed:
     col3, col4, col5 = st.columns(3)
 
     with col3:
-
         age = st.number_input(
             "Age",
             min_value=13,
@@ -116,19 +111,12 @@ if not st.session_state.profile_completed:
         )
 
     with col4:
-
         grade = st.selectbox(
             "Grade",
-            [
-                "9",
-                "10",
-                "11",
-                "12"
-            ]
+            ["9", "10", "11", "12"]
         )
 
     with col5:
-
         borough = st.selectbox(
             "Borough",
             [
@@ -143,7 +131,7 @@ if not st.session_state.profile_completed:
     st.divider()
 
     # --------------------------------------------------
-    # STEM INTERESTS
+    # INTERESTS
     # --------------------------------------------------
 
     st.subheader("2. Your STEM Interests")
@@ -255,25 +243,21 @@ if not st.session_state.profile_completed:
     ):
 
         if not first_name.strip():
-
             st.warning(
                 "Please enter your first name."
             )
 
         elif not last_name.strip():
-
             st.warning(
                 "Please enter your last name."
             )
 
         elif not interests:
-
             st.warning(
                 "Please select at least one STEM interest."
             )
 
         elif not goals:
-
             st.warning(
                 "Please select at least one goal."
             )
@@ -303,16 +287,12 @@ if not st.session_state.profile_completed:
 
 
 # --------------------------------------------------
-# MAIN DASHBOARD
+# MAIN APP
 # --------------------------------------------------
 
 else:
 
     profile = st.session_state.student_profile
-
-    # --------------------------------------------------
-    # FULL NAME
-    # --------------------------------------------------
 
     if profile["middle_name"]:
 
@@ -329,16 +309,13 @@ else:
             f"{profile['last_name']}"
         )
 
-
     # --------------------------------------------------
-    # SIDEBAR NAVIGATION
+    # SIDEBAR
     # --------------------------------------------------
 
     with st.sidebar:
 
-        st.title(
-            "STEM Pathways NYC"
-        )
+        st.title("STEM Pathways NYC")
 
         st.write(
             f"**{profile['first_name']} {profile['last_name']}**"
@@ -408,12 +385,10 @@ else:
             "Explore • Build • Discover"
         )
 
-
     page = st.session_state.current_page
 
-
     # --------------------------------------------------
-    # DASHBOARD PAGE
+    # DASHBOARD
     # --------------------------------------------------
 
     if page == "Dashboard":
@@ -467,13 +442,9 @@ else:
             "Your Current Direction"
         )
 
-        with st.container(
-            border=True
-        ):
+        with st.container(border=True):
 
-            st.subheader(
-                primary_interest
-            )
+            st.subheader(primary_interest)
 
             st.write(
                 "This is currently your primary STEM interest based on your profile. "
@@ -495,17 +466,15 @@ else:
 
         with col1:
 
-            with st.container(
-                border=True
-            ):
+            with st.container(border=True):
 
                 st.subheader(
                     "🧭 Explore Your Pathway"
                 )
 
                 st.write(
-                    "Explore recommended majors, careers, "
-                    "skills, and project ideas."
+                    "Explore recommended majors, careers, skills, "
+                    "salary information, and project ideas."
                 )
 
                 if st.button(
@@ -518,9 +487,7 @@ else:
 
         with col2:
 
-            with st.container(
-                border=True
-            ):
+            with st.container(border=True):
 
                 st.subheader(
                     "🛠️ Build a Project"
@@ -541,9 +508,7 @@ else:
 
         with col3:
 
-            with st.container(
-                border=True
-            ):
+            with st.container(border=True):
 
                 st.subheader(
                     "💼 Find Opportunities"
@@ -562,7 +527,6 @@ else:
                     st.session_state.current_page = "Opportunities"
                     st.rerun()
 
-
     # --------------------------------------------------
     # MY STEM PATHWAY
     # --------------------------------------------------
@@ -580,10 +544,6 @@ else:
         )
 
         st.divider()
-
-        # --------------------------------------------------
-        # CAREER EXPLORER QUESTIONS
-        # --------------------------------------------------
 
         st.header(
             "Discover Your STEM Direction"
@@ -683,22 +643,19 @@ else:
             ]
         )
 
-
         # --------------------------------------------------
-        # CAREER / MAJOR DATABASE
+        # MAJOR / CAREER MAPPING
         # --------------------------------------------------
 
         career_database = {
 
             "Engineering": {
-
                 "majors": [
                     "Engineering",
                     "Industrial Engineering",
                     "Civil Engineering",
                     "Systems Engineering"
                 ],
-
                 "careers": [
                     "Civil Engineer",
                     "Industrial Engineer",
@@ -709,12 +666,10 @@ else:
             },
 
             "Electrical Engineering": {
-
                 "majors": [
                     "Electrical Engineering",
                     "Electrical and Computer Engineering"
                 ],
-
                 "careers": [
                     "Electrical Engineer",
                     "Electronics Engineer",
@@ -727,13 +682,11 @@ else:
             },
 
             "Mechanical Engineering": {
-
                 "majors": [
                     "Mechanical Engineering",
                     "Aerospace Engineering",
                     "Mechatronics"
                 ],
-
                 "careers": [
                     "Mechanical Engineer",
                     "Aerospace Engineer",
@@ -746,12 +699,10 @@ else:
             },
 
             "Computer Engineering": {
-
                 "majors": [
                     "Computer Engineering",
                     "Electrical and Computer Engineering"
                 ],
-
                 "careers": [
                     "Computer Hardware Engineer",
                     "Embedded Systems Engineer",
@@ -764,13 +715,11 @@ else:
             },
 
             "Computer Science": {
-
                 "majors": [
                     "Computer Science",
                     "Software Engineering",
                     "Cybersecurity"
                 ],
-
                 "careers": [
                     "Software Developer",
                     "Backend Developer",
@@ -784,13 +733,11 @@ else:
             },
 
             "Artificial Intelligence": {
-
                 "majors": [
                     "Computer Science",
                     "Artificial Intelligence",
                     "Data Science"
                 ],
-
                 "careers": [
                     "Machine Learning Engineer",
                     "AI Engineer",
@@ -803,14 +750,12 @@ else:
             },
 
             "Data Science": {
-
                 "majors": [
                     "Data Science",
                     "Statistics",
                     "Computer Science",
                     "Applied Mathematics"
                 ],
-
                 "careers": [
                     "Data Scientist",
                     "Data Analyst",
@@ -823,12 +768,10 @@ else:
             },
 
             "Biomedical Engineering": {
-
                 "majors": [
                     "Biomedical Engineering",
                     "Bioengineering"
                 ],
-
                 "careers": [
                     "Biomedical Engineer",
                     "Medical Device Engineer",
@@ -840,14 +783,12 @@ else:
             },
 
             "Biology": {
-
                 "majors": [
                     "Biology",
                     "Biochemistry",
                     "Molecular Biology",
                     "Biotechnology"
                 ],
-
                 "careers": [
                     "Biologist",
                     "Microbiologist",
@@ -860,13 +801,11 @@ else:
             },
 
             "Physics": {
-
                 "majors": [
                     "Physics",
                     "Applied Physics",
                     "Engineering Physics"
                 ],
-
                 "careers": [
                     "Physicist",
                     "Optical Engineer",
@@ -878,14 +817,12 @@ else:
             },
 
             "Mathematics": {
-
                 "majors": [
                     "Mathematics",
                     "Applied Mathematics",
                     "Statistics",
                     "Actuarial Science"
                 ],
-
                 "careers": [
                     "Mathematician",
                     "Statistician",
@@ -897,13 +834,11 @@ else:
             },
 
             "Environmental Science": {
-
                 "majors": [
                     "Environmental Science",
                     "Environmental Engineering",
                     "Earth Science"
                 ],
-
                 "careers": [
                     "Environmental Scientist",
                     "Environmental Engineer",
@@ -915,7 +850,6 @@ else:
             },
 
             "Robotics": {
-
                 "majors": [
                     "Robotics Engineering",
                     "Mechanical Engineering",
@@ -923,7 +857,6 @@ else:
                     "Electrical Engineering",
                     "Mechatronics"
                 ],
-
                 "careers": [
                     "Robotics Engineer",
                     "Mechatronics Engineer",
@@ -935,9 +868,8 @@ else:
             }
         }
 
-
         # --------------------------------------------------
-        # SCORING SYSTEM
+        # FIELD SCORING
         # --------------------------------------------------
 
         scores = {
@@ -956,14 +888,10 @@ else:
             "Robotics": 0
         }
 
-        # Existing STEM interests
-
         for interest in profile["interests"]:
 
             if interest in scores:
                 scores[interest] += 20
-
-        # Programming
 
         scores["Computer Science"] += programming_score * 2
         scores["Computer Engineering"] += programming_score * 1.5
@@ -971,15 +899,11 @@ else:
         scores["Data Science"] += programming_score * 1.5
         scores["Robotics"] += programming_score
 
-        # Hands-on building
-
         scores["Mechanical Engineering"] += hands_on_score * 2
         scores["Electrical Engineering"] += hands_on_score
         scores["Computer Engineering"] += hands_on_score
         scores["Robotics"] += hands_on_score * 2
         scores["Engineering"] += hands_on_score
-
-        # Mathematics
 
         scores["Mathematics"] += math_score * 2
         scores["Physics"] += math_score * 1.5
@@ -988,151 +912,94 @@ else:
         scores["Electrical Engineering"] += math_score
         scores["Mechanical Engineering"] += math_score
 
-        # Electronics
-
         scores["Electrical Engineering"] += electronics_score * 2
         scores["Computer Engineering"] += electronics_score * 2
         scores["Robotics"] += electronics_score * 1.5
-
-        # Science / research
 
         scores["Biology"] += science_score * 2
         scores["Biomedical Engineering"] += science_score * 1.5
         scores["Physics"] += science_score * 1.5
         scores["Environmental Science"] += science_score * 1.5
 
-        # Data / AI
-
         scores["Data Science"] += data_score * 2
         scores["Artificial Intelligence"] += data_score * 2
         scores["Computer Science"] += data_score
         scores["Mathematics"] += data_score
 
-
-        # --------------------------------------------------
-        # PREFERRED WORK
-        # --------------------------------------------------
-
         work_mapping = {
-
             "Building physical machines or products":
                 "Mechanical Engineering",
-
             "Designing electronics and circuits":
                 "Electrical Engineering",
-
             "Programming software":
                 "Computer Science",
-
             "Working with data and artificial intelligence":
                 "Artificial Intelligence",
-
             "Solving healthcare problems":
                 "Biomedical Engineering",
-
             "Conducting scientific research":
                 "Biology",
-
             "Working with mathematics and models":
                 "Mathematics",
-
             "Improving the environment":
                 "Environmental Science",
-
             "Building robots and automated systems":
                 "Robotics"
         }
 
         if preferred_work in work_mapping:
-
-            scores[
-                work_mapping[preferred_work]
-            ] += 25
-
-
-        # --------------------------------------------------
-        # FAVORITE ACTIVITY
-        # --------------------------------------------------
+            scores[work_mapping[preferred_work]] += 25
 
         activity_mapping = {
-
             "Designing something in CAD":
                 "Mechanical Engineering",
-
             "Building a circuit":
                 "Electrical Engineering",
-
             "Writing a program":
                 "Computer Science",
-
             "Analyzing a dataset":
                 "Data Science",
-
             "Running an experiment":
                 "Biology",
-
             "Building a robot":
                 "Robotics",
-
             "Solving difficult math problems":
                 "Mathematics",
-
             "Designing a healthcare device":
                 "Biomedical Engineering",
-
             "Studying the environment":
                 "Environmental Science"
         }
 
         if favorite_activity in activity_mapping:
-
-            scores[
-                activity_mapping[favorite_activity]
-            ] += 20
-
-
-        # --------------------------------------------------
-        # WORK ENVIRONMENT
-        # --------------------------------------------------
+            scores[activity_mapping[favorite_activity]] += 20
 
         environment_mapping = {
-
             "Technology company":
                 "Computer Science",
-
             "Engineering design company":
                 "Mechanical Engineering",
-
             "Engineering laboratory":
                 "Electrical Engineering",
-
             "Research laboratory":
                 "Physics",
-
             "Hospital or healthcare technology":
                 "Biomedical Engineering",
-
             "Manufacturing company":
                 "Mechanical Engineering",
-
             "University or research institution":
                 "Biology",
-
             "Environmental organization":
                 "Environmental Science"
         }
 
         if preferred_environment in environment_mapping:
-
             scores[
-                environment_mapping[
-                    preferred_environment
-                ]
+                environment_mapping[preferred_environment]
             ] += 15
 
-
         # --------------------------------------------------
-        # GENERATE RESULTS
+        # GENERATE RECOMMENDATIONS
         # --------------------------------------------------
 
         if st.button(
@@ -1173,19 +1040,13 @@ else:
                 if max_score_value > 0:
 
                     percentage = round(
-                        (
-                            score /
-                            max_score_value
-                        ) * 100
+                        (score / max_score_value) * 100
                     )
 
                 else:
-
                     percentage = 0
 
-                with st.container(
-                    border=True
-                ):
+                with st.container(border=True):
 
                     st.subheader(
                         f"#{index} {field}"
@@ -1206,14 +1067,12 @@ else:
                     )
 
                     for major in major_info["majors"]:
-
                         st.write(
                             f"• {major}"
                         )
 
-
             # --------------------------------------------------
-            # TOP MAJOR RECOMMENDATION
+            # TOP MAJOR
             # --------------------------------------------------
 
             top_field = top_three[0][0]
@@ -1240,9 +1099,8 @@ else:
 
             st.divider()
 
-
             # --------------------------------------------------
-            # CAREER CARDS + SALARIES
+            # CAREER SALARY CARDS
             # --------------------------------------------------
 
             st.header(
@@ -1251,14 +1109,12 @@ else:
 
             st.write(
                 f"These careers are commonly connected to "
-                f"**{top_field}**. Salary information uses "
-                f"New York metro career data where available."
+                f"**{top_field}**."
             )
 
             st.caption(
-                "Salary benchmarks use occupational wage distributions. "
-                "They are not guaranteed salaries based on a specific number "
-                "of years of experience."
+                "Career-stage benchmarks use national BLS wage percentiles. "
+                "The local average uses New York-area BLS wage data where available."
             )
 
             career_columns = st.columns(2)
@@ -1267,13 +1123,9 @@ else:
                 top_info["careers"]
             ):
 
-                with career_columns[
-                    index % 2
-                ]:
+                with career_columns[index % 2]:
 
-                    with st.container(
-                        border=True
-                    ):
+                    with st.container(border=True):
 
                         st.subheader(
                             career_name
@@ -1286,10 +1138,6 @@ else:
                             == career_name.lower()
                         ]
 
-                        # ----------------------------------
-                        # CAREER EXISTS IN DATABASE
-                        # ----------------------------------
-
                         if not career_match.empty:
 
                             career_data = (
@@ -1297,19 +1145,16 @@ else:
                             )
 
                             st.caption(
-                                career_data[
-                                    "recommended_major"
-                                ]
+                                f"Recommended major: "
+                                f"{career_data['recommended_major']}"
                             )
 
                             st.write(
-                                career_data[
-                                    "description"
-                                ]
+                                career_data["description"]
                             )
 
                             st.markdown(
-                                "#### NYC Metro Salary"
+                                "#### Salary & Career Pay"
                             )
 
                             salary_col1, salary_col2 = (
@@ -1328,7 +1173,7 @@ else:
                                 )
 
                                 st.caption(
-                                    "25th percentile"
+                                    "U.S. 25th percentile"
                                 )
 
                             with salary_col2:
@@ -1343,7 +1188,7 @@ else:
                                 )
 
                                 st.caption(
-                                    "Median wage"
+                                    "U.S. median"
                                 )
 
                             salary_col3, salary_col4 = (
@@ -1362,13 +1207,41 @@ else:
                                 )
 
                                 st.caption(
-                                    "75th percentile"
+                                    "U.S. 75th percentile"
                                 )
 
                             with salary_col4:
 
+                                local_salary_label = (
+                                    "NYC Metro Average"
+                                )
+
+                                if (
+                                    "salary_area"
+                                    in career_data.index
+                                    and
+                                    pd.notna(
+                                        career_data[
+                                            "salary_area"
+                                        ]
+                                    )
+                                ):
+
+                                    if (
+                                        "New York State"
+                                        in str(
+                                            career_data[
+                                                "salary_area"
+                                            ]
+                                        )
+                                    ):
+
+                                        local_salary_label = (
+                                            "New York Average"
+                                        )
+
                                 st.metric(
-                                    "Average Salary",
+                                    local_salary_label,
                                     format_salary(
                                         career_data[
                                             "average_salary"
@@ -1377,7 +1250,7 @@ else:
                                 )
 
                                 st.caption(
-                                    "Mean annual wage"
+                                    "Local mean annual wage"
                                 )
 
                             st.markdown(
@@ -1395,9 +1268,7 @@ else:
                             )
 
                             skills = str(
-                                career_data[
-                                    "skills"
-                                ]
+                                career_data["skills"]
                             ).split(";")
 
                             for skill in skills:
@@ -1407,27 +1278,115 @@ else:
                                 )
 
                             st.markdown(
-                                "#### Salary Information"
+                                "#### Data Details"
                             )
 
-                            st.write(
-                                f"📍 **Area:** "
-                                f"{career_data['salary_area']}"
-                            )
+                            if (
+                                "bls_occupation"
+                                in career_data.index
+                            ):
 
-                            st.write(
-                                f"📅 **Data year:** "
-                                f"{career_data['source_year']}"
-                            )
+                                st.write(
+                                    f"**BLS occupation:** "
+                                    f"{career_data['bls_occupation']}"
+                                )
 
-                            st.write(
-                                f"📊 **Source:** "
-                                f"{career_data['salary_source']}"
-                            )
+                            if (
+                                "soc_code"
+                                in career_data.index
+                            ):
 
-                        # ----------------------------------
-                        # CAREER NOT YET IN DATABASE
-                        # ----------------------------------
+                                st.write(
+                                    f"**SOC code:** "
+                                    f"{career_data['soc_code']}"
+                                )
+
+                            if (
+                                "benchmark_area"
+                                in career_data.index
+                            ):
+
+                                st.write(
+                                    f"**Career benchmark area:** "
+                                    f"{career_data['benchmark_area']}"
+                                )
+
+                            if (
+                                "salary_area"
+                                in career_data.index
+                            ):
+
+                                st.write(
+                                    f"**Local salary area:** "
+                                    f"{career_data['salary_area']}"
+                                )
+
+                            if (
+                                "source_year"
+                                in career_data.index
+                            ):
+
+                                st.write(
+                                    f"**Data year:** "
+                                    f"{career_data['source_year']}"
+                                )
+
+                            if (
+                                "data_type"
+                                in career_data.index
+                            ):
+
+                                st.write(
+                                    f"**Data type:** "
+                                    f"{career_data['data_type']}"
+                                )
+
+                            if (
+                                "salary_mapping_note"
+                                in career_data.index
+                                and pd.notna(
+                                    career_data[
+                                        "salary_mapping_note"
+                                    ]
+                                )
+                                and str(
+                                    career_data[
+                                        "salary_mapping_note"
+                                    ]
+                                ).strip()
+                            ):
+
+                                st.info(
+                                    career_data[
+                                        "salary_mapping_note"
+                                    ]
+                                )
+
+                            if (
+                                "salary_source"
+                                in career_data.index
+                            ):
+
+                                st.write(
+                                    f"**Source:** "
+                                    f"{career_data['salary_source']}"
+                                )
+
+                            if (
+                                "source_url"
+                                in career_data.index
+                                and pd.notna(
+                                    career_data["source_url"]
+                                )
+                            ):
+
+                                st.link_button(
+                                    "View Official BLS Source",
+                                    career_data[
+                                        "source_url"
+                                    ],
+                                    use_container_width=True
+                                )
 
                         else:
 
@@ -1435,40 +1394,32 @@ else:
                                 f"Related field: {top_field}"
                             )
 
-                            st.write(
-                                "Detailed salary, education, and career "
-                                "information for this role is being added "
-                                "to the STEM Pathways NYC career database."
-                            )
-
                             st.info(
-                                "Salary data coming soon."
+                                "Detailed salary information for this "
+                                "career is still being added."
                             )
 
             st.divider()
 
             st.info(
-                "How salary benchmarks work: Early-career and experienced "
-                "figures use the 25th and 75th percentile of workers in the "
-                "occupation when available. These are not guaranteed salaries "
-                "after a certain number of years. Actual pay can vary based on "
-                "experience, employer, specialization, education, and location."
+                "Salary note: Early-career and experienced benchmarks use "
+                "the 25th and 75th percentile of workers in the occupation. "
+                "They do not represent guaranteed salaries after a specific "
+                "number of years. Actual compensation can vary by employer, "
+                "experience, specialization, education, and location."
             )
 
-            st.divider()
-
-
         # --------------------------------------------------
-        # CURRENT SKILL PATHWAY
+        # SKILL PATHWAY
         # --------------------------------------------------
+
+        st.divider()
 
         st.header(
             "Your Current Skill Pathway"
         )
 
-        primary_interest = profile[
-            "interests"
-        ][0]
+        primary_interest = profile["interests"][0]
 
         skill_pathways = {
 
@@ -1611,8 +1562,7 @@ else:
         )
 
         st.write(
-            f"Current pathway: "
-            f"**{primary_interest}**"
+            f"Current pathway: **{primary_interest}**"
         )
 
         st.write(
@@ -1625,24 +1575,19 @@ else:
             start=1
         ):
 
-            with st.container(
-                border=True
-            ):
+            with st.container(border=True):
 
                 st.write(
                     f"**Step {number} — {skill}**"
                 )
 
-
     # --------------------------------------------------
-    # OPPORTUNITIES PAGE
+    # OPPORTUNITIES
     # --------------------------------------------------
 
     elif page == "Opportunities":
 
-        st.title(
-            "Opportunities"
-        )
+        st.title("Opportunities")
 
         st.write(
             "Discover STEM programs and experiences that match "
@@ -1663,21 +1608,12 @@ else:
             ]
         )
 
-
-        # --------------------------------------------------
-        # ELIGIBILITY
-        # --------------------------------------------------
-
-        def is_eligible(
-            opportunity
-        ):
+        def is_eligible(opportunity):
 
             eligible_grades = [
                 item.strip()
                 for item in str(
-                    opportunity[
-                        "grades"
-                    ]
+                    opportunity["grades"]
                 ).split(";")
             ]
 
@@ -1691,21 +1627,12 @@ else:
             ]
 
             return (
-                profile["grade"]
-                in eligible_grades
+                profile["grade"] in eligible_grades
                 and
-                profile["borough"]
-                in boroughs_served
+                profile["borough"] in boroughs_served
             )
 
-
-        # --------------------------------------------------
-        # MATCH SCORE
-        # --------------------------------------------------
-
-        def calculate_match(
-            opportunity
-        ):
+        def calculate_match(opportunity):
 
             score = 0
             max_score = 0
@@ -1714,9 +1641,7 @@ else:
             fields = [
                 item.strip()
                 for item in str(
-                    opportunity[
-                        "fields"
-                    ]
+                    opportunity["fields"]
                 ).split(";")
             ]
 
@@ -1729,15 +1654,11 @@ else:
                 ).split(";")
             ]
 
-            # Interest
-
             max_score += 40
 
             if any(
                 interest in fields
-                for interest in profile[
-                    "interests"
-                ]
+                for interest in profile["interests"]
             ):
 
                 score += 40
@@ -1745,8 +1666,6 @@ else:
                 reasons.append(
                     "Your STEM interests align with this opportunity."
                 )
-
-            # Opportunity type
 
             if opportunity_types:
 
@@ -1764,18 +1683,12 @@ else:
                         "This matches an opportunity type you selected."
                     )
 
-            # Financial access
-
             max_score += 15
 
-            if profile[
-                "financial_support"
-            ]:
+            if profile["financial_support"]:
 
                 cost = str(
-                    opportunity[
-                        "cost"
-                    ]
+                    opportunity["cost"]
                 ).lower()
 
                 aid = str(
@@ -1796,16 +1709,11 @@ else:
                     )
 
             else:
-
                 score += 15
-
-            # Borough access
 
             max_score += 15
 
-            if profile[
-                "borough"
-            ] in boroughs_served:
+            if profile["borough"] in boroughs_served:
 
                 score += 15
 
@@ -1814,11 +1722,7 @@ else:
                     f"{profile['borough']}."
                 )
 
-            # Bronx focus
-
-            if profile[
-                "borough"
-            ] == "Bronx":
+            if profile["borough"] == "Bronx":
 
                 max_score += 10
 
@@ -1835,32 +1739,15 @@ else:
                     )
 
             percentage = round(
-                (
-                    score /
-                    max_score
-                ) * 100
+                (score / max_score) * 100
             )
 
-            return (
-                percentage,
-                reasons
-            )
+            return percentage, reasons
 
-
-        # --------------------------------------------------
-        # FEATURED BRONX OPPORTUNITIES
-        # --------------------------------------------------
-
-        if profile[
-            "borough"
-        ] == "Bronx":
+        if profile["borough"] == "Bronx":
 
             st.header(
                 "Featured for Bronx Students"
-            )
-
-            st.write(
-                "Opportunities in our database that have a specific Bronx focus."
             )
 
             featured = opportunities[
@@ -1880,18 +1767,12 @@ else:
 
             else:
 
-                for _, opportunity in featured.head(
-                    3
-                ).iterrows():
+                for _, opportunity in featured.head(3).iterrows():
 
-                    with st.container(
-                        border=True
-                    ):
+                    with st.container(border=True):
 
                         st.subheader(
-                            opportunity[
-                                "name"
-                            ]
+                            opportunity["name"]
                         )
 
                         st.caption(
@@ -1906,9 +1787,7 @@ else:
                             ]
                         )
 
-                        col1, col2 = (
-                            st.columns(2)
-                        )
+                        col1, col2 = st.columns(2)
 
                         with col1:
 
@@ -1926,25 +1805,14 @@ else:
 
                         st.link_button(
                             "View Opportunity",
-                            opportunity[
-                                "url"
-                            ],
+                            opportunity["url"],
                             use_container_width=True
                         )
 
             st.divider()
 
-
-        # --------------------------------------------------
-        # RECOMMENDED OPPORTUNITIES
-        # --------------------------------------------------
-
         st.header(
             "Recommended for You"
-        )
-
-        st.write(
-            "Generate recommendations using the information in your STEM profile."
         )
 
         if st.button(
@@ -1957,75 +1825,41 @@ else:
 
             for _, opportunity in opportunities.iterrows():
 
-                if not is_eligible(
-                    opportunity
-                ):
+                if not is_eligible(opportunity):
                     continue
 
-                score, reasons = (
-                    calculate_match(
-                        opportunity
-                    )
+                score, reasons = calculate_match(
+                    opportunity
                 )
 
                 results.append({
-
                     "name":
-                        opportunity[
-                            "name"
-                        ],
-
+                        opportunity["name"],
                     "organization":
-                        opportunity[
-                            "organization"
-                        ],
-
+                        opportunity["organization"],
                     "score":
                         score,
-
                     "fields":
-                        opportunity[
-                            "fields"
-                        ],
-
+                        opportunity["fields"],
                     "type":
-                        opportunity[
-                            "opportunity_type"
-                        ],
-
+                        opportunity["opportunity_type"],
                     "cost":
-                        opportunity[
-                            "cost"
-                        ],
-
+                        opportunity["cost"],
                     "financial_aid":
-                        opportunity[
-                            "financial_aid"
-                        ],
-
+                        opportunity["financial_aid"],
                     "status":
-                        opportunity[
-                            "application_status"
-                        ],
-
+                        opportunity["application_status"],
                     "description":
-                        opportunity[
-                            "description"
-                        ],
-
+                        opportunity["description"],
                     "url":
-                        opportunity[
-                            "url"
-                        ],
-
+                        opportunity["url"],
                     "reasons":
                         reasons
                 })
 
             results = sorted(
                 results,
-                key=lambda item:
-                    item["score"],
+                key=lambda item: item["score"],
                 reverse=True
             )
 
@@ -2039,25 +1873,17 @@ else:
 
                 for result in results:
 
-                    with st.container(
-                        border=True
-                    ):
+                    with st.container(border=True):
 
                         st.subheader(
-                            result[
-                                "name"
-                            ]
+                            result["name"]
                         )
 
                         st.caption(
-                            result[
-                                "organization"
-                            ]
+                            result["organization"]
                         )
 
-                        col1, col2 = (
-                            st.columns(2)
-                        )
+                        col1, col2 = st.columns(2)
 
                         with col1:
 
@@ -2070,15 +1896,11 @@ else:
 
                             st.metric(
                                 "Opportunity Type",
-                                result[
-                                    "type"
-                                ]
+                                result["type"]
                             )
 
                         st.write(
-                            result[
-                                "description"
-                            ]
+                            result["description"]
                         )
 
                         st.write(
@@ -2105,9 +1927,7 @@ else:
                             "Why this opportunity matches your profile"
                         ):
 
-                            for reason in result[
-                                "reasons"
-                            ]:
+                            for reason in result["reasons"]:
 
                                 st.write(
                                     f"• {reason}"
@@ -2115,32 +1935,22 @@ else:
 
                         st.link_button(
                             "View Official Opportunity",
-                            result[
-                                "url"
-                            ],
+                            result["url"],
                             use_container_width=True
                         )
 
         st.divider()
 
-
-        # --------------------------------------------------
-        # BROWSE ALL OPPORTUNITIES
-        # --------------------------------------------------
-
         st.header(
             "Browse All Opportunities"
-        )
-
-        st.write(
-            "Explore everything currently available in the STEM Pathways NYC database."
         )
 
         for _, opportunity in opportunities.iterrows():
 
             if (
                 opportunity_types
-                and str(
+                and
+                str(
                     opportunity[
                         "opportunity_type"
                     ]
@@ -2154,14 +1964,10 @@ else:
             ):
 
                 st.write(
-                    opportunity[
-                        "description"
-                    ]
+                    opportunity["description"]
                 )
 
-                col1, col2 = (
-                    st.columns(2)
-                )
+                col1, col2 = st.columns(2)
 
                 with col1:
 
@@ -2199,21 +2005,16 @@ else:
 
                 st.link_button(
                     "View Official Opportunity",
-                    opportunity[
-                        "url"
-                    ]
+                    opportunity["url"]
                 )
 
-
     # --------------------------------------------------
-    # PROJECTS PAGE
+    # PROJECTS
     # --------------------------------------------------
 
     elif page == "Projects":
 
-        st.title(
-            "Projects"
-        )
+        st.title("Projects")
 
         st.write(
             "Use hands-on projects to explore your interests, "
@@ -2422,35 +2223,23 @@ else:
 
         shown_projects = False
 
-        for interest in profile[
-            "interests"
-        ]:
+        for interest in profile["interests"]:
 
             if interest in project_library:
 
                 shown_projects = True
 
-                st.header(
-                    interest
-                )
+                st.header(interest)
 
                 for level, project in (
-                    project_library[
-                        interest
-                    ]
+                    project_library[interest]
                 ):
 
-                    with st.container(
-                        border=True
-                    ):
+                    with st.container(border=True):
 
-                        st.caption(
-                            level
-                        )
+                        st.caption(level)
 
-                        st.subheader(
-                            project
-                        )
+                        st.subheader(project)
 
         if not shown_projects:
 
@@ -2459,16 +2248,13 @@ else:
                 "will be added as the platform grows."
             )
 
-
     # --------------------------------------------------
-    # RESOURCES PAGE
+    # RESOURCES
     # --------------------------------------------------
 
     elif page == "Resources":
 
-        st.title(
-            "Resources"
-        )
+        st.title("Resources")
 
         st.write(
             "Build the skills you need using free and accessible STEM learning resources."
@@ -2480,15 +2266,11 @@ else:
             "Verified external learning resources will be added gradually."
         )
 
-        col1, col2 = (
-            st.columns(2)
-        )
+        col1, col2 = st.columns(2)
 
         with col1:
 
-            with st.container(
-                border=True
-            ):
+            with st.container(border=True):
 
                 st.subheader(
                     "💻 Programming"
@@ -2498,9 +2280,7 @@ else:
                     "Python • GitHub • Web Development • Data Analysis"
                 )
 
-            with st.container(
-                border=True
-            ):
+            with st.container(border=True):
 
                 st.subheader(
                     "⚙️ Engineering"
@@ -2512,9 +2292,7 @@ else:
 
         with col2:
 
-            with st.container(
-                border=True
-            ):
+            with st.container(border=True):
 
                 st.subheader(
                     "🔬 Research"
@@ -2525,9 +2303,7 @@ else:
                     "Scientific Writing • Analysis"
                 )
 
-            with st.container(
-                border=True
-            ):
+            with st.container(border=True):
 
                 st.subheader(
                     "🎓 Career Exploration"
@@ -2538,20 +2314,15 @@ else:
                     "Research Careers • Technical Careers"
                 )
 
-
     # --------------------------------------------------
-    # PROFILE PAGE
+    # PROFILE
     # --------------------------------------------------
 
     elif page == "My Profile":
 
-        st.title(
-            "My Profile"
-        )
+        st.title("My Profile")
 
-        st.subheader(
-            full_name
-        )
+        st.subheader(full_name)
 
         st.caption(
             "STEM Explorer Profile"
@@ -2559,39 +2330,27 @@ else:
 
         st.divider()
 
-        col1, col2, col3, col4 = (
-            st.columns(4)
-        )
+        col1, col2, col3, col4 = st.columns(4)
 
         with col1:
-
             st.metric(
                 "Age",
-                profile[
-                    "age"
-                ]
+                profile["age"]
             )
 
         with col2:
-
             st.metric(
                 "Grade",
-                profile[
-                    "grade"
-                ]
+                profile["grade"]
             )
 
         with col3:
-
             st.metric(
                 "Borough",
-                profile[
-                    "borough"
-                ]
+                profile["borough"]
             )
 
         with col4:
-
             st.metric(
                 "Confidence",
                 f"{profile['confidence']}/10"
@@ -2599,9 +2358,7 @@ else:
 
         st.divider()
 
-        col1, col2 = (
-            st.columns(2)
-        )
+        col1, col2 = st.columns(2)
 
         with col1:
 
@@ -2609,10 +2366,7 @@ else:
                 "STEM Interests"
             )
 
-            for interest in profile[
-                "interests"
-            ]:
-
+            for interest in profile["interests"]:
                 st.write(
                     f"• {interest}"
                 )
@@ -2621,9 +2375,7 @@ else:
                 "Previous Experience"
             )
 
-            if profile[
-                "experience_areas"
-            ]:
+            if profile["experience_areas"]:
 
                 for experience in profile[
                     "experience_areas"
@@ -2645,10 +2397,7 @@ else:
                 "Goals"
             )
 
-            for goal in profile[
-                "goals"
-            ]:
-
+            for goal in profile["goals"]:
                 st.write(
                     f"• {goal}"
                 )
@@ -2658,9 +2407,7 @@ else:
             )
 
             st.write(
-                profile[
-                    "exploration_stage"
-                ]
+                profile["exploration_stage"]
             )
 
             st.write(
@@ -2684,7 +2431,6 @@ else:
             st.session_state.current_page = "Dashboard"
 
             st.rerun()
-
 
     # --------------------------------------------------
     # FOOTER
