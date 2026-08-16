@@ -13,7 +13,8 @@ from supabase import create_client
 st.set_page_config(
     page_title="STEM Pathways NYC",
     page_icon="🧭",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 
@@ -580,41 +581,70 @@ st.markdown(
     }
 
 
-    /* Keep Streamlit's sidebar collapse / expand control visible */
-    [data-testid="stSidebarCollapseButton"],
-    [data-testid="stSidebarCollapsedControl"] {
+    /* -------------------------------------------------------
+       STREAMLIT SIDEBAR TOGGLE
+       Keep the native close/reopen control visible and clickable.
+       ------------------------------------------------------- */
+
+    [data-testid="stSidebarCollapsedControl"],
+    button[data-testid="stSidebarCollapsedControl"],
+    button[aria-label="Open sidebar"],
+    button[aria-label="Expand sidebar"],
+    button[title="Open sidebar"],
+    button[title="Expand sidebar"] {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
         pointer-events: auto !important;
-        z-index: 999999 !important;
-    }
-
-    [data-testid="stSidebarCollapseButton"] button,
-    [data-testid="stSidebarCollapsedControl"] button {
+        position: fixed !important;
+        top: 0.75rem !important;
+        left: 0.75rem !important;
+        width: 42px !important;
+        height: 42px !important;
+        align-items: center !important;
+        justify-content: center !important;
         background: #018FC7 !important;
         color: #FFFFFF !important;
-        border: 1px solid #4FC3ED !important;
-        border-radius: 10px !important;
-        box-shadow: 0 4px 12px rgba(1, 143, 199, 0.22) !important;
+        border: 1px solid #63CBEF !important;
+        border-radius: 11px !important;
+        box-shadow: 0 6px 18px rgba(0, 63, 92, 0.28) !important;
+        z-index: 2147483647 !important;
     }
 
-    [data-testid="stSidebarCollapseButton"] button svg,
-    [data-testid="stSidebarCollapsedControl"] button svg {
+    [data-testid="stSidebarCollapsedControl"] svg,
+    button[data-testid="stSidebarCollapsedControl"] svg,
+    button[aria-label="Open sidebar"] svg,
+    button[aria-label="Expand sidebar"] svg,
+    button[title="Open sidebar"] svg,
+    button[title="Expand sidebar"] svg {
         color: #FFFFFF !important;
         fill: #FFFFFF !important;
         stroke: #FFFFFF !important;
     }
 
-    [data-testid="stSidebarCollapseButton"] button:hover,
-    [data-testid="stSidebarCollapsedControl"] button:hover {
-        background: #007EAF !important;
-        border-color: #8DD4EF !important;
+    [data-testid="stSidebarCollapseButton"],
+    button[data-testid="stSidebarCollapseButton"],
+    button[aria-label="Close sidebar"],
+    button[aria-label="Collapse sidebar"],
+    button[title="Close sidebar"],
+    button[title="Collapse sidebar"] {
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        z-index: 2147483647 !important;
     }
 
-    /* Avoid any global rule accidentally covering or clipping the reopen control */
+    /* The Streamlit header must not sit on top of the reopen button. */
     [data-testid="stHeader"] {
-        z-index: 1000 !important;
+        pointer-events: none !important;
+    }
+
+    [data-testid="stHeader"] button,
+    [data-testid="stHeader"] a,
+    [data-testid="stHeader"] [role="button"],
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="stSidebarCollapseButton"] {
+        pointer-events: auto !important;
     }
 
 
