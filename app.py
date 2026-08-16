@@ -1722,7 +1722,7 @@ with st.sidebar:
     st.divider()
 
     st.caption(
-        "MAIN"
+        "HOME"
     )
 
     if st.button(
@@ -1750,7 +1750,7 @@ with st.sidebar:
     st.divider()
 
     st.caption(
-        "EXPLORE"
+        "DISCOVER"
     )
 
     if st.button(
@@ -1787,18 +1787,7 @@ with st.sidebar:
         st.rerun()
 
     if st.button(
-        "⭐ My Favorite Colleges",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "My Favorite Colleges"
-        )
-
-        st.rerun()
-
-    if st.button(
-        "🛠️ Projects",
+        "🛠️ Project Explorer",
         use_container_width=True
     ):
 
@@ -1819,6 +1808,12 @@ with st.sidebar:
 
         st.rerun()
 
+    st.divider()
+
+    st.caption(
+        "MY PROGRESS"
+    )
+
     if st.button(
         "📌 My Applications",
         use_container_width=True
@@ -1826,6 +1821,17 @@ with st.sidebar:
 
         st.session_state.current_page = (
             "My Applications"
+        )
+
+        st.rerun()
+
+    if st.button(
+        "⭐ Favorite Colleges",
+        use_container_width=True
+    ):
+
+        st.session_state.current_page = (
+            "My Favorite Colleges"
         )
 
         st.rerun()
@@ -1879,6 +1885,7 @@ with st.sidebar:
         "🚪 Sign Out",
         use_container_width=True
     ):
+
         st.logout()
 
     if is_admin_user(
@@ -1918,121 +1925,420 @@ page = st.session_state.current_page
 
 if page == "Dashboard":
 
-    st.title(
-        f"Welcome, {profile['first_name']} 👋"
+    # --------------------------------------------------------
+    # LOAD PERSONAL DASHBOARD DATA
+    # --------------------------------------------------------
+
+    dashboard_saved_apps = load_saved_opportunities(
+        user_sub
     )
 
-    st.write(
-        "Your personalized STEM dashboard brings together your "
-        "interests, pathway, careers, projects, and opportunities."
+    dashboard_favorites = load_favorite_colleges(
+        user_sub
     )
-
-    st.divider()
-
-    # --------------------------------------------------------
-    # SNAPSHOT
-    # --------------------------------------------------------
-
-    st.header(
-        "Your STEM Snapshot"
-    )
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-
-        st.metric(
-            "Grade",
-            profile["grade"]
-        )
-
-    with col2:
-
-        st.metric(
-            "Borough",
-            profile["borough"]
-        )
-
-    with col3:
-
-        st.metric(
-            "Interest Confidence",
-            f"{profile['confidence']}/10"
-        )
-
-    with col4:
-
-        st.metric(
-            "Weekly Goal",
-            profile["weekly_time"]
-        )
-
-    st.divider()
-
-    # --------------------------------------------------------
-    # CURRENT DIRECTION
-    # --------------------------------------------------------
 
     primary_interest = (
         profile["interests"][0]
+        if profile.get(
+            "interests"
+        )
+        else
+        "Exploring STEM"
     )
 
-    st.header(
-        "Your Current Direction"
+    application_status_counts = {}
+
+    for item in dashboard_saved_apps:
+
+        status = str(
+            item.get(
+                "status",
+                "Saved"
+            )
+        ).strip()
+
+        application_status_counts[
+            status
+        ] = (
+            application_status_counts.get(
+                status,
+                0
+            )
+            + 1
+        )
+
+    active_applications = sum(
+        application_status_counts.get(
+            status,
+            0
+        )
+        for status in [
+            "Planning to Apply",
+            "Applying"
+        ]
     )
 
-    with st.container(
-        border=True
+    submitted_applications = sum(
+        application_status_counts.get(
+            status,
+            0
+        )
+        for status in [
+            "Applied",
+            "Accepted",
+            "Waitlisted",
+            "Not Selected"
+        ]
+    )
+
+    # --------------------------------------------------------
+    # NEXT SAVED DEADLINE
+    # --------------------------------------------------------
+
+    def dashboard_parse_deadline(
+        value
     ):
 
-        st.subheader(
+        if (
+            value is None
+            or
+            pd.isna(
+                value
+            )
+        ):
+
+            return None
+
+        raw = str(
+            value
+        ).strip()
+
+        if not raw:
+
+            return None
+
+        try:
+
+            parsed = pd.to_datetime(
+                raw,
+                errors="coerce"
+            )
+
+            if pd.notna(
+                parsed
+            ):
+
+                return parsed.to_pydatetime()
+
+        except Exception:
+
+            pass
+
+        month_pattern = (
+            r"(January|February|March|April|May|June|July|August|"
+            r"September|October|November|December)\s+\d{1,2},\s+\d{4}"
+        )
+
+        match = re.search(
+            month_pattern,
+            raw,
+            flags=re.IGNORECASE
+        )
+
+        if match:
+
+            parsed = pd.to_datetime(
+                match.group(0),
+                errors="coerce"
+            )
+
+            if pd.notna(
+                parsed
+            ):
+
+                return parsed.to_pydatetime()
+
+        return None
+
+
+    next_saved_deadline = None
+
+    if (
+        dashboard_saved_apps
+        and
+        not opportunities.empty
+    ):
+
+        saved_name_set = {
+            str(
+                item.get(
+                    "opportunity_name",
+                    ""
+                )
+            )
+            for item in dashboard_saved_apps
+        }
+
+        deadline_candidates = []
+
+        for _, opportunity in opportunities.iterrows():
+
+            opportunity_name = str(
+                opportunity.get(
+                    "name",
+                    ""
+                )
+            )
+
+            if (
+                opportunity_name
+                not in saved_name_set
+            ):
+
+                continue
+
+            parsed_deadline = dashboard_parse_deadline(
+                opportunity.get(
+                    "deadline"
+                )
+            )
+
+            if parsed_deadline is None:
+
+                continue
+
+            if parsed_deadline.tzinfo is None:
+
+                parsed_deadline = (
+                    parsed_deadline.replace(
+                        tzinfo=timezone.utc
+                    )
+                )
+
+            days_left = (
+                parsed_deadline.date()
+                -
+                datetime.now(
+                    timezone.utc
+                ).date()
+            ).days
+
+            if days_left >= 0:
+
+                deadline_candidates.append(
+                    (
+                        parsed_deadline,
+                        days_left,
+                        opportunity_name,
+                        str(
+                            opportunity.get(
+                                "organization",
+                                ""
+                            )
+                        )
+                    )
+                )
+
+        if deadline_candidates:
+
+            deadline_candidates.sort(
+                key=lambda item:
+                    item[0]
+            )
+
+            next_saved_deadline = (
+                deadline_candidates[0]
+            )
+
+    # --------------------------------------------------------
+    # HERO
+    # --------------------------------------------------------
+
+    st.title(
+        f"Welcome back, {profile['first_name']} 👋"
+    )
+
+    st.write(
+        "Your STEM journey in one place — explore careers, build projects, "
+        "discover opportunities, and keep track of what matters next."
+    )
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # JOURNEY SNAPSHOT
+    # --------------------------------------------------------
+
+    st.header(
+        "Your STEM Journey"
+    )
+
+    journey1, journey2, journey3, journey4 = (
+        st.columns(4)
+    )
+
+    with journey1:
+
+        st.metric(
+            "Primary Interest",
             primary_interest
         )
 
-        st.write(
-            "This is currently your primary STEM interest. "
-            "Your pathway can evolve as you gain new experiences."
+    with journey2:
+
+        st.metric(
+            "Saved Programs",
+            len(
+                dashboard_saved_apps
+            )
         )
 
-        st.write(
-            f"**Exploration stage:** "
-            f"{profile['exploration_stage']}"
+    with journey3:
+
+        st.metric(
+            "Favorite Colleges",
+            len(
+                dashboard_favorites
+            )
+        )
+
+    with journey4:
+
+        st.metric(
+            "Applications Submitted",
+            submitted_applications
+        )
+
+    # --------------------------------------------------------
+    # NEXT DEADLINE BANNER
+    # --------------------------------------------------------
+
+    if next_saved_deadline:
+
+        deadline_dt, days_left, program_name, organization = (
+            next_saved_deadline
+        )
+
+        if days_left == 0:
+
+            deadline_message = (
+                "Due today"
+            )
+
+        elif days_left == 1:
+
+            deadline_message = (
+                "1 day remaining"
+            )
+
+        else:
+
+            deadline_message = (
+                f"{days_left} days remaining"
+            )
+
+        with st.container(
+            border=True
+        ):
+
+            deadline_col1, deadline_col2 = (
+                st.columns(
+                    [4, 1]
+                )
+            )
+
+            with deadline_col1:
+
+                st.subheader(
+                    "📅 Your Next Saved Deadline"
+                )
+
+                st.write(
+                    f"**{program_name}**"
+                )
+
+                if organization:
+
+                    st.caption(
+                        organization
+                    )
+
+                st.write(
+                    deadline_dt.strftime(
+                        "%B %d, %Y"
+                    ).replace(
+                        " 0",
+                        " "
+                    )
+                )
+
+            with deadline_col2:
+
+                st.metric(
+                    "Time Left",
+                    deadline_message
+                )
+
+            if st.button(
+                "Open Deadline Calendar",
+                key="dashboard_deadline_calendar",
+                use_container_width=True
+            ):
+
+                st.session_state.current_page = (
+                    "Deadline Calendar"
+                )
+
+                st.rerun()
+
+    elif dashboard_saved_apps:
+
+        st.info(
+            "You have saved opportunities, but none currently have a "
+            "specific upcoming deadline in the database."
+        )
+
+    else:
+
+        st.info(
+            "Save opportunities you care about and their upcoming deadlines "
+            "will appear here automatically."
         )
 
     st.divider()
 
     # --------------------------------------------------------
-    # NEXT STEPS
+    # CONTINUE YOUR JOURNEY
     # --------------------------------------------------------
 
     st.header(
-        "Your Next Steps"
+        "Continue Your Journey"
     )
 
     st.write(
-        "Choose where you want to continue exploring."
+        "Choose what you want to work on next."
     )
 
-    col1, col2, col3 = st.columns(3)
+    action_row1 = st.columns(3)
 
-    with col1:
+    with action_row1[0]:
 
         with st.container(
             border=True
         ):
 
             st.subheader(
-                "🧭 Explore Your Pathway"
+                "🧭 Explore Your Path"
             )
 
             st.write(
-                "Discover majors, careers, salary data, skills, "
-                "and possible directions."
+                "Discover majors, careers, salary data, skills, and "
+                "possible STEM directions."
             )
 
             if st.button(
-                "Open My Pathway",
-                key="dashboard_pathway",
+                "Open My STEM Pathway",
+                key="dashboard_pathway_v2",
                 use_container_width=True
             ):
 
@@ -2042,24 +2348,51 @@ if page == "Dashboard":
 
                 st.rerun()
 
-    with col2:
+    with action_row1[1]:
 
         with st.container(
             border=True
         ):
 
             st.subheader(
-                "🛠️ Build a Project"
+                "🎓 Discover Colleges"
             )
 
             st.write(
-                "Turn your interests into hands-on experience "
-                "through projects."
+                "Answer simple questions and find colleges connected "
+                "to your interests and preferences."
+            )
+
+            if st.button(
+                "Find College Matches",
+                key="dashboard_colleges_v2",
+                use_container_width=True
+            ):
+
+                st.session_state.current_page = (
+                    "College Suggestions"
+                )
+
+                st.rerun()
+
+    with action_row1[2]:
+
+        with st.container(
+            border=True
+        ):
+
+            st.subheader(
+                "🛠️ Build Something"
+            )
+
+            st.write(
+                "Get personalized project ideas based on what you want "
+                "to create and the tools you have."
             )
 
             if st.button(
                 "Explore Projects",
-                key="dashboard_projects",
+                key="dashboard_projects_v2",
                 use_container_width=True
             ):
 
@@ -2069,7 +2402,9 @@ if page == "Dashboard":
 
                 st.rerun()
 
-    with col3:
+    action_row2 = st.columns(3)
+
+    with action_row2[0]:
 
         with st.container(
             border=True
@@ -2081,12 +2416,12 @@ if page == "Dashboard":
 
             st.write(
                 "Discover programs, research, internships, courses, "
-                "competitions, and scholarships."
+                "and scholarships."
             )
 
             if st.button(
-                "Explore Opportunities",
-                key="dashboard_opportunities",
+                "Browse Opportunities",
+                key="dashboard_opportunities_v2",
                 use_container_width=True
             ):
 
@@ -2096,8 +2431,166 @@ if page == "Dashboard":
 
                 st.rerun()
 
+    with action_row2[1]:
+
+        with st.container(
+            border=True
+        ):
+
+            st.subheader(
+                "📌 Track Applications"
+            )
+
+            if active_applications:
+
+                st.write(
+                    f"You currently have **{active_applications}** "
+                    f"application(s) in progress."
+                )
+
+            elif dashboard_saved_apps:
+
+                st.write(
+                    f"You have **{len(dashboard_saved_apps)}** saved "
+                    "opportunity/opportunities."
+                )
+
+            else:
+
+                st.write(
+                    "Save opportunities and manage your application "
+                    "progress in one place."
+                )
+
+            if st.button(
+                "Open My Applications",
+                key="dashboard_applications_v2",
+                use_container_width=True
+            ):
+
+                st.session_state.current_page = (
+                    "My Applications"
+                )
+
+                st.rerun()
+
+    with action_row2[2]:
+
+        with st.container(
+            border=True
+        ):
+
+            st.subheader(
+                "⭐ Review Your College List"
+            )
+
+            if dashboard_favorites:
+
+                top_favorite = (
+                    dashboard_favorites[0].get(
+                        "college_name",
+                        "Your top college"
+                    )
+                )
+
+                st.write(
+                    f"Your current #1 favorite is **{top_favorite}**."
+                )
+
+            else:
+
+                st.write(
+                    "Save colleges you like and arrange them in your "
+                    "personal order."
+                )
+
+            if st.button(
+                "Open Favorite Colleges",
+                key="dashboard_favorites_v2",
+                use_container_width=True
+            ):
+
+                st.session_state.current_page = (
+                    "My Favorite Colleges"
+                )
+
+                st.rerun()
+
+    st.divider()
+
     # --------------------------------------------------------
-    # YOUR STEM INTERESTS - IMPROVED
+    # YOUR CURRENT DIRECTION
+    # --------------------------------------------------------
+
+    st.header(
+        "Your Current Direction"
+    )
+
+    direction_col1, direction_col2 = (
+        st.columns(
+            [2, 1]
+        )
+    )
+
+    with direction_col1:
+
+        with st.container(
+            border=True
+        ):
+
+            st.subheader(
+                primary_interest
+            )
+
+            st.write(
+                "This is currently your primary STEM interest. "
+                "It can change as you explore new fields and experiences."
+            )
+
+            st.write(
+                f"**Exploration stage:** "
+                f"{profile['exploration_stage']}"
+            )
+
+            st.write(
+                f"**Weekly STEM goal:** "
+                f"{profile['weekly_time']}"
+            )
+
+    with direction_col2:
+
+        with st.container(
+            border=True
+        ):
+
+            st.subheader(
+                "Quick Profile"
+            )
+
+            st.write(
+                f"**Grade:** {profile['grade']}"
+            )
+
+            st.write(
+                f"**Borough:** {profile['borough']}"
+            )
+
+            st.write(
+                f"**Interest confidence:** "
+                f"{profile['confidence']}/10"
+            )
+
+            if profile.get(
+                "financial_support"
+            ):
+
+                st.write(
+                    "**Opportunity preference:** "
+                    "Free / financially supported"
+                )
+
+    # --------------------------------------------------------
+    # INTERESTS
     # --------------------------------------------------------
 
     st.divider()
@@ -2106,337 +2599,28 @@ if page == "Dashboard":
         "Your STEM Interests"
     )
 
-    st.write(
-        "Explore the fields you selected when creating your profile. "
-        "Each field includes skills and majors you can investigate next."
-    )
-
-    interest_info = {
-
-        "Engineering": {
-            "description":
-                "Design systems, products, and solutions to real-world problems.",
-
-            "skills": [
-                "Engineering design",
-                "CAD",
-                "Prototyping",
-                "Data analysis"
-            ],
-
-            "majors": [
-                "Mechanical Engineering",
-                "Electrical Engineering",
-                "Industrial Engineering"
-            ]
-        },
-
-        "Electrical Engineering": {
-            "description":
-                "Explore circuits, electronics, power systems, signals, and hardware.",
-
-            "skills": [
-                "Circuit design",
-                "Electronics",
-                "Digital logic",
-                "Arduino"
-            ],
-
-            "majors": [
-                "Electrical Engineering",
-                "Computer Engineering",
-                "Electrical & Computer Engineering"
-            ]
-        },
-
-        "Mechanical Engineering": {
-            "description":
-                "Design machines, products, mechanisms, and physical systems.",
-
-            "skills": [
-                "CAD",
-                "Mechanics",
-                "3D printing",
-                "Prototyping"
-            ],
-
-            "majors": [
-                "Mechanical Engineering",
-                "Aerospace Engineering",
-                "Mechatronics"
-            ]
-        },
-
-        "Computer Engineering": {
-            "description":
-                "Combine computer hardware, electronics, and programming.",
-
-            "skills": [
-                "Digital logic",
-                "Circuit design",
-                "C / C++",
-                "Embedded systems"
-            ],
-
-            "majors": [
-                "Computer Engineering",
-                "Electrical Engineering",
-                "Computer Science"
-            ]
-        },
-
-        "Computer Science": {
-            "description":
-                "Build software, algorithms, applications, and computing systems.",
-
-            "skills": [
-                "Python",
-                "Algorithms",
-                "Data structures",
-                "Git & GitHub"
-            ],
-
-            "majors": [
-                "Computer Science",
-                "Software Engineering",
-                "Cybersecurity"
-            ]
-        },
-
-        "Artificial Intelligence": {
-            "description":
-                "Create systems that learn from data and make intelligent decisions.",
-
-            "skills": [
-                "Python",
-                "Machine learning",
-                "Statistics",
-                "Data analysis"
-            ],
-
-            "majors": [
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science"
-            ]
-        },
-
-        "Data Science": {
-            "description":
-                "Use data, statistics, and programming to solve real-world problems.",
-
-            "skills": [
-                "Python",
-                "Pandas",
-                "Statistics",
-                "SQL"
-            ],
-
-            "majors": [
-                "Data Science",
-                "Statistics",
-                "Applied Mathematics"
-            ]
-        },
-
-        "Biomedical Engineering": {
-            "description":
-                "Use engineering to solve problems in medicine, healthcare, and biology.",
-
-            "skills": [
-                "Biology",
-                "Engineering design",
-                "CAD",
-                "Biomechanics"
-            ],
-
-            "majors": [
-                "Biomedical Engineering",
-                "Bioengineering",
-                "Mechanical Engineering"
-            ]
-        },
-
-        "Biology": {
-            "description":
-                "Study living organisms, biological systems, and scientific research.",
-
-            "skills": [
-                "Experimental design",
-                "Laboratory skills",
-                "Data analysis",
-                "Scientific writing"
-            ],
-
-            "majors": [
-                "Biology",
-                "Biochemistry",
-                "Biotechnology"
-            ]
-        },
-
-        "Physics": {
-            "description":
-                "Study matter, energy, forces, motion, and the physical universe.",
-
-            "skills": [
-                "Calculus",
-                "Mechanics",
-                "Programming",
-                "Mathematical modeling"
-            ],
-
-            "majors": [
-                "Physics",
-                "Applied Physics",
-                "Engineering Physics"
-            ]
-        },
-
-        "Mathematics": {
-            "description":
-                "Use mathematical reasoning and models to understand complex problems.",
-
-            "skills": [
-                "Calculus",
-                "Statistics",
-                "Probability",
-                "Mathematical modeling"
-            ],
-
-            "majors": [
-                "Mathematics",
-                "Applied Mathematics",
-                "Statistics"
-            ]
-        },
-
-        "Environmental Science": {
-            "description":
-                "Study environmental systems and develop solutions to environmental challenges.",
-
-            "skills": [
-                "Environmental analysis",
-                "GIS",
-                "Statistics",
-                "Data collection"
-            ],
-
-            "majors": [
-                "Environmental Science",
-                "Environmental Engineering",
-                "Earth Science"
-            ]
-        },
-
-        "Robotics": {
-            "description":
-                "Combine mechanics, electronics, programming, and automation.",
-
-            "skills": [
-                "Robotics",
-                "Arduino",
-                "Sensors",
-                "Control systems"
-            ],
-
-            "majors": [
-                "Robotics Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering"
-            ]
-        },
-
-        "Not sure yet": {
-            "description":
-                "Explore several STEM areas before deciding which directions interest you most.",
-
-            "skills": [
-                "Try coding",
-                "Build a beginner project",
-                "Explore research",
-                "Compare STEM fields"
-            ],
-
-            "majors": [
-                "Explore multiple majors",
-                "Try introductory courses",
-                "Use the Career Explorer"
-            ]
-        }
-    }
-
-    interest_columns = st.columns(2)
-
-    for index, interest in enumerate(
-        profile["interests"]
+    if profile.get(
+        "interests"
     ):
 
-        info = interest_info.get(
-            interest,
-            {
-                "description":
-                    "Explore this STEM field and discover possible skills and careers.",
-
-                "skills": [],
-
-                "majors": []
-            }
+        st.write(
+            " • ".join(
+                profile[
+                    "interests"
+                ]
+            )
         )
 
-        with interest_columns[
-            index % 2
-        ]:
+    if st.button(
+        "Update My Profile",
+        key="dashboard_edit_profile_v2"
+    ):
 
-            with st.container(
-                border=True
-            ):
+        st.session_state.current_page = (
+            "My Profile"
+        )
 
-                st.subheader(
-                    interest
-                )
-
-                st.write(
-                    info["description"]
-                )
-
-                left_col, right_col = st.columns(2)
-
-                with left_col:
-
-                    st.markdown(
-                        "**Skills to Build**"
-                    )
-
-                    for skill in info["skills"]:
-
-                        st.write(
-                            f"• {skill}"
-                        )
-
-                with right_col:
-
-                    st.markdown(
-                        "**Majors to Explore**"
-                    )
-
-                    for major in info["majors"]:
-
-                        st.write(
-                            f"• {major}"
-                        )
-
-                if st.button(
-                    f"Explore {interest}",
-                    key=f"interest_{index}",
-                    use_container_width=True
-                ):
-
-                    st.session_state.current_page = (
-                        "My STEM Pathway"
-                    )
-
-                    st.rerun()
+        st.rerun()
 
 
 # ============================================================
