@@ -5451,14 +5451,6 @@ elif page == "Opportunities":
                             f"{search_star_display}"
                         )
 
-                        st.caption(
-                            str(
-                                opportunity.get(
-                                    "selectivity",
-                                    "Not rated yet"
-                                )
-                            )
-                        )
 
                         st.write(
                             f"**Acceptance Rate:** "
@@ -5752,14 +5744,6 @@ elif page == "Opportunities":
                         f"{rec_star_display}"
                     )
 
-                    st.caption(
-                        str(
-                            recommended_opportunity.get(
-                                "selectivity",
-                                "Not rated yet"
-                            )
-                        )
-                    )
 
                     st.write(
                         f"**Acceptance Rate:** "
