@@ -844,6 +844,14 @@ st.markdown(
         border-color: #111111 !important;
     }
 
+
+    /* Keep sidebar permanently open: hide Streamlit's native collapse control */
+    [data-testid="stSidebarCollapseButton"],
+    button[aria-label*="collapse sidebar" i],
+    button[title*="collapse sidebar" i] {
+        display: none !important;
+    }
+
     </style>
     """,
     unsafe_allow_html=True
