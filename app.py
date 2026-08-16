@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import json
+import re
 from datetime import datetime, timezone
 from supabase import create_client
 
@@ -1503,6 +1504,17 @@ with st.sidebar:
 
         st.session_state.current_page = (
             "Opportunities"
+        )
+
+        st.rerun()
+
+    if st.button(
+        "📅 Deadline Calendar",
+        use_container_width=True
+    ):
+
+        st.session_state.current_page = (
+            "Deadline Calendar"
         )
 
         st.rerun()
@@ -3559,6 +3571,705 @@ elif page == "Opportunities":
                         ],
                         use_container_width=True
                     )
+
+
+# ============================================================
+# DEADLINE CALENDAR
+# ============================================================
+
+elif page == "Deadline Calendar":
+
+    st.title(
+        "Deadline Calendar"
+    )
+
+    st.write(
+        "Track upcoming STEM program and application deadlines in one place."
+    )
+
+    st.info(
+        "Dates come from the STEM Pathways NYC opportunities database. "
+        "Always confirm the final deadline on the official program website before submitting."
+    )
+
+    st.divider()
+
+    if opportunities.empty:
+
+        st.warning(
+            "The opportunities database is currently unavailable."
+        )
+
+    else:
+
+        # ----------------------------------------------------
+        # HELPERS
+        # ----------------------------------------------------
+
+        def parse_deadline_value(value):
+
+            if value is None or pd.isna(value):
+                return None
+
+            raw = str(
+                value
+            ).strip()
+
+            if not raw:
+                return None
+
+            lower = raw.lower()
+
+            if any(
+                phrase in lower
+                for phrase in [
+                    "not yet announced",
+                    "future cycle",
+                    "varies",
+                    "typically",
+                    "expected",
+                    "check official",
+                    "see official",
+                    "closed"
+                ]
+            ):
+                return None
+
+            # Try direct parsing first.
+            try:
+
+                parsed = pd.to_datetime(
+                    raw,
+                    errors="coerce"
+                )
+
+                if pd.notna(
+                    parsed
+                ):
+
+                    return parsed.to_pydatetime()
+
+            except Exception:
+                pass
+
+            # Extract common date fragments from longer text.
+            month_pattern = (
+                r"(January|February|March|April|May|June|July|August|"
+                r"September|October|November|December)\s+\d{1,2},\s+\d{4}"
+            )
+
+            match = re.search(
+                month_pattern,
+                raw,
+                flags=re.IGNORECASE
+            )
+
+            if match:
+
+                try:
+
+                    parsed = pd.to_datetime(
+                        match.group(0),
+                        errors="coerce"
+                    )
+
+                    if pd.notna(
+                        parsed
+                    ):
+
+                        return parsed.to_pydatetime()
+
+                except Exception:
+                    pass
+
+            return None
+
+
+        def deadline_status(
+            deadline_dt,
+            today_dt
+        ):
+
+            days_left = (
+                deadline_dt.date()
+                -
+                today_dt.date()
+            ).days
+
+            if days_left < 0:
+                return "Closed", days_left
+
+            if days_left == 0:
+                return "Due Today", days_left
+
+            if days_left <= 7:
+                return "Due Soon", days_left
+
+            if days_left <= 30:
+                return "This Month", days_left
+
+            return "Upcoming", days_left
+
+
+        def format_deadline_date(
+            deadline_dt
+        ):
+
+            return deadline_dt.strftime(
+                "%B %d, %Y"
+            ).replace(
+                " 0",
+                " "
+            )
+
+
+        now_local = datetime.now(
+            timezone.utc
+        )
+
+        # ----------------------------------------------------
+        # SAVED APPLICATIONS
+        # ----------------------------------------------------
+
+        saved_items = load_saved_opportunities(
+            user_sub
+        )
+
+        saved_names = {
+            str(
+                item.get(
+                    "opportunity_name",
+                    ""
+                )
+            )
+            for item in saved_items
+        }
+
+        # ----------------------------------------------------
+        # BUILD DEADLINE DATA
+        # ----------------------------------------------------
+
+        deadline_rows = []
+
+        for _, opportunity in opportunities.iterrows():
+
+            deadline_dt = parse_deadline_value(
+                opportunity.get(
+                    "deadline"
+                )
+            )
+
+            if deadline_dt is None:
+                continue
+
+            # Make timezone-naive dates safe to compare.
+            if deadline_dt.tzinfo is None:
+
+                compare_deadline = deadline_dt.replace(
+                    tzinfo=timezone.utc
+                )
+
+            else:
+
+                compare_deadline = deadline_dt.astimezone(
+                    timezone.utc
+                )
+
+            status, days_left = deadline_status(
+                compare_deadline,
+                now_local
+            )
+
+            deadline_rows.append(
+                {
+                    "name":
+                        str(
+                            opportunity.get(
+                                "name",
+                                "Opportunity"
+                            )
+                        ),
+
+                    "organization":
+                        str(
+                            opportunity.get(
+                                "organization",
+                                ""
+                            )
+                        ),
+
+                    "type":
+                        str(
+                            opportunity.get(
+                                "opportunity_type",
+                                ""
+                            )
+                        ),
+
+                    "fields":
+                        str(
+                            opportunity.get(
+                                "fields",
+                                ""
+                            )
+                        ),
+
+                    "deadline":
+                        compare_deadline,
+
+                    "deadline_text":
+                        format_deadline_date(
+                            compare_deadline
+                        ),
+
+                    "days_left":
+                        days_left,
+
+                    "status":
+                        status,
+
+                    "saved":
+                        str(
+                            opportunity.get(
+                                "name",
+                                ""
+                            )
+                        )
+                        in saved_names,
+
+                    "url":
+                        str(
+                            opportunity.get(
+                                "url",
+                                ""
+                            )
+                        ),
+
+                    "cost":
+                        str(
+                            opportunity.get(
+                                "cost",
+                                ""
+                            )
+                        ),
+
+                    "application_status":
+                        str(
+                            opportunity.get(
+                                "application_status",
+                                ""
+                            )
+                        )
+                }
+            )
+
+        deadline_rows.sort(
+            key=lambda item:
+                item["deadline"]
+        )
+
+        # ----------------------------------------------------
+        # FILTERS
+        # ----------------------------------------------------
+
+        st.header(
+            "Find Upcoming Deadlines"
+        )
+
+        filter_col1, filter_col2, filter_col3 = (
+            st.columns(3)
+        )
+
+        with filter_col1:
+
+            calendar_view = st.selectbox(
+                "Show",
+                [
+                    "Upcoming deadlines",
+                    "My saved opportunities",
+                    "All dated opportunities",
+                    "Past deadlines"
+                ],
+                key="deadline_calendar_view"
+            )
+
+        with filter_col2:
+
+            type_options = sorted(
+                {
+                    item["type"]
+                    for item in deadline_rows
+                    if item["type"]
+                }
+            )
+
+            selected_types = st.multiselect(
+                "Opportunity type",
+                type_options,
+                key="deadline_calendar_types"
+            )
+
+        with filter_col3:
+
+            field_filter = st.text_input(
+                "Search field or keyword",
+                placeholder="Engineering, AI, research...",
+                key="deadline_calendar_search"
+            )
+
+        filtered_deadlines = []
+
+        for item in deadline_rows:
+
+            if (
+                calendar_view
+                ==
+                "Upcoming deadlines"
+                and
+                item["days_left"] < 0
+            ):
+                continue
+
+            if (
+                calendar_view
+                ==
+                "My saved opportunities"
+                and
+                not item["saved"]
+            ):
+                continue
+
+            if (
+                calendar_view
+                ==
+                "Past deadlines"
+                and
+                item["days_left"] >= 0
+            ):
+                continue
+
+            if (
+                selected_types
+                and
+                item["type"]
+                not in selected_types
+            ):
+                continue
+
+            if field_filter.strip():
+
+                search_text = (
+                    item["name"]
+                    +
+                    " "
+                    +
+                    item["organization"]
+                    +
+                    " "
+                    +
+                    item["fields"]
+                ).lower()
+
+                if (
+                    field_filter.strip().lower()
+                    not in search_text
+                ):
+                    continue
+
+            filtered_deadlines.append(
+                item
+            )
+
+        # ----------------------------------------------------
+        # SNAPSHOT
+        # ----------------------------------------------------
+
+        upcoming_only = [
+            item
+            for item in deadline_rows
+            if item["days_left"] >= 0
+        ]
+
+        due_30 = [
+            item
+            for item in upcoming_only
+            if item["days_left"] <= 30
+        ]
+
+        saved_upcoming = [
+            item
+            for item in upcoming_only
+            if item["saved"]
+        ]
+
+        snapshot1, snapshot2, snapshot3, snapshot4 = (
+            st.columns(4)
+        )
+
+        with snapshot1:
+
+            st.metric(
+                "Upcoming",
+                len(
+                    upcoming_only
+                )
+            )
+
+        with snapshot2:
+
+            st.metric(
+                "Next 30 Days",
+                len(
+                    due_30
+                )
+            )
+
+        with snapshot3:
+
+            st.metric(
+                "Saved With Deadlines",
+                len(
+                    saved_upcoming
+                )
+            )
+
+        with snapshot4:
+
+            if upcoming_only:
+
+                st.metric(
+                    "Next Deadline",
+                    upcoming_only[0][
+                        "deadline"
+                    ].strftime(
+                        "%b %d"
+                    )
+                )
+
+            else:
+
+                st.metric(
+                    "Next Deadline",
+                    "None listed"
+                )
+
+        st.divider()
+
+        # ----------------------------------------------------
+        # MONTHLY GROUPED CALENDAR
+        # ----------------------------------------------------
+
+        if not filtered_deadlines:
+
+            st.info(
+                "No deadlines match the filters you selected."
+            )
+
+        else:
+
+            month_groups = {}
+
+            for item in filtered_deadlines:
+
+                month_key = (
+                    item["deadline"].strftime(
+                        "%Y-%m"
+                    )
+                )
+
+                month_groups.setdefault(
+                    month_key,
+                    []
+                ).append(
+                    item
+                )
+
+            for month_key, month_items in month_groups.items():
+
+                month_label = (
+                    month_items[0][
+                        "deadline"
+                    ].strftime(
+                        "%B %Y"
+                    )
+                )
+
+                st.header(
+                    month_label
+                )
+
+                for item in month_items:
+
+                    with st.container(
+                        border=True
+                    ):
+
+                        title_col, countdown_col = (
+                            st.columns(
+                                [4, 1]
+                            )
+                        )
+
+                        with title_col:
+
+                            saved_icon = (
+                                "📌 "
+                                if item["saved"]
+                                else ""
+                            )
+
+                            st.subheader(
+                                f"{saved_icon}{item['name']}"
+                            )
+
+                            st.caption(
+                                f"{item['organization']} • {item['type']}"
+                            )
+
+                        with countdown_col:
+
+                            if item["days_left"] < 0:
+
+                                st.metric(
+                                    "Status",
+                                    "Closed"
+                                )
+
+                            elif item["days_left"] == 0:
+
+                                st.metric(
+                                    "Time Left",
+                                    "Today"
+                                )
+
+                            elif item["days_left"] == 1:
+
+                                st.metric(
+                                    "Time Left",
+                                    "1 day"
+                                )
+
+                            else:
+
+                                st.metric(
+                                    "Time Left",
+                                    f"{item['days_left']} days"
+                                )
+
+                        details1, details2, details3 = (
+                            st.columns(3)
+                        )
+
+                        with details1:
+
+                            st.write(
+                                f"**Deadline:** "
+                                f"{item['deadline_text']}"
+                            )
+
+                        with details2:
+
+                            st.write(
+                                f"**Status:** "
+                                f"{item['status']}"
+                            )
+
+                        with details3:
+
+                            st.write(
+                                f"**Cost:** "
+                                f"{item['cost']}"
+                            )
+
+                        if item[
+                            "application_status"
+                        ]:
+
+                            st.caption(
+                                f"Program note: "
+                                f"{item['application_status']}"
+                            )
+
+                        if item["fields"]:
+
+                            st.write(
+                                "**Fields:** "
+                                +
+                                item["fields"]
+                            )
+
+                        action1, action2 = (
+                            st.columns(2)
+                        )
+
+                        with action1:
+
+                            if not item["saved"]:
+
+                                if st.button(
+                                    "📌 Save to My Applications",
+                                    key=f"calendar_save_{item['name']}",
+                                    use_container_width=True
+                                ):
+
+                                    if save_opportunity(
+                                        user_sub,
+                                        item["name"]
+                                    ):
+
+                                        st.success(
+                                            "Saved to My Applications."
+                                        )
+
+                                        st.rerun()
+
+                            else:
+
+                                st.success(
+                                    "Saved in My Applications"
+                                )
+
+                        with action2:
+
+                            if item["url"]:
+
+                                st.link_button(
+                                    "View Official Program",
+                                    item["url"],
+                                    use_container_width=True
+                                )
+
+                st.divider()
+
+        # ----------------------------------------------------
+        # UNDATED PROGRAMS
+        # ----------------------------------------------------
+
+        undated_count = len(
+            opportunities
+        ) - len(
+            deadline_rows
+        )
+
+        if undated_count > 0:
+
+            with st.expander(
+                f"{undated_count} opportunities do not yet have a specific date"
+            ):
+
+                st.write(
+                    "Some programs have future cycles, rolling dates, or deadlines "
+                    "that have not yet been announced. They remain available on the "
+                    "Opportunities page and should be checked on their official websites."
+                )
+
+        st.caption(
+            "Deadline information may change. STEM Pathways NYC helps organize dates, "
+            "but the official program website is always the final source."
+        )
+
+
+
 
 
 # ============================================================
