@@ -10,7 +10,7 @@ from supabase import create_client
 # ============================================================
 
 st.set_page_config(
-    page_title="STEM Pathways NYC",xa
+    page_title="STEM Pathways NYC",
     page_icon="🧭",
     layout="wide"
 )
