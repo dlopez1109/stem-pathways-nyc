@@ -306,52 +306,110 @@ else:
         )
 
     # --------------------------------------------------
-    # SIDEBAR NAVIGATION
+    # TOP NAVIGATION
     # --------------------------------------------------
 
-    with st.sidebar:
+    st.markdown(
+        """
+        <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
 
-        st.title("STEM Pathways NYC")
+        .block-container {
+            padding-top: 1.5rem;
+            max-width: 1200px;
+        }
 
-        st.write(
-            f"Welcome, **{profile['first_name']}**"
+        .nav-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .nav-subtitle {
+            color: #777;
+            margin-top: -5px;
+            margin-bottom: 15px;
+        }
+
+        div[data-testid="stRadio"] > div {
+            gap: 0.5rem;
+        }
+
+        div[data-testid="stRadio"] label {
+            padding: 0.45rem 0.8rem;
+            border-radius: 10px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    header_left, header_right = st.columns([3, 1])
+
+    with header_left:
+
+        st.markdown(
+            '<p class="nav-title">🧭 STEM Pathways NYC</p>',
+            unsafe_allow_html=True
         )
 
-        st.caption(
-            f"{profile['grade']}th Grade • {profile['borough']}"
+        st.markdown(
+            f'<p class="nav-subtitle">'
+            f'Welcome, {profile["first_name"]} • '
+            f'{profile["grade"]}th Grade • {profile["borough"]}'
+            f'</p>',
+            unsafe_allow_html=True
         )
 
-        st.divider()
-
-        page = st.radio(
-            "Navigation",
-            [
-                "Home",
-                "My Pathway",
-                "Opportunities",
-                "Projects",
-                "Resources",
-                "Profile"
-            ],
-            index=[
-                "Home",
-                "My Pathway",
-                "Opportunities",
-                "Projects",
-                "Resources",
-                "Profile"
-            ].index(
-                st.session_state.current_page
-            )
-        )
-
-        st.session_state.current_page = page
-
-        st.divider()
+    with header_right:
 
         st.caption(
             "Explore • Build • Discover"
         )
+
+    pages = [
+        "🏠 Home",
+        "🧭 My Pathway",
+        "🔎 Opportunities",
+        "🛠️ Projects",
+        "📚 Resources",
+        "👤 Profile"
+    ]
+
+    page_names = {
+        "🏠 Home": "Home",
+        "🧭 My Pathway": "My Pathway",
+        "🔎 Opportunities": "Opportunities",
+        "🛠️ Projects": "Projects",
+        "📚 Resources": "Resources",
+        "👤 Profile": "Profile"
+    }
+
+    current_display_page = next(
+        key
+        for key, value in page_names.items()
+        if value == st.session_state.current_page
+    )
+
+    page_display = st.radio(
+        "Navigation",
+        pages,
+        index=pages.index(
+            current_display_page
+        ),
+        horizontal=True,
+        label_visibility="collapsed"
+    )
+
+    page = page_names[
+        page_display
+    ]
+
+    st.session_state.current_page = page
+
+    st.divider()
 
 
     # --------------------------------------------------
