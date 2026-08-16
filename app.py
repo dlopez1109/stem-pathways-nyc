@@ -337,6 +337,209 @@ def save_profile(
 
 
 # ============================================================
+# SAVED OPPORTUNITIES / APPLICATION TRACKER
+# ============================================================
+
+APPLICATION_STATUSES = [
+    "Saved",
+    "Planning to Apply",
+    "Applying",
+    "Applied",
+    "Accepted",
+    "Waitlisted",
+    "Not Selected"
+]
+
+
+def load_saved_opportunities(user_sub):
+
+    if not supabase_connected:
+        return []
+
+    try:
+
+        response = (
+            supabase
+            .table("saved_opportunities")
+            .select("*")
+            .eq("user_sub", user_sub)
+            .order("saved_at", desc=True)
+            .execute()
+        )
+
+        return response.data or []
+
+    except Exception as e:
+
+        st.error(
+            "We could not load your saved opportunities."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(str(e))
+
+        return []
+
+
+def save_opportunity(user_sub, opportunity_name):
+
+    if not supabase_connected:
+        return False
+
+    now = datetime.now(
+        timezone.utc
+    ).isoformat()
+
+    try:
+
+        existing = (
+            supabase
+            .table("saved_opportunities")
+            .select("id")
+            .eq("user_sub", user_sub)
+            .eq("opportunity_name", opportunity_name)
+            .limit(1)
+            .execute()
+        )
+
+        if existing.data:
+
+            return True
+
+        (
+            supabase
+            .table("saved_opportunities")
+            .insert({
+                "user_sub":
+                    user_sub,
+
+                "opportunity_name":
+                    opportunity_name,
+
+                "status":
+                    "Saved",
+
+                "notes":
+                    "",
+
+                "saved_at":
+                    now,
+
+                "updated_at":
+                    now
+            })
+            .execute()
+        )
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "This opportunity could not be saved."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(str(e))
+
+        return False
+
+
+def update_saved_opportunity(
+    saved_id,
+    status,
+    notes
+):
+
+    if not supabase_connected:
+        return False
+
+    try:
+
+        (
+            supabase
+            .table("saved_opportunities")
+            .update({
+                "status":
+                    status,
+
+                "notes":
+                    notes,
+
+                "updated_at":
+                    datetime.now(
+                        timezone.utc
+                    ).isoformat()
+            })
+            .eq("id", saved_id)
+            .execute()
+        )
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "Your application tracker could not be updated."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(str(e))
+
+        return False
+
+
+def delete_saved_opportunity(saved_id):
+
+    if not supabase_connected:
+        return False
+
+    try:
+
+        (
+            supabase
+            .table("saved_opportunities")
+            .delete()
+            .eq("id", saved_id)
+            .execute()
+        )
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "This opportunity could not be removed."
+        )
+
+        with st.expander(
+            "Technical details"
+        ):
+            st.code(str(e))
+
+        return False
+
+
+def saved_opportunity_names(user_sub):
+
+    saved = load_saved_opportunities(
+        user_sub
+    )
+
+    return {
+        str(item.get("opportunity_name", ""))
+        for item in saved
+    }
+
+
+
+# ============================================================
 # GOOGLE LOGIN
 # ============================================================
 
@@ -987,6 +1190,17 @@ with st.sidebar:
 
         st.session_state.current_page = (
             "Resources"
+        )
+
+        st.rerun()
+
+    if st.button(
+        "📌 My Applications",
+        use_container_width=True
+    ):
+
+        st.session_state.current_page = (
+            "My Applications"
         )
 
         st.rerun()
@@ -2853,13 +3067,38 @@ elif page == "Opportunities":
                                 f"• {reason}"
                             )
 
-                    st.link_button(
-                        "View Official Opportunity",
-                        opportunity[
-                            "url"
-                        ],
-                        use_container_width=True
-                    )
+                    action_col1, action_col2 = st.columns(2)
+
+                    with action_col1:
+
+                        if st.button(
+                            "📌 Save Opportunity",
+                            key=f"save_recommended_{opportunity['name']}",
+                            use_container_width=True
+                        ):
+
+                            if save_opportunity(
+                                user_sub,
+                                str(
+                                    opportunity[
+                                        "name"
+                                    ]
+                                )
+                            ):
+
+                                st.success(
+                                    "Opportunity saved to My Applications."
+                                )
+
+                    with action_col2:
+
+                        st.link_button(
+                            "View Official Opportunity",
+                            opportunity[
+                                "url"
+                            ],
+                            use_container_width=True
+                        )
 
         st.divider()
 
@@ -2931,12 +3170,509 @@ elif page == "Opportunities":
                         f"{opportunity['application_status']}"
                     )
 
-                st.link_button(
-                    "View Official Opportunity",
-                    opportunity[
-                        "url"
-                    ]
+                browse_action1, browse_action2 = st.columns(2)
+
+                with browse_action1:
+
+                    if st.button(
+                        "📌 Save Opportunity",
+                        key=f"save_browse_{opportunity['name']}",
+                        use_container_width=True
+                    ):
+
+                        if save_opportunity(
+                            user_sub,
+                            str(
+                                opportunity[
+                                    "name"
+                                ]
+                            )
+                        ):
+
+                            st.success(
+                                "Opportunity saved to My Applications."
+                            )
+
+                with browse_action2:
+
+                    st.link_button(
+                        "View Official Opportunity",
+                        opportunity[
+                            "url"
+                        ],
+                        use_container_width=True
+                    )
+
+
+# ============================================================
+# MY APPLICATIONS
+# ============================================================
+
+elif page == "My Applications":
+
+    st.title(
+        "My Applications"
+    )
+
+    st.write(
+        "Save opportunities you are interested in and track your "
+        "progress from discovery through the application process."
+    )
+
+    st.info(
+        "Your tracker is private to your signed-in account. "
+        "Saving an opportunity does not submit an application."
+    )
+
+    st.divider()
+
+    saved_items = load_saved_opportunities(
+        user_sub
+    )
+
+    if not saved_items:
+
+        st.header(
+            "No saved opportunities yet"
+        )
+
+        st.write(
+            "Go to the Opportunities page and select "
+            "**Save Opportunity** on any program you want to track."
+        )
+
+        if st.button(
+            "Explore Opportunities",
+            type="primary",
+            use_container_width=True
+        ):
+
+            st.session_state.current_page = (
+                "Opportunities"
+            )
+
+            st.rerun()
+
+    else:
+
+        # ----------------------------------------------------
+        # APPLICATION SNAPSHOT
+        # ----------------------------------------------------
+
+        st.header(
+            "Application Snapshot"
+        )
+
+        total_saved = len(
+            saved_items
+        )
+
+        applied_count = sum(
+            1
+            for item in saved_items
+            if item.get("status")
+            in [
+                "Applied",
+                "Accepted",
+                "Waitlisted",
+                "Not Selected"
+            ]
+        )
+
+        accepted_count = sum(
+            1
+            for item in saved_items
+            if item.get("status")
+            == "Accepted"
+        )
+
+        planning_count = sum(
+            1
+            for item in saved_items
+            if item.get("status")
+            in [
+                "Planning to Apply",
+                "Applying"
+            ]
+        )
+
+        metric1, metric2, metric3, metric4 = (
+            st.columns(4)
+        )
+
+        with metric1:
+
+            st.metric(
+                "Saved",
+                total_saved
+            )
+
+        with metric2:
+
+            st.metric(
+                "Planning / Applying",
+                planning_count
+            )
+
+        with metric3:
+
+            st.metric(
+                "Submitted",
+                applied_count
+            )
+
+        with metric4:
+
+            st.metric(
+                "Accepted",
+                accepted_count
+            )
+
+        st.divider()
+
+        # ----------------------------------------------------
+        # STATUS FILTER
+        # ----------------------------------------------------
+
+        filter_status = st.multiselect(
+            "Filter by application status",
+            APPLICATION_STATUSES,
+            default=[]
+        )
+
+        filtered_items = [
+            item
+            for item in saved_items
+            if (
+                not filter_status
+                or
+                item.get(
+                    "status",
+                    "Saved"
                 )
+                in filter_status
+            )
+        ]
+
+        for saved_item in filtered_items:
+
+            saved_name = str(
+                saved_item.get(
+                    "opportunity_name",
+                    "Saved Opportunity"
+                )
+            )
+
+            current_status = (
+                saved_item.get(
+                    "status",
+                    "Saved"
+                )
+                or
+                "Saved"
+            )
+
+            current_notes = (
+                saved_item.get(
+                    "notes",
+                    ""
+                )
+                or
+                ""
+            )
+
+            opportunity_match = (
+                opportunities[
+                    opportunities[
+                        "name"
+                    ]
+                    .astype(str)
+                    == saved_name
+                ]
+                if (
+                    not opportunities.empty
+                    and
+                    "name"
+                    in opportunities.columns
+                )
+                else pd.DataFrame()
+            )
+
+            with st.container(
+                border=True
+            ):
+
+                st.subheader(
+                    saved_name
+                )
+
+                if not opportunity_match.empty:
+
+                    opportunity_data = (
+                        opportunity_match.iloc[0]
+                    )
+
+                    st.caption(
+                        str(
+                            opportunity_data.get(
+                                "organization",
+                                ""
+                            )
+                        )
+                    )
+
+                    top1, top2, top3 = (
+                        st.columns(3)
+                    )
+
+                    with top1:
+
+                        st.write(
+                            f"**Type:** "
+                            f"{opportunity_data.get('opportunity_type', 'Not listed')}"
+                        )
+
+                    with top2:
+
+                        st.write(
+                            f"**Cost:** "
+                            f"{opportunity_data.get('cost', 'Not listed')}"
+                        )
+
+                    with top3:
+
+                        if (
+                            "selectivity"
+                            in opportunity_data.index
+                            and
+                            pd.notna(
+                                opportunity_data[
+                                    "selectivity"
+                                ]
+                            )
+                        ):
+
+                            try:
+
+                                stars = (
+                                    "★"
+                                    * int(
+                                        opportunity_data[
+                                            "selectivity"
+                                        ]
+                                    )
+                                    +
+                                    "☆"
+                                    * (
+                                        5
+                                        -
+                                        int(
+                                            opportunity_data[
+                                                "selectivity"
+                                            ]
+                                        )
+                                    )
+                                )
+
+                                st.write(
+                                    f"**Selectivity:** {stars}"
+                                )
+
+                            except Exception:
+
+                                pass
+
+                    if (
+                        "deadline"
+                        in opportunity_data.index
+                        and
+                        pd.notna(
+                            opportunity_data[
+                                "deadline"
+                            ]
+                        )
+                    ):
+
+                        st.write(
+                            f"**Deadline:** "
+                            f"{opportunity_data['deadline']}"
+                        )
+
+                    if (
+                        "application_status"
+                        in opportunity_data.index
+                        and
+                        pd.notna(
+                            opportunity_data[
+                                "application_status"
+                            ]
+                        )
+                    ):
+
+                        st.write(
+                            f"**Program status:** "
+                            f"{opportunity_data['application_status']}"
+                        )
+
+                st.divider()
+
+                status_col, notes_col = (
+                    st.columns(
+                        [1, 2]
+                    )
+                )
+
+                with status_col:
+
+                    selected_status = st.selectbox(
+                        "Application Status",
+                        APPLICATION_STATUSES,
+                        index=(
+                            APPLICATION_STATUSES.index(
+                                current_status
+                            )
+                            if current_status
+                            in APPLICATION_STATUSES
+                            else 0
+                        ),
+                        key=f"application_status_{saved_item['id']}"
+                    )
+
+                with notes_col:
+
+                    selected_notes = st.text_area(
+                        "Notes",
+                        value=current_notes,
+                        placeholder=(
+                            "Example: Ask teacher for recommendation, "
+                            "finish essay, request transcript..."
+                        ),
+                        key=f"application_notes_{saved_item['id']}"
+                    )
+
+                action1, action2, action3 = (
+                    st.columns(
+                        [1, 1, 1]
+                    )
+                )
+
+                with action1:
+
+                    if st.button(
+                        "Save Changes",
+                        key=f"save_tracker_{saved_item['id']}",
+                        type="primary",
+                        use_container_width=True
+                    ):
+
+                        if update_saved_opportunity(
+                            saved_item["id"],
+                            selected_status,
+                            selected_notes
+                        ):
+
+                            st.success(
+                                "Application tracker updated."
+                            )
+
+                            st.rerun()
+
+                with action2:
+
+                    if not opportunity_match.empty:
+
+                        opportunity_url = (
+                            opportunity_match.iloc[0].get(
+                                "url"
+                            )
+                        )
+
+                        if (
+                            pd.notna(
+                                opportunity_url
+                            )
+                            and
+                            str(
+                                opportunity_url
+                            ).strip()
+                        ):
+
+                            st.link_button(
+                                "Official Website",
+                                str(
+                                    opportunity_url
+                                ),
+                                use_container_width=True
+                            )
+
+                with action3:
+
+                    if st.button(
+                        "Remove",
+                        key=f"remove_tracker_{saved_item['id']}",
+                        use_container_width=True
+                    ):
+
+                        st.session_state[
+                            "confirm_remove_saved_id"
+                        ] = saved_item[
+                            "id"
+                        ]
+
+                if (
+                    st.session_state.get(
+                        "confirm_remove_saved_id"
+                    )
+                    ==
+                    saved_item[
+                        "id"
+                    ]
+                ):
+
+                    st.warning(
+                        "Remove this opportunity from My Applications?"
+                    )
+
+                    confirm1, confirm2 = (
+                        st.columns(2)
+                    )
+
+                    with confirm1:
+
+                        if st.button(
+                            "Yes, Remove",
+                            key=f"confirm_remove_{saved_item['id']}",
+                            use_container_width=True
+                        ):
+
+                            if delete_saved_opportunity(
+                                saved_item["id"]
+                            ):
+
+                                st.session_state.pop(
+                                    "confirm_remove_saved_id",
+                                    None
+                                )
+
+                                st.rerun()
+
+                    with confirm2:
+
+                        if st.button(
+                            "Cancel",
+                            key=f"cancel_remove_{saved_item['id']}",
+                            use_container_width=True
+                        ):
+
+                            st.session_state.pop(
+                                "confirm_remove_saved_id",
+                                None
+                            )
+
+                            st.rerun()
+
+
+
 
 
 # ============================================================
