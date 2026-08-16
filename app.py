@@ -5497,261 +5497,1010 @@ elif page == "My Applications":
 
 elif page == "Projects":
 
-    st.title(
-        "Projects"
-    )
+    st.title("Project Explorer")
 
     st.write(
-        "Build hands-on projects that help you explore your "
-        "interests and develop real technical skills."
+        "Not sure what to build? Tell us what sounds interesting and "
+        "we'll suggest hands-on STEM projects that match what you want to create."
     )
 
     st.divider()
 
-    project_library = {
+    # --------------------------------------------------------
+    # PROJECT DATABASE
+    # --------------------------------------------------------
 
-        "Engineering": [
-            (
-                "Beginner",
-                "Identify a community problem and design a possible solution."
-            ),
-            (
-                "Intermediate",
-                "Create and test a physical prototype."
-            ),
-            (
-                "Advanced",
-                "Build and document a complete engineering system."
-            )
+    project_catalog = [
+        {
+            "title": "Smart Room Lighting System",
+            "fields": ["Electrical Engineering", "Computer Engineering", "Robotics"],
+            "create": ["A physical device", "Something that makes everyday life easier", "Something with lights or electronics"],
+            "level": "Beginner",
+            "time": "1–2 weeks",
+            "hours": "5–10 hours",
+            "style": ["Building with my hands", "Coding", "Testing and experimenting"],
+            "equipment": ["Computer", "Arduino / microcontroller", "Breadboard / basic electronics"],
+            "cost": "Low",
+            "description": "Build a lighting system that reacts automatically to the amount of light in a room.",
+            "skills": ["Circuits", "Sensors", "Arduino", "C/C++", "Prototyping"],
+            "materials": ["Arduino-compatible board", "Photoresistor", "LEDs", "Resistors", "Breadboard", "Jumper wires"],
+            "steps": [
+                "Learn how a photoresistor changes with light.",
+                "Build and test the sensor circuit.",
+                "Read sensor values with the microcontroller.",
+                "Program LEDs to react to different light levels.",
+                "Test the system in multiple lighting conditions.",
+                "Document the final design and what you would improve."
+            ],
+            "portfolio": "Designed and programmed an automatic lighting prototype using a light sensor, microcontroller, and custom circuit logic."
+        },
+        {
+            "title": "1D LED Pong Game",
+            "fields": ["Electrical Engineering", "Computer Engineering", "Computer Science"],
+            "create": ["A game", "A physical device", "Something with lights or electronics"],
+            "level": "Intermediate",
+            "time": "1–2 weeks",
+            "hours": "8–15 hours",
+            "style": ["Building with my hands", "Coding", "Solving logic problems"],
+            "equipment": ["Computer", "Arduino / microcontroller", "Breadboard / basic electronics"],
+            "cost": "Low",
+            "description": "Create a physical Pong-style game using a row of LEDs, buttons, timing logic, and scoring.",
+            "skills": ["Digital logic", "Embedded programming", "Circuit design", "Debugging"],
+            "materials": ["Microcontroller", "LEDs", "Push buttons", "Resistors", "Breadboard", "Jumper wires"],
+            "steps": [
+                "Design the rules and game states.",
+                "Wire the LED playing field and buttons.",
+                "Program the moving LED.",
+                "Add player input and collision timing.",
+                "Create scoring and reset logic.",
+                "Test difficulty and document the final system."
+            ],
+            "portfolio": "Built a physical LED Pong game integrating circuit design, player inputs, timing logic, and embedded programming."
+        },
+        {
+            "title": "Mini Smart Home Security System",
+            "fields": ["Electrical Engineering", "Computer Engineering", "Cybersecurity", "Robotics"],
+            "create": ["A physical device", "Something that makes everyday life easier", "Something with sensors"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–20 hours",
+            "style": ["Building with my hands", "Coding", "Testing and experimenting"],
+            "equipment": ["Computer", "Arduino / microcontroller", "Breadboard / basic electronics"],
+            "cost": "Low–Medium",
+            "description": "Build a prototype alarm that detects motion or an opened door and triggers an alert.",
+            "skills": ["Sensors", "Embedded systems", "Circuit design", "Programming", "System testing"],
+            "materials": ["Microcontroller", "Motion or magnetic sensor", "Buzzer", "LED", "Breadboard", "Wires"],
+            "steps": [
+                "Define what the system should detect.",
+                "Test the sensor independently.",
+                "Build the alarm circuit.",
+                "Program normal and alert states.",
+                "Add a reset or arm/disarm feature.",
+                "Test false alarms and document improvements."
+            ],
+            "portfolio": "Developed a sensor-based home security prototype with programmable alarm states and real-world system testing."
+        },
+        {
+            "title": "Reaction-Time Tester",
+            "fields": ["Electrical Engineering", "Computer Engineering", "Biomedical Engineering"],
+            "create": ["A physical device", "Something related to health or the human body", "Something with lights or electronics"],
+            "level": "Beginner",
+            "time": "Weekend",
+            "hours": "3–6 hours",
+            "style": ["Building with my hands", "Coding", "Testing and experimenting"],
+            "equipment": ["Computer", "Arduino / microcontroller", "Breadboard / basic electronics"],
+            "cost": "Low",
+            "description": "Build a device that measures how quickly a person reacts after a light turns on.",
+            "skills": ["Timing", "Microcontrollers", "Data collection", "Circuits"],
+            "materials": ["Microcontroller", "LED", "Button", "Breadboard", "Resistors"],
+            "steps": [
+                "Create a random delay before the LED turns on.",
+                "Wire an LED and response button.",
+                "Measure elapsed time after the signal.",
+                "Display or record reaction times.",
+                "Test multiple users.",
+                "Analyze variation in the results."
+            ],
+            "portfolio": "Designed a microcontroller-based reaction-time tester and collected human response data for analysis."
+        },
+        {
+            "title": "Assistive Grip Device",
+            "fields": ["Mechanical Engineering", "Biomedical Engineering", "Engineering"],
+            "create": ["A physical device", "Something related to health or the human body", "Something that helps people"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–20 hours",
+            "style": ["Building with my hands", "Designing in CAD", "Testing and experimenting"],
+            "equipment": ["Computer", "CAD software", "3D printer"],
+            "cost": "Low–Medium",
+            "description": "Design an inexpensive device that makes gripping or holding an everyday object easier.",
+            "skills": ["CAD", "Human-centered design", "Prototyping", "Mechanical design", "Iteration"],
+            "materials": ["CAD software", "Cardboard or 3D-print material", "Fasteners", "Everyday test objects"],
+            "steps": [
+                "Choose a specific gripping challenge.",
+                "Research existing assistive products.",
+                "Sketch several concepts.",
+                "Model the best concept in CAD.",
+                "Prototype and test it.",
+                "Use feedback to create an improved version."
+            ],
+            "portfolio": "Designed and iterated an assistive mechanical device using human-centered design, CAD, prototyping, and user testing."
+        },
+        {
+            "title": "Rubber-Band Powered Car",
+            "fields": ["Mechanical Engineering", "Physics", "Engineering"],
+            "create": ["A physical device", "Something that moves", "Something I can build cheaply"],
+            "level": "Beginner",
+            "time": "Weekend",
+            "hours": "2–5 hours",
+            "style": ["Building with my hands", "Testing and experimenting", "Solving logic problems"],
+            "equipment": ["Basic household materials"],
+            "cost": "Very Low",
+            "description": "Design a small vehicle powered only by stored elastic energy and optimize it for distance.",
+            "skills": ["Mechanics", "Energy", "Design iteration", "Measurement"],
+            "materials": ["Cardboard", "Rubber bands", "Bottle caps or wheels", "Axles", "Tape"],
+            "steps": [
+                "Sketch a drivetrain concept.",
+                "Build the chassis and axles.",
+                "Create the rubber-band drive.",
+                "Measure travel distance.",
+                "Change one design variable at a time.",
+                "Graph your results and identify the best design."
+            ],
+            "portfolio": "Engineered and optimized a rubber-band powered vehicle through iterative testing and quantitative performance analysis."
+        },
+        {
+            "title": "Robotic Gripper",
+            "fields": ["Mechanical Engineering", "Robotics", "Electrical Engineering"],
+            "create": ["A robot", "A physical device", "Something that moves"],
+            "level": "Advanced",
+            "time": "1–2 months",
+            "hours": "20+ hours",
+            "style": ["Building with my hands", "Designing in CAD", "Coding"],
+            "equipment": ["Computer", "Arduino / microcontroller", "CAD software", "3D printer"],
+            "cost": "Medium",
+            "description": "Design a motorized gripper capable of picking up several differently shaped objects.",
+            "skills": ["CAD", "Mechanisms", "Servo control", "Embedded programming", "Iteration"],
+            "materials": ["Microcontroller", "Servo motor", "3D printed or laser-cut parts", "Fasteners", "Wires"],
+            "steps": [
+                "Study common gripper mechanisms.",
+                "Define target objects and constraints.",
+                "Design the mechanism in CAD.",
+                "Fabricate and assemble the gripper.",
+                "Program servo movement.",
+                "Test grip strength and redesign weak points."
+            ],
+            "portfolio": "Designed, fabricated, and programmed a robotic gripper using CAD, servo control, and iterative mechanical testing."
+        },
+        {
+            "title": "Personal Portfolio Website",
+            "fields": ["Computer Science", "Web Development"],
+            "create": ["A website or app", "Something useful for school or my future", "Something creative"],
+            "level": "Beginner",
+            "time": "1–2 weeks",
+            "hours": "5–10 hours",
+            "style": ["Coding", "Designing a user experience", "Working mostly on a computer"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Build a personal website that showcases your projects, skills, experiences, and goals.",
+            "skills": ["HTML", "CSS", "Web design", "GitHub", "Communication"],
+            "materials": ["Computer", "Code editor", "GitHub account"],
+            "steps": [
+                "Plan the pages and content.",
+                "Create the HTML structure.",
+                "Style the site with CSS.",
+                "Add project cards and an About section.",
+                "Make the layout mobile-friendly.",
+                "Publish and ask others for feedback."
+            ],
+            "portfolio": "Designed and deployed a responsive personal portfolio website showcasing technical projects, skills, and experiences."
+        },
+        {
+            "title": "Study Planner Web App",
+            "fields": ["Computer Science", "Web Development", "Software Engineering"],
+            "create": ["A website or app", "Something useful for school or my future", "Something that helps people"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–20 hours",
+            "style": ["Coding", "Designing a user experience", "Solving logic problems"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Create an app where students can enter assignments, deadlines, and study goals.",
+            "skills": ["Python or JavaScript", "UI design", "Data storage", "Software design"],
+            "materials": ["Computer", "Streamlit or web framework", "GitHub"],
+            "steps": [
+                "Interview students about planning problems.",
+                "Choose the minimum useful features.",
+                "Build assignment and deadline inputs.",
+                "Create a dashboard.",
+                "Add saving or persistent storage.",
+                "Test with real users and improve the interface."
+            ],
+            "portfolio": "Developed a student planning web application with deadline tracking, persistent data, and user-centered interface design."
+        },
+        {
+            "title": "Local Opportunity Finder",
+            "fields": ["Computer Science", "Data Science", "Software Engineering"],
+            "create": ["A website or app", "Something that helps people", "Something useful for school or my future"],
+            "level": "Advanced",
+            "time": "1–2 months",
+            "hours": "20+ hours",
+            "style": ["Coding", "Working with data", "Designing a user experience"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Build a searchable tool that helps students discover internships, programs, scholarships, or community resources.",
+            "skills": ["Python", "Databases", "Search/filtering", "Product design", "Data cleaning"],
+            "materials": ["Computer", "Python", "Database or CSV", "GitHub"],
+            "steps": [
+                "Define the target student group.",
+                "Create a structured opportunity dataset.",
+                "Build filters and search.",
+                "Add eligibility and deadline fields.",
+                "Test recommendations with students.",
+                "Document limitations and future improvements."
+            ],
+            "portfolio": "Built a data-driven opportunity discovery platform with structured filtering and student-focused recommendation features."
+        },
+        {
+            "title": "Movie Recommendation Engine",
+            "fields": ["Data Science", "Artificial Intelligence", "Computer Science"],
+            "create": ["An AI project", "A website or app", "Something with data"],
+            "level": "Intermediate",
+            "time": "1–2 weeks",
+            "hours": "8–15 hours",
+            "style": ["Coding", "Working with data", "Solving logic problems"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Create a program that recommends movies based on genres, ratings, or similarities between users.",
+            "skills": ["Python", "Pandas", "Recommendation systems", "Data analysis"],
+            "materials": ["Computer", "Python", "Public movie dataset"],
+            "steps": [
+                "Load and clean a movie dataset.",
+                "Explore ratings and genres.",
+                "Create a simple recommendation rule.",
+                "Build a similarity-based recommender.",
+                "Evaluate sample recommendations.",
+                "Create a simple interface for users."
+            ],
+            "portfolio": "Developed a Python recommendation engine using structured movie data, similarity metrics, and interactive user preferences."
+        },
+        {
+            "title": "Image Classification Model",
+            "fields": ["Artificial Intelligence", "Computer Science", "Data Science"],
+            "create": ["An AI project", "Something with data", "Something creative"],
+            "level": "Advanced",
+            "time": "2–4 weeks",
+            "hours": "15–25 hours",
+            "style": ["Coding", "Working with data", "Testing and experimenting"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Train a machine-learning model to recognize categories of images and evaluate where it makes mistakes.",
+            "skills": ["Python", "Machine learning", "Model evaluation", "Data preparation"],
+            "materials": ["Computer", "Python notebook environment", "Open image dataset"],
+            "steps": [
+                "Choose a safe public image dataset.",
+                "Prepare training and test data.",
+                "Build a baseline classifier.",
+                "Train and evaluate the model.",
+                "Analyze incorrect predictions.",
+                "Explain limitations and possible improvements."
+            ],
+            "portfolio": "Trained and evaluated an image classification model, analyzing prediction errors and model limitations."
+        },
+        {
+            "title": "NYC Data Story",
+            "fields": ["Data Science", "Mathematics", "Environmental Science"],
+            "create": ["Something with data", "Something that helps my community", "A research project"],
+            "level": "Beginner",
+            "time": "1–2 weeks",
+            "hours": "5–10 hours",
+            "style": ["Working with data", "Researching", "Working mostly on a computer"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Use a public NYC dataset to investigate a question about transportation, environment, education, or another community issue.",
+            "skills": ["Python", "Data visualization", "Statistics", "Research questions", "Communication"],
+            "materials": ["Computer", "Python or spreadsheet software", "NYC Open Data"],
+            "steps": [
+                "Choose a community question.",
+                "Find a relevant public dataset.",
+                "Clean the data.",
+                "Create at least three visualizations.",
+                "Interpret patterns carefully.",
+                "Present a conclusion and limitations."
+            ],
+            "portfolio": "Analyzed a public NYC dataset using Python and data visualization to investigate a community-focused research question."
+        },
+        {
+            "title": "Air Quality Data Dashboard",
+            "fields": ["Environmental Science", "Data Science", "Computer Science"],
+            "create": ["Something with data", "Something that helps my community", "A website or app"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–20 hours",
+            "style": ["Coding", "Working with data", "Researching"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Create an interactive dashboard that explores air-quality patterns across locations or time.",
+            "skills": ["Python", "Data visualization", "Environmental analysis", "Dashboard design"],
+            "materials": ["Computer", "Public air-quality dataset", "Streamlit"],
+            "steps": [
+                "Choose an air-quality dataset.",
+                "Identify useful pollutants and measurements.",
+                "Clean and summarize the data.",
+                "Build charts and filters.",
+                "Add explanations for nontechnical users.",
+                "Publish the dashboard and document limitations."
+            ],
+            "portfolio": "Created an interactive air-quality dashboard using public environmental data, Python, and visual analytics."
+        },
+        {
+            "title": "Plant Growth Experiment",
+            "fields": ["Biology", "Environmental Science"],
+            "create": ["A research project", "Something involving biology", "Something I can build cheaply"],
+            "level": "Beginner",
+            "time": "2–4 weeks",
+            "hours": "5–10 hours",
+            "style": ["Testing and experimenting", "Researching", "Working with data"],
+            "equipment": ["Basic household materials"],
+            "cost": "Very Low",
+            "description": "Design a controlled experiment testing how one environmental variable affects plant growth.",
+            "skills": ["Experimental design", "Measurement", "Biology", "Data analysis"],
+            "materials": ["Seeds", "Containers", "Growing medium", "Ruler", "Chosen experimental variable"],
+            "steps": [
+                "Write a testable research question.",
+                "Identify independent and dependent variables.",
+                "Create control and experimental groups.",
+                "Collect measurements consistently.",
+                "Graph the results.",
+                "Write a conclusion that discusses limitations."
+            ],
+            "portfolio": "Designed and conducted a controlled plant-growth experiment, collecting and analyzing quantitative biological data."
+        },
+        {
+            "title": "Low-Cost Water Filter Investigation",
+            "fields": ["Environmental Science", "Engineering", "Chemistry"],
+            "create": ["A research project", "Something that helps my community", "A physical device"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "8–15 hours",
+            "style": ["Building with my hands", "Testing and experimenting", "Researching"],
+            "equipment": ["Basic household materials"],
+            "cost": "Low",
+            "description": "Compare safe model filtration materials to study how engineering design changes water clarity. Do not drink filtered test water.",
+            "skills": ["Experimental design", "Environmental engineering", "Measurement", "Iteration"],
+            "materials": ["Bottles", "Gravel", "Sand", "Filter material", "Prepared non-potable test water"],
+            "steps": [
+                "Research the purpose of filtration layers.",
+                "Define a safe test method.",
+                "Build multiple filter designs.",
+                "Measure changes in clarity or another safe indicator.",
+                "Compare designs.",
+                "Explain why filtration alone does not necessarily make water safe to drink."
+            ],
+            "portfolio": "Investigated low-cost water filtration designs through controlled testing and comparative environmental engineering analysis."
+        },
+        {
+            "title": "Heart-Rate Data Investigation",
+            "fields": ["Biomedical Engineering", "Biology", "Data Science"],
+            "create": ["Something related to health or the human body", "Something with data", "A research project"],
+            "level": "Beginner",
+            "time": "Weekend",
+            "hours": "3–6 hours",
+            "style": ["Working with data", "Testing and experimenting", "Researching"],
+            "equipment": ["Computer", "Phone sensors / wearable (optional)"],
+            "cost": "Free",
+            "description": "Explore how heart rate changes during safe everyday activities using your own measurements or a public dataset.",
+            "skills": ["Physiology", "Data collection", "Statistics", "Visualization"],
+            "materials": ["Timer or wearable", "Computer or spreadsheet"],
+            "steps": [
+                "Choose a simple question about heart rate.",
+                "Create a consistent measurement procedure.",
+                "Collect or obtain non-sensitive sample data.",
+                "Calculate summary statistics.",
+                "Graph the results.",
+                "Discuss variation without making medical conclusions."
+            ],
+            "portfolio": "Conducted a quantitative heart-rate investigation using structured data collection, visualization, and statistical analysis."
+        },
+        {
+            "title": "Bridge Design Challenge",
+            "fields": ["Civil Engineering", "Mechanical Engineering", "Physics"],
+            "create": ["A physical device", "Something I can build cheaply", "A research project"],
+            "level": "Beginner",
+            "time": "Weekend",
+            "hours": "3–6 hours",
+            "style": ["Building with my hands", "Testing and experimenting", "Solving logic problems"],
+            "equipment": ["Basic household materials"],
+            "cost": "Very Low",
+            "description": "Design a lightweight model bridge and test how much load it can support.",
+            "skills": ["Structures", "Forces", "Engineering design", "Testing"],
+            "materials": ["Craft sticks or paper", "Glue or tape", "Weights", "Scale"],
+            "steps": [
+                "Research basic bridge structures.",
+                "Set size and material constraints.",
+                "Sketch your design.",
+                "Build the bridge.",
+                "Test increasing loads safely.",
+                "Calculate strength-to-weight performance and redesign."
+            ],
+            "portfolio": "Designed and load-tested a model bridge, applying structural concepts and iterative engineering optimization."
+        },
+        {
+            "title": "Solar Oven Optimization",
+            "fields": ["Environmental Science", "Mechanical Engineering", "Physics"],
+            "create": ["A physical device", "Something involving energy", "Something I can build cheaply"],
+            "level": "Beginner",
+            "time": "Weekend",
+            "hours": "3–6 hours",
+            "style": ["Building with my hands", "Testing and experimenting", "Working with data"],
+            "equipment": ["Basic household materials"],
+            "cost": "Very Low",
+            "description": "Build a small solar heating device and test how design choices affect temperature.",
+            "skills": ["Energy", "Heat transfer", "Experimental design", "Optimization"],
+            "materials": ["Cardboard box", "Foil", "Clear covering", "Dark paper", "Thermometer"],
+            "steps": [
+                "Research heat absorption and reflection.",
+                "Build a baseline solar oven.",
+                "Measure temperature over time.",
+                "Change one design feature.",
+                "Compare performance.",
+                "Document the most effective design."
+            ],
+            "portfolio": "Built and optimized a solar heating prototype using experimental data and heat-transfer principles."
+        },
+        {
+            "title": "Interactive Physics Simulator",
+            "fields": ["Physics", "Computer Science", "Mathematics"],
+            "create": ["A website or app", "Something useful for school or my future", "A simulation"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–20 hours",
+            "style": ["Coding", "Solving logic problems", "Designing a user experience"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Build an interactive simulation for projectile motion, collisions, circuits, or another physics concept.",
+            "skills": ["Python", "Physics modeling", "Mathematics", "Visualization"],
+            "materials": ["Computer", "Python", "Streamlit or plotting library"],
+            "steps": [
+                "Choose one physics model.",
+                "Write the governing equations.",
+                "Verify calculations with sample values.",
+                "Build adjustable user inputs.",
+                "Visualize the simulated result.",
+                "Explain assumptions and limitations."
+            ],
+            "portfolio": "Developed an interactive physics simulation translating mathematical models into adjustable visual software."
+        },
+        {
+            "title": "Budget Optimization Tool",
+            "fields": ["Industrial Engineering", "Data Science", "Mathematics", "Computer Science"],
+            "create": ["A website or app", "Something with data", "Something that solves an optimization problem"],
+            "level": "Advanced",
+            "time": "2–4 weeks",
+            "hours": "15–25 hours",
+            "style": ["Coding", "Working with data", "Solving logic problems"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Create a tool that allocates a limited budget across competing needs while respecting user-defined constraints.",
+            "skills": ["Optimization", "Python", "Linear programming", "Data modeling", "UI design"],
+            "materials": ["Computer", "Python", "Optimization library"],
+            "steps": [
+                "Define a realistic allocation problem.",
+                "Identify decision variables and constraints.",
+                "Write an objective function.",
+                "Implement the optimization model.",
+                "Build inputs for different scenarios.",
+                "Explain tradeoffs and test edge cases."
+            ],
+            "portfolio": "Built an optimization tool using mathematical programming to allocate limited resources under real-world constraints."
+        },
+        {
+            "title": "Emergency Response Location Model",
+            "fields": ["Industrial Engineering", "Data Science", "Mathematics"],
+            "create": ["Something with data", "Something that helps my community", "Something that solves an optimization problem"],
+            "level": "Advanced",
+            "time": "1–2 months",
+            "hours": "20+ hours",
+            "style": ["Coding", "Working with data", "Solving logic problems"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Build a simplified model that chooses service locations to improve coverage or response time using public or synthetic data.",
+            "skills": ["Operations research", "Optimization", "Python", "Data analysis", "Model assumptions"],
+            "materials": ["Computer", "Python", "Public or synthetic location data"],
+            "steps": [
+                "Define the service-area problem.",
+                "Create or clean location data.",
+                "Choose a coverage or distance objective.",
+                "Implement a simplified optimization model.",
+                "Compare multiple scenarios.",
+                "Explain ethical limitations and what real deployment would require."
+            ],
+            "portfolio": "Developed a facility-location optimization model to evaluate service coverage and resource-allocation tradeoffs."
+        }
+    ]
+
+    # --------------------------------------------------------
+    # DISCOVERY QUESTIONS
+    # --------------------------------------------------------
+
+    st.header("What do you want to create?")
+
+    create_choices = st.multiselect(
+        "Choose anything that sounds exciting.",
+        [
+            "A physical device",
+            "A robot",
+            "A game",
+            "A website or app",
+            "An AI project",
+            "Something with data",
+            "A research project",
+            "Something related to health or the human body",
+            "Something involving biology",
+            "Something involving energy",
+            "Something with sensors",
+            "Something with lights or electronics",
+            "Something that moves",
+            "A simulation",
+            "Something that solves an optimization problem",
+            "Something that helps people",
+            "Something that helps my community",
+            "Something that makes everyday life easier",
+            "Something useful for school or my future",
+            "Something creative",
+            "Something I can build cheaply",
+            "Surprise me"
         ],
+        key="project_create_choices"
+    )
 
-        "Electrical Engineering": [
-            (
-                "Beginner",
-                "Build and test an LED circuit."
-            ),
-            (
-                "Intermediate",
-                "Create an Arduino environmental sensor."
-            ),
-            (
-                "Advanced",
-                "Design an embedded monitoring system."
-            )
+    project_field = st.multiselect(
+        "Are there any STEM areas you want to explore?",
+        [
+            "I'm not sure yet",
+            "Engineering",
+            "Electrical Engineering",
+            "Mechanical Engineering",
+            "Computer Engineering",
+            "Civil Engineering",
+            "Industrial Engineering",
+            "Biomedical Engineering",
+            "Robotics",
+            "Computer Science",
+            "Software Engineering",
+            "Web Development",
+            "Artificial Intelligence",
+            "Data Science",
+            "Cybersecurity",
+            "Biology",
+            "Environmental Science",
+            "Physics",
+            "Mathematics",
+            "Chemistry"
         ],
+        key="project_field_choices"
+    )
 
-        "Mechanical Engineering": [
-            (
-                "Beginner",
-                "Model an object using CAD."
-            ),
-            (
-                "Intermediate",
-                "Design and 3D print a mechanical prototype."
-            ),
-            (
-                "Advanced",
-                "Design and test a functional mechanical system."
-            )
+    project_style = st.multiselect(
+        "How would you like to spend most of your time?",
+        [
+            "Building with my hands",
+            "Coding",
+            "Working with data",
+            "Designing in CAD",
+            "Testing and experimenting",
+            "Researching",
+            "Solving logic problems",
+            "Designing a user experience",
+            "Working mostly on a computer"
         ],
+        key="project_style_choices"
+    )
 
-        "Computer Engineering": [
-            (
-                "Beginner",
-                "Build a digital logic circuit."
-            ),
-            (
-                "Intermediate",
-                "Create a hardware/software sensor system."
-            ),
-            (
-                "Advanced",
-                "Build a small embedded system."
-            )
-        ],
+    col1, col2 = st.columns(2)
 
-        "Computer Science": [
-            (
+    with col1:
+        project_level = st.selectbox(
+            "How challenging should the project be?",
+            [
+                "Any level",
                 "Beginner",
-                "Build a Python application."
-            ),
-            (
                 "Intermediate",
-                "Create an interactive web application."
-            ),
-            (
-                "Advanced",
-                "Build a full-stack application with a database."
-            )
-        ],
+                "Advanced"
+            ],
+            key="project_level_choice"
+        )
 
-        "Artificial Intelligence": [
-            (
-                "Beginner",
-                "Explore and visualize a real dataset."
-            ),
-            (
-                "Intermediate",
-                "Build a simple machine-learning model."
-            ),
-            (
-                "Advanced",
-                "Build and evaluate a recommendation system."
-            )
-        ],
+    with col2:
+        project_time = st.selectbox(
+            "How long do you want to work on it?",
+            [
+                "Any amount of time",
+                "Weekend",
+                "1–2 weeks",
+                "2–4 weeks",
+                "1–2 months"
+            ],
+            key="project_time_choice"
+        )
 
-        "Data Science": [
-            (
-                "Beginner",
-                "Analyze an NYC public dataset."
-            ),
-            (
-                "Intermediate",
-                "Build an interactive data dashboard."
-            ),
-            (
-                "Advanced",
-                "Create a predictive analysis project."
-            )
-        ],
+    with st.expander("What equipment do you have? (optional)"):
 
-        "Biomedical Engineering": [
-            (
-                "Beginner",
-                "Research a healthcare problem and design an engineering solution."
-            ),
-            (
-                "Intermediate",
-                "Create an assistive-device prototype."
-            ),
-            (
-                "Advanced",
-                "Design and evaluate a medical technology concept."
-            )
-        ],
+        equipment = st.multiselect(
+            "Select everything you can access.",
+            [
+                "Computer",
+                "Basic household materials",
+                "Arduino / microcontroller",
+                "Breadboard / basic electronics",
+                "CAD software",
+                "3D printer",
+                "Raspberry Pi",
+                "Phone sensors / wearable (optional)"
+            ],
+            key="project_equipment_choices"
+        )
 
-        "Biology": [
-            (
-                "Beginner",
-                "Investigate a biological question using scientific data."
-            ),
-            (
-                "Intermediate",
-                "Design a controlled experiment."
-            ),
-            (
-                "Advanced",
-                "Complete an independent research project."
-            )
-        ],
+        budget = st.selectbox(
+            "How much would you prefer to spend?",
+            [
+                "Any budget",
+                "Free only",
+                "Very low cost",
+                "Low cost",
+                "Low–Medium is okay",
+                "Medium is okay"
+            ],
+            key="project_budget_choice"
+        )
 
-        "Physics": [
-            (
-                "Beginner",
-                "Create a motion or energy simulation."
-            ),
-            (
-                "Intermediate",
-                "Model a physical system using Python."
-            ),
-            (
-                "Advanced",
-                "Build and analyze a physics-based engineering project."
-            )
-        ],
+    # --------------------------------------------------------
+    # MATCHING
+    # --------------------------------------------------------
 
-        "Mathematics": [
-            (
-                "Beginner",
-                "Use mathematics to model a real-world problem."
-            ),
-            (
-                "Intermediate",
-                "Build a probability or optimization model."
-            ),
-            (
-                "Advanced",
-                "Create a mathematical analysis using real data."
-            )
-        ],
+    def project_match(project):
 
-        "Environmental Science": [
-            (
-                "Beginner",
-                "Analyze an environmental issue affecting NYC."
-            ),
-            (
-                "Intermediate",
-                "Create an environmental data dashboard."
-            ),
-            (
-                "Advanced",
-                "Develop a data-driven environmental solution."
-            )
-        ],
+        score = 0
+        reasons = []
 
-        "Robotics": [
-            (
-                "Beginner",
-                "Design a robotic mechanism."
-            ),
-            (
-                "Intermediate",
-                "Build a sensor-controlled device."
-            ),
-            (
-                "Advanced",
-                "Create an autonomous robotic system."
+        if create_choices:
+            overlap = len(
+                set(create_choices)
+                &
+                set(project["create"])
             )
+
+            score += min(
+                overlap * 14,
+                42
+            )
+
+            if overlap:
+                reasons.append(
+                    "Matches what you said you want to create."
+                )
+
+        selected_fields = [
+            item
+            for item in project_field
+            if item != "I'm not sure yet"
         ]
-    }
 
-    shown_projects = False
-
-    for interest in profile[
-        "interests"
-    ]:
-
-        if interest in project_library:
-
-            shown_projects = True
-
-            st.header(
-                interest
+        if selected_fields:
+            overlap = len(
+                set(selected_fields)
+                &
+                set(project["fields"])
             )
 
-            project_columns = st.columns(3)
+            score += min(
+                overlap * 12,
+                30
+            )
 
-            for index, (
-                level,
+            if overlap:
+                reasons.append(
+                    "Connects to STEM fields you want to explore."
+                )
+
+        if project_style:
+            overlap = len(
+                set(project_style)
+                &
+                set(project["style"])
+            )
+
+            score += min(
+                overlap * 8,
+                24
+            )
+
+            if overlap:
+                reasons.append(
+                    "Fits the way you said you like to work."
+                )
+
+        if (
+            project_level == "Any level"
+            or project_level == project["level"]
+        ):
+            score += 12
+
+        if (
+            project_time == "Any amount of time"
+            or project_time == project["time"]
+        ):
+            score += 10
+
+        if equipment:
+            required = set(
+                project["equipment"]
+            )
+
+            available = set(
+                equipment
+            )
+
+            equipment_overlap = len(
+                required & available
+            )
+
+            if required:
+                score += round(
+                    12
+                    *
+                    equipment_overlap
+                    /
+                    len(required)
+                )
+
+        # If the user hasn't made many selections yet, keep useful
+        # projects visible rather than producing meaningless zeroes.
+        if not create_choices:
+            score += 10
+
+        if not selected_fields:
+            score += 8
+
+        if not project_style:
+            score += 6
+
+        return score, reasons
+
+    if st.button(
+        "Find Projects for Me",
+        type="primary",
+        use_container_width=True
+    ):
+
+        ranked_projects = []
+
+        for project in project_catalog:
+
+            score, reasons = project_match(
                 project
-            ) in enumerate(
-                project_library[
-                    interest
-                ]
+            )
+
+            ranked_projects.append(
+                {
+                    "project": project,
+                    "score": score,
+                    "reasons": reasons
+                }
+            )
+
+        ranked_projects.sort(
+            key=lambda item: item["score"],
+            reverse=True
+        )
+
+        st.session_state[
+            "project_recommendations"
+        ] = ranked_projects
+
+        st.rerun()
+
+    recommendations = st.session_state.get(
+        "project_recommendations"
+    )
+
+    # --------------------------------------------------------
+    # RESULTS
+    # --------------------------------------------------------
+
+    if recommendations:
+
+        st.divider()
+
+        st.header("Your Best Project Matches")
+
+        st.caption(
+            "Projects are ordered by how closely they match your answers. "
+            "You can still explore any project that sounds interesting."
+        )
+
+        top_score = max(
+            recommendations[0]["score"],
+            1
+        )
+
+        for rank, item in enumerate(
+            recommendations[:12],
+            start=1
+        ):
+
+            project = item["project"]
+
+            relative_match = min(
+                round(
+                    item["score"]
+                    /
+                    top_score
+                    *
+                    100
+                ),
+                100
+            )
+
+            with st.container(
+                border=True
             ):
 
-                with project_columns[
-                    index % 3
-                ]:
+                title_col, match_col = (
+                    st.columns(
+                        [4, 1]
+                    )
+                )
 
-                    with st.container(
-                        border=True
+                with title_col:
+
+                    st.subheader(
+                        f"{rank}. {project['title']}"
+                    )
+
+                    st.caption(
+                        " • ".join(
+                            project["fields"][:3]
+                        )
+                    )
+
+                with match_col:
+
+                    st.metric(
+                        "Project Match",
+                        f"{relative_match}%"
+                    )
+
+                meta1, meta2, meta3, meta4 = (
+                    st.columns(4)
+                )
+
+                with meta1:
+                    st.write(
+                        f"**Level**\n\n{project['level']}"
+                    )
+
+                with meta2:
+                    st.write(
+                        f"**Timeline**\n\n{project['time']}"
+                    )
+
+                with meta3:
+                    st.write(
+                        f"**Workload**\n\n{project['hours']}"
+                    )
+
+                with meta4:
+                    st.write(
+                        f"**Cost**\n\n{project['cost']}"
+                    )
+
+                st.write(
+                    project["description"]
+                )
+
+                st.write(
+                    "**Skills you'll build:** "
+                    +
+                    " • ".join(
+                        project["skills"]
+                    )
+                )
+
+                with st.expander(
+                    "See materials and project roadmap"
+                ):
+
+                    st.write(
+                        "**What you'll need**"
+                    )
+
+                    for material in project[
+                        "materials"
+                    ]:
+                        st.write(
+                            f"• {material}"
+                        )
+
+                    st.write(
+                        "**Suggested roadmap**"
+                    )
+
+                    for step_number, step in enumerate(
+                        project["steps"],
+                        start=1
                     ):
-
-                        st.caption(
-                            level
+                        st.write(
+                            f"{step_number}. {step}"
                         )
 
-                        st.subheader(
-                            project
-                        )
+                    st.write(
+                        "**Possible portfolio description**"
+                    )
 
-    if not shown_projects:
+                    st.write(
+                        project["portfolio"]
+                    )
+
+                if item["reasons"]:
+
+                    st.caption(
+                        "Why it matches: "
+                        +
+                        " ".join(
+                            item["reasons"]
+                        )
+                    )
+
+        st.divider()
 
         st.info(
-            "More project recommendations for your interests will be added."
+            "Next upgrade: students will be able to save a project, press "
+            "'Start Project,' track milestones, and move completed projects "
+            "into a personal STEM portfolio."
         )
+
+    else:
+
+        st.divider()
+
+        st.header("Examples of What You Can Build")
+
+        example_cols = st.columns(3)
+
+        for index, project in enumerate(
+            project_catalog[:6]
+        ):
+
+            with example_cols[
+                index % 3
+            ]:
+
+                with st.container(
+                    border=True
+                ):
+
+                    st.caption(
+                        project["level"]
+                    )
+
+                    st.subheader(
+                        project["title"]
+                    )
+
+                    st.write(
+                        project["description"]
+                    )
+
+                    st.caption(
+                        f"{project['time']} • {project['cost']} cost"
+                    )
+
+    st.divider()
+
+    st.caption(
+        "STEM Pathways NYC • Explore • Build • Discover"
+    )
 
 
 # ============================================================
