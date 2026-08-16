@@ -4447,7 +4447,7 @@ elif page == "College Suggestions":
                 with favorite_action1:
 
                     if st.button(
-                        "⭐ Add to Favorites",
+                        "💾 Save College",
                         key=f"favorite_college_{college['name']}",
                         use_container_width=True
                     ):
@@ -4458,7 +4458,7 @@ elif page == "College Suggestions":
                         ):
 
                             st.success(
-                                "Added to My Favorite Colleges."
+                                "College saved to My Favorite Colleges."
                             )
 
                 with favorite_action2:
@@ -4491,16 +4491,179 @@ elif page == "My Favorite Colleges":
     )
 
     st.write(
-        "Build your own college list and arrange schools in the "
-        "order you personally like them."
+        "Build your own college list, keep the schools you like, "
+        "and arrange them in your personal order."
     )
 
     st.info(
-        "Your ranking is your personal preference list. "
-        "It does not represent an admissions ranking."
+        "Your favorite order is based on your personal preferences. "
+        "The competitiveness rating and admission data are informational "
+        "and do not predict your individual chance of admission."
     )
 
     st.divider()
+
+    # --------------------------------------------------------
+    # COLLEGE DETAILS USED IN FAVORITES
+    # --------------------------------------------------------
+
+    favorite_college_catalog = {
+        "MIT": {
+            "location": "Cambridge, MA",
+            "admit_rate": 4.5,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://ir.mit.edu/projects/2024-25-common-data-set/"
+        },
+        "Stanford University": {
+            "location": "Stanford, CA",
+            "admit_rate": None,
+            "rate_label": "See official Stanford CDS",
+            "source_url": "https://irds.stanford.edu/data-findings/cds"
+        },
+        "Carnegie Mellon University": {
+            "location": "Pittsburgh, PA",
+            "admit_rate": 11.1,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.cmu.edu/ira/CDS/"
+        },
+        "UC Berkeley": {
+            "location": "Berkeley, CA",
+            "admit_rate": 11.0,
+            "rate_label": "2026 first-year overall",
+            "source_url": "https://admissions.berkeley.edu/apply-to-berkeley/student-profile/"
+        },
+        "Georgia Tech": {
+            "location": "Atlanta, GA",
+            "admit_rate": 9.0,
+            "rate_label": "2026 non-Georgia admit rate",
+            "source_url": "https://admission.gatech.edu/"
+        },
+        "University of Michigan": {
+            "location": "Ann Arbor, MI",
+            "admit_rate": 14.0,
+            "rate_label": "Fall 2025 Michigan Engineering",
+            "source_url": "https://www.engin.umich.edu/about/facts-figures/"
+        },
+        "Purdue University": {
+            "location": "West Lafayette, IN",
+            "admit_rate": 34.7,
+            "rate_label": "2025 College of Engineering",
+            "source_url": "https://admissions.purdue.edu/become-student/class-profile/"
+        },
+        "Cornell University": {
+            "location": "Ithaca, NY",
+            "admit_rate": 7.9,
+            "rate_label": "Fall 2023 overall",
+            "source_url": "https://irp.cornell.edu/common-data-set"
+        },
+        "Columbia University": {
+            "location": "New York, NY",
+            "admit_rate": 3.9,
+            "rate_label": "Class of 2027 overall",
+            "source_url": "https://undergrad.admissions.columbia.edu/"
+        },
+        "Princeton University": {
+            "location": "Princeton, NJ",
+            "admit_rate": 4.4,
+            "rate_label": "Class of 2029 overall",
+            "source_url": "https://profile.princeton.edu/admission-and-costs"
+        },
+        "Harvard University": {
+            "location": "Cambridge, MA",
+            "admit_rate": 4.2,
+            "rate_label": "Class of 2029 overall",
+            "source_url": "https://college.harvard.edu/admissions/admissions-statistics"
+        },
+        "Duke University": {
+            "location": "Durham, NC",
+            "admit_rate": 5.2,
+            "rate_label": "Class of 2029 overall",
+            "source_url": "https://admissions.duke.edu/"
+        },
+        "Johns Hopkins University": {
+            "location": "Baltimore, MD",
+            "admit_rate": 4.2,
+            "rate_label": "Class of 2029 Regular Decision",
+            "source_url": "https://apply.jhu.edu/"
+        },
+        "Caltech": {
+            "location": "Pasadena, CA",
+            "admit_rate": 3.1,
+            "rate_label": "Fall 2023 overall",
+            "source_url": "https://iro.caltech.edu/"
+        },
+        "The Cooper Union": {
+            "location": "New York, NY",
+            "admit_rate": 23.0,
+            "rate_label": "2024-25 School of Engineering",
+            "source_url": "https://cooper.edu/admissions/faq"
+        },
+        "NYU Tandon": {
+            "location": "Brooklyn, NY",
+            "admit_rate": 13.0,
+            "rate_label": "NYU university-wide",
+            "source_url": "https://bulletins.nyu.edu/nyu/enrollment-graduation-statistics/"
+        },
+        "Stevens Institute of Technology": {
+            "location": "Hoboken, NJ",
+            "admit_rate": 51.0,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.stevens.edu/discover-stevens/stevens-by-the-numbers/facts-statistics"
+        },
+        "CCNY": {
+            "location": "New York, NY",
+            "admit_rate": None,
+            "rate_label": "See official CCNY admissions data",
+            "source_url": "https://www.ccny.cuny.edu/admissions"
+        },
+        "Stony Brook University": {
+            "location": "Stony Brook, NY",
+            "admit_rate": None,
+            "rate_label": "See official Stony Brook admissions data",
+            "source_url": "https://www.stonybrook.edu/undergraduate-admissions/"
+        }
+    }
+
+    def favorite_competitiveness(rate):
+
+        if rate is None:
+            return None, "Not rated"
+
+        if rate < 7:
+            return 5, "Extremely Competitive"
+        elif rate < 15:
+            return 4, "Highly Competitive"
+        elif rate < 30:
+            return 3, "Competitive"
+        elif rate < 50:
+            return 2, "Moderately Competitive"
+        else:
+            return 1, "More Accessible"
+
+    # Recover the most recent personalized college matches from this session.
+    last_match_lookup = {}
+
+    for result in st.session_state.get(
+        "college_match_results_v3",
+        []
+    ):
+
+        college_info = result.get(
+            "college",
+            {}
+        )
+
+        college_name = college_info.get(
+            "name"
+        )
+
+        if college_name:
+
+            last_match_lookup[
+                college_name
+            ] = result.get(
+                "match_score"
+            )
 
     favorite_colleges = load_favorite_colleges(
         user_sub
@@ -4514,7 +4677,7 @@ elif page == "My Favorite Colleges":
 
         st.write(
             "Go to **College Suggestions** and click "
-            "**⭐ Add to Favorites** on schools you want to remember."
+            "**💾 Save College** on schools you want to remember."
         )
 
         if st.button(
@@ -4553,6 +4716,31 @@ elif page == "My Favorite Colleges":
                 "college_name"
             ]
 
+            college_info = (
+                favorite_college_catalog.get(
+                    college_name,
+                    {}
+                )
+            )
+
+            admit_rate = (
+                college_info.get(
+                    "admit_rate"
+                )
+            )
+
+            stars, competition_label = (
+                favorite_competitiveness(
+                    admit_rate
+                )
+            )
+
+            personal_match = (
+                last_match_lookup.get(
+                    college_name
+                )
+            )
+
             with st.container(
                 border=True
             ):
@@ -4569,12 +4757,104 @@ elif page == "My Favorite Colleges":
                         college_name
                     )
 
+                    if college_info.get(
+                        "location"
+                    ):
+
+                        st.caption(
+                            college_info[
+                                "location"
+                            ]
+                        )
+
                 with rank_col:
 
                     st.metric(
                         "Your Rank",
                         f"#{index}"
                     )
+
+                stat1, stat2, stat3 = (
+                    st.columns(3)
+                )
+
+                with stat1:
+
+                    if admit_rate is not None:
+
+                        st.metric(
+                            "Recent Admit Rate",
+                            f"{admit_rate:.1f}%"
+                        )
+
+                    else:
+
+                        st.metric(
+                            "Recent Admit Rate",
+                            "See source"
+                        )
+
+                    if college_info.get(
+                        "rate_label"
+                    ):
+
+                        st.caption(
+                            college_info[
+                                "rate_label"
+                            ]
+                        )
+
+                with stat2:
+
+                    if stars is not None:
+
+                        star_display = (
+                            "★" * stars
+                            +
+                            "☆" * (
+                                5 - stars
+                            )
+                        )
+
+                        st.metric(
+                            "Competition",
+                            star_display
+                        )
+
+                        st.caption(
+                            competition_label
+                        )
+
+                    else:
+
+                        st.metric(
+                            "Competition",
+                            "Not rated"
+                        )
+
+                with stat3:
+
+                    if personal_match is not None:
+
+                        st.metric(
+                            "Your Last Match",
+                            f"{personal_match}%"
+                        )
+
+                        st.caption(
+                            "Fit score, not admission chance"
+                        )
+
+                    else:
+
+                        st.metric(
+                            "Your Last Match",
+                            "Run discovery"
+                        )
+
+                        st.caption(
+                            "Use College Suggestions to calculate your fit"
+                        )
 
                 notes_value = st.text_area(
                     "Why do you like this school? (optional)",
@@ -4668,6 +4948,18 @@ elif page == "My Favorite Colleges":
                             "confirm_remove_favorite_college"
                         ] = favorite_id
 
+                if college_info.get(
+                    "source_url"
+                ):
+
+                    st.link_button(
+                        "View Admissions / Data Source",
+                        college_info[
+                            "source_url"
+                        ],
+                        use_container_width=True
+                    )
+
                 if (
                     st.session_state.get(
                         "confirm_remove_favorite_college"
@@ -4722,12 +5014,10 @@ elif page == "My Favorite Colleges":
         st.divider()
 
         st.caption(
-            "Tip: Your favorite list can change as you learn more. "
-            "Move schools whenever your priorities change."
+            "Tip: Your favorites can change as you learn more. "
+            "Move schools whenever your priorities change. "
+            "Admission rates and competitiveness categories are informational only."
         )
-
-
-
 
 
 # ============================================================
