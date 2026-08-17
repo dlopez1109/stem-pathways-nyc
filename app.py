@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import json
 import re
-from datetime import datetime, xtimezone
+from datetime import datetime, timezone
 from supabase import create_client
 
 
