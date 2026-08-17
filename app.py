@@ -1192,24 +1192,33 @@ extra_opportunities = [
     {
         "name": "New York Academy of Sciences Junior Academy",
         "organization": "New York Academy of Sciences",
-        "description": "Free global virtual STEM program where students ages 13–17 collaborate on 10-week Innovation Challenges with STEM mentors.",
+        "description": (
+            "A free global virtual STEM innovation program where students ages "
+            "13–17 join international teams and work with STEM mentors to develop "
+            "solutions to real-world problems through 10-week Innovation Challenges."
+        ),
         "opportunity_type": "Research",
-        "fields": "Engineering;Computer Science;Science;Technology;Innovation;Research",
+        "fields": "Engineering;Computer Science;Science;Technology;Innovation;Research;Design Thinking",
         "grades": "9;10;11;12",
-        "age_range": "13–17",
+        "age_range": "13–17 during the program",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
         "bronx_priority": "no",
         "cost": "Free",
-        "financial_aid": "Not needed",
-        "application_status": "Future Cycle",
-        "deadline": "Next recruitment dates not yet announced",
+        "financial_aid": "Not needed — program is completely free",
+        "application_status": "Fall 2026 Closed — Decisions August 31, 2026",
+        "deadline": "Fall 2026 applications: April 1–July 9, 2026; future recruitment dates should be confirmed with NYAS",
         "selectivity": "Highly Competitive",
         "selectivity_stars": 4,
-        "acceptance_rate": "Not publicly reported; NYAS says it receives thousands of applications worldwide",
-        "internship_potential": "No — virtual STEM innovation and mentorship",
-        "format": "Virtual / Global",
+        "acceptance_rate": "Not publicly reported; NYAS states it receives thousands of applications worldwide",
+        "internship_potential": "No — international team-based STEM innovation, research, design, and mentorship",
+        "format": "Virtual / Global — Launchpad platform",
         "paid_status": "Not paid / Free Program",
-        "requirements": "High school student age 13–17; internet-connected device; application review",
+        "requirements": (
+            "Age 13–17 during the program; strong interest in STEM; comfortable "
+            "reading, writing, and communicating in English; parental/guardian "
+            "consent; ability to work on an international team; approximately "
+            "3–4 hours per week during challenge periods."
+        ),
         "url": "https://www.nyas.org/learning/high-school-research-programs/the-junior-academy/"
     },
     {
@@ -2560,6 +2569,142 @@ def load_admin_metrics():
             ] = []
 
     return data
+
+
+
+# ============================================================
+# GOOGLE CALENDAR LINKS
+# ============================================================
+
+def parse_confirmed_deadline(value):
+
+    if value is None or pd.isna(value):
+        return None
+
+    raw = str(value).strip()
+
+    if not raw:
+        return None
+
+    lower = raw.lower()
+
+    # Do not create calendar events from estimated or unannounced dates.
+    blocked_phrases = [
+        "not yet announced",
+        "future cycle",
+        "expected",
+        "typically",
+        "check official",
+        "see official",
+        "varies",
+        "seasonal",
+        "next cycle",
+        "future recruitment",
+        "date not yet announced"
+    ]
+
+    if any(
+        phrase in lower
+        for phrase in blocked_phrases
+    ):
+        return None
+
+    # Prefer a full Month DD, YYYY date when it appears in a longer string.
+    month_pattern = (
+        r"(January|February|March|April|May|June|July|August|"
+        r"September|October|November|December)\s+\d{1,2},\s+\d{4}"
+    )
+
+    match = re.search(
+        month_pattern,
+        raw,
+        flags=re.IGNORECASE
+    )
+
+    if match:
+
+        parsed = pd.to_datetime(
+            match.group(0),
+            errors="coerce"
+        )
+
+        if pd.notna(parsed):
+            return parsed.to_pydatetime()
+
+    # Fall back to a direct parse only for simple date-like strings.
+    parsed = pd.to_datetime(
+        raw,
+        errors="coerce"
+    )
+
+    if pd.notna(parsed):
+        return parsed.to_pydatetime()
+
+    return None
+
+
+def google_calendar_deadline_url(
+    opportunity_name,
+    deadline_value,
+    official_url="",
+    organization=""
+):
+
+    deadline_dt = parse_confirmed_deadline(
+        deadline_value
+    )
+
+    if deadline_dt is None:
+        return None
+
+    start_date = deadline_dt.strftime(
+        "%Y%m%d"
+    )
+
+    # Google Calendar all-day events use an exclusive end date.
+    end_date = (
+        deadline_dt
+        +
+        pd.Timedelta(
+            days=1
+        )
+    ).strftime(
+        "%Y%m%d"
+    )
+
+    title = (
+        f"{opportunity_name} Application Deadline"
+    )
+
+    details_parts = [
+        f"Application deadline for {opportunity_name}."
+    ]
+
+    if organization:
+        details_parts.append(
+            f"Organization: {organization}"
+        )
+
+    if official_url:
+        details_parts.append(
+            f"Official program page: {official_url}"
+        )
+
+    details_parts.append(
+        "Added from STEM Pathways NYC. Confirm the final deadline on the official program website."
+    )
+
+    details = "\n".join(
+        details_parts
+    )
+
+    return (
+        "https://calendar.google.com/calendar/render"
+        "?action=TEMPLATE"
+        f"&text={quote_plus(title)}"
+        f"&dates={start_date}/{end_date}"
+        f"&details={quote_plus(details)}"
+    )
 
 
 
@@ -5736,7 +5881,36 @@ elif page == "Opportunities":
                             f"{opportunity.get('requirements', 'Check official site')}"
                         )
 
-                    action1, action2 = st.columns(2)
+                    calendar_url = google_calendar_deadline_url(
+                        str(
+                            opportunity[
+                                "name"
+                            ]
+                        ),
+                        opportunity.get(
+                            "deadline"
+                        ),
+                        str(
+                            opportunity.get(
+                                "url",
+                                ""
+                            )
+                        ),
+                        str(
+                            opportunity.get(
+                                "organization",
+                                ""
+                            )
+                        )
+                    )
+
+                    if calendar_url:
+
+                        action1, action2, action3 = st.columns(3)
+
+                    else:
+
+                        action1, action2 = st.columns(2)
 
                     with action1:
 
@@ -5759,15 +5933,37 @@ elif page == "Opportunities":
                                     "Saved to My Applications."
                                 )
 
-                    with action2:
+                    if calendar_url:
 
-                        st.link_button(
-                            "View Official Opportunity",
-                            opportunity[
-                                "url"
-                            ],
-                            use_container_width=True
-                        )
+                        with action2:
+
+                            st.link_button(
+                                "📅 Add to Google Calendar",
+                                calendar_url,
+                                use_container_width=True
+                            )
+
+                        with action3:
+
+                            st.link_button(
+                                "View Official Opportunity",
+                                opportunity[
+                                    "url"
+                                ],
+                                use_container_width=True
+                            )
+
+                    else:
+
+                        with action2:
+
+                            st.link_button(
+                                "View Official Opportunity",
+                                opportunity[
+                                    "url"
+                                ],
+                                use_container_width=True
+                            )
 
             st.divider()
 
@@ -6000,7 +6196,36 @@ elif page == "Opportunities":
                         f"{recommended_opportunity.get('requirements', 'Check official site')}"
                     )
 
-                rec_action1, rec_action2 = st.columns(2)
+                recommended_calendar_url = google_calendar_deadline_url(
+                    str(
+                        recommended_opportunity[
+                            "name"
+                        ]
+                    ),
+                    recommended_opportunity.get(
+                        "deadline"
+                    ),
+                    str(
+                        recommended_opportunity.get(
+                            "url",
+                            ""
+                        )
+                    ),
+                    str(
+                        recommended_opportunity.get(
+                            "organization",
+                            ""
+                        )
+                    )
+                )
+
+                if recommended_calendar_url:
+
+                    rec_action1, rec_action2, rec_action3 = st.columns(3)
+
+                else:
+
+                    rec_action1, rec_action2 = st.columns(2)
 
                 with rec_action1:
 
@@ -6023,15 +6248,37 @@ elif page == "Opportunities":
                                 "Saved to My Applications."
                             )
 
-                with rec_action2:
+                if recommended_calendar_url:
 
-                    st.link_button(
-                        "View Official Opportunity",
-                        recommended_opportunity[
-                            "url"
-                        ],
-                        use_container_width=True
-                    )
+                    with rec_action2:
+
+                        st.link_button(
+                            "📅 Add to Google Calendar",
+                            recommended_calendar_url,
+                            use_container_width=True
+                        )
+
+                    with rec_action3:
+
+                        st.link_button(
+                            "View Official Opportunity",
+                            recommended_opportunity[
+                                "url"
+                            ],
+                            use_container_width=True
+                        )
+
+                else:
+
+                    with rec_action2:
+
+                        st.link_button(
+                            "View Official Opportunity",
+                            recommended_opportunity[
+                                "url"
+                            ],
+                            use_container_width=True
+                        )
 
 
 # ============================================================
@@ -6659,9 +6906,30 @@ elif page == "Deadline Calendar":
                                 item["fields"]
                             )
 
-                        action1, action2 = (
-                            st.columns(2)
+                        deadline_calendar_url = google_calendar_deadline_url(
+                            item["name"],
+                            item["deadline"],
+                            item.get(
+                                "url",
+                                ""
+                            ),
+                            item.get(
+                                "organization",
+                                ""
+                            )
                         )
+
+                        if deadline_calendar_url:
+
+                            action1, action2, action3 = (
+                                st.columns(3)
+                            )
+
+                        else:
+
+                            action1, action2 = (
+                                st.columns(2)
+                            )
 
                         with action1:
 
@@ -6690,15 +6958,37 @@ elif page == "Deadline Calendar":
                                     "Saved in My Applications"
                                 )
 
-                        with action2:
+                        if deadline_calendar_url:
 
-                            if item["url"]:
+                            with action2:
 
                                 st.link_button(
-                                    "View Official Program",
-                                    item["url"],
+                                    "📅 Add to Google Calendar",
+                                    deadline_calendar_url,
                                     use_container_width=True
                                 )
+
+                            with action3:
+
+                                if item["url"]:
+
+                                    st.link_button(
+                                        "View Official Program",
+                                        item["url"],
+                                        use_container_width=True
+                                    )
+
+                        else:
+
+                            with action2:
+
+                                if item["url"]:
+
+                                    st.link_button(
+                                        "View Official Program",
+                                        item["url"],
+                                        use_container_width=True
+                                    )
 
                 st.divider()
 
