@@ -1052,6 +1052,167 @@ except Exception:
 
 extra_opportunities = [
     {
+        "name": "Research Science Institute (RSI) at MIT",
+        "organization": "Center for Excellence in Education / MIT",
+        "description": "Free six-week summer STEM program for rising seniors combining advanced coursework with original mentored research.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Computer Science;Mathematics;Physics;Biology;Chemistry;Research",
+        "grades": "11",
+        "age_range": "No simple age range publicly specified — rising seniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 deadline was December 10, 2025",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "50 U.S. students selected from 1,500+ U.S. applicants in published CEE guidance",
+        "internship_potential": "Yes — intensive mentored research experience",
+        "format": "Residential — MIT, Cambridge, Massachusetts",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Current 11th grader; application, recommendations, transcript; standardized scores if available",
+        "url": "https://www.cee.org/research-science-institute"
+    },
+    {
+        "name": "Carnegie Mellon SAMS",
+        "organization": "Carnegie Mellon University",
+        "description": "Free six-week residential STEM program with rigorous academics, project work, and community-building.",
+        "opportunity_type": "Summer Program",
+        "fields": "Engineering;Computer Science;Mathematics;Science;STEM",
+        "grades": "11",
+        "age_range": "16+ by program start",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Program is offered at no cost to selected students",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 deadline was February 1",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "No — intensive academic/project-based STEM program",
+        "format": "Residential — Pittsburgh, Pennsylvania",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Current 11th grader; age 16+ by start; U.S. citizen or permanent resident",
+        "url": "https://www.cmu.edu/pre-college/academic-programs/sams.html"
+    },
+    {
+        "name": "Columbia Engineering the Next Generation (ENG)",
+        "organization": "Columbia Engineering",
+        "description": "Paid six-week summer engineering research program for rising NYC seniors working with Columbia researchers and mentors.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Computer Science;Biomedical Engineering;Environmental Engineering;AI;Data Science",
+        "grades": "11",
+        "age_range": "Check official work-eligibility requirements",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — paid engineering research experience",
+        "format": "In person — Columbia University, NYC",
+        "paid_status": "Paid — 2026 FoR stipend listed at $17/hour, 25 hours/week",
+        "requirements": "Current 11th grader/rising NYC senior; NYC school; legally allowed to work in NYC; FoR requires prior work or volunteer experience",
+        "url": "https://outreach.engineering.columbia.edu/eng"
+    },
+    {
+        "name": "Rockefeller University Jumpstart + SSRP",
+        "organization": "The Rockefeller University / RockEDU",
+        "description": "NYC research pathway combining spring laboratory preparation with full-time summer research; Jumpstart supports 16 students.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Biomedical Science;Laboratory Research;Data Analysis;Science",
+        "grades": "11;12",
+        "age_range": "16+ by program start",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "2027 date not yet announced; 2026 Jumpstart deadline was January 2",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported; Jumpstart supports 16 students",
+        "internship_potential": "Yes — spring preparation plus full-time summer laboratory research",
+        "format": "In person — Rockefeller University, NYC",
+        "paid_status": "Check official 2027 program information",
+        "requirements": "NYC high school junior or senior; age 16+ at start; full spring/summer commitment; selected applicants interview",
+        "url": "https://www.rockefeller.edu/outreach/lab-jumpstart/"
+    },
+    {
+        "name": "Columbia University Science Honors Program (SHP)",
+        "organization": "Columbia University",
+        "description": "Highly selective academic-year Saturday program offering advanced mathematics and science courses taught by Columbia researchers.",
+        "opportunity_type": "Academic-Year Program",
+        "fields": "Mathematics;Physics;Chemistry;Biology;Computer Science;Engineering;Science",
+        "grades": "10;11;12",
+        "age_range": "No simple age range publicly specified — grade-based eligibility",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "$900/year for new students beginning Fall 2026",
+        "financial_aid": "Program fee waivers may be available for documented financial hardship",
+        "application_status": "Future Cycle",
+        "deadline": "Next cycle date not yet announced; applications typically open in early February",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "No — advanced academic enrichment",
+        "format": "In person — Saturdays at Columbia University",
+        "paid_status": "Not paid",
+        "requirements": "Apply in grades 9–11 for following year; live within 75 miles; application, essay, transcript, recommendation, entrance exam",
+        "url": "https://outreach.engineering.columbia.edu/SHP"
+    },
+    {
+        "name": "AMNH Science Research Mentoring Program (SRMP)",
+        "organization": "American Museum of Natural History",
+        "description": "Paid year-long NYC research program where students conduct original research with AMNH-affiliated scientists.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Earth Science;Astronomy;Data Science;Computer Science;Natural Sciences;Research",
+        "grades": "10;11",
+        "age_range": "No simple age range publicly specified — current 10th or 11th graders",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Class of 2028 applications expected Winter 2027",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — year-long mentored original research",
+        "format": "In person — American Museum of Natural History, NYC",
+        "paid_status": "$2,500 stipend upon completion of research and program requirements",
+        "requirements": "NYC student in current grade 10 or 11; passing classes; must meet AMNH prior-program or partner-school/program eligibility",
+        "url": "https://www.amnh.org/learn-teach/teens/science-research-mentoring-program"
+    },
+    {
+        "name": "New York Academy of Sciences Junior Academy",
+        "organization": "New York Academy of Sciences",
+        "description": "Free global virtual STEM program where students ages 13–17 collaborate on 10-week Innovation Challenges with STEM mentors.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Computer Science;Science;Technology;Innovation;Research",
+        "grades": "9;10;11;12",
+        "age_range": "13–17",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Next recruitment dates not yet announced",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported; NYAS says it receives thousands of applications worldwide",
+        "internship_potential": "No — virtual STEM innovation and mentorship",
+        "format": "Virtual / Global",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "High school student age 13–17; internet-connected device; application review",
+        "url": "https://www.nyas.org/learning/high-school-research-programs/the-junior-academy/"
+    },
+    {
         "name": "MITES Summer",
         "age_range": "No simple age range publicly specified — rising seniors",
         "organization": "MIT",
@@ -10452,37 +10613,6 @@ elif page == "Admin Dashboard":
             )
         )
 
-        if review_count:
-
-            rounded_rating = max(
-                1,
-                min(
-                    5,
-                    int(
-                        round(
-                            avg_rating
-                        )
-                    )
-                )
-            )
-
-            average_star_display = (
-                "★" * rounded_rating
-                +
-                "☆" * (
-                    5 - rounded_rating
-                )
-            )
-
-            st.markdown(
-                f"**{average_star_display}**"
-            )
-
-            st.caption(
-                f"Average from {review_count} review"
-                f"{'' if review_count == 1 else 's'}"
-            )
-
     with metric4:
 
         st.metric(
@@ -10596,33 +10726,6 @@ elif page == "Admin Dashboard":
                 "Average Ease of Use",
                 f"{avg_ease:.1f} / 5"
             )
-
-            if review_count:
-
-                rounded_rating = max(
-                    1,
-                    min(
-                        5,
-                        int(
-                            round(
-                                avg_rating
-                            )
-                        )
-                    )
-                )
-
-                st.markdown(
-                    "#### Overall Average Rating"
-                )
-
-                st.markdown(
-                    f"### {'★' * rounded_rating}{'☆' * (5 - rounded_rating)}"
-                )
-
-                st.caption(
-                    f"{avg_rating:.2f} out of 5 from {review_count} "
-                    f"review{'' if review_count == 1 else 's'}"
-                )
 
             st.markdown(
                 "#### Rating Distribution"
