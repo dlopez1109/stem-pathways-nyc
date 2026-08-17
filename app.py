@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import re
 from datetime import datetime, timezone
+from urllib.parse import quote_plus
 from supabase import create_client
 
 
