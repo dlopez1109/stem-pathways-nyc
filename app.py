@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import json
 import re
-from datetime import datetime, timezone
+from datetime import datetime, xtimezone
 from supabase import create_client
 
 
@@ -10452,6 +10452,37 @@ elif page == "Admin Dashboard":
             )
         )
 
+        if review_count:
+
+            rounded_rating = max(
+                1,
+                min(
+                    5,
+                    int(
+                        round(
+                            avg_rating
+                        )
+                    )
+                )
+            )
+
+            average_star_display = (
+                "★" * rounded_rating
+                +
+                "☆" * (
+                    5 - rounded_rating
+                )
+            )
+
+            st.markdown(
+                f"**{average_star_display}**"
+            )
+
+            st.caption(
+                f"Average from {review_count} review"
+                f"{'' if review_count == 1 else 's'}"
+            )
+
     with metric4:
 
         st.metric(
@@ -10565,6 +10596,33 @@ elif page == "Admin Dashboard":
                 "Average Ease of Use",
                 f"{avg_ease:.1f} / 5"
             )
+
+            if review_count:
+
+                rounded_rating = max(
+                    1,
+                    min(
+                        5,
+                        int(
+                            round(
+                                avg_rating
+                            )
+                        )
+                    )
+                )
+
+                st.markdown(
+                    "#### Overall Average Rating"
+                )
+
+                st.markdown(
+                    f"### {'★' * rounded_rating}{'☆' * (5 - rounded_rating)}"
+                )
+
+                st.caption(
+                    f"{avg_rating:.2f} out of 5 from {review_count} "
+                    f"review{'' if review_count == 1 else 's'}"
+                )
 
             st.markdown(
                 "#### Rating Distribution"
