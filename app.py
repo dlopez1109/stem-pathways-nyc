@@ -1,3 +1,4 @@
+import html as html_module
 import streamlit as st
 import pandas as pd
 import json
@@ -5,6 +6,10 @@ import re
 from datetime import datetime, timezone
 from urllib.parse import quote_plus
 from supabase import create_client
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 # ============================================================
@@ -20,49 +25,173 @@ st.set_page_config(
 
 
 # ============================================================
-# MODERN UI / BRAND STYLING
+# BRAND STYLING (consolidated)
 # ============================================================
 
 st.markdown(
     """
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
     :root {
-        --sp-bg: #E8F4FA;
+        --sp-bg: #DBECFF;
         --sp-surface: #ffffff;
         --sp-surface-soft: #DDEFF7;
-        --sp-border: #C9DCE6;
-        --sp-text: #123047;
-        --sp-muted: #5F7686;
+        --sp-border: rgba(8, 60, 93, 0.48);
+        --sp-text: #083C5D;
+        --sp-muted: #083C5D;
         --sp-primary: #018FC7;
         --sp-primary-dark: #00658F;
+        --sp-navy: #003F5C;
+        --sp-navy-mid: #00577D;
         --sp-accent: #38BDF8;
         --sp-warning: #d97706;
         --sp-danger: #c2410c;
         --sp-success: #15803d;
         --sp-radius: 18px;
         --sp-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+        --sp-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
-    /* Main app background */
+    html, body, .stApp,
+    [data-testid="stAppViewContainer"],
+    [data-testid="stMain"],
+    [data-testid="stMainBlockContainer"],
+    .main, section.main,
+    section[data-testid="stMain"] {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
+    html, body, .stApp,
+    [data-testid="stAppViewContainer"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
+    [data-testid="stSidebar"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
+    [data-testid="stMain"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
+    [data-testid="stHeader"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
+    p, h1, h2, h3, h4, h5, h6, li, span, div, label, a, button, input, textarea, select,
+    [data-baseweb] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
+    [data-testid="stMarkdownContainer"],
+    [data-testid="stMarkdownContainer"] *,
+    [data-testid="stWidgetLabel"],
+    [data-testid="stWidgetLabel"] *,
+    [data-testid="stCaptionContainer"],
+    [data-testid="stCaptionContainer"] *,
+    [data-testid="stMetric"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stAlert"] *,
+    [data-testid="stExpander"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stTabs"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stSelectbox"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stMultiSelect"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stTextInput"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stNumberInput"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stTextArea"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stRadio"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stCheckbox"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stSlider"] *:not([data-testid="stIconMaterial"]),
+    .stButton button,
+    .stButton button *,
+    .stLinkButton a,
+    .stLinkButton a *,
+    [data-testid="stFormSubmitButton"] button,
+    [data-testid="stFormSubmitButton"] button *,
+    [data-testid="stDownloadButton"] button,
+    [data-testid="stDownloadButton"] button * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
     [data-testid="stAppViewContainer"] {
-        background:
-            radial-gradient(circle at top right, rgba(47, 128, 237, 0.08), transparent 28%),
-            radial-gradient(circle at top left, rgba(1, 143, 199, 0.09), transparent 30%),
-            var(--sp-bg);
+        background: #DBECFF !important;
         color: var(--sp-text);
     }
 
-    [data-testid="stMainBlockContainer"] {
-        max-width: 1220px;
-        padding-top: 2rem;
-        padding-bottom: 4rem;
+    [data-testid="stMain"],
+    [data-testid="stMainBlockContainer"],
+    section[data-testid="stMain"] {
+        background: #DBECFF !important;
     }
 
-    /* Sidebar */
+    [data-testid="stAppViewBlockContainer"],
+    [data-testid="stVerticalBlock"],
+    [data-testid="stHorizontalBlock"] {
+        background: transparent !important;
+    }
+
+    [data-testid="stMainBlockContainer"] {
+        max-width: 1480px !important;
+        padding-top: 1.5rem;
+        padding-bottom: 3rem;
+        padding-left: 1.35rem !important;
+        padding-right: 1.35rem !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        width: 100%;
+    }
+
+    [data-testid="stHeader"] {
+        background: #DBECFF !important;
+        backdrop-filter: none;
+        pointer-events: none !important;
+    }
+
+    [data-testid="stHeader"] button,
+    [data-testid="stHeader"] a,
+    [data-testid="stHeader"] [role="button"],
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="stSidebarCollapseButton"] {
+        pointer-events: auto !important;
+    }
+
     [data-testid="stSidebar"] {
-        background:
-            linear-gradient(180deg, #003F5C 0%, #00577D 55%, #003B57 100%);
+        background: linear-gradient(
+            180deg,
+            var(--sp-navy) 0%,
+            var(--sp-navy-mid) 55%,
+            #003B57 100%
+        ) !important;
         border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    [data-testid="stSidebar"] [data-testid="stSidebarHeader"] {
+        min-height: 0 !important;
+        height: auto !important;
+        padding: 0.08rem 0.2rem 0 0 !important;
+        margin: 0 !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stSidebarContent"],
+    [data-testid="stSidebar"] [data-testid="stSidebarUserContent"],
+    section[data-testid="stSidebar"] .block-container {
+        padding-top: 0 !important;
+        padding-bottom: 0.55rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+        gap: 0 !important;
+        row-gap: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stElementContainer"],
+    [data-testid="stSidebar"] [data-testid="element-container"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+        width: 100% !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stHeading"],
+    [data-testid="stSidebar"] [data-testid="stHeadingWithActionElements"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100%;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100%;
     }
 
     [data-testid="stSidebar"] * {
@@ -70,126 +199,1098 @@ st.markdown(
     }
 
     [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
-        color: #CBEAF6 !important;
-        letter-spacing: 0.08em;
-        font-weight: 700;
-        font-size: 0.72rem;
-    }
-
-    [data-testid="stSidebar"] hr {
-        border-color: rgba(255,255,255,0.12);
-    }
-
-    /* Sidebar buttons */
-    [data-testid="stSidebar"] .stButton > button {
-        background: rgba(255,255,255,0.06);
-        color: white;
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 12px;
-        min-height: 42px;
+        color: #A7BAC6 !important;
+        letter-spacing: 0.06em;
         font-weight: 600;
-        transition: 0.18s ease;
+        font-size: 0.72rem;
+        text-transform: none;
+        margin: 0.55rem 0 0.25rem 0 !important;
+        padding: 0 !important;
+        line-height: 1.3;
+        width: 100%;
     }
 
-    [data-testid="stSidebar"] .stButton > button:hover {
-        background: rgba(255,255,255,0.13);
-        border-color: rgba(255,255,255,0.2);
-        transform: translateY(-1px);
+    [data-testid="stSidebar"] .sp-nav-section {
+        display: block;
+        position: relative;
+        z-index: 1;
+        color: #A7BAC6 !important;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        margin: 0.8rem 0 0.35rem 0;
+        padding: 0;
+        line-height: 1.25;
+        width: 100%;
+        text-align: left;
     }
 
-    /* Typography */
-    h1, h2, h3 {
-        color: var(--sp-text) !important;
-        letter-spacing: -0.02em;
+    [data-testid="stSidebar"] [data-testid="stElementContainer"]:has(.sp-nav-section) {
+        margin: 0 !important;
+        min-height: 1.7rem !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 0 !important;
     }
 
-    h1 {
-        font-weight: 800 !important;
+    [data-testid="stSidebar"] hr,
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] hr,
+    [data-testid="stSidebar"] [data-testid="stDivider"] hr {
+        border: none !important;
+        border-top: 1.5px solid rgba(255,255,255,0.28) !important;
+        margin: 0.75rem 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
-    h2 {
-        font-weight: 750 !important;
+    [data-testid="stSidebar"] .stButton {
+        margin: 0 0 0.28rem 0 !important;
+        padding: 0 !important;
+        width: 100%;
     }
 
-    h3 {
-        font-weight: 700 !important;
+    [data-testid="stSidebar"] .stButton > button,
+    [data-testid="stSidebar"] .stButton > button:active,
+    [data-testid="stSidebar"] .stButton > button:focus,
+    [data-testid="stSidebar"] .stButton > button:focus-visible,
+    [data-testid="stSidebar"] button[kind="secondary"],
+    [data-testid="stSidebar"] button[kind="primary"],
+    [data-testid="stSidebar"] button[data-testid^="stBaseButton"] {
+        background: #364957 !important;
+        color: #F3F6F8 !important;
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        border-radius: 8px !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        max-height: 36px !important;
+        padding: 0 0.65rem !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        line-height: 1 !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        outline: none !important;
+        box-shadow: none !important;
     }
 
-    p, li, label {
-        color: var(--sp-text);
+    [data-testid="stSidebar"] .stButton button,
+    [data-testid="stSidebar"] .stButton button *,
+    [data-testid="stSidebar"] .stButton [data-testid="stMarkdownContainer"],
+    [data-testid="stSidebar"] .stButton [data-testid="stMarkdownContainer"] p,
+    [data-testid="stSidebar"] .stButton [data-testid="stMarkdownContainer"] span,
+    [data-testid="stSidebar"] .stButton p,
+    [data-testid="stSidebar"] .stButton span,
+    [data-testid="stSidebar"] .stButton div {
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        line-height: 1.15 !important;
+        font-family: var(--sp-font) !important;
     }
 
-    /* Bordered Streamlit containers become cards */
-    [data-testid="stVerticalBlockBorderWrapper"] {
-        background: rgba(255,255,255,0.97);
-        border: 1px solid var(--sp-border) !important;
-        border-radius: var(--sp-radius) !important;
-        box-shadow: var(--sp-shadow);
-        overflow: hidden;
+    [data-testid="stSidebar"] .stButton > button p,
+    [data-testid="stSidebar"] .stButton > button span,
+    [data-testid="stSidebar"] .stButton > button div,
+    [data-testid="stSidebar"] .stButton > button:active p,
+    [data-testid="stSidebar"] .stButton > button:active span,
+    [data-testid="stSidebar"] .stButton > button:focus p,
+    [data-testid="stSidebar"] .stButton > button:focus span {
+        color: #F3F6F8 !important;
+        text-align: left !important;
+        justify-content: flex-start !important;
+        width: 100%;
+        margin: 0 !important;
     }
 
-    [data-testid="stVerticalBlockBorderWrapper"]:hover {
-        border-color: #b9c9d8 !important;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+    [data-testid="stSidebar"] .stButton > button:hover,
+    [data-testid="stSidebar"] button[kind="secondary"]:hover,
+    [data-testid="stSidebar"] button[data-testid^="stBaseButton-secondary"]:hover {
+        background: #435563 !important;
+        border-color: rgba(255,255,255,0.16) !important;
+        color: #FFFFFF !important;
+        transform: none;
     }
 
-    /* Metrics */
-    [data-testid="stMetric"] {
-        background: rgba(255,255,255,0.98);
-        border: 1px solid var(--sp-border);
-        border-radius: 16px;
-        padding: 1rem 1.05rem;
-        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+    [data-testid="stSidebar"] .stButton > button:hover *,
+    [data-testid="stSidebar"] .stButton > button:hover p,
+    [data-testid="stSidebar"] .stButton > button:hover span {
+        color: #FFFFFF !important;
     }
 
-    [data-testid="stMetricLabel"] {
-        color: var(--sp-muted);
-        font-weight: 700;
+    [data-testid="stSidebar"] .stButton > button[kind="primary"],
+    [data-testid="stSidebar"] .stButton > button[data-testid^="stBaseButton-primary"],
+    [data-testid="stSidebar"] .stButton > button[kind="primary"]:active,
+    [data-testid="stSidebar"] .stButton > button[kind="primary"]:focus,
+    [data-testid="stSidebar"] .stButton > button[kind="primary"]:focus-visible,
+    [data-testid="stSidebar"] .stButton > button[kind="primary"]:hover {
+        background: #FFFFFF !important;
+        border-color: #FFFFFF !important;
+        color: var(--sp-navy) !important;
+        box-shadow: none !important;
+        transform: none;
     }
 
-    [data-testid="stMetricValue"] {
-        color: var(--sp-text);
+    [data-testid="stSidebar"] .stButton > button[kind="primary"],
+    [data-testid="stSidebar"] .stButton > button[kind="primary"] *,
+    [data-testid="stSidebar"] .stButton > button[kind="primary"] p,
+    [data-testid="stSidebar"] .stButton > button[kind="primary"] span,
+    [data-testid="stSidebar"] .stButton > button[kind="primary"] div,
+    [data-testid="stSidebar"] .stButton > button[kind="primary"]:hover *,
+    [data-testid="stSidebar"] .stButton > button[kind="primary"]:hover p,
+    [data-testid="stSidebar"] .stButton > button[kind="primary"]:hover span {
+        color: var(--sp-navy) !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"]:has(.sp-sidebar-brand) {
+        width: max-content;
+        max-width: 100%;
+    }
+
+    .sp-sidebar-brand {
+        width: max-content;
+        max-width: 100%;
+        padding: 0;
+        margin: 0 0 0.5rem 0;
+        text-align: left;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sp-sidebar-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: max-content;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        line-height: 1.02;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .sp-sidebar-title .sp-title-line {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: baseline;
+        justify-content: center;
+        gap: 0.32em;
+        font-size: 2.12rem;
+        line-height: 1.05;
+        font-weight: 800;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .sp-sidebar-title .sp-title-nyc {
+        display: block;
+        width: 100%;
+        font-size: 2.18rem;
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-align: center;
+        color: #72D2F2 !important;
+        margin: 0.1rem 0 0 0;
+        padding: 0;
+    }
+
+    [data-testid="stSidebar"] .sp-sidebar-title .sp-title-blue {
+        color: #72D2F2 !important;
         font-weight: 800;
     }
 
-    /* Main buttons */
+    [data-testid="stSidebar"] .sp-sidebar-title .sp-title-nyc {
+        color: #72D2F2 !important;
+        font-weight: 800;
+    }
+
+    [data-testid="stSidebar"] .sp-sidebar-title .sp-title-yellow {
+        color: #F4C542 !important;
+        font-weight: 800;
+        letter-spacing: inherit;
+    }
+
+    .sp-sidebar-accent {
+        width: 100%;
+        height: 6.5px;
+        border-radius: 999px;
+        background: #72D2F2;
+        margin: 0.4rem 0 0 0;
+        box-shadow: none;
+        display: block;
+        align-self: stretch;
+    }
+
+    [data-testid="stSidebar"] h3 {
+        color: #FFFFFF !important;
+        font-size: 1.34rem !important;
+        font-weight: 700 !important;
+        margin: 0.15rem 0 0.28rem 0 !important;
+        padding: 0 !important;
+        line-height: 1.2 !important;
+        letter-spacing: -0.02em;
+        text-align: left;
+        width: 100%;
+    }
+
+    [data-testid="stSidebar"] .sp-sidebar-meta {
+        color: #A7BAC6 !important;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin: 0.08rem 0 0.38rem 0;
+        padding: 0;
+        line-height: 1.3;
+        text-align: left;
+        width: 100%;
+    }
+
+    [data-testid="stSidebar"] a {
+        color: #65D1F5 !important;
+        font-weight: 600 !important;
+        font-size: 0.72rem !important;
+        display: inline-block;
+        margin: 0 0 0.35rem 0;
+        padding: 0;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
+        margin: 0 0 0.1rem 0 !important;
+        padding: 0 !important;
+        line-height: 1.3 !important;
+        text-align: left;
+    }
+
+    .sp-contact-card {
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.14);
+        padding: 0.45rem 0.7rem;
+    }
+
+    .sp-contact-title {
+        color: #FFFFFF !important;
+        font-size: 0.78rem;
+        font-weight: 800;
+        margin-bottom: 0.15rem;
+    }
+
+    .sp-contact-text {
+        color: #CDEAF5 !important;
+        font-size: 0.7rem;
+        line-height: 1.3;
+        margin-bottom: 0.28rem;
+    }
+
+    .sp-contact-email {
+        color: #63D2F6 !important;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-decoration: none !important;
+        overflow-wrap: anywhere;
+        margin: 0 !important;
+    }
+
+    .sp-contact-email:hover {
+        color: #FFFFFF !important;
+        text-decoration: underline !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"],
+    [data-testid="stSidebarCollapseButton"] button,
+    [data-testid="stSidebarCollapseButton"] [role="button"],
+    button[aria-label*="collapse sidebar" i],
+    button[title*="collapse sidebar" i] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        background: #0B1F33 !important;
+        background-color: #0B1F33 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #0B1F33 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.24) !important;
+        z-index: 2147483647 !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="stSidebarCollapsedControl"] button,
+    [data-testid="stSidebarCollapsedControl"] [role="button"],
+    button[aria-label*="open sidebar" i],
+    button[aria-label*="expand sidebar" i],
+    button[title*="open sidebar" i],
+    button[title*="expand sidebar" i] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        position: fixed !important;
+        top: 0.75rem !important;
+        left: 0.75rem !important;
+        width: 46px !important;
+        height: 46px !important;
+        min-width: 46px !important;
+        min-height: 46px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #0B1F33 !important;
+        background-color: #0B1F33 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #0B1F33 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.24) !important;
+        z-index: 2147483647 !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"] > div,
+    [data-testid="stSidebarCollapsedControl"] [data-testid*="Button"] {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"] svg,
+    [data-testid="stSidebarCollapseButton"] svg *,
+    [data-testid="stSidebarCollapsedControl"] svg,
+    [data-testid="stSidebarCollapsedControl"] svg *,
+    button[aria-label*="sidebar" i] svg,
+    button[aria-label*="sidebar" i] svg * {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+        opacity: 1 !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"]:hover,
+    [data-testid="stSidebarCollapsedControl"]:hover,
+    [data-testid="stSidebarCollapseButton"] button:hover,
+    [data-testid="stSidebarCollapsedControl"] button:hover,
+    button[aria-label*="sidebar" i]:hover,
+    [data-testid="stHeader"] button:first-of-type:hover {
+        background: #071521 !important;
+        background-color: #071521 !important;
+        border-color: #071521 !important;
+    }
+
+    [data-testid="stHeader"] button:first-of-type {
+        background: #0B1F33 !important;
+        background-color: #0B1F33 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #0B1F33 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.24) !important;
+    }
+
+    h1, h2, h3 {
+        color: var(--sp-text) !important;
+        letter-spacing: -0.02em;
+        font-family: var(--sp-font) !important;
+    }
+
+    h1 { font-weight: 800 !important; font-size: 1.72rem !important; }
+    h2 { font-weight: 750 !important; font-size: 1.45rem !important; }
+    h3 { font-weight: 700 !important; font-size: 1.1rem !important; }
+
+    p, li, label {
+        color: var(--sp-text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
+    [data-testid="stMain"] p,
+    [data-testid="stMain"] li,
+    [data-testid="stMain"] [data-testid="stMarkdownContainer"] p {
+        font-size: 0.93rem !important;
+        line-height: 1.5;
+        color: var(--sp-text) !important;
+        font-weight: 500 !important;
+    }
+
+    [data-testid="stMain"] h2 {
+        color: var(--sp-text) !important;
+        font-weight: 750 !important;
+    }
+
+    [data-testid="stMain"] h3 {
+        color: var(--sp-text) !important;
+        font-weight: 650 !important;
+    }
+
+    [data-testid="stMain"] label,
+    [data-testid="stMain"] [data-testid="stWidgetLabel"],
+    [data-testid="stMain"] [data-testid="stWidgetLabel"] p {
+        color: var(--sp-text) !important;
+        font-weight: 600 !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stCaptionContainer"],
+    [data-testid="stMain"] [data-testid="stCaptionContainer"] p {
+        font-size: 0.8rem !important;
+        line-height: 1.4;
+        color: var(--sp-muted) !important;
+        font-weight: 550 !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"],
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] *:not(button):not([kind]),
+    [data-testid="stMain"] [data-testid="stMetric"],
+    [data-testid="stMain"] [data-testid="stMetric"] *,
+    [data-testid="stMain"] [data-testid="stExpander"],
+    [data-testid="stMain"] [data-testid="stExpander"] *:not(button):not([kind]),
+    [data-testid="stMain"] [data-testid="stAlert"],
+    [data-testid="stMain"] [data-testid="stAlert"] *,
+    [data-testid="stMain"] [data-testid="stForm"],
+    [data-testid="stMain"] [data-testid="stForm"] label,
+    [data-testid="stMain"] [data-testid="stForm"] p,
+    [data-testid="stMain"] [data-testid="stDataFrame"] {
+        color: #083C5D !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h2,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h3,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] li,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] span,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] div,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] label,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"],
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"] p {
+        color: #083C5D !important;
+        font-size: 0.95rem !important;
+        line-height: 1.5;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] li,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"],
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"] p {
+        font-weight: 550 !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h2,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h3 {
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        color: #083C5D !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .stButton > button p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .stButton > button span,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="secondary"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="secondary"] span {
+        color: #0B4F71 !important;
+        font-size: 0.95rem !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="primary"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="primary"] span {
+        color: #0B4F71 !important;
+        font-size: 0.95rem !important;
+    }
+
+    [data-testid="stVerticalBlockBorderWrapper"],
+    [data-testid="stMetric"],
+    [data-testid="stExpander"] {
+        background: #FFFFFF !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"],
+    [data-testid="stMain"] [data-testid="stMetric"],
+    [data-testid="stMain"] [data-testid="stExpander"],
+    [data-testid="stMain"] [data-testid="stAlert"],
+    [data-testid="stMain"] [data-testid="stForm"],
+    [data-testid="stMain"] [data-testid="stDataFrame"] {
+        border-color: #0B4F71 !important;
+        border-width: 2.5px !important;
+        border-style: solid !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] {
+        border: 2.5px solid #0B4F71 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08);
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 1.4rem 1.4rem !important;
+        transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+        background: #FFFFFF !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h3 {
+        font-weight: 650 !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"] {
+        align-items: stretch !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"] > div {
+        display: flex !important;
+        flex-direction: column !important;
+        min-width: 0;
+        height: 100%;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(4):last-child) {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        column-gap: 1.35rem !important;
+        row-gap: 1.35rem !important;
+        margin-bottom: 1.75rem !important;
+        align-items: stretch !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        column-gap: 2.25rem !important;
+        row-gap: 2.75rem !important;
+        margin-bottom: 2.75rem !important;
+        align-items: stretch !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) > div,
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(4):last-child) > div {
+        width: auto !important;
+        flex: none !important;
+        min-width: 0 !important;
+        height: 100%;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] > [data-testid="stVerticalBlock"] {
+        gap: 0.5rem !important;
+        flex: 1 1 auto;
+        height: 100%;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(.sp-info-card) {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        column-gap: 1.35rem !important;
+        row-gap: 1.35rem !important;
+        margin-bottom: 1.35rem !important;
+        align-items: stretch !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(.sp-info-card) > div {
+        width: auto !important;
+        flex: none !important;
+        min-width: 0 !important;
+        height: 100%;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-info-card) {
+        background: #FFFFFF !important;
+        border: 2.5px solid #0B4F71 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08);
+        padding: 1.4rem 1.45rem !important;
+        min-height: 220px;
+        height: 100%;
+    }
+
+    .sp-info-card {
+        display: none !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stElementContainer"]:has(.sp-info-card) {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_cards {
+        width: min(920px, 100%) !important;
+        max-width: 920px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 2rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_cards > [data-testid="stVerticalBlock"],
+    [data-testid="stMain"] .st-key-profile_cards > [data-testid="stLayoutWrapper"] > [data-testid="stVerticalBlock"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2rem !important;
+        width: 100% !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_cards [data-testid="stHorizontalBlock"] {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        column-gap: 2rem !important;
+        row-gap: 2rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        align-items: stretch !important;
+        justify-content: center !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_cards [data-testid="stHorizontalBlock"] > div {
+        width: auto !important;
+        flex: none !important;
+        min-width: 0 !important;
+        height: 340px !important;
+        min-height: 340px !important;
+        max-height: 340px !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"] {
+        background: #FFFFFF !important;
+        border: 2.5px solid #0B4F71 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08);
+        padding: 1.6rem 1.65rem !important;
+        min-height: 340px !important;
+        height: 340px !important;
+        max-height: 340px !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        contain: paint;
+        isolation: isolate;
+        transform: none !important;
+        width: 100% !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"]:hover {
+        transform: none !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"] > [data-testid="stVerticalBlock"] {
+        height: 100% !important;
+        max-height: 100% !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        gap: 0.45rem !important;
+        flex: 1 1 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"] h2 {
+        margin-top: 0 !important;
+        margin-bottom: 0.7rem !important;
+        padding-top: 0 !important;
+        line-height: 1.25 !important;
+        flex-shrink: 0 !important;
+    }
+
+    .sp-profile-card {
+        display: none !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stElementContainer"]:has(.sp-profile-card) {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlock"]:has(.st-key-profile_action_stack) {
+        justify-content: flex-start !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_action_stack,
+    [data-testid="stMain"] [data-testid="stElementContainer"]:has(.st-key-profile_action_stack) {
+        width: min(920px, 100%) !important;
+        max-width: 920px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 1.25rem !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+        padding-bottom: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        flex: 0 0 auto !important;
+        flex-grow: 0 !important;
+        flex-shrink: 0 !important;
+        position: static !important;
+        overflow: visible !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_action_stack > [data-testid="stVerticalBlock"],
+    [data-testid="stMain"] .st-key-profile_action_stack > [data-testid="stLayoutWrapper"] > [data-testid="stVerticalBlock"] {
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        gap: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        flex: 0 0 auto !important;
+        flex-grow: 0 !important;
+        position: static !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_action_divider {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        position: static !important;
+        overflow: visible !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_action_divider > [data-testid="stVerticalBlock"],
+    [data-testid="stMain"] .st-key-profile_action_divider [data-testid="stDivider"],
+    [data-testid="stMain"] .st-key-profile_action_divider [data-testid="stElementContainer"] {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: static !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_action_divider hr,
+    [data-testid="stMain"] .st-key-profile_action_divider [data-testid="stDivider"] hr {
+        display: block !important;
+        position: static !important;
+        border: none !important;
+        border-top: 1.75px solid #2b5d84 !important;
+        border-color: #2b5d84 !important;
+        color: #2b5d84 !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_actions {
+        width: min(920px, 100%) !important;
+        max-width: 920px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 1.15rem !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+        padding-bottom: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        flex: 0 0 auto !important;
+        flex-grow: 0 !important;
+        overflow: visible !important;
+        position: static !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_actions > [data-testid="stVerticalBlock"],
+    [data-testid="stMain"] .st-key-profile_actions > [data-testid="stLayoutWrapper"] > [data-testid="stVerticalBlock"],
+    [data-testid="stMain"] .st-key-profile_actions [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 1.5rem !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0 !important;
+        position: static !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_actions [data-testid="stHorizontalBlock"] > div,
+    [data-testid="stMain"] .st-key-profile_actions [data-testid="stElementContainer"]:has(.stButton),
+    [data-testid="stMain"] .st-key-profile_actions [data-testid="stLayoutWrapper"] {
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: static !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_actions [data-testid="stElementContainer"]:has(.stButton),
+    [data-testid="stMain"] .st-key-profile_actions .stButton {
+        width: 320px !important;
+        flex: 0 0 320px !important;
+        max-width: 320px !important;
+        min-width: 320px !important;
+        height: auto !important;
+        min-height: 0 !important;
+        position: static !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_actions .stButton > button {
+        width: 320px !important;
+        min-width: 320px !important;
+        max-width: 320px !important;
+        height: 50px !important;
+        min-height: 50px !important;
+        position: static !important;
+    }
+
+    [data-testid="stMain"] .st-key-profile_action_stack ~ [data-testid="stElementContainer"]:has([data-testid="stDivider"]),
+    [data-testid="stMain"] [data-testid="stElementContainer"]:has(.st-key-profile_action_stack) ~ [data-testid="stElementContainer"]:has([data-testid="stDivider"]),
+    [data-testid="stMain"] .st-key-profile_action_stack ~ [data-testid="stElementContainer"]:has([data-testid="stCaptionContainer"]),
+    [data-testid="stMain"] [data-testid="stElementContainer"]:has(.st-key-profile_action_stack) ~ [data-testid="stElementContainer"]:has([data-testid="stCaptionContainer"]) {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    [data-testid="stMain"]:has(.st-key-profile_action_stack) [data-testid="stMainBlockContainer"] {
+        padding-bottom: 1.5rem !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"] {
+        background: #F7FBFE !important;
+        border: 2.5px solid #0B4F71 !important;
+        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.09);
+        padding: 1.5rem 1.45rem !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"] h3 {
+        margin-top: 0 !important;
+        margin-bottom: 0.4rem !important;
+        min-height: 2.6rem;
+        line-height: 1.3 !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"] {
+        flex: 1 1 auto;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .stButton,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stElementContainer"]:has(.stButton) {
+        margin-top: auto !important;
+        width: 100%;
+    }
+
+    [data-testid="stVerticalBlockBorderWrapper"]:hover {
+        border-color: var(--sp-primary) !important;
+        box-shadow: 0 8px 18px rgba(1, 143, 199, 0.10);
+        transform: translateY(-2px);
+    }
+
+    html body [data-testid="stMetric"] {
+        background: #FFFFFF !important;
+        color: #083C5D !important;
+        border: 2.5px solid #0B4F71 !important;
+        border-radius: 14px;
+        padding: 1.4rem 1.45rem;
+        min-height: 118px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.09);
+        transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    [data-testid="stMetric"] * {
+        color: #083C5D !important;
+    }
+
+    [data-testid="stMetric"]:hover {
+        border-color: #8DD4EF;
+        box-shadow: 0 6px 14px rgba(1, 143, 199, 0.08);
+    }
+
+    [data-testid="stMetricLabel"] {
+        color: #083C5D !important;
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        margin-bottom: 0.45rem;
+        min-height: 1.35em;
+        align-self: flex-start;
+    }
+
+    [data-testid="stMetricValue"] {
+        color: #083C5D !important;
+        font-weight: 700 !important;
+        font-size: 1.45rem !important;
+        line-height: 1.25 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        align-self: flex-start;
+        margin-top: 0;
+    }
+
+    [data-testid="stMetricValue"] * {
+        color: #083C5D !important;
+        font-weight: 700 !important;
+        font-size: 1.45rem !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+    }
+
+    [data-testid="stTabs"],
+    [data-testid="stRadio"],
+    [data-testid="stSelectbox"],
+    [data-testid="stMultiSelect"],
+    [data-testid="stTextInput"],
+    [data-testid="stTextArea"],
+    [data-testid="stNumberInput"],
+    [data-testid="stSlider"],
+    [data-testid="stCheckbox"] {
+        background: transparent !important;
+    }
+
     .stButton > button,
     .stLinkButton > a {
         border-radius: 12px !important;
-        min-height: 42px;
+        min-height: 42px !important;
         font-weight: 700 !important;
         transition: 0.18s ease !important;
+        font-family: var(--sp-font) !important;
     }
 
-    .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #018FC7, #007EAF) !important;
-        border: none !important;
-        box-shadow: 0 6px 16px rgba(1, 143, 199, 0.22);
+    [data-testid="stMain"] .stButton > button,
+    [data-testid="stMain"] button[kind="secondary"],
+    [data-testid="stMain"] button[kind="primary"],
+    [data-testid="stMain"] button[data-testid^="stBaseButton"],
+    [data-testid="stMain"] .stButton > button:active,
+    [data-testid="stMain"] .stButton > button:focus,
+    [data-testid="stMain"] .stButton > button:focus-visible,
+    [data-testid="stMain"] button[kind="secondary"]:active,
+    [data-testid="stMain"] button[kind="secondary"]:focus,
+    [data-testid="stMain"] button[kind="primary"]:active,
+    [data-testid="stMain"] button[kind="primary"]:focus,
+    [data-testid="stMain"] button[kind="primary"]:focus-visible,
+    [data-testid="stMain"] .stLinkButton > a,
+    [data-testid="stMain"] [data-testid="stDownloadButton"] button,
+    [data-testid="stMain"] [data-testid="stFormSubmitButton"] button,
+    [data-testid="stMain"] [data-testid="stFormSubmitButton"] button:focus,
+    [data-testid="stMain"] [data-testid="stFormSubmitButton"] button:active,
+    [data-testid="stMain"] [data-testid="stPageLink"] a,
+    [data-testid="stMain"] [data-testid="stPageLink-NavLink"] {
+        background: #FFFFFF !important;
+        color: #0B4F71 !important;
+        border: 2px solid #63C7E8 !important;
+        border-radius: 12px !important;
+        min-height: 42px !important;
+        font-weight: 700 !important;
+        box-shadow: none !important;
+        outline: none !important;
+        font-size: 0.95rem !important;
+        transform: none !important;
     }
 
-    .stButton > button[kind="primary"]:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 9px 22px rgba(1, 143, 199, 0.28);
+    [data-testid="stMain"] .stButton > button p,
+    [data-testid="stMain"] .stButton > button span,
+    [data-testid="stMain"] .stButton > button div,
+    [data-testid="stMain"] button[kind="secondary"] p,
+    [data-testid="stMain"] button[kind="secondary"] span,
+    [data-testid="stMain"] button[kind="primary"] p,
+    [data-testid="stMain"] button[kind="primary"] span,
+    [data-testid="stMain"] .stLinkButton > a p,
+    [data-testid="stMain"] .stLinkButton > a span,
+    [data-testid="stMain"] [data-testid="stDownloadButton"] button p,
+    [data-testid="stMain"] [data-testid="stDownloadButton"] button span,
+    [data-testid="stMain"] [data-testid="stFormSubmitButton"] button p,
+    [data-testid="stMain"] [data-testid="stFormSubmitButton"] button span,
+    [data-testid="stMain"] [data-testid="stPageLink"] a p,
+    [data-testid="stMain"] [data-testid="stPageLink"] a span {
+        color: #0B4F71 !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        -webkit-text-fill-color: #0B4F71 !important;
     }
 
-    .stLinkButton > a {
-        border-color: var(--sp-border) !important;
-        background: white !important;
-        color: var(--sp-text) !important;
+    [data-testid="stMain"] .stButton > button:hover,
+    [data-testid="stMain"] button[kind="secondary"]:hover,
+    [data-testid="stMain"] button[kind="primary"]:hover,
+    [data-testid="stMain"] button[data-testid^="stBaseButton"]:hover,
+    [data-testid="stMain"] .stLinkButton > a:hover,
+    [data-testid="stMain"] [data-testid="stDownloadButton"] button:hover,
+    [data-testid="stMain"] [data-testid="stFormSubmitButton"] button:hover,
+    [data-testid="stMain"] [data-testid="stPageLink"] a:hover,
+    [data-testid="stMain"] [data-testid="stPageLink-NavLink"]:hover {
+        background: #EAF7FC !important;
+        border-color: #0B4F71 !important;
+        color: #083C5D !important;
+        box-shadow: none !important;
+        transform: none !important;
     }
 
-    .stLinkButton > a:hover {
-        border-color: var(--sp-accent) !important;
-        color: var(--sp-accent) !important;
+    [data-testid="stMain"] .stButton > button:hover p,
+    [data-testid="stMain"] .stButton > button:hover span,
+    [data-testid="stMain"] .stButton > button:hover div,
+    [data-testid="stMain"] button[kind="secondary"]:hover p,
+    [data-testid="stMain"] button[kind="secondary"]:hover span,
+    [data-testid="stMain"] button[kind="primary"]:hover p,
+    [data-testid="stMain"] button[kind="primary"]:hover span,
+    [data-testid="stMain"] .stLinkButton > a:hover p,
+    [data-testid="stMain"] .stLinkButton > a:hover span,
+    [data-testid="stMain"] [data-testid="stDownloadButton"] button:hover p,
+    [data-testid="stMain"] [data-testid="stDownloadButton"] button:hover span,
+    [data-testid="stMain"] [data-testid="stFormSubmitButton"] button:hover p,
+    [data-testid="stMain"] [data-testid="stFormSubmitButton"] button:hover span {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
     }
 
-    /* Inputs */
+    [data-testid="stMain"] [class*="st-key-google_continue"] button,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button:active,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button:focus,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button:hover {
+        background: var(--sp-primary) !important;
+        color: #FFFFFF !important;
+        border: 1px solid var(--sp-primary) !important;
+        box-shadow: 0 6px 16px rgba(1, 143, 199, 0.22) !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-google_continue"] button p,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button span,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button:hover p,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button:hover span {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
     [data-baseweb="input"] > div,
     [data-baseweb="select"] > div,
     [data-baseweb="textarea"] > div {
         border-radius: 12px !important;
         border-color: var(--sp-border) !important;
         background: white !important;
+        font-family: var(--sp-font) !important;
     }
 
     [data-baseweb="tag"] {
@@ -198,48 +1299,83 @@ st.markdown(
         color: var(--sp-primary-dark) !important;
     }
 
-    /* Expander */
-    [data-testid="stExpander"] {
-        border: 1px solid var(--sp-border) !important;
+    [data-testid="stMain"] [data-testid="stExpander"] {
+        border: 2.5px solid #0B4F71 !important;
         border-radius: 14px !important;
-        background: rgba(255,255,255,0.96);
         overflow: hidden;
+        background: #FFFFFF !important;
     }
 
-    /* Alerts */
-    [data-testid="stAlert"] {
+    [data-testid="stMain"] [data-testid="stAlert"] {
         border-radius: 14px !important;
-        border-width: 1px !important;
+        border: 2.5px solid #0B4F71 !important;
         box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        font-family: var(--sp-font);
     }
 
-    /* Dataframes */
-    [data-testid="stDataFrame"] {
+    [data-testid="stMain"] [data-testid="stForm"] {
+        border: 2.5px solid #0B4F71 !important;
+        background: #FFFFFF !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stDataFrame"] {
         border-radius: 14px;
         overflow: hidden;
-        border: 1px solid var(--sp-border);
+        border: 2.5px solid #0B4F71 !important;
+        background: #FFFFFF !important;
     }
 
-    /* Dividers */
+    [data-testid="stMain"] h2 {
+        font-size: 1.45rem !important;
+        font-weight: 750 !important;
+        margin-top: 3rem !important;
+        margin-bottom: 1.15rem !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stElementContainer"]:has(hr) + [data-testid="stElementContainer"] h2 {
+        margin-top: 1.9rem !important;
+    }
+
+    [data-testid="stMain"] h3 {
+        margin-bottom: 0.28rem !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stAlert"] {
+        margin-top: 1.15rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+
     hr {
         border: none !important;
         border-top: 1px solid #D7E5EC !important;
-        margin: 1.5rem 0 !important;
+        margin: 3rem 0 0 !important;
     }
 
-    /* Progress bars */
+    [data-testid="stMain"] hr,
+    [data-testid="stMain"] [data-testid="stMarkdownContainer"] hr,
+    [data-testid="stMain"] [data-testid="stDivider"] hr {
+        border: none !important;
+        border-top: 1.75px solid #2b5d84 !important;
+        border-color: #2b5d84 !important;
+        color: #2b5d84 !important;
+        margin: 2.6rem 0 0.4rem !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stDivider"] {
+        border-color: #2b5d84 !important;
+        color: #2b5d84 !important;
+    }
+
     [data-testid="stProgress"] > div > div > div > div {
         background: linear-gradient(90deg, var(--sp-primary), var(--sp-accent)) !important;
     }
 
-    /* Custom hero */
     .sp-hero {
-        background:
-            linear-gradient(135deg, rgba(0,63,92,0.99), rgba(1,143,199,0.95));
-        border-radius: 24px;
-        padding: 2.2rem 2.3rem;
-        box-shadow: 0 18px 40px rgba(0, 63, 92, 0.20);
-        margin: 0.4rem 0 1.5rem 0;
+        background: linear-gradient(135deg, rgba(0,63,92,0.99), rgba(1,143,199,0.95));
+        border-radius: 20px;
+        padding: 1.75rem 1.9rem;
+        box-shadow: 0 14px 32px rgba(0, 63, 92, 0.18);
+        margin: 0.15rem 0 0 0;
         position: relative;
         overflow: hidden;
     }
@@ -256,32 +1392,91 @@ st.markdown(
     }
 
     .sp-hero h1 {
-        color: white !important;
-        margin: 0 0 0.45rem 0;
-        font-size: 2.25rem;
-        line-height: 1.05;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        margin: 0 0 0.4rem 0;
+        font-size: 1.85rem !important;
+        font-weight: 800 !important;
+        line-height: 1.12;
+        position: relative;
+        z-index: 1;
     }
 
     .sp-hero p {
+        color: #EAF6FC !important;
+        -webkit-text-fill-color: #EAF6FC !important;
+        margin: 0;
+        font-size: 0.93rem !important;
+        font-weight: 500 !important;
+        max-width: 720px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .sp-page-header {
+        background: linear-gradient(135deg, rgba(0,63,92,0.98), rgba(1,143,199,0.92));
+        border-radius: 16px;
+        padding: 1.15rem 1.3rem;
+        box-shadow: 0 10px 28px rgba(0, 63, 92, 0.16);
+        margin: 0.15rem 0 1rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sp-page-header::after {
+        content: "";
+        position: absolute;
+        width: 140px;
+        height: 140px;
+        right: -40px;
+        top: -50px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.07);
+    }
+
+    .sp-page-header h1 {
+        color: #FFFFFF !important;
+        margin: 0 0 0.35rem 0;
+        font-size: 1.48rem !important;
+        line-height: 1.15;
+        position: relative;
+        z-index: 1;
+    }
+
+    .sp-page-header p {
         color: #E1F5FC !important;
         margin: 0;
-        font-size: 1.02rem;
-        max-width: 760px;
+        font-size: 0.92rem;
+        line-height: 1.45;
+        max-width: 820px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .sp-page-header .sp-kicker {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 0.45rem;
     }
 
     .sp-kicker {
         color: #BDEBFA !important;
+        -webkit-text-fill-color: #BDEBFA !important;
         text-transform: uppercase;
         letter-spacing: 0.13em;
         font-size: 0.74rem;
         font-weight: 800;
         margin-bottom: 0.7rem;
+        position: relative;
+        z-index: 1;
     }
 
     .sp-section-subtitle {
-        color: var(--sp-muted);
-        margin-top: -0.4rem;
-        margin-bottom: 1rem;
+        color: #083C5D !important;
+        margin-top: 0;
+        margin-bottom: 0.85rem;
+        font-size: 0.9rem;
+        font-weight: 550 !important;
     }
 
     .sp-pill {
@@ -296,7 +1491,6 @@ st.markdown(
         font-weight: 700;
     }
 
-    /* Mobile spacing */
     @media (max-width: 768px) {
         [data-testid="stMainBlockContainer"] {
             padding-left: 1rem;
@@ -310,706 +1504,517 @@ st.markdown(
         }
 
         .sp-hero h1 {
-            font-size: 1.7rem;
+            font-size: 1.55rem !important;
+        }
+
+        .sp-page-header {
+            padding: 1.1rem 1.15rem;
+            border-radius: 14px;
+        }
+
+        .sp-page-header h1 {
+            font-size: 1.28rem !important;
         }
     }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
-
-
-
-# ============================================================
-# FINAL BLUE THEME OVERRIDES
-# ============================================================
-
-st.markdown(
-    """
-    <style>
-    /* Main page: visible soft blue across EVERY page */
-    html,
-    body,
-    .stApp,
-    [data-testid="stAppViewContainer"],
-    [data-testid="stMain"],
-    [data-testid="stMainBlockContainer"],
-    .main,
-    section.main,
-    section[data-testid="stMain"] {
-        background: #E8F4FA !important;
+    /* FINAL sidebar nav — consistent light text, dark gray buttons, white active */
+    section[data-testid="stSidebar"] .stButton button,
+    section[data-testid="stSidebar"] .stButton button p,
+    section[data-testid="stSidebar"] .stButton button span,
+    section[data-testid="stSidebar"] .stButton button div,
+    section[data-testid="stSidebar"] .stButton [data-testid="stMarkdownContainer"],
+    section[data-testid="stSidebar"] .stButton [data-testid="stMarkdownContainer"] p,
+    section[data-testid="stSidebar"] .stButton [data-testid="stMarkdownContainer"] span {
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        line-height: 1.1 !important;
+        font-family: var(--sp-font) !important;
+        color: #F3F6F8 !important;
     }
 
-    /* Prevent white page sections from appearing behind widgets */
-    [data-testid="stAppViewBlockContainer"],
-    [data-testid="stVerticalBlock"],
-    [data-testid="stHorizontalBlock"] {
-        background: transparent !important;
+    section[data-testid="stSidebar"] .stButton > button:not([kind="primary"]),
+    section[data-testid="stSidebar"] button[kind="secondary"] {
+        background: #364957 !important;
+        border-color: rgba(255,255,255,0.12) !important;
+        color: #F3F6F8 !important;
     }
 
-    [data-testid="stHeader"] {
-        background: rgba(232, 244, 250, 0.92) !important;
+    section[data-testid="stSidebar"] .stButton > button:not([kind="primary"]):hover,
+    section[data-testid="stSidebar"] button[kind="secondary"]:hover {
+        background: #435563 !important;
+        border-color: rgba(255,255,255,0.16) !important;
+        color: #FFFFFF !important;
     }
 
-    /* Regular buttons: white with strong blue text */
-    [data-testid="stMain"] .stButton > button,
-    [data-testid="stMain"] button[kind="secondary"],
-    [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"] {
+    section[data-testid="stSidebar"] .stButton > button:not([kind="primary"]):hover *,
+    section[data-testid="stSidebar"] button[kind="secondary"]:hover * {
+        color: #FFFFFF !important;
+    }
+
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"],
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover,
+    section[data-testid="stSidebar"] .stButton > button[data-testid^="stBaseButton-primary"],
+    section[data-testid="stSidebar"] .stButton > button[data-testid^="stBaseButton-primary"]:hover {
         background: #FFFFFF !important;
-        color: #00658F !important;
-        border: 1.5px solid #8DD4EF !important;
-        box-shadow: 0 4px 12px rgba(0, 101, 143, 0.08) !important;
+        border-color: #FFFFFF !important;
+        color: var(--sp-navy) !important;
     }
 
-    [data-testid="stMain"] .stButton > button p,
-    [data-testid="stMain"] .stButton > button span,
-    [data-testid="stMain"] button[kind="secondary"] p,
-    [data-testid="stMain"] button[kind="secondary"] span {
-        color: #00658F !important;
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"] *,
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"] p,
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"] span,
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover *,
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover p,
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover span {
+        color: var(--sp-navy) !important;
+    }
+
+    /* FINAL metric cards — beat page-level light text on nested p/span */
+    html body [data-testid="stMetric"],
+    html body [data-testid="stMetric"] *,
+    html body [data-testid="stMetricLabel"],
+    html body [data-testid="stMetricLabel"] *,
+    html body [data-testid="stMetricLabel"] p,
+    html body [data-testid="stMetricLabel"] span,
+    html body [data-testid="stMetricLabel"] div,
+    html body [data-testid="stMetricValue"],
+    html body [data-testid="stMetricValue"] *,
+    html body [data-testid="stMetricValue"] p,
+    html body [data-testid="stMetricValue"] span,
+    html body [data-testid="stMetricValue"] div,
+    html body [data-testid="stMain"] [data-testid="stMetric"] [data-testid="stMarkdownContainer"] p,
+    html body [data-testid="stMain"] [data-testid="stMetric"] p,
+    html body [data-testid="stMain"] [data-testid="stMetric"] span,
+    html body [data-testid="stMain"] [data-testid="stMetric"] div {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        opacity: 1 !important;
+    }
+
+    html body [data-testid="stMetric"] {
+        background: #FFFFFF !important;
+        border: 2.5px solid #0B4F71 !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.09) !important;
+    }
+
+    html body [data-testid="stMetricLabel"],
+    html body [data-testid="stMetricLabel"] p,
+    html body [data-testid="stMetricLabel"] span {
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body [data-testid="stMetricValue"],
+    html body [data-testid="stMetricValue"] *,
+    html body [data-testid="stMetricValue"] p,
+    html body [data-testid="stMetricValue"] span,
+    html body [data-testid="stMetricValue"] div {
+        font-size: 1.45rem !important;
+        font-weight: 700 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h1,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h2,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h3,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] li,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] span,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] div,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] label,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"],
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"],
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"] p,
+    [data-testid="stMain"] [data-testid="stExpander"] h1,
+    [data-testid="stMain"] [data-testid="stExpander"] h2,
+    [data-testid="stMain"] [data-testid="stExpander"] h3,
+    [data-testid="stMain"] [data-testid="stExpander"] p,
+    [data-testid="stMain"] [data-testid="stExpander"] span,
+    [data-testid="stMain"] [data-testid="stExpander"] summary,
+    [data-testid="stMain"] [data-testid="stAlert"] p,
+    [data-testid="stMain"] [data-testid="stAlert"] span {
+        color: #083C5D !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"] p {
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h3,
+    [data-testid="stMain"] [data-testid="stExpander"] h3,
+    [data-testid="stMain"] [data-testid="stExpander"] summary {
+        font-weight: 650 !important;
+    }
+
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .stButton > button p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .stButton > button span,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="secondary"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="secondary"] span {
+        color: #0B4F71 !important;
         font-weight: 700 !important;
     }
 
-    [data-testid="stMain"] .stButton > button:hover,
-    [data-testid="stMain"] button[kind="secondary"]:hover {
-        background: #DDF3FC !important;
-        color: #004F70 !important;
-        border-color: #018FC7 !important;
-        transform: translateY(-1px);
-    }
-
-    /* Primary buttons: brand blue with white text */
-    [data-testid="stMain"] button[kind="primary"],
-    [data-testid="stMain"] button[data-testid^="stBaseButton-primary"] {
-        background: #018FC7 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #018FC7 !important;
-        box-shadow: 0 6px 16px rgba(1, 143, 199, 0.22) !important;
-    }
-
-    [data-testid="stMain"] button[kind="primary"] p,
-    [data-testid="stMain"] button[kind="primary"] span {
-        color: #FFFFFF !important;
-    }
-
-    [data-testid="stMain"] button[kind="primary"]:hover {
-        background: #007EAF !important;
-        border-color: #007EAF !important;
-    }
-
-    /* Download buttons */
-    [data-testid="stDownloadButton"] button {
-        background: #018FC7 !important;
-        color: #FFFFFF !important;
-        border-color: #018FC7 !important;
-    }
-
-    [data-testid="stDownloadButton"] button p,
-    [data-testid="stDownloadButton"] button span {
-        color: #FFFFFF !important;
-    }
-
-    /* Link buttons */
-    [data-testid="stMain"] .stLinkButton > a {
-        background: #FFFFFF !important;
-        color: #00658F !important;
-        border: 1.5px solid #8DD4EF !important;
-    }
-
-    [data-testid="stMain"] .stLinkButton > a p,
-    [data-testid="stMain"] .stLinkButton > a span {
-        color: #00658F !important;
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="primary"] p,
+    [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="primary"] span {
+        color: #0B4F71 !important;
         font-weight: 700 !important;
     }
 
-    /* Cards stay white so they contrast with the blue canvas */
-    [data-testid="stVerticalBlockBorderWrapper"],
-    [data-testid="stMetric"],
-    [data-testid="stExpander"] {
-        background: #FFFFFF !important;
-    }
-
-    /* Tabs, radio groups, and generic wrappers should not create white page slabs */
-    [data-testid="stTabs"],
-    [data-testid="stRadio"],
-    [data-testid="stSelectbox"],
-    [data-testid="stMultiSelect"],
-    [data-testid="stTextInput"],
-    [data-testid="stTextArea"],
-    [data-testid="stNumberInput"],
-    [data-testid="stSlider"],
-    [data-testid="stCheckbox"] {
-        background: transparent !important;
-    }
-
-    /* Top toolbar/header should visually blend with the blue page */
-    [data-testid="stHeader"] {
-        background: rgba(232, 244, 250, 0.96) !important;
-        backdrop-filter: blur(8px);
-    }
-
-
-    /* Premium sidebar branding */
-    .sp-sidebar-brand {
-        padding: 0.25rem 0 0.85rem 0;
-    }
-
-    .sp-sidebar-brand-title {
+    html body [data-testid="stMain"] .sp-hero .sp-kicker,
+    html body [data-testid="stMain"] .sp-hero h1,
+    html body [data-testid="stMain"] .sp-hero h1 * {
         color: #FFFFFF !important;
-        font-size: 1.55rem;
-        line-height: 1.15;
-        font-weight: 850;
-        letter-spacing: -0.025em;
-        margin-bottom: 0.65rem;
+        -webkit-text-fill-color: #FFFFFF !important;
     }
 
-    .sp-sidebar-brand-line {
-        width: 56px;
-        height: 4px;
-        border-radius: 999px;
-        background: #018FC7;
-        box-shadow: 0 0 14px rgba(1, 143, 199, 0.45);
+    html body [data-testid="stMain"] .sp-hero p,
+    html body [data-testid="stMain"] .sp-hero p * {
+        color: #EAF6FC !important;
+        -webkit-text-fill-color: #EAF6FC !important;
+        font-weight: 500 !important;
     }
 
-    .sp-sidebar-profile {
-        display: flex;
-        align-items: center;
-        gap: 0.9rem;
-        padding: 1rem;
-        margin: 0.25rem 0 0.6rem 0;
-        border-radius: 16px;
-        background: linear-gradient(
-            135deg,
-            rgba(255,255,255,0.10),
-            rgba(255,255,255,0.055)
-        );
-        border: 1px solid rgba(255,255,255,0.13);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-
-    .sp-sidebar-avatar {
-        min-width: 48px;
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        background: #018FC7;
+    html body [data-testid="stMain"] .sp-page-header h1,
+    html body [data-testid="stMain"] .sp-page-header h1 * {
         color: #FFFFFF !important;
-        font-size: 1.45rem;
-        box-shadow: 0 6px 16px rgba(1,143,199,0.28);
+        -webkit-text-fill-color: #FFFFFF !important;
     }
 
-    .sp-sidebar-profile-content {
-        min-width: 0;
-        flex: 1;
+    html body [data-testid="stMain"] .sp-page-header p,
+    html body [data-testid="stMain"] .sp-page-header p * {
+        color: #EAF6FC !important;
+        -webkit-text-fill-color: #EAF6FC !important;
+        font-weight: 500 !important;
     }
 
-    .sp-sidebar-name {
-        color: #FFFFFF !important;
-        font-size: 1.13rem;
-        font-weight: 800;
-        line-height: 1.2;
-        margin-bottom: 0.45rem;
+    /* FINAL TYPOGRAPHY — wins over earlier rules and Streamlit defaults */
+    html, :root, .stApp {
+        --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        --sp-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
-    .sp-sidebar-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.3rem;
-        align-items: center;
-        color: #CDEAF5 !important;
-        font-size: 0.84rem;
-        font-weight: 600;
-        margin-bottom: 0.42rem;
+    html body .stApp,
+    html body [data-testid="stMain"],
+    html body [data-testid="stSidebar"],
+    html body [data-testid="stHeader"],
+    html body [data-testid="stAppViewContainer"] {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
-    .sp-sidebar-meta span {
-        color: #CDEAF5 !important;
+    html body .stApp h1,
+    html body .stApp h2,
+    html body .stApp h3,
+    html body .stApp h4,
+    html body .stApp p,
+    html body .stApp li,
+    html body .stApp label,
+    html body .stApp span,
+    html body .stApp div,
+    html body .stApp a,
+    html body .stApp button,
+    html body .stApp input,
+    html body .stApp textarea,
+    html body .stApp select,
+    html body [data-testid="stMain"] h1,
+    html body [data-testid="stMain"] h2,
+    html body [data-testid="stMain"] h3,
+    html body [data-testid="stMain"] h4,
+    html body [data-testid="stMain"] p,
+    html body [data-testid="stMain"] li,
+    html body [data-testid="stMain"] label,
+    html body [data-testid="stSidebar"] h1,
+    html body [data-testid="stSidebar"] h2,
+    html body [data-testid="stSidebar"] h3,
+    html body [data-testid="stSidebar"] p,
+    html body [data-testid="stSidebar"] label,
+    html body [data-testid="stMarkdownContainer"],
+    html body [data-testid="stMarkdownContainer"] *,
+    html body [data-testid="stMetric"] *,
+    html body [data-testid="stButton"] *,
+    html body [data-testid="stCaptionContainer"],
+    html body [data-testid="stCaptionContainer"] *,
+    html body [data-testid="stWidgetLabel"],
+    html body [data-testid="stWidgetLabel"] *,
+    html body [data-testid="stAlert"] *,
+    html body [data-testid="stExpander"] *:not([data-testid="stIconMaterial"]),
+    html body [data-testid="stTabs"] *:not([data-testid="stIconMaterial"]),
+    html body [data-baseweb="input"],
+    html body [data-baseweb="input"] *,
+    html body [data-baseweb="select"],
+    html body [data-baseweb="select"] *,
+    html body [data-baseweb="textarea"],
+    html body [data-baseweb="textarea"] *,
+    html body [data-testid="stVerticalBlockBorderWrapper"] *:not([data-testid="stIconMaterial"]):not(svg):not(path),
+    html body .stButton > button,
+    html body .stButton > button *,
+    html body .stLinkButton > a,
+    html body .stLinkButton > a * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
-    .sp-meta-dot {
-        opacity: 0.65;
-    }
-
-    .sp-sidebar-email {
-        color: #64C9EE !important;
-        font-size: 0.78rem;
-        font-weight: 600;
-        line-height: 1.3;
-        overflow-wrap: anywhere;
-    }
-
-    /* Sidebar stays dark blue and readable */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(
-            180deg,
-            #003F5C 0%,
-            #00577D 55%,
-            #003B57 100%
-        ) !important;
-    }
-
-
-    [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
-        color: #72D2F2 !important;
-        font-size: 0.72rem !important;
+    html body .stApp h1,
+    html body [data-testid="stMain"] h1,
+    html body [data-testid="stSidebar"] h1 {
         font-weight: 800 !important;
-        letter-spacing: 0.12em !important;
-        text-transform: uppercase;
-        margin-top: 0.15rem;
     }
 
-    [data-testid="stSidebar"] .stButton {
-        margin-bottom: 0.18rem;
+    html body .stApp h2,
+    html body [data-testid="stMain"] h2,
+    html body [data-testid="stSidebar"] h2 {
+        font-weight: 750 !important;
     }
 
-    [data-testid="stSidebar"] .stButton > button {
-        background: rgba(255,255,255,0.09) !important;
-        color: #FFFFFF !important;
-        border: 1px solid rgba(255,255,255,0.16) !important;
+    html body .stApp h3,
+    html body .stApp h4,
+    html body [data-testid="stMain"] h3,
+    html body [data-testid="stMain"] h4,
+    html body [data-testid="stSidebar"] h3,
+    html body [data-testid="stMain"] [data-testid="stExpander"] summary,
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h3 {
+        font-weight: 700 !important;
     }
 
-    [data-testid="stSidebar"] .stButton > button p,
-    [data-testid="stSidebar"] .stButton > button span {
-        color: #FFFFFF !important;
+    html body .stApp p,
+    html body .stApp li,
+    html body [data-testid="stMain"] p,
+    html body [data-testid="stMain"] li,
+    html body [data-testid="stMarkdownContainer"] p,
+    html body [data-testid="stAlert"] p {
+        font-weight: 500 !important;
     }
 
-    [data-testid="stSidebar"] .stButton > button:hover {
-        background: #018FC7 !important;
-        border-color: #4FC3ED !important;
-    }
-
-
-    /* -------------------------------------------------------
-       STREAMLIT SIDEBAR TOGGLE
-       Keep the native close/reopen control visible and clickable.
-       ------------------------------------------------------- */
-
-    [data-testid="stSidebarCollapsedControl"],
-    button[data-testid="stSidebarCollapsedControl"],
-    button[aria-label="Open sidebar"],
-    button[aria-label="Expand sidebar"],
-    button[title="Open sidebar"],
-    button[title="Expand sidebar"] {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        position: fixed !important;
-        top: 0.75rem !important;
-        left: 0.75rem !important;
-        width: 42px !important;
-        height: 42px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background: #000000 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #000000 !important;
-        border-radius: 11px !important;
-        box-shadow: 0 6px 18px rgba(0, 63, 92, 0.28) !important;
-        z-index: 2147483647 !important;
-    }
-
-    [data-testid="stSidebarCollapsedControl"]:hover,
-    button[data-testid="stSidebarCollapsedControl"]:hover,
-    button[aria-label="Open sidebar"]:hover,
-    button[aria-label="Expand sidebar"]:hover,
-    button[title="Open sidebar"]:hover,
-    button[title="Expand sidebar"]:hover {
-        background: #111111 !important;
-        border-color: #111111 !important;
-    }
-
-    [data-testid="stSidebarCollapsedControl"] svg,
-    button[data-testid="stSidebarCollapsedControl"] svg,
-    button[aria-label="Open sidebar"] svg,
-    button[aria-label="Expand sidebar"] svg,
-    button[title="Open sidebar"] svg,
-    button[title="Expand sidebar"] svg {
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-    }
-
-    [data-testid="stSidebarCollapseButton"],
-    button[data-testid="stSidebarCollapseButton"],
-    button[aria-label="Close sidebar"],
-    button[aria-label="Collapse sidebar"],
-    button[title="Close sidebar"],
-    button[title="Collapse sidebar"] {
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        z-index: 2147483647 !important;
-    }
-
-    /* The Streamlit header must not sit on top of the reopen button. */
-    [data-testid="stHeader"] {
-        pointer-events: none !important;
-    }
-
-    [data-testid="stHeader"] button,
-    [data-testid="stHeader"] a,
-    [data-testid="stHeader"] [role="button"],
-    [data-testid="stSidebarCollapsedControl"],
-    [data-testid="stSidebarCollapseButton"] {
-        pointer-events: auto !important;
-    }
-
-
-    /* Native sidebar header — avoids raw HTML profile-card rendering issues */
-    .sp-sidebar-title {
-        color: #FFFFFF !important;
-        font-size: 1.65rem;
-        line-height: 1.12;
-        font-weight: 850;
-        letter-spacing: -0.03em;
-        margin: 0.2rem 0 0.65rem 0;
-    }
-
-    .sp-sidebar-accent {
-        width: 72px;
-        height: 5px;
-        border-radius: 999px;
-        background: #018FC7;
-        margin-bottom: 1.15rem;
-        box-shadow: 0 0 14px rgba(1,143,199,0.38);
-    }
-
-    [data-testid="stSidebar"] h3 {
-        color: #FFFFFF !important;
-        font-size: 1.15rem !important;
-        margin-bottom: 0.15rem !important;
-    }
-
-    [data-testid="stSidebar"] a {
-        color: #65D1F5 !important;
+    html body .stApp label,
+    html body [data-testid="stMain"] label,
+    html body [data-testid="stWidgetLabel"],
+    html body [data-testid="stWidgetLabel"] p,
+    html body [data-testid="stCaptionContainer"],
+    html body [data-testid="stCaptionContainer"] p {
         font-weight: 600 !important;
     }
 
-    /* Keep buttons blue/white even while clicked, focused, or active */
-    [data-testid="stMain"] .stButton > button,
-    [data-testid="stMain"] .stButton > button:active,
-    [data-testid="stMain"] .stButton > button:focus,
-    [data-testid="stMain"] .stButton > button:focus-visible {
-        background: #FFFFFF !important;
-        color: #00658F !important;
-        border: 1.5px solid #8DD4EF !important;
-        outline: none !important;
+    html body .stApp button,
+    html body .stApp button *,
+    html body [data-testid="stButton"] *,
+    html body .stButton > button,
+    html body .stButton > button *,
+    html body .stLinkButton > a,
+    html body .stLinkButton > a *,
+    html body [data-testid="stFormSubmitButton"] button,
+    html body [data-testid="stFormSubmitButton"] button *,
+    html body [data-testid="stDownloadButton"] button,
+    html body [data-testid="stDownloadButton"] button * {
+        font-weight: 700 !important;
     }
 
-    [data-testid="stMain"] .stButton > button p,
-    [data-testid="stMain"] .stButton > button span,
-    [data-testid="stMain"] .stButton > button:active p,
-    [data-testid="stMain"] .stButton > button:active span,
-    [data-testid="stMain"] .stButton > button:focus p,
-    [data-testid="stMain"] .stButton > button:focus span {
-        color: #00658F !important;
+    html body [data-testid="stMetricLabel"],
+    html body [data-testid="stMetricLabel"] *,
+    html body [data-testid="stMetricLabel"] p,
+    html body [data-testid="stMetricLabel"] span {
+        font-weight: 600 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
-    [data-testid="stMain"] button[kind="primary"],
-    [data-testid="stMain"] button[kind="primary"]:active,
-    [data-testid="stMain"] button[kind="primary"]:focus,
-    [data-testid="stMain"] button[kind="primary"]:focus-visible {
-        background: #018FC7 !important;
-        color: #FFFFFF !important;
-        border-color: #018FC7 !important;
-        outline: none !important;
+    html body [data-testid="stMetricValue"],
+    html body [data-testid="stMetricValue"] *,
+    html body [data-testid="stMetricValue"] p,
+    html body [data-testid="stMetricValue"] span,
+    html body [data-testid="stMetricValue"] div {
+        font-weight: 750 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
-    [data-testid="stMain"] button[kind="primary"] p,
-    [data-testid="stMain"] button[kind="primary"] span,
-    [data-testid="stMain"] button[kind="primary"]:active p,
-    [data-testid="stMain"] button[kind="primary"]:active span,
-    [data-testid="stMain"] button[kind="primary"]:focus p,
-    [data-testid="stMain"] button[kind="primary"]:focus span {
-        color: #FFFFFF !important;
+    html body [data-testid="stMain"] .sp-hero h1,
+    html body [data-testid="stMain"] .sp-hero h1 *,
+    html body [data-testid="stMain"] .sp-page-header h1,
+    html body [data-testid="stMain"] .sp-page-header h1 * {
+        font-weight: 800 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
+    html body [data-testid="stMain"] .sp-hero p,
+    html body [data-testid="stMain"] .sp-hero p *,
+    html body [data-testid="stMain"] .sp-page-header p,
+    html body [data-testid="stMain"] .sp-page-header p * {
+        font-weight: 500 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
+    html, body, .stApp,
+    [data-testid="stMain"],
+    [data-testid="stSidebar"],
+    [data-testid="stMarkdownContainer"],
+    [data-testid="stMarkdownContainer"] *,
+    [data-testid="stMetric"] *,
+    button,
+    button *,
+    input,
+    textarea,
+    select,
+    label {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
+    h1 {
+        font-weight: 800 !important;
+    }
+
+    h2 {
+        font-weight: 750 !important;
+    }
+
+    h3, h4 {
+        font-weight: 700 !important;
+    }
+
+    p, li {
+        font-weight: 500 !important;
+    }
+
+    button, button * {
+        font-weight: 700 !important;
+    }
+
+    [data-testid="stMetricLabel"] {
+        font-weight: 600 !important;
+    }
+
+    [data-testid="stMetricValue"] {
+        font-weight: 700 !important;
+    }
+
+    [data-testid="stCaptionContainer"],
+    [data-testid="stCaptionContainer"] p,
+    [data-testid="stWidgetLabel"],
+    [data-testid="stWidgetLabel"] p {
+        font-weight: 550 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
     [data-testid="stSidebar"] .stButton > button,
-    [data-testid="stSidebar"] .stButton > button:active,
-    [data-testid="stSidebar"] .stButton > button:focus,
-    [data-testid="stSidebar"] .stButton > button:focus-visible {
-        background: rgba(255,255,255,0.09) !important;
-        color: #FFFFFF !important;
-        border: 1px solid rgba(255,255,255,0.16) !important;
-        outline: none !important;
-    }
-
     [data-testid="stSidebar"] .stButton > button p,
     [data-testid="stSidebar"] .stButton > button span,
-    [data-testid="stSidebar"] .stButton > button:active p,
-    [data-testid="stSidebar"] .stButton > button:active span,
-    [data-testid="stSidebar"] .stButton > button:focus p,
-    [data-testid="stSidebar"] .stButton > button:focus span {
-        color: #FFFFFF !important;
+    [data-testid="stSidebar"] .stButton > button div {
+        font-weight: 650 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
-    [data-testid="stSidebar"] .stButton > button:hover {
-        background: #018FC7 !important;
-        border-color: #4FC3ED !important;
+    [data-testid="stIconMaterial"],
+    [data-testid="stIconMaterial"] *,
+    [class*="material-symbols"],
+    [class*="material-icons"],
+    [data-testid="stSidebarCollapseButton"] [data-testid="stIconMaterial"],
+    [data-testid="stSidebarCollapsedControl"] [data-testid="stIconMaterial"],
+    [data-testid="stHeader"] [data-testid="stIconMaterial"],
+    [data-testid="stSidebarCollapseButton"] span,
+    [data-testid="stSidebarCollapsedControl"] span,
+    [data-testid="stHeader"] button:first-of-type span {
+        font-family: "Material Symbols Rounded", "Material Symbols Outlined", "Material Symbols Sharp" !important;
+        font-weight: 400 !important;
+        font-style: normal !important;
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24 !important;
+        letter-spacing: normal !important;
+        line-height: 1 !important;
+        text-transform: none !important;
+        -webkit-font-smoothing: antialiased !important;
     }
 
-
-    /* FINAL sidebar reopen control override — wrapper + nested button */
-    [data-testid="stSidebarCollapsedControl"] {
-        background: #000000 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #000000 !important;
-        border-radius: 11px !important;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.28) !important;
+    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"] {
+        background: #F7FBFE !important;
+        border: 2.5px solid #0B4F71 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.09) !important;
+        padding: 1.5rem 1.45rem !important;
     }
 
-    [data-testid="stSidebarCollapsedControl"] > div,
-    [data-testid="stSidebarCollapsedControl"] button,
-    [data-testid="stSidebarCollapsedControl"] [role="button"],
-    [data-testid="stSidebarCollapsedControl"] [data-testid*="Button"] {
-        background-color: #000000 !important;
-        background: #000000 !important;
-        color: #FFFFFF !important;
-        border-color: #000000 !important;
-        box-shadow: none !important;
+    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"]:hover {
+        border-color: var(--sp-primary) !important;
+        box-shadow: 0 8px 18px rgba(1, 143, 199, 0.10) !important;
+        transform: translateY(-2px);
     }
-
-    [data-testid="stSidebarCollapsedControl"] svg,
-    [data-testid="stSidebarCollapsedControl"] button svg,
-    [data-testid="stSidebarCollapsedControl"] [role="button"] svg {
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-    }
-
-    [data-testid="stSidebarCollapsedControl"]:hover,
-    [data-testid="stSidebarCollapsedControl"] button:hover,
-    [data-testid="stSidebarCollapsedControl"] [role="button"]:hover {
-        background-color: #111111 !important;
-        background: #111111 !important;
-        border-color: #111111 !important;
-    }
-
-
-    /* =======================================================
-       ABSOLUTE FINAL FIX: collapsed sidebar reopen control
-       ======================================================= */
-
-    [data-testid="stSidebarCollapsedControl"],
-    [data-testid="stSidebarCollapsedControl"] *,
-    [data-testid="stSidebarCollapsedControl"] button,
-    [data-testid="stSidebarCollapsedControl"] button *,
-    button[aria-label*="sidebar" i],
-    button[aria-label*="sidebar" i] *,
-    button[title*="sidebar" i],
-    button[title*="sidebar" i] * {
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-
-    [data-testid="stSidebarCollapsedControl"],
-    [data-testid="stSidebarCollapsedControl"] button,
-    button[aria-label="Open sidebar"],
-    button[aria-label="Expand sidebar"],
-    button[title="Open sidebar"],
-    button[title="Expand sidebar"] {
-        background: #000000 !important;
-        background-color: #000000 !important;
-        color: #FFFFFF !important;
-        border: 2px solid #000000 !important;
-        border-radius: 12px !important;
-        box-shadow: 0 5px 16px rgba(0,0,0,0.35) !important;
-        width: 46px !important;
-        height: 46px !important;
-        min-width: 46px !important;
-        min-height: 46px !important;
-    }
-
-    [data-testid="stSidebarCollapsedControl"] svg,
-    [data-testid="stSidebarCollapsedControl"] svg *,
-    [data-testid="stSidebarCollapsedControl"] button svg,
-    [data-testid="stSidebarCollapsedControl"] button svg *,
-    button[aria-label*="sidebar" i] svg,
-    button[aria-label*="sidebar" i] svg * {
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-        opacity: 1 !important;
-    }
-
-    [data-testid="stSidebarCollapsedControl"]:hover,
-    [data-testid="stSidebarCollapsedControl"] button:hover,
-    button[aria-label="Open sidebar"]:hover,
-    button[aria-label="Expand sidebar"]:hover {
-        background: #111111 !important;
-        background-color: #111111 !important;
-        border-color: #111111 !important;
-    }
-
-
-
-
-    /* =======================================================
-       SIDEBAR OPEN / CLOSE BUTTON
-       Dark button + white arrows for strong visibility
-       ======================================================= */
-
-    /* Native collapse button while sidebar is open */
-    [data-testid="stSidebarCollapseButton"],
-    [data-testid="stSidebarCollapseButton"] button,
-    [data-testid="stSidebarCollapseButton"] [role="button"],
-    button[aria-label*="collapse sidebar" i],
-    button[title*="collapse sidebar" i] {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        background: #0B1F33 !important;
-        background-color: #0B1F33 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #0B1F33 !important;
-        border-radius: 10px !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.24) !important;
-    }
-
-    /* Native reopen control while sidebar is closed */
-    [data-testid="stSidebarCollapsedControl"],
-    [data-testid="stSidebarCollapsedControl"] button,
-    [data-testid="stSidebarCollapsedControl"] [role="button"],
-    button[aria-label*="open sidebar" i],
-    button[aria-label*="expand sidebar" i],
-    button[title*="open sidebar" i],
-    button[title*="expand sidebar" i] {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        background: #0B1F33 !important;
-        background-color: #0B1F33 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #0B1F33 !important;
-        border-radius: 10px !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.24) !important;
-        z-index: 2147483647 !important;
-    }
-
-    /* White chevrons/icons */
-    [data-testid="stSidebarCollapseButton"] svg,
-    [data-testid="stSidebarCollapseButton"] svg *,
-    [data-testid="stSidebarCollapsedControl"] svg,
-    [data-testid="stSidebarCollapsedControl"] svg *,
-    button[aria-label*="sidebar" i] svg,
-    button[aria-label*="sidebar" i] svg *,
-    button[title*="sidebar" i] svg,
-    button[title*="sidebar" i] svg * {
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-        opacity: 1 !important;
-    }
-
-    /* Fallback for Streamlit versions that place the reopen control in header */
-    [data-testid="stHeader"] button {
-        color: #FFFFFF !important;
-    }
-
-    [data-testid="stHeader"] button svg,
-    [data-testid="stHeader"] button svg * {
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-    }
-
-    /* Specifically make the left-most header control dark if it exists */
-    [data-testid="stHeader"] button:first-of-type {
-        background: #0B1F33 !important;
-        background-color: #0B1F33 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #0B1F33 !important;
-        border-radius: 10px !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.24) !important;
-    }
-
-    [data-testid="stSidebarCollapseButton"]:hover,
-    [data-testid="stSidebarCollapsedControl"]:hover,
-    [data-testid="stSidebarCollapseButton"] button:hover,
-    [data-testid="stSidebarCollapsedControl"] button:hover,
-    button[aria-label*="sidebar" i]:hover,
-    button[title*="sidebar" i]:hover,
-    [data-testid="stHeader"] button:first-of-type:hover {
-        background: #071521 !important;
-        background-color: #071521 !important;
-        border-color: #071521 !important;
-    }
-
-
-    /* Sidebar contact card */
-    .sp-contact-card {
-        margin: 0.25rem 0 0.85rem 0;
-        padding: 0.95rem;
-        border-radius: 14px;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.14);
-    }
-
-    .sp-contact-title {
-        color: #FFFFFF !important;
-        font-size: 0.95rem;
-        font-weight: 800;
-        margin-bottom: 0.3rem;
-    }
-
-    .sp-contact-text {
-        color: #CDEAF5 !important;
-        font-size: 0.78rem;
-        line-height: 1.4;
-        margin-bottom: 0.5rem;
-    }
-
-    .sp-contact-email {
-        color: #63D2F6 !important;
-        font-size: 0.76rem;
-        font-weight: 700;
-        text-decoration: none !important;
-        overflow-wrap: anywhere;
-    }
-
-    .sp-contact-email:hover {
-        color: #FFFFFF !important;
-        text-decoration: underline !important;
-    }
-
-
-    /* Opportunity Search button */
-    [data-testid="stFormSubmitButton"] button,
-    [data-testid="stFormSubmitButton"] button:focus,
-    [data-testid="stFormSubmitButton"] button:active {
-        background: #018FC7 !important;
-        background-color: #018FC7 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #018FC7 !important;
-        border-radius: 10px !important;
-        font-weight: 800 !important;
-        min-height: 46px !important;
-        box-shadow: none !important;
-    }
-
-    [data-testid="stFormSubmitButton"] button:hover {
-        background: #0178A8 !important;
-        background-color: #0178A8 !important;
-        border-color: #0178A8 !important;
-        color: #FFFFFF !important;
-    }
-
-    [data-testid="stFormSubmitButton"] button p,
-    [data-testid="stFormSubmitButton"] button span {
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-    }
-
     </style>
     """,
     unsafe_allow_html=True
 )
+
+
+def render_page_header(
+    title,
+    subtitle="",
+    kicker=""
+):
+    title_safe = html_module.escape(
+        str(title)
+    )
+    kicker_html = ""
+
+    if kicker:
+        kicker_safe = html_module.escape(
+            str(kicker)
+        )
+        kicker_html = (
+            f'<div class="sp-kicker">'
+            f'{kicker_safe}</div>'
+        )
+
+    subtitle_html = ""
+
+    if subtitle:
+        subtitle_safe = html_module.escape(
+            str(subtitle)
+        )
+        subtitle_html = (
+            f'<p>{subtitle_safe}</p>'
+        )
+
+    header_html = (
+        f'<div class="sp-page-header">'
+        f'{kicker_html}'
+        f'<h1>{title_safe}</h1>'
+        f'{subtitle_html}'
+        f'</div>'
+    )
+
+    st.markdown(
+        header_html,
+        unsafe_allow_html=True
+    )
+
+
+def sidebar_nav_button(
+    label,
+    page_name,
+    key
+):
+    is_active = (
+        st.session_state.current_page
+        == page_name
+    )
+
+    if st.button(
+        label,
+        use_container_width=True,
+        icon=None,
+        type=(
+            "primary"
+            if is_active
+            else "secondary"
+        ),
+        key=key,
+    ):
+
+        st.session_state.current_page = (
+            page_name
+        )
+
+        st.rerun()
+
+
 
 
 # ============================================================
@@ -1028,10 +2033,12 @@ try:
     supabase = init_supabase()
     supabase_connected = True
 
-except Exception as e:
+except Exception:
+    logger.exception(
+        "Supabase client initialization failed"
+    )
     supabase = None
     supabase_connected = False
-    supabase_error = str(e)
 
 
 # ============================================================
@@ -1538,6 +2545,169 @@ def text_to_list(value):
         return []
 
 
+def safe_http_url(value):
+
+    if value is None:
+        return None
+
+    try:
+
+        if pd.isna(value):
+            return None
+
+    except (TypeError, ValueError):
+        pass
+
+    text = str(value).strip()
+
+    if not text:
+        return None
+
+    if text.lower() in {
+        "nan",
+        "none",
+        "null",
+        "nat"
+    }:
+        return None
+
+    if not (
+        text.startswith("http://")
+        or
+        text.startswith("https://")
+    ):
+        return None
+
+    return text
+
+
+def valid_choice_defaults(saved_values, options):
+
+    if not saved_values:
+        return []
+
+    allowed = set(options)
+
+    return [
+        item
+        for item in saved_values
+        if item in allowed
+    ]
+
+
+def safe_int(value, default, minimum=None, maximum=None):
+
+    try:
+        number = int(value)
+    except (TypeError, ValueError):
+        number = default
+
+    if minimum is not None:
+        number = max(minimum, number)
+
+    if maximum is not None:
+        number = min(maximum, number)
+
+    return number
+
+
+def supabase_can_write():
+
+    if supabase_connected:
+        return True
+
+    st.error(
+        "Your data could not be saved because the database is unavailable. "
+        "Please try again in a moment."
+    )
+
+    return False
+
+
+def log_supabase_exception(action):
+
+    logger.exception(
+        "Supabase %s failed",
+        action
+    )
+
+
+def mutation_row_count(response):
+
+    if response is None:
+        return 0
+
+    data = getattr(
+        response,
+        "data",
+        None
+    )
+
+    if isinstance(data, list):
+        return len(data)
+
+    if data:
+        return 1
+
+    count = getattr(
+        response,
+        "count",
+        None
+    )
+
+    if isinstance(count, int):
+        return count
+
+    return 0
+
+
+def is_missing_conflict_target(error):
+
+    text = str(error).lower()
+
+    return (
+        "on conflict" in text
+        or
+        "no unique" in text
+        or
+        "unique or exclusion constraint" in text
+        or
+        "42p10" in text
+    )
+
+
+def is_unique_violation(error):
+
+    text = str(error).lower()
+
+    return (
+        "duplicate key" in text
+        or
+        "unique constraint" in text
+        or
+        "23505" in text
+    )
+
+
+def supabase_upsert(
+    table_name,
+    payload,
+    on_conflict,
+    ignore_duplicates=False
+):
+
+    return (
+        supabase
+        .table(table_name)
+        .upsert(
+            payload,
+            on_conflict=on_conflict,
+            ignore_duplicates=ignore_duplicates
+        )
+        .execute()
+    )
+
+
 def get_google_user():
 
     try:
@@ -1596,7 +2766,12 @@ def load_profile(user_sub):
                 row.get("last_name", ""),
 
             "age":
-                row.get("age", 15),
+                safe_int(
+                    row.get("age", 15),
+                    15,
+                    13,
+                    19
+                ),
 
             "grade":
                 row.get("grade", "9"),
@@ -1626,7 +2801,12 @@ def load_profile(user_sub):
                 ),
 
             "confidence":
-                row.get("confidence", 5),
+                safe_int(
+                    row.get("confidence", 5),
+                    5,
+                    1,
+                    10
+                ),
 
             "weekly_time":
                 row.get(
@@ -1641,16 +2821,15 @@ def load_profile(user_sub):
                 )
         }
 
-    except Exception as e:
+    except Exception:
+
+        log_supabase_exception(
+            "load_profile"
+        )
 
         st.error(
             "We could not load your saved profile."
         )
-
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
 
         return None
 
@@ -1661,21 +2840,14 @@ def save_profile(
     profile
 ):
 
-    if not supabase_connected:
+    if not supabase_can_write():
         return False
 
     now = datetime.now(
         timezone.utc
     ).isoformat()
 
-    data = {
-
-        "user_sub":
-            user_sub,
-
-        "email":
-            email,
-
+    update_data = {
         "first_name":
             profile["first_name"],
 
@@ -1727,54 +2899,94 @@ def save_profile(
             now
     }
 
+    insert_data = {
+        "user_sub":
+            user_sub,
+
+        "email":
+            email,
+
+        **update_data,
+
+        "created_at":
+            now
+    }
+
     try:
 
-        existing = (
+        updated = (
             supabase
             .table("student_profiles")
-            .select("id")
+            .update(update_data)
             .eq("user_sub", user_sub)
-            .limit(1)
             .execute()
         )
 
-        if existing.data:
+        if mutation_row_count(updated) > 0:
+            return True
 
-            profile_id = (
-                existing.data[0]["id"]
+        try:
+
+            upserted = supabase_upsert(
+                "student_profiles",
+                insert_data,
+                "user_sub"
             )
 
-            (
+            if mutation_row_count(upserted) > 0:
+                return True
+
+            st.error(
+                "Your profile could not be saved."
+            )
+
+            return False
+
+        except Exception as upsert_error:
+
+            if not is_missing_conflict_target(
+                upsert_error
+            ):
+                raise
+
+            inserted = (
                 supabase
                 .table("student_profiles")
-                .update(data)
-                .eq("id", profile_id)
+                .insert(insert_data)
                 .execute()
             )
 
-        else:
+            if mutation_row_count(inserted) > 0:
+                return True
 
-            data["created_at"] = now
+            st.error(
+                "Your profile could not be saved."
+            )
 
-            (
+            return False
+
+    except Exception as error:
+
+        if is_unique_violation(error):
+
+            retried = (
                 supabase
                 .table("student_profiles")
-                .insert(data)
+                .update(update_data)
+                .eq("user_sub", user_sub)
                 .execute()
             )
 
-        return True
+            if mutation_row_count(retried) > 0:
+                return True
 
-    except Exception as e:
+        log_supabase_exception(
+            "save_profile"
+        )
 
         st.error(
             "Your profile could not be saved."
         )
-
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
 
         return False
 
@@ -1812,28 +3024,47 @@ def load_saved_opportunities(user_sub):
 
         return response.data or []
 
-    except Exception as e:
+    except Exception:
+
+        log_supabase_exception(
+            "load_saved_opportunities"
+        )
 
         st.error(
             "We could not load your saved opportunities."
         )
-
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
 
         return []
 
 
 def save_opportunity(user_sub, opportunity_name):
 
-    if not supabase_connected:
+    if not supabase_can_write():
         return False
 
     now = datetime.now(
         timezone.utc
     ).isoformat()
+
+    payload = {
+        "user_sub":
+            user_sub,
+
+        "opportunity_name":
+            opportunity_name,
+
+        "status":
+            "Saved",
+
+        "notes":
+            "",
+
+        "saved_at":
+            now,
+
+        "updated_at":
+            now
+    }
 
     try:
 
@@ -1848,62 +3079,71 @@ def save_opportunity(user_sub, opportunity_name):
         )
 
         if existing.data:
+            return True
+
+        try:
+
+            supabase_upsert(
+                "saved_opportunities",
+                payload,
+                "user_sub,opportunity_name",
+                ignore_duplicates=True
+            )
 
             return True
 
-        (
-            supabase
-            .table("saved_opportunities")
-            .insert({
-                "user_sub":
-                    user_sub,
+        except Exception as upsert_error:
 
-                "opportunity_name":
-                    opportunity_name,
+            if not is_missing_conflict_target(
+                upsert_error
+            ):
+                raise
 
-                "status":
-                    "Saved",
+            inserted = (
+                supabase
+                .table("saved_opportunities")
+                .insert(payload)
+                .execute()
+            )
 
-                "notes":
-                    "",
+            if mutation_row_count(inserted) > 0:
+                return True
 
-                "saved_at":
-                    now,
+            st.error(
+                "This opportunity could not be saved."
+            )
 
-                "updated_at":
-                    now
-            })
-            .execute()
+            return False
+
+    except Exception as error:
+
+        if is_unique_violation(error):
+            return True
+
+        log_supabase_exception(
+            "save_opportunity"
         )
-
-        return True
-
-    except Exception as e:
 
         st.error(
             "This opportunity could not be saved."
         )
 
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
-
         return False
 
 
 def update_saved_opportunity(
+    user_sub,
     saved_id,
     status,
     notes
 ):
 
-    if not supabase_connected:
+    if not supabase_can_write():
         return False
 
     try:
 
-        (
+        updated = (
             supabase
             .table("saved_opportunities")
             .update({
@@ -1919,52 +3159,66 @@ def update_saved_opportunity(
                     ).isoformat()
             })
             .eq("id", saved_id)
+            .eq("user_sub", user_sub)
             .execute()
         )
 
-        return True
-
-    except Exception as e:
+        if mutation_row_count(updated) > 0:
+            return True
 
         st.error(
             "Your application tracker could not be updated."
         )
 
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
+        return False
+
+    except Exception:
+
+        log_supabase_exception(
+            "update_saved_opportunity"
+        )
+
+        st.error(
+            "Your application tracker could not be updated."
+        )
 
         return False
 
 
-def delete_saved_opportunity(saved_id):
+def delete_saved_opportunity(user_sub, saved_id):
 
-    if not supabase_connected:
+    if not supabase_can_write():
         return False
 
     try:
 
-        (
+        deleted = (
             supabase
             .table("saved_opportunities")
             .delete()
             .eq("id", saved_id)
+            .eq("user_sub", user_sub)
             .execute()
         )
 
-        return True
-
-    except Exception as e:
+        if mutation_row_count(deleted) > 0:
+            return True
 
         st.error(
             "This opportunity could not be removed."
         )
 
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
+        return False
+
+    except Exception:
+
+        log_supabase_exception(
+            "delete_saved_opportunity"
+        )
+
+        st.error(
+            "This opportunity could not be removed."
+        )
 
         return False
 
@@ -2004,16 +3258,15 @@ def load_favorite_colleges(user_sub):
 
         return response.data or []
 
-    except Exception as e:
+    except Exception:
+
+        log_supabase_exception(
+            "load_favorite_colleges"
+        )
 
         st.error(
             "We could not load your favorite colleges."
         )
-
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
 
         return []
 
@@ -2023,7 +3276,7 @@ def add_favorite_college(
     college_name
 ):
 
-    if not supabase_connected:
+    if not supabase_can_write():
         return False
 
     try:
@@ -2051,58 +3304,88 @@ def add_favorite_college(
             timezone.utc
         ).isoformat()
 
-        (
-            supabase
-            .table("favorite_colleges")
-            .insert({
-                "user_sub":
-                    user_sub,
+        payload = {
+            "user_sub":
+                user_sub,
 
-                "college_name":
-                    college_name,
+            "college_name":
+                college_name,
 
-                "rank_order":
-                    next_rank,
+            "rank_order":
+                next_rank,
 
-                "notes":
-                    "",
+            "notes":
+                "",
 
-                "saved_at":
-                    now,
+            "saved_at":
+                now,
 
-                "updated_at":
-                    now
-            })
-            .execute()
+            "updated_at":
+                now
+        }
+
+        try:
+
+            supabase_upsert(
+                "favorite_colleges",
+                payload,
+                "user_sub,college_name",
+                ignore_duplicates=True
+            )
+
+            return True
+
+        except Exception as upsert_error:
+
+            if not is_missing_conflict_target(
+                upsert_error
+            ):
+                raise
+
+            inserted = (
+                supabase
+                .table("favorite_colleges")
+                .insert(payload)
+                .execute()
+            )
+
+            if mutation_row_count(inserted) > 0:
+                return True
+
+            st.error(
+                "This college could not be added to your favorites."
+            )
+
+            return False
+
+    except Exception as error:
+
+        if is_unique_violation(error):
+            return True
+
+        log_supabase_exception(
+            "add_favorite_college"
         )
-
-        return True
-
-    except Exception as e:
 
         st.error(
             "This college could not be added to your favorites."
         )
 
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
-
         return False
 
 
 def update_favorite_college_notes(
+    user_sub,
     favorite_id,
     notes
 ):
 
-    if not supabase_connected:
+    if not supabase_can_write():
         return False
 
     try:
 
-        (
+        updated = (
             supabase
             .table("favorite_colleges")
             .update({
@@ -2115,21 +3398,28 @@ def update_favorite_college_notes(
                     ).isoformat()
             })
             .eq("id", favorite_id)
+            .eq("user_sub", user_sub)
             .execute()
         )
 
-        return True
-
-    except Exception as e:
+        if mutation_row_count(updated) > 0:
+            return True
 
         st.error(
             "Your college notes could not be updated."
         )
 
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
+        return False
+
+    except Exception:
+
+        log_supabase_exception(
+            "update_favorite_college_notes"
+        )
+
+        st.error(
+            "Your college notes could not be updated."
+        )
 
         return False
 
@@ -2139,6 +3429,9 @@ def reorder_favorite_colleges(
     favorite_id,
     direction
 ):
+
+    if not supabase_can_write():
+        return False
 
     favorites = load_favorite_colleges(
         user_sub
@@ -2191,7 +3484,7 @@ def reorder_favorite_colleges(
 
     try:
 
-        (
+        first_update = (
             supabase
             .table("favorite_colleges")
             .update({
@@ -2209,10 +3502,14 @@ def reorder_favorite_colleges(
                 "id",
                 current_item["id"]
             )
+            .eq(
+                "user_sub",
+                user_sub
+            )
             .execute()
         )
 
-        (
+        second_update = (
             supabase
             .table("favorite_colleges")
             .update({
@@ -2230,21 +3527,35 @@ def reorder_favorite_colleges(
                 "id",
                 swap_item["id"]
             )
+            .eq(
+                "user_sub",
+                user_sub
+            )
             .execute()
         )
 
-        return True
-
-    except Exception as e:
+        if (
+            mutation_row_count(first_update) > 0
+            and
+            mutation_row_count(second_update) > 0
+        ):
+            return True
 
         st.error(
             "Your favorite college order could not be updated."
         )
 
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
+        return False
+
+    except Exception:
+
+        log_supabase_exception(
+            "reorder_favorite_colleges"
+        )
+
+        st.error(
+            "Your favorite college order could not be updated."
+        )
 
         return False
 
@@ -2254,18 +3565,27 @@ def remove_favorite_college(
     favorite_id
 ):
 
-    if not supabase_connected:
+    if not supabase_can_write():
         return False
 
     try:
 
-        (
+        deleted = (
             supabase
             .table("favorite_colleges")
             .delete()
             .eq("id", favorite_id)
+            .eq("user_sub", user_sub)
             .execute()
         )
+
+        if mutation_row_count(deleted) < 1:
+
+            st.error(
+                "This college could not be removed from your favorites."
+            )
+
+            return False
 
         # Re-number remaining favorites so the order stays clean.
         remaining = load_favorite_colleges(
@@ -2281,7 +3601,7 @@ def remove_favorite_college(
                 "rank_order"
             ) != index:
 
-                (
+                ranked = (
                     supabase
                     .table("favorite_colleges")
                     .update({
@@ -2297,21 +3617,32 @@ def remove_favorite_college(
                         "id",
                         item["id"]
                     )
+                    .eq(
+                        "user_sub",
+                        user_sub
+                    )
                     .execute()
                 )
 
+                if mutation_row_count(ranked) < 1:
+
+                    st.error(
+                        "This college could not be removed from your favorites."
+                    )
+
+                    return False
+
         return True
 
-    except Exception as e:
+    except Exception:
+
+        log_supabase_exception(
+            "remove_favorite_college"
+        )
 
         st.error(
             "This college could not be removed from your favorites."
         )
-
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(str(e))
 
         return False
 
@@ -2343,6 +3674,11 @@ def load_user_feedback(user_sub):
         return None
 
     except Exception:
+
+        log_supabase_exception(
+            "load_user_feedback"
+        )
+
         return None
 
 
@@ -2352,20 +3688,14 @@ def save_user_feedback(
     feedback
 ):
 
-    if not supabase_connected:
+    if not supabase_can_write():
         return False
 
     now = datetime.now(
         timezone.utc
     ).isoformat()
 
-    data = {
-        "user_sub":
-            user_sub,
-
-        "email":
-            email,
-
+    update_data = {
         "rating":
             int(
                 feedback[
@@ -2411,61 +3741,94 @@ def save_user_feedback(
             now
     }
 
+    insert_data = {
+        "user_sub":
+            user_sub,
+
+        "email":
+            email,
+
+        **update_data,
+
+        "created_at":
+            now
+    }
+
     try:
 
-        existing = (
+        updated = (
             supabase
             .table("user_feedback")
-            .select("id")
+            .update(update_data)
             .eq("user_sub", user_sub)
-            .limit(1)
             .execute()
         )
 
-        if existing.data:
+        if mutation_row_count(updated) > 0:
+            return True
 
-            (
+        try:
+
+            upserted = supabase_upsert(
+                "user_feedback",
+                insert_data,
+                "user_sub"
+            )
+
+            if mutation_row_count(upserted) > 0:
+                return True
+
+            st.error(
+                "Your feedback could not be saved."
+            )
+
+            return False
+
+        except Exception as upsert_error:
+
+            if not is_missing_conflict_target(
+                upsert_error
+            ):
+                raise
+
+            inserted = (
                 supabase
                 .table("user_feedback")
-                .update(data)
-                .eq(
-                    "id",
-                    existing.data[0][
-                        "id"
-                    ]
-                )
+                .insert(insert_data)
                 .execute()
             )
 
-        else:
+            if mutation_row_count(inserted) > 0:
+                return True
 
-            data[
-                "created_at"
-            ] = now
+            st.error(
+                "Your feedback could not be saved."
+            )
 
-            (
+            return False
+
+    except Exception as error:
+
+        if is_unique_violation(error):
+
+            retried = (
                 supabase
                 .table("user_feedback")
-                .insert(
-                    data
-                )
+                .update(update_data)
+                .eq("user_sub", user_sub)
                 .execute()
             )
 
-        return True
+            if mutation_row_count(retried) > 0:
+                return True
 
-    except Exception as e:
+        log_supabase_exception(
+            "save_user_feedback"
+        )
 
         st.error(
             "Your feedback could not be saved."
         )
-
-        with st.expander(
-            "Technical details"
-        ):
-            st.code(
-                str(e)
-            )
 
         return False
 
@@ -2565,6 +3928,10 @@ def load_admin_metrics():
 
         except Exception:
 
+            log_supabase_exception(
+                f"load_admin_metrics:{table_name}"
+            )
+
             data[
                 key
             ] = []
@@ -2655,6 +4022,10 @@ def google_calendar_deadline_url(
         deadline_value
     )
 
+    official_url = safe_http_url(
+        official_url
+    ) or ""
+
     if deadline_dt is None:
         return None
 
@@ -2715,18 +4086,13 @@ def google_calendar_deadline_url(
 
 if not st.user.is_logged_in:
 
-    st.title(
-        "STEM Pathways NYC"
-    )
-
-    st.subheader(
-        "Explore your interests. Build your pathway. Discover what's next."
-    )
-
-    st.write(
-        "A student-focused platform designed to help high school "
-        "students explore STEM careers, majors, projects, skills, "
-        "and opportunities."
+    render_page_header(
+        "STEM Pathways NYC",
+        (
+            "Explore your interests. Build your pathway. Discover what's next. "
+            "A student-focused platform designed to help high school students "
+            "explore STEM careers, majors, projects, skills, and opportunities."
+        )
     )
 
     st.divider()
@@ -2752,7 +4118,8 @@ if not st.user.is_logged_in:
             if st.button(
                 "Continue with Google",
                 type="primary",
-                use_container_width=True
+                use_container_width=True,
+                key="google_continue"
             ):
                 st.login("google")
 
@@ -2842,17 +4209,17 @@ if not st.session_state.profile_completed:
         st.session_state.student_profile
     )
 
-    st.title(
-        "Create Your STEM Explorer Profile"
+    render_page_header(
+        "Create Your STEM Explorer Profile",
+        (
+            "Answer a few questions so STEM Pathways NYC can personalize "
+            "your career, major, project, and opportunity recommendations."
+        ),
+        kicker="Profile Setup"
     )
 
     st.write(
         f"Signed in as **{user_email}**"
-    )
-
-    st.write(
-        "Answer a few questions so STEM Pathways NYC can personalize "
-        "your career, major, project, and opportunity recommendations."
     )
 
     st.divider()
@@ -2903,11 +4270,14 @@ if not st.session_state.profile_completed:
             "Age",
             min_value=13,
             max_value=19,
-            value=int(
+            value=safe_int(
                 existing_profile.get(
                     "age",
                     15
-                )
+                ),
+                15,
+                13,
+                19
             ),
             step=1
         )
@@ -3001,9 +4371,12 @@ if not st.session_state.profile_completed:
     interests = st.multiselect(
         "Which STEM fields currently interest you?",
         interest_options,
-        default=existing_profile.get(
-            "interests",
-            []
+        default=valid_choice_defaults(
+            existing_profile.get(
+                "interests",
+                []
+            ),
+            interest_options
         )
     )
 
@@ -3025,9 +4398,12 @@ if not st.session_state.profile_completed:
     experience_areas = st.multiselect(
         "Which STEM activities have you tried?",
         experience_options,
-        default=existing_profile.get(
-            "experience_areas",
-            []
+        default=valid_choice_defaults(
+            existing_profile.get(
+                "experience_areas",
+                []
+            ),
+            experience_options
         )
     )
 
@@ -3056,9 +4432,12 @@ if not st.session_state.profile_completed:
     goals = st.multiselect(
         "What would you like to do next?",
         goal_options,
-        default=existing_profile.get(
-            "goals",
-            []
+        default=valid_choice_defaults(
+            existing_profile.get(
+                "goals",
+                []
+            ),
+            goal_options
         )
     )
 
@@ -3094,11 +4473,14 @@ if not st.session_state.profile_completed:
         "How confident are you about your current STEM interests?",
         1,
         10,
-        int(
+        safe_int(
             existing_profile.get(
                 "confidence",
                 5
-            )
+            ),
+            5,
+            1,
+            10
         )
     )
 
@@ -3281,185 +4663,90 @@ else:
 with st.sidebar:
 
     st.markdown(
-        '<div class="sp-sidebar-title">STEM Pathways NYC</div>'
-        '<div class="sp-sidebar-accent"></div>',
+        '<div class="sp-sidebar-brand">'
+        '<div class="sp-sidebar-title">'
+        '<div class="sp-title-line">'
+        '<span class="sp-title-blue">STEM</span>'
+        '<span class="sp-title-yellow">Pathways</span>'
+        '</div>'
+        '<div class="sp-title-nyc">NYC</div>'
+        '<div class="sp-sidebar-accent"></div>'
+        '</div>'
+        '</div>',
         unsafe_allow_html=True
     )
 
     st.subheader(full_name)
 
-    st.caption(
-        f"🎓 Grade {profile['grade']}  •  📍 {profile['borough']}"
+    st.markdown(
+        '<div class="sp-sidebar-meta">'
+        f"Grade {html_module.escape(str(profile['grade']))}"
+        "  •  "
+        f"{html_module.escape(str(profile['borough']))}"
+        '</div>',
+        unsafe_allow_html=True
     )
 
     st.markdown(
-        f"✉️ [{user_email}](mailto:{user_email})"
+        f"[{user_email}](mailto:{user_email})"
     )
 
     st.divider()
 
-    st.caption(
-        "HOME"
+    st.markdown(
+        '<div class="sp-nav-section">HOME</div>',
+        unsafe_allow_html=True
     )
 
-    if st.button(
-        "🏠 Dashboard",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "Dashboard"
-        )
-
-        st.rerun()
-
-    if st.button(
-        "🧭 My STEM Pathway",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "My STEM Pathway"
-        )
-
-        st.rerun()
+    sidebar_nav_button("Dashboard", "Dashboard", "nav_v3_dashboard")
+    sidebar_nav_button("My STEM Pathway", "My STEM Pathway", "nav_v3_stem_pathway")
 
     st.divider()
 
-    st.caption(
-        "DISCOVER"
+    st.markdown(
+        '<div class="sp-nav-section">DISCOVER</div>',
+        unsafe_allow_html=True
     )
 
-    if st.button(
-        "💼 Opportunities",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "Opportunities"
-        )
-
-        st.rerun()
-
-    if st.button(
-        "📅 Deadline Calendar",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "Deadline Calendar"
-        )
-
-        st.rerun()
-
-    if st.button(
-        "🎓 College Suggestions",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "College Suggestions"
-        )
-
-        st.rerun()
-
-    if st.button(
-        "🛠️ Project Explorer",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "Projects"
-        )
-
-        st.rerun()
-
-    if st.button(
-        "📚 Resources",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "Resources"
-        )
-
-        st.rerun()
+    sidebar_nav_button("Opportunities", "Opportunities", "nav_v3_opportunities")
+    sidebar_nav_button("Deadline Calendar", "Deadline Calendar", "nav_v3_deadline_calendar")
+    sidebar_nav_button("College Suggestions", "College Suggestions", "nav_v3_college_suggestions")
+    sidebar_nav_button("Project Explorer", "Projects", "nav_v3_projects")
+    sidebar_nav_button("Resources", "Resources", "nav_v3_resources")
 
     st.divider()
 
-    st.caption(
-        "MY PROGRESS"
+    st.markdown(
+        '<div class="sp-nav-section">MY PROGRESS</div>',
+        unsafe_allow_html=True
     )
 
-    if st.button(
-        "📌 My Applications",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "My Applications"
-        )
-
-        st.rerun()
-
-    if st.button(
-        "⭐ Favorite Colleges",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "My Favorite Colleges"
-        )
-
-        st.rerun()
+    sidebar_nav_button("My Applications", "My Applications", "nav_v3_applications")
+    sidebar_nav_button("Favorite Colleges", "My Favorite Colleges", "nav_v3_favorite_colleges")
 
     st.divider()
 
-    st.caption(
-        "TOOLS"
+    st.markdown(
+        '<div class="sp-nav-section">TOOLS</div>',
+        unsafe_allow_html=True
     )
 
-    if st.button(
-        "📊 GPA Calculator",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "GPA Calculator"
-        )
-
-        st.rerun()
+    sidebar_nav_button("GPA Calculator", "GPA Calculator", "nav_v3_gpa_calculator")
 
     st.divider()
 
-    st.caption(
-        "ACCOUNT"
+    st.markdown(
+        '<div class="sp-nav-section">ACCOUNT</div>',
+        unsafe_allow_html=True
     )
 
-    if st.button(
-        "💬 Feedback",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "Feedback"
-        )
-
-        st.rerun()
+    sidebar_nav_button("Feedback", "Feedback", "nav_v3_feedback")
+    sidebar_nav_button("My Profile", "My Profile", "nav_v3_my_profile")
 
     if st.button(
-        "👤 My Profile",
-        use_container_width=True
-    ):
-
-        st.session_state.current_page = (
-            "My Profile"
-        )
-
-        st.rerun()
-
-    if st.button(
-        "🚪 Sign Out",
+        "Sign Out",
+        key="nav_v3_sign_out",
+        icon=None,
         use_container_width=True
     ):
 
@@ -3471,20 +4758,12 @@ with st.sidebar:
 
         st.divider()
 
-        st.caption(
-            "ADMIN"
+        st.markdown(
+            '<div class="sp-nav-section">ADMIN</div>',
+            unsafe_allow_html=True
         )
 
-        if st.button(
-            "⚙️ Admin Dashboard",
-            use_container_width=True
-        ):
-
-            st.session_state.current_page = (
-                "Admin Dashboard"
-            )
-
-            st.rerun()
+        sidebar_nav_button("Admin Dashboard", "Admin Dashboard", "nav_v3_admin_dashboard")
 
     st.divider()
 
@@ -3496,7 +4775,7 @@ with st.sidebar:
                 Have feedback, questions, or suggestions?
             </div>
             <a class="sp-contact-email" href="mailto:danlopez0911@gmail.com">
-                ✉️ danlopez0911@gmail.com
+                danlopez0911@gmail.com
             </a>
         </div>
         """,
@@ -3587,72 +4866,6 @@ if page == "Dashboard":
     # NEXT SAVED DEADLINE
     # --------------------------------------------------------
 
-    def dashboard_parse_deadline(
-        value
-    ):
-
-        if (
-            value is None
-            or
-            pd.isna(
-                value
-            )
-        ):
-
-            return None
-
-        raw = str(
-            value
-        ).strip()
-
-        if not raw:
-
-            return None
-
-        try:
-
-            parsed = pd.to_datetime(
-                raw,
-                errors="coerce"
-            )
-
-            if pd.notna(
-                parsed
-            ):
-
-                return parsed.to_pydatetime()
-
-        except Exception:
-
-            pass
-
-        month_pattern = (
-            r"(January|February|March|April|May|June|July|August|"
-            r"September|October|November|December)\s+\d{1,2},\s+\d{4}"
-        )
-
-        match = re.search(
-            month_pattern,
-            raw,
-            flags=re.IGNORECASE
-        )
-
-        if match:
-
-            parsed = pd.to_datetime(
-                match.group(0),
-                errors="coerce"
-            )
-
-            if pd.notna(
-                parsed
-            ):
-
-                return parsed.to_pydatetime()
-
-        return None
-
-
     next_saved_deadline = None
 
     if (
@@ -3689,7 +4902,7 @@ if page == "Dashboard":
 
                 continue
 
-            parsed_deadline = dashboard_parse_deadline(
+            parsed_deadline = parse_confirmed_deadline(
                 opportunity.get(
                     "deadline"
                 )
@@ -3773,8 +4986,12 @@ if page == "Dashboard":
         unsafe_allow_html=True
     )
 
+    dash_metrics = st.container(
+        key="dash_journey_metrics"
+    )
+
     journey1, journey2, journey3, journey4 = (
-        st.columns(4)
+        dash_metrics.columns(4)
     )
 
     with journey1:
@@ -3850,7 +5067,7 @@ if page == "Dashboard":
             with deadline_col1:
 
                 st.subheader(
-                    "📅 Your Next Saved Deadline"
+                    "Your Next Saved Deadline"
                 )
 
                 st.write(
@@ -3929,7 +5146,7 @@ if page == "Dashboard":
         ):
 
             st.subheader(
-                "🧭 Explore Your Path"
+                "Explore Your Path"
             )
 
             st.write(
@@ -3956,7 +5173,7 @@ if page == "Dashboard":
         ):
 
             st.subheader(
-                "🎓 Discover Colleges"
+                "Discover Colleges"
             )
 
             st.write(
@@ -3983,7 +5200,7 @@ if page == "Dashboard":
         ):
 
             st.subheader(
-                "🛠️ Build Something"
+                "Build Something"
             )
 
             st.write(
@@ -4012,7 +5229,7 @@ if page == "Dashboard":
         ):
 
             st.subheader(
-                "💼 Find Opportunities"
+                "Find Opportunities"
             )
 
             st.write(
@@ -4039,7 +5256,7 @@ if page == "Dashboard":
         ):
 
             st.subheader(
-                "📌 Track Applications"
+                "Track Applications"
             )
 
             if active_applications:
@@ -4082,7 +5299,7 @@ if page == "Dashboard":
         ):
 
             st.subheader(
-                "⭐ Review Your College List"
+                "Review Your College List"
             )
 
             if dashboard_favorites:
@@ -4224,8 +5441,8 @@ if page == "Dashboard":
         key="dashboard_edit_profile_v2"
     ):
 
-        st.session_state.current_page = (
-            "My Profile"
+        st.session_state.profile_completed = (
+            False
         )
 
         st.rerun()
@@ -4237,13 +5454,12 @@ if page == "Dashboard":
 
 elif page == "My STEM Pathway":
 
-    st.title(
-        "My STEM Pathway"
-    )
-
-    st.write(
-        "Answer the Career Explorer questions to discover "
-        "STEM fields, majors, and careers that may fit you."
+    render_page_header(
+        "My STEM Pathway",
+        (
+            "Answer the Career Explorer questions to discover "
+            "STEM fields, majors, and careers that may fit you."
+        )
     )
 
     st.info(
@@ -5127,24 +6343,26 @@ elif page == "My STEM Pathway":
                             ]
                         )
 
-                    if (
-                        "source_url"
-                        in career_data.index
-                        and
-                        pd.notna(
-                            career_data[
-                                "source_url"
-                            ]
-                        )
-                    ):
+                        if (
+                            "source_url"
+                            in career_data.index
+                            and
+                            safe_http_url(
+                                career_data[
+                                    "source_url"
+                                ]
+                            )
+                        ):
 
-                        st.link_button(
-                            "View Official BLS Source",
-                            career_data[
-                                "source_url"
-                            ],
-                            use_container_width=True
-                        )
+                            st.link_button(
+                                "View Official BLS Source",
+                                safe_http_url(
+                                    career_data[
+                                        "source_url"
+                                    ]
+                                ),
+                                use_container_width=True
+                            )
 
         st.divider()
 
@@ -5160,14 +6378,13 @@ elif page == "My STEM Pathway":
 
 elif page == "Opportunities":
 
-    st.title(
-        "Opportunities"
-    )
-
-    st.write(
-        "Discover programs, internships, research, courses, "
-        "competitions, scholarships, and paid work experiences — "
-        "with selectivity and eligibility information to help you choose."
+    render_page_header(
+        "Opportunities",
+        (
+            "Discover programs, internships, research, courses, "
+            "competitions, scholarships, and paid work experiences — "
+            "with selectivity and eligibility information to help you choose."
+        )
     )
 
     st.divider()
@@ -5710,7 +6927,7 @@ elif page == "Opportunities":
             with modify_col:
 
                 if st.button(
-                    "🔄 Change My Search",
+                    "Change My Search",
                     key="opportunity_change_search",
                     use_container_width=True
                 ):
@@ -5757,10 +6974,13 @@ elif page == "Opportunities":
                 )
 
             for (
-                score,
-                reasons,
-                opportunity
-            ) in search_results:
+                result_index,
+                (
+                    score,
+                    reasons,
+                    opportunity
+                )
+            ) in enumerate(search_results):
 
                 with st.container(
                     border=True
@@ -5905,6 +7125,12 @@ elif page == "Opportunities":
                         )
                     )
 
+                    official_url = safe_http_url(
+                        opportunity.get(
+                            "url"
+                        )
+                    )
+
                     if calendar_url:
 
                         action1, action2, action3 = st.columns(3)
@@ -5916,8 +7142,8 @@ elif page == "Opportunities":
                     with action1:
 
                         if st.button(
-                            "📌 Save Opportunity",
-                            key=f"search_save_{opportunity['name']}",
+                            "Save Opportunity",
+                            key=f"search_save_{result_index}_{opportunity['name']}",
                             use_container_width=True
                         ):
 
@@ -5939,32 +7165,32 @@ elif page == "Opportunities":
                         with action2:
 
                             st.link_button(
-                                "📅 Add to Google Calendar",
+                                "Add to Google Calendar",
                                 calendar_url,
                                 use_container_width=True
                             )
 
                         with action3:
 
-                            st.link_button(
-                                "View Official Opportunity",
-                                opportunity[
-                                    "url"
-                                ],
-                                use_container_width=True
-                            )
+                            if official_url:
+
+                                st.link_button(
+                                    "View Official Opportunity",
+                                    official_url,
+                                    use_container_width=True
+                                )
 
                     else:
 
                         with action2:
 
-                            st.link_button(
-                                "View Official Opportunity",
-                                opportunity[
-                                    "url"
-                                ],
-                                use_container_width=True
-                            )
+                            if official_url:
+
+                                st.link_button(
+                                    "View Official Opportunity",
+                                    official_url,
+                                    use_container_width=True
+                                )
 
             st.divider()
 
@@ -5977,7 +7203,7 @@ elif page == "Opportunities":
             )
 
             if st.button(
-                "🔄 Search Again",
+                "Search Again",
                 key="opportunity_search_again_bottom",
                 use_container_width=True
             ):
@@ -6077,10 +7303,13 @@ elif page == "Opportunities":
             )
 
         for (
-            recommended_score,
-            recommended_reasons,
-            recommended_opportunity
-        ) in recommended_results[:4]:
+            rec_index,
+            (
+                recommended_score,
+                recommended_reasons,
+                recommended_opportunity
+            )
+        ) in enumerate(recommended_results[:4]):
 
             with st.container(
                 border=True
@@ -6220,6 +7449,12 @@ elif page == "Opportunities":
                     )
                 )
 
+                recommended_official_url = safe_http_url(
+                    recommended_opportunity.get(
+                        "url"
+                    )
+                )
+
                 if recommended_calendar_url:
 
                     rec_action1, rec_action2, rec_action3 = st.columns(3)
@@ -6231,8 +7466,8 @@ elif page == "Opportunities":
                 with rec_action1:
 
                     if st.button(
-                        "📌 Save Opportunity",
-                        key=f"recommended_save_{recommended_opportunity['name']}",
+                        "Save Opportunity",
+                        key=f"recommended_save_{rec_index}_{recommended_opportunity['name']}",
                         use_container_width=True
                     ):
 
@@ -6254,32 +7489,32 @@ elif page == "Opportunities":
                     with rec_action2:
 
                         st.link_button(
-                            "📅 Add to Google Calendar",
+                            "Add to Google Calendar",
                             recommended_calendar_url,
                             use_container_width=True
                         )
 
                     with rec_action3:
 
-                        st.link_button(
-                            "View Official Opportunity",
-                            recommended_opportunity[
-                                "url"
-                            ],
-                            use_container_width=True
-                        )
+                        if recommended_official_url:
+
+                            st.link_button(
+                                "View Official Opportunity",
+                                recommended_official_url,
+                                use_container_width=True
+                            )
 
                 else:
 
                     with rec_action2:
 
-                        st.link_button(
-                            "View Official Opportunity",
-                            recommended_opportunity[
-                                "url"
-                            ],
-                            use_container_width=True
-                        )
+                        if recommended_official_url:
+
+                            st.link_button(
+                                "View Official Opportunity",
+                                recommended_official_url,
+                                use_container_width=True
+                            )
 
 
 # ============================================================
@@ -6288,11 +7523,8 @@ elif page == "Opportunities":
 
 elif page == "Deadline Calendar":
 
-    st.title(
-        "Deadline Calendar"
-    )
-
-    st.write(
+    render_page_header(
+        "Deadline Calendar",
         "Track upcoming STEM program and application deadlines in one place."
     )
 
@@ -6317,81 +7549,19 @@ elif page == "Deadline Calendar":
 
         def parse_deadline_value(value):
 
-            if value is None or pd.isna(value):
-                return None
-
-            raw = str(
-                value
-            ).strip()
-
-            if not raw:
-                return None
-
-            lower = raw.lower()
-
-            if any(
-                phrase in lower
-                for phrase in [
-                    "not yet announced",
-                    "future cycle",
-                    "varies",
-                    "typically",
-                    "expected",
-                    "check official",
-                    "see official",
-                    "closed"
-                ]
-            ):
-                return None
-
-            # Try direct parsing first.
-            try:
-
-                parsed = pd.to_datetime(
-                    raw,
-                    errors="coerce"
-                )
-
-                if pd.notna(
-                    parsed
-                ):
-
-                    return parsed.to_pydatetime()
-
-            except Exception:
-                pass
-
-            # Extract common date fragments from longer text.
-            month_pattern = (
-                r"(January|February|March|April|May|June|July|August|"
-                r"September|October|November|December)\s+\d{1,2},\s+\d{4}"
-            )
-
-            match = re.search(
-                month_pattern,
-                raw,
-                flags=re.IGNORECASE
-            )
-
-            if match:
+            if value is not None:
 
                 try:
 
-                    parsed = pd.to_datetime(
-                        match.group(0),
-                        errors="coerce"
-                    )
-
-                    if pd.notna(
-                        parsed
-                    ):
-
-                        return parsed.to_pydatetime()
+                    if "closed" in str(value).lower():
+                        return None
 
                 except Exception:
                     pass
 
-            return None
+            return parse_confirmed_deadline(
+                value
+            )
 
 
         def deadline_status(
@@ -6547,12 +7717,13 @@ elif page == "Deadline Calendar":
                         in saved_names,
 
                     "url":
-                        str(
+                        safe_http_url(
                             opportunity.get(
-                                "url",
-                                ""
+                                "url"
                             )
-                        ),
+                        )
+                        or
+                        "",
 
                     "cost":
                         str(
@@ -6821,14 +7992,8 @@ elif page == "Deadline Calendar":
 
                         with title_col:
 
-                            saved_icon = (
-                                "📌 "
-                                if item["saved"]
-                                else ""
-                            )
-
                             st.subheader(
-                                f"{saved_icon}{item['name']}"
+                                item['name']
                             )
 
                             st.caption(
@@ -6937,8 +8102,8 @@ elif page == "Deadline Calendar":
                             if not item["saved"]:
 
                                 if st.button(
-                                    "📌 Save to My Applications",
-                                    key=f"calendar_save_{item['name']}",
+                                    "Save to My Applications",
+                                    key=f"calendar_save_{item['name']}_{item['deadline_text']}",
                                     use_container_width=True
                                 ):
 
@@ -6964,7 +8129,7 @@ elif page == "Deadline Calendar":
                             with action2:
 
                                 st.link_button(
-                                    "📅 Add to Google Calendar",
+                                    "Add to Google Calendar",
                                     deadline_calendar_url,
                                     use_container_width=True
                                 )
@@ -7030,12 +8195,13 @@ elif page == "Deadline Calendar":
 
 elif page == "College Suggestions":
 
-    st.title("College & Major Discovery")
-
-    st.write(
-        "Answer a few simple questions about what you enjoy. "
-        "STEM Pathways NYC will suggest fields, majors, and colleges "
-        "that may be worth exploring."
+    render_page_header(
+        "College & Major Discovery",
+        (
+            "Answer a few simple questions about what you enjoy. "
+            "STEM Pathways NYC will suggest fields, majors, and colleges "
+            "that may be worth exploring."
+        )
     )
 
     st.info(
@@ -7910,8 +9076,8 @@ elif page == "College Suggestions":
                 with favorite_action1:
 
                     if st.button(
-                        "💾 Save College",
-                        key=f"favorite_college_{college['name']}",
+                        "Save College",
+                        key=f"favorite_college_{rank}_{college['name']}",
                         use_container_width=True
                     ):
 
@@ -7926,11 +9092,19 @@ elif page == "College Suggestions":
 
                 with favorite_action2:
 
-                    st.link_button(
-                        "View Admissions / Data Source",
-                        college["source_url"],
-                        use_container_width=True
+                    college_source_url = safe_http_url(
+                        college.get(
+                            "source_url"
+                        )
                     )
+
+                    if college_source_url:
+
+                        st.link_button(
+                            "View Admissions / Data Source",
+                            college_source_url,
+                            use_container_width=True
+                        )
 
         st.divider()
 
@@ -7949,13 +9123,12 @@ elif page == "College Suggestions":
 
 elif page == "My Favorite Colleges":
 
-    st.title(
-        "My Favorite Colleges"
-    )
-
-    st.write(
-        "Build your own college list, keep the schools you like, "
-        "and arrange them in your personal order."
+    render_page_header(
+        "My Favorite Colleges",
+        (
+            "Build your own college list, keep the schools you like, "
+            "and arrange them in your personal order."
+        )
     )
 
     st.info(
@@ -8140,7 +9313,7 @@ elif page == "My Favorite Colleges":
 
         st.write(
             "Go to **College Suggestions** and click "
-            "**💾 Save College** on schools you want to remember."
+            "**Save College** on schools you want to remember."
         )
 
         if st.button(
@@ -8343,7 +9516,7 @@ elif page == "My Favorite Colleges":
                 with move_col1:
 
                     if st.button(
-                        "⬆️ Move Up",
+                        "Move Up",
                         key=f"favorite_up_{favorite_id}",
                         disabled=(
                             index == 1
@@ -8362,7 +9535,7 @@ elif page == "My Favorite Colleges":
                 with move_col2:
 
                     if st.button(
-                        "⬇️ Move Down",
+                        "Move Down",
                         key=f"favorite_down_{favorite_id}",
                         disabled=(
                             index
@@ -8385,12 +9558,13 @@ elif page == "My Favorite Colleges":
                 with save_col:
 
                     if st.button(
-                        "💾 Save Notes",
+                        "Save Notes",
                         key=f"favorite_save_notes_{favorite_id}",
                         use_container_width=True
                     ):
 
                         if update_favorite_college_notes(
+                            user_sub,
                             favorite_id,
                             notes_value
                         ):
@@ -8411,15 +9585,19 @@ elif page == "My Favorite Colleges":
                             "confirm_remove_favorite_college"
                         ] = favorite_id
 
-                if college_info.get(
-                    "source_url"
+                if safe_http_url(
+                    college_info.get(
+                        "source_url"
+                    )
                 ):
 
                     st.link_button(
                         "View Admissions / Data Source",
-                        college_info[
-                            "source_url"
-                        ],
+                        safe_http_url(
+                            college_info.get(
+                                "source_url"
+                            )
+                        ),
                         use_container_width=True
                     )
 
@@ -8489,13 +9667,12 @@ elif page == "My Favorite Colleges":
 
 elif page == "My Applications":
 
-    st.title(
-        "My Applications"
-    )
-
-    st.write(
-        "Save opportunities you are interested in and track your "
-        "progress from discovery through the application process."
+    render_page_header(
+        "My Applications",
+        (
+            "Save opportunities you are interested in and track your "
+            "progress from discovery through the application process."
+        )
     )
 
     st.info(
@@ -8845,6 +10022,7 @@ elif page == "My Applications":
                     ):
 
                         if update_saved_opportunity(
+                            user_sub,
                             saved_item["id"],
                             selected_status,
                             selected_notes
@@ -8860,27 +10038,17 @@ elif page == "My Applications":
 
                     if not opportunity_match.empty:
 
-                        opportunity_url = (
+                        opportunity_url = safe_http_url(
                             opportunity_match.iloc[0].get(
                                 "url"
                             )
                         )
 
-                        if (
-                            pd.notna(
-                                opportunity_url
-                            )
-                            and
-                            str(
-                                opportunity_url
-                            ).strip()
-                        ):
+                        if opportunity_url:
 
                             st.link_button(
                                 "Official Website",
-                                str(
-                                    opportunity_url
-                                ),
+                                opportunity_url,
                                 use_container_width=True
                             )
 
@@ -8925,6 +10093,7 @@ elif page == "My Applications":
                         ):
 
                             if delete_saved_opportunity(
+                                user_sub,
                                 saved_item["id"]
                             ):
 
@@ -8960,11 +10129,12 @@ elif page == "My Applications":
 
 elif page == "Projects":
 
-    st.title("Project Explorer")
-
-    st.write(
-        "Not sure what to build? Tell us what sounds interesting and "
-        "we'll suggest hands-on STEM projects that match what you want to create."
+    render_page_header(
+        "Project Explorer",
+        (
+            "Not sure what to build? Tell us what sounds interesting and "
+            "we'll suggest hands-on STEM projects that match what you want to create."
+        )
     )
 
     st.divider()
@@ -10024,27 +11194,28 @@ elif page == "Projects":
 
 elif page == "Resources":
 
-    st.title(
-        "Resources"
-    )
-
-    st.write(
-        "Build the skills you need using free and accessible "
-        "learning resources."
+    render_page_header(
+        "Resources",
+        "Build the skills you need using free and accessible learning resources."
     )
 
     st.divider()
 
-    col1, col2 = st.columns(2)
+    resource_row1 = st.columns(2, gap="medium")
 
-    with col1:
+    with resource_row1[0]:
 
         with st.container(
             border=True
         ):
 
+            st.markdown(
+                '<div class="sp-info-card"></div>',
+                unsafe_allow_html=True
+            )
+
             st.subheader(
-                "💻 Programming"
+                "Programming"
             )
 
             st.write(
@@ -10056,31 +11227,19 @@ elif page == "Resources":
                 "data science, AI, and engineering projects."
             )
 
-        with st.container(
-            border=True
-        ):
-
-            st.subheader(
-                "⚙️ Engineering"
-            )
-
-            st.write(
-                "CAD • Electronics • Circuit Design • Arduino • Prototyping"
-            )
-
-            st.caption(
-                "Develop practical engineering skills through design "
-                "and hands-on experimentation."
-            )
-
-    with col2:
+    with resource_row1[1]:
 
         with st.container(
             border=True
         ):
 
+            st.markdown(
+                '<div class="sp-info-card"></div>',
+                unsafe_allow_html=True
+            )
+
             st.subheader(
-                "🔬 Research"
+                "Research"
             )
 
             st.write(
@@ -10093,12 +11252,45 @@ elif page == "Resources":
                 "and communicate scientific findings."
             )
 
+    resource_row2 = st.columns(2, gap="medium")
+
+    with resource_row2[0]:
+
         with st.container(
             border=True
         ):
 
+            st.markdown(
+                '<div class="sp-info-card"></div>',
+                unsafe_allow_html=True
+            )
+
             st.subheader(
-                "🎓 Career Exploration"
+                "Engineering"
+            )
+
+            st.write(
+                "CAD • Electronics • Circuit Design • Arduino • Prototyping"
+            )
+
+            st.caption(
+                "Develop practical engineering skills through design "
+                "and hands-on experimentation."
+            )
+
+    with resource_row2[1]:
+
+        with st.container(
+            border=True
+        ):
+
+            st.markdown(
+                '<div class="sp-info-card"></div>',
+                unsafe_allow_html=True
+            )
+
+            st.subheader(
+                "Career Exploration"
             )
 
             st.write(
@@ -10141,13 +11333,12 @@ elif page == "GPA Calculator":
         for key in keys_to_remove:
             del st.session_state[key]
 
-    st.title(
-        "📊 GPA Calculator & Converter"
-    )
-
-    st.write(
-        "Estimate your unweighted and weighted GPA, then convert between "
-        "a 4.0 scale and a 100-point average."
+    render_page_header(
+        "GPA Calculator & Converter",
+        (
+            "Estimate your unweighted and weighted GPA, then convert between "
+            "a 4.0 scale and a 100-point average."
+        )
     )
 
     st.info(
@@ -10160,8 +11351,8 @@ elif page == "GPA Calculator":
 
     calculator_tab, converter_tab = st.tabs(
         [
-            "🧮 Course GPA Calculator",
-            "🔄 GPA Scale Converter"
+            "Course GPA Calculator",
+            "GPA Scale Converter"
         ]
     )
 
@@ -10191,7 +11382,7 @@ elif page == "GPA Calculator":
 
         with course_control_col1:
             if st.button(
-                "➕ Add Course",
+                "Add Course",
                 use_container_width=True,
                 key="gpa_add_course",
                 disabled=len(st.session_state.gpa_course_ids) >= 15
@@ -10485,7 +11676,7 @@ elif page == "GPA Calculator":
             if st.session_state.gpa_results_confirmed:
 
                 st.success(
-                    "✅ GPA results confirmed. You can still restart the calculator "
+                    "GPA results confirmed. You can still restart the calculator "
                     "below if you want to try different courses or grades."
                 )
 
@@ -10497,7 +11688,7 @@ elif page == "GPA Calculator":
                 )
 
                 if st.button(
-                    "✅ Confirm My GPA Results",
+                    "Confirm My GPA Results",
                     type="primary",
                     use_container_width=True,
                     key="gpa_confirm_results"
@@ -10714,7 +11905,7 @@ elif page == "GPA Calculator":
     if not st.session_state.gpa_show_restart_confirmation:
 
         if st.button(
-            "↻ Start Over",
+            "Start Over",
             use_container_width=True,
             key="gpa_restart_request"
         ):
@@ -10770,13 +11961,12 @@ elif page == "Admin Dashboard":
 
         st.stop()
 
-    st.title(
-        "Admin Dashboard"
-    )
-
-    st.write(
-        "Review platform activity, user feedback, and early usage trends "
-        "for STEM Pathways NYC."
+    render_page_header(
+        "Admin Dashboard",
+        (
+            "Review platform activity, user feedback, and early usage trends "
+            "for STEM Pathways NYC."
+        )
     )
 
     st.warning(
@@ -10821,12 +12011,12 @@ elif page == "Admin Dashboard":
     if review_count:
 
         ratings = [
-            int(
+            safe_int(
                 row.get(
                     "rating",
                     0
-                )
-                or 0
+                ),
+                0
             )
             for row in feedback_rows
             if row.get(
@@ -11385,13 +12575,12 @@ elif page == "Admin Dashboard":
 
 elif page == "Feedback":
 
-    st.title(
-        "Share Your Feedback"
-    )
-
-    st.write(
-        "Help improve STEM Pathways NYC by telling us what worked, "
-        "what felt confusing, and what you would like to see next."
+    render_page_header(
+        "Share Your Feedback",
+        (
+            "Help improve STEM Pathways NYC by telling us what worked, "
+            "what felt confusing, and what you would like to see next."
+        )
     )
 
     st.info(
@@ -11709,16 +12898,10 @@ elif page == "Feedback":
 
 elif page == "My Profile":
 
-    st.title(
-        "My Profile"
-    )
-
-    st.subheader(
-        full_name
-    )
-
-    st.caption(
-        "STEM Explorer Profile"
+    render_page_header(
+        "My Profile",
+        full_name,
+        kicker="STEM Explorer Profile"
     )
 
     st.success(
@@ -11761,13 +12944,24 @@ elif page == "My Profile":
 
     st.divider()
 
-    col1, col2 = st.columns(2)
+    profile_cards = st.container(
+        key="profile_cards",
+        gap="medium"
+    )
+
+    col1, col2 = profile_cards.columns(2, gap="medium")
 
     with col1:
 
         with st.container(
-            border=True
+            border=True,
+            height=340
         ):
+
+            st.markdown(
+                '<div class="sp-profile-card"></div>',
+                unsafe_allow_html=True
+            )
 
             st.header(
                 "STEM Interests"
@@ -11781,9 +12975,43 @@ elif page == "My Profile":
                     f"• {interest}"
                 )
 
+    with col2:
+
         with st.container(
-            border=True
+            border=True,
+            height=340
         ):
+
+            st.markdown(
+                '<div class="sp-profile-card"></div>',
+                unsafe_allow_html=True
+            )
+
+            st.header(
+                "Goals"
+            )
+
+            for goal in (
+                profile["goals"]
+            ):
+
+                st.write(
+                    f"• {goal}"
+                )
+
+    col3, col4 = profile_cards.columns(2, gap="medium")
+
+    with col3:
+
+        with st.container(
+            border=True,
+            height=340
+        ):
+
+            st.markdown(
+                '<div class="sp-profile-card"></div>',
+                unsafe_allow_html=True
+            )
 
             st.header(
                 "Previous Experience"
@@ -11809,27 +13037,17 @@ elif page == "My Profile":
                     "No previous STEM experience selected."
                 )
 
-    with col2:
+    with col4:
 
         with st.container(
-            border=True
+            border=True,
+            height=340
         ):
 
-            st.header(
-                "Goals"
+            st.markdown(
+                '<div class="sp-profile-card"></div>',
+                unsafe_allow_html=True
             )
-
-            for goal in (
-                profile["goals"]
-            ):
-
-                st.write(
-                    f"• {goal}"
-                )
-
-        with st.container(
-            border=True
-        ):
 
             st.header(
                 "Current Exploration Stage"
@@ -11855,39 +13073,61 @@ elif page == "My Profile":
                     "Prioritize free or financially supported programs"
                 )
 
-    st.divider()
+    with st.container(
+        key="profile_action_stack",
+        gap=None,
+        height="content"
+    ):
 
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        if st.button(
-            "Edit My Profile",
-            use_container_width=True
+        with st.container(
+            key="profile_action_divider",
+            height="content"
         ):
 
-            st.session_state.profile_completed = (
-                False
-            )
+            st.divider()
 
-            st.rerun()
-
-    with col2:
-
-        if st.button(
-            "Sign Out",
-            use_container_width=True
+        with st.container(
+            horizontal=True,
+            horizontal_alignment="center",
+            vertical_alignment="center",
+            gap=24,
+            height="content",
+            key="profile_actions"
         ):
 
-            st.logout()
+            if st.button(
+                "Edit My Profile",
+                width=320
+            ):
+
+                st.session_state.profile_completed = (
+                    False
+                )
+
+                st.rerun()
+
+            if st.button(
+                "Sign Out",
+                width=320
+            ):
+
+                st.logout()
+
+
+else:
+
+    st.session_state.current_page = "Dashboard"
+    st.rerun()
 
 
 # ============================================================
 # FOOTER
 # ============================================================
 
-st.divider()
+if page != "My Profile":
 
-st.caption(
-    ""
-)
+    st.divider()
+
+    st.caption(
+        ""
+    )
