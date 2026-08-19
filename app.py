@@ -37,7 +37,7 @@ st.markdown(
         --sp-bg: #DBECFF;
         --sp-surface: #ffffff;
         --sp-surface-soft: #DDEFF7;
-        --sp-border: rgba(8, 60, 93, 0.48);
+        --sp-border: #083C5D;
         --sp-text: #083C5D;
         --sp-muted: #083C5D;
         --sp-primary: #018FC7;
@@ -366,7 +366,7 @@ st.markdown(
     .sp-sidebar-title {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
         justify-content: flex-start;
         width: max-content;
         max-width: 100%;
@@ -399,11 +399,13 @@ st.markdown(
         font-size: 2.18rem;
         line-height: 1.05;
         font-weight: 800;
-        letter-spacing: 0.1em;
+        letter-spacing: 0 !important;
+        word-spacing: 0 !important;
         text-align: center;
         color: #72D2F2 !important;
         margin: 0.1rem 0 0 0;
         padding: 0;
+        box-sizing: border-box;
     }
 
     [data-testid="stSidebar"] .sp-sidebar-title .sp-title-blue {
@@ -424,13 +426,15 @@ st.markdown(
 
     .sp-sidebar-accent {
         width: 100%;
-        height: 6.5px;
+        max-width: 100%;
+        height: 4px;
         border-radius: 999px;
         background: #72D2F2;
         margin: 0.4rem 0 0 0;
         box-shadow: none;
         display: block;
         align-self: stretch;
+        box-sizing: border-box;
     }
 
     [data-testid="stSidebar"] h3 {
@@ -717,13 +721,13 @@ st.markdown(
     [data-testid="stMain"] [data-testid="stAlert"],
     [data-testid="stMain"] [data-testid="stForm"],
     [data-testid="stMain"] [data-testid="stDataFrame"] {
-        border-color: #0B4F71 !important;
-        border-width: 2.5px !important;
+        border-color: #083C5D !important;
+        border-width: 3px !important;
         border-style: solid !important;
     }
 
     [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] {
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #083C5D !important;
         border-radius: 16px !important;
         box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08);
         overflow: hidden;
@@ -731,8 +735,9 @@ st.markdown(
         display: flex;
         flex-direction: column;
         padding: 1.4rem 1.4rem !important;
-        transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
         background: #FFFFFF !important;
+        cursor: default !important;
+        transform: none !important;
     }
 
     [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] h3 {
@@ -802,7 +807,7 @@ st.markdown(
 
     [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-info-card) {
         background: #FFFFFF !important;
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #083C5D !important;
         border-radius: 16px !important;
         box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08);
         padding: 1.4rem 1.45rem !important;
@@ -866,7 +871,7 @@ st.markdown(
 
     [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"] {
         background: #FFFFFF !important;
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #083C5D !important;
         border-radius: 16px !important;
         box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08);
         padding: 1.6rem 1.65rem !important;
@@ -881,11 +886,8 @@ st.markdown(
         contain: paint;
         isolation: isolate;
         transform: none !important;
+        cursor: default !important;
         width: 100% !important;
-    }
-
-    [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"]:hover {
-        transform: none !important;
     }
 
     [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"] > [data-testid="stVerticalBlock"] {
@@ -1079,7 +1081,7 @@ st.markdown(
 
     [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"] {
         background: #F7FBFE !important;
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #0B4F71 !important;
         box-shadow: 0 10px 24px rgba(8, 60, 93, 0.09);
         padding: 1.5rem 1.45rem !important;
     }
@@ -1101,16 +1103,10 @@ st.markdown(
         width: 100%;
     }
 
-    [data-testid="stVerticalBlockBorderWrapper"]:hover {
-        border-color: var(--sp-primary) !important;
-        box-shadow: 0 8px 18px rgba(1, 143, 199, 0.10);
-        transform: translateY(-2px);
-    }
-
     html body [data-testid="stMetric"] {
         background: #FFFFFF !important;
         color: #083C5D !important;
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #083C5D !important;
         border-radius: 14px;
         padding: 1.4rem 1.45rem;
         min-height: 118px;
@@ -1120,16 +1116,12 @@ st.markdown(
         justify-content: flex-start;
         align-items: flex-start;
         box-shadow: 0 8px 22px rgba(8, 60, 93, 0.09);
-        transition: border-color 0.16s ease, box-shadow 0.16s ease;
+        cursor: default !important;
+        transform: none !important;
     }
 
     [data-testid="stMetric"] * {
         color: #083C5D !important;
-    }
-
-    [data-testid="stMetric"]:hover {
-        border-color: #8DD4EF;
-        box-shadow: 0 6px 14px rgba(1, 143, 199, 0.08);
     }
 
     [data-testid="stMetricLabel"] {
@@ -1245,7 +1237,7 @@ st.markdown(
     [data-testid="stMain"] [data-testid="stPageLink"] a:hover,
     [data-testid="stMain"] [data-testid="stPageLink-NavLink"]:hover {
         background: #EAF7FC !important;
-        border-color: #0B4F71 !important;
+        border-color: #083C5D !important;
         color: #083C5D !important;
         box-shadow: none !important;
         transform: none !important;
@@ -1302,7 +1294,7 @@ st.markdown(
     }
 
     [data-testid="stMain"] [data-testid="stExpander"] {
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #083C5D !important;
         border-radius: 14px !important;
         overflow: hidden;
         background: #FFFFFF !important;
@@ -1310,20 +1302,20 @@ st.markdown(
 
     [data-testid="stMain"] [data-testid="stAlert"] {
         border-radius: 14px !important;
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #083C5D !important;
         box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
         font-family: var(--sp-font);
     }
 
     [data-testid="stMain"] [data-testid="stForm"] {
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #083C5D !important;
         background: #FFFFFF !important;
     }
 
     [data-testid="stMain"] [data-testid="stDataFrame"] {
         border-radius: 14px;
         overflow: hidden;
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #083C5D !important;
         background: #FFFFFF !important;
     }
 
@@ -1461,6 +1453,267 @@ st.markdown(
         margin-bottom: 0.45rem;
     }
 
+    .sp-landing-hero {
+        background: linear-gradient(135deg, rgba(0,63,92,0.99), rgba(1,143,199,0.94));
+        border-radius: 20px;
+        padding: 2.95rem 2.5rem 3.1rem;
+        box-shadow: 0 14px 32px rgba(0, 63, 92, 0.16);
+        margin: 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sp-landing-hero::before {
+        content: "";
+        position: absolute;
+        width: 170px;
+        height: 170px;
+        left: -55px;
+        bottom: -75px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.06);
+    }
+
+    .sp-landing-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        right: -70px;
+        top: -90px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+    }
+
+    .sp-landing-kicker {
+        color: #BDEBFA !important;
+        -webkit-text-fill-color: #BDEBFA !important;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.74rem !important;
+        font-weight: 800 !important;
+        margin: 0 0 0.7rem 0 !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    .sp-landing-hero h1 {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        margin: 0 0 0.7rem 0 !important;
+        font-size: 2.2rem !important;
+        font-weight: 800 !important;
+        line-height: 1.12 !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    .sp-landing-headline {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        margin: 0 0 0.85rem 0 !important;
+        font-size: 1.38rem !important;
+        font-weight: 650 !important;
+        line-height: 1.35 !important;
+        position: relative;
+        z-index: 1;
+        max-width: 780px;
+    }
+
+    .sp-landing-desc {
+        color: #EAF6FC !important;
+        -webkit-text-fill-color: #EAF6FC !important;
+        margin: 0 !important;
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+        line-height: 1.55 !important;
+        max-width: 760px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .sp-landing-welcome-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.7rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        margin: 0 0 0.65rem 0 !important;
+        text-align: center;
+    }
+
+    .sp-landing-welcome-copy {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+        line-height: 1.55 !important;
+        margin: 0 auto 1.35rem auto !important;
+        max-width: 560px;
+        text-align: center;
+    }
+
+    .sp-landing-lower {
+        display: flex;
+        flex-direction: column;
+        gap: 2.6rem;
+        margin: 0;
+        padding: 0.15rem 0 0.4rem 0;
+    }
+
+    .sp-landing-features {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 0;
+    }
+
+    .sp-landing-feature {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06);
+        padding: 1.5rem 1.35rem 1.55rem;
+    }
+
+    .sp-landing-feature h3 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.06rem !important;
+        font-weight: 750 !important;
+        line-height: 1.3 !important;
+        margin: 0 0 0.5rem 0 !important;
+        min-height: 0 !important;
+    }
+
+    .sp-landing-feature p {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.92rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+        margin: 0 !important;
+    }
+
+    .sp-landing-purpose {
+        text-align: center;
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 0.85rem 0.75rem 0.35rem;
+    }
+
+    .sp-landing-purpose h2 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.18rem !important;
+        font-weight: 750 !important;
+        line-height: 1.35 !important;
+        margin: 0 0 0.5rem 0 !important;
+        margin-top: 0 !important;
+    }
+
+    .sp-landing-purpose p {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+        line-height: 1.55 !important;
+        margin: 0 !important;
+    }
+
+    .sp-landing-footer {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        padding: 0.15rem 0 0.1rem 0;
+    }
+
+    .sp-landing-contact {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(8, 60, 93, 0.05);
+        padding: 0.95rem 1.15rem 1rem;
+        max-width: 390px;
+        width: 100%;
+    }
+
+    .sp-landing-contact-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.92rem !important;
+        font-weight: 700 !important;
+        line-height: 1.35 !important;
+        margin: 0 0 0.35rem 0 !important;
+    }
+
+    .sp-landing-contact p {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.84rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 0 0.45rem 0 !important;
+    }
+
+    .sp-landing-contact a,
+    .sp-landing-contact a:visited {
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-size: 0.88rem !important;
+        font-weight: 650 !important;
+        text-decoration: none !important;
+        word-break: break-word;
+    }
+
+    .sp-landing-contact a:hover {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        text-decoration: underline !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] {
+        padding-top: 1.45rem !important;
+        padding-bottom: 2.6rem !important;
+        min-height: calc(100vh - 1.5rem);
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] {
+        gap: 2.35rem !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] {
+        background: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.08) !important;
+        padding: 2.4rem 2.55rem 2.2rem !important;
+        max-width: 820px;
+        margin: 0 auto !important;
+        position: relative;
+        z-index: 2;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlock"] {
+        background: transparent !important;
+        gap: 0.2rem !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] {
+        margin-top: 0.2rem !important;
+        max-width: 100%;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button {
+        min-height: 3.2rem !important;
+        padding: 0.8rem 1.5rem !important;
+        font-size: 1.05rem !important;
+        font-weight: 700 !important;
+        border-radius: 12px !important;
+        width: 100% !important;
+    }
+
     .sp-kicker {
         color: #BDEBFA !important;
         -webkit-text-fill-color: #BDEBFA !important;
@@ -1516,6 +1769,59 @@ st.markdown(
 
         .sp-page-header h1 {
             font-size: 1.28rem !important;
+        }
+
+        .sp-landing-hero {
+            padding: 2.1rem 1.4rem 2.2rem;
+            border-radius: 16px;
+        }
+
+        .sp-landing-hero h1 {
+            font-size: 1.75rem !important;
+        }
+
+        .sp-landing-headline {
+            font-size: 1.12rem !important;
+        }
+
+        .sp-landing-desc {
+            font-size: 0.94rem !important;
+        }
+
+        .sp-landing-features {
+            grid-template-columns: 1fr;
+        }
+
+        .sp-landing-lower {
+            gap: 1.85rem;
+        }
+
+        .sp-landing-footer {
+            justify-content: stretch;
+        }
+
+        .sp-landing-contact {
+            max-width: 100%;
+        }
+
+        [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] {
+            padding-top: 1.1rem !important;
+            padding-bottom: 2rem !important;
+            min-height: 0;
+        }
+
+        [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] {
+            gap: 1.65rem !important;
+        }
+
+        [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"],
+        [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] {
+            padding: 1.7rem 1.3rem 1.55rem !important;
+            max-width: 100%;
+        }
+
+        .sp-landing-welcome-title {
+            font-size: 1.4rem !important;
         }
     }
 
@@ -1595,7 +1901,7 @@ st.markdown(
 
     html body [data-testid="stMetric"] {
         background: #FFFFFF !important;
-        border: 2.5px solid #0B4F71 !important;
+        border: 3px solid #083C5D !important;
         box-shadow: 0 8px 22px rgba(8, 60, 93, 0.09) !important;
     }
 
@@ -1670,16 +1976,75 @@ st.markdown(
 
     html body [data-testid="stMain"] .sp-hero .sp-kicker,
     html body [data-testid="stMain"] .sp-hero h1,
-    html body [data-testid="stMain"] .sp-hero h1 * {
+    html body [data-testid="stMain"] .sp-hero h1 *,
+    html body [data-testid="stMain"] .sp-landing-hero h1,
+    html body [data-testid="stMain"] .sp-landing-hero h1 *,
+    html body [data-testid="stMain"] .sp-landing-kicker,
+    html body [data-testid="stMain"] .sp-landing-kicker * {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
     }
 
+    html body [data-testid="stMain"] .sp-landing-kicker,
+    html body [data-testid="stMain"] .sp-landing-kicker * {
+        color: #BDEBFA !important;
+        -webkit-text-fill-color: #BDEBFA !important;
+    }
+
     html body [data-testid="stMain"] .sp-hero p,
-    html body [data-testid="stMain"] .sp-hero p * {
+    html body [data-testid="stMain"] .sp-hero p *,
+    html body [data-testid="stMain"] .sp-landing-headline,
+    html body [data-testid="stMain"] .sp-landing-headline *,
+    html body [data-testid="stMain"] .sp-landing-desc,
+    html body [data-testid="stMain"] .sp-landing-desc * {
         color: #EAF6FC !important;
         -webkit-text-fill-color: #EAF6FC !important;
         font-weight: 500 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-headline,
+    html body [data-testid="stMain"] .sp-landing-headline * {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 650 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-welcome-title,
+    html body [data-testid="stMain"] .sp-landing-welcome-title *,
+    html body [data-testid="stMain"] .sp-landing-feature h3,
+    html body [data-testid="stMain"] .sp-landing-feature h3 *,
+    html body [data-testid="stMain"] .sp-landing-purpose h2,
+    html body [data-testid="stMain"] .sp-landing-purpose h2 * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-welcome-copy,
+    html body [data-testid="stMain"] .sp-landing-welcome-copy *,
+    html body [data-testid="stMain"] .sp-landing-feature p,
+    html body [data-testid="stMain"] .sp-landing-feature p *,
+    html body [data-testid="stMain"] .sp-landing-purpose p,
+    html body [data-testid="stMain"] .sp-landing-purpose p *,
+    html body [data-testid="stMain"] .sp-landing-contact p,
+    html body [data-testid="stMain"] .sp-landing-contact p * {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-weight: 500 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-contact-title,
+    html body [data-testid="stMain"] .sp-landing-contact-title * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 700 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-contact a,
+    html body [data-testid="stMain"] .sp-landing-contact a:visited {
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-weight: 650 !important;
+        text-decoration: none !important;
     }
 
     html body [data-testid="stMain"] .sp-page-header h1,
@@ -1834,7 +2199,9 @@ st.markdown(
     html body [data-testid="stMain"] .sp-hero h1,
     html body [data-testid="stMain"] .sp-hero h1 *,
     html body [data-testid="stMain"] .sp-page-header h1,
-    html body [data-testid="stMain"] .sp-page-header h1 * {
+    html body [data-testid="stMain"] .sp-page-header h1 *,
+    html body [data-testid="stMain"] .sp-landing-hero h1,
+    html body [data-testid="stMain"] .sp-landing-hero h1 * {
         font-weight: 800 !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
@@ -1842,9 +2209,22 @@ st.markdown(
     html body [data-testid="stMain"] .sp-hero p,
     html body [data-testid="stMain"] .sp-hero p *,
     html body [data-testid="stMain"] .sp-page-header p,
-    html body [data-testid="stMain"] .sp-page-header p * {
+    html body [data-testid="stMain"] .sp-page-header p *,
+    html body [data-testid="stMain"] .sp-landing-desc,
+    html body [data-testid="stMain"] .sp-landing-desc * {
         font-weight: 500 !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-purpose h2,
+    html body [data-testid="stMain"] .sp-landing-purpose h2 * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.18rem !important;
+        font-weight: 750 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.35 !important;
     }
 
     html, body, .stApp,
@@ -1926,8 +2306,7 @@ st.markdown(
         -webkit-font-smoothing: antialiased !important;
     }
 
-    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"],
-    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"]:hover {
+    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"] {
         background: #F7FBFE !important;
         background-color: #F7FBFE !important;
         border: 2px solid #8A97A3 !important;
@@ -1938,23 +2317,202 @@ st.markdown(
         transform: none !important;
         filter: none !important;
         transition: none !important;
-        opacity: 1 !important;
     }
 
     html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"] [data-testid="stMetric"],
+    html body [data-testid="stMain"] [data-testid="stAlert"],
+    html body [data-testid="stMain"] [data-testid="stExpander"],
+    html body [data-testid="stMain"] [data-testid="stForm"] {
+        cursor: default !important;
+        transform: none !important;
+    }
+
     html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:hover,
-    html body [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"],
-    html body [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"]:hover,
-    html body [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"],
-    html body [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"]:hover,
-    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-info-card),
-    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-info-card):hover {
-        border-style: solid !important;
-        border-width: 4px !important;
-        border-color: #003F5C !important;
-        outline: none !important;
+    html body [data-testid="stMain"] [data-testid="stMetric"]:hover,
+    html body [data-testid="stMain"] [data-testid="stAlert"]:hover,
+    html body [data-testid="stMain"] [data-testid="stExpander"]:hover,
+    html body [data-testid="stMain"] [data-testid="stForm"]:hover {
         transform: none !important;
         filter: none !important;
+        cursor: default !important;
+    }
+
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:hover {
+        background: #FFFFFF !important;
+        border-color: #083C5D !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08) !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+    }
+
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-info-card):hover,
+    html body [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"]:hover {
+        background: #FFFFFF !important;
+        border-color: #083C5D !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08) !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+    }
+
+    html body [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"]:hover {
+        background: #F7FBFE !important;
+        border-color: #0B4F71 !important;
+        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.09) !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+    }
+
+    html body [data-testid="stMain"] [data-testid="stMetric"]:hover {
+        background: #FFFFFF !important;
+        border-color: #083C5D !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.09) !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"]:hover {
+        background: #F7FBFE !important;
+        background-color: #F7FBFE !important;
+        border: 2px solid #8A97A3 !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08) !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+        transition: none !important;
+    }
+
+    html body [data-testid="stMain"] .stButton > button:hover,
+    html body [data-testid="stMain"] button[kind="secondary"]:hover,
+    html body [data-testid="stMain"] button[kind="primary"]:hover,
+    html body [data-testid="stMain"] button[data-testid^="stBaseButton"]:hover,
+    html body [data-testid="stMain"] .stLinkButton > a:hover,
+    html body [data-testid="stMain"] [data-testid="stDownloadButton"] button:hover,
+    html body [data-testid="stMain"] [data-testid="stFormSubmitButton"] button:hover,
+    html body [data-testid="stMain"] [data-testid="stPageLink"] a:hover,
+    html body [data-testid="stMain"] [data-testid="stPageLink-NavLink"]:hover,
+    html body [data-testid="stSidebar"] .stButton > button:hover,
+    html body [data-testid="stSidebar"] button[kind="secondary"]:hover,
+    html body [data-testid="stSidebar"] button[kind="primary"]:hover,
+    html body .sp-contact-email:hover {
+        cursor: pointer !important;
+    }
+
+
+    /* ============================================================
+       FINAL POLISH: STATIC INFO CARDS + SIDEBAR LOGO ALIGNMENT
+       ============================================================ */
+
+    /* NYC should use the same tight tracking as the rest of the logo. */
+    html body [data-testid="stSidebar"] .sp-sidebar-title .sp-title-nyc {
+        letter-spacing: 0 !important;
+        word-spacing: 0 !important;
+        font-stretch: normal !important;
+        text-align: center !important;
+    }
+
+    /* Keep the top title centered and let the underline follow its width. */
+    html body [data-testid="stSidebar"] .sp-sidebar-brand {
+        width: max-content !important;
+        max-width: 100% !important;
+    }
+
+    html body [data-testid="stSidebar"] .sp-sidebar-title {
+        width: max-content !important;
+        max-width: 100% !important;
+        align-items: stretch !important;
+    }
+
+    html body [data-testid="stSidebar"] .sp-sidebar-title .sp-title-line {
+        width: max-content !important;
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        justify-content: center !important;
+    }
+
+    /* Slightly longer line so it visually lines up with the full brand title. */
+    html body [data-testid="stSidebar"] .sp-sidebar-accent {
+        width: calc(100% + 0.6rem) !important;
+        max-width: none !important;
+        height: 5px !important;
+        margin-left: -0.3rem !important;
+        margin-top: 0.5rem !important;
+        border-radius: 999px !important;
+    }
+
+    /* Non-interactive information cards should never react visually to hover. */
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"] [data-testid="stMetric"],
+    html body [data-testid="stMain"] [data-testid="stAlert"],
+    html body [data-testid="stMain"] [data-testid="stForm"] {
+        cursor: default !important;
+        transition: none !important;
+        transform: none !important;
+        filter: none !important;
+    }
+
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:hover {
+        background: #FFFFFF !important;
+        border: 3px solid #083C5D !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08) !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+        cursor: default !important;
+        transition: none !important;
+    }
+
+    html body [data-testid="stMain"] [data-testid="stMetric"]:hover {
+        background: #FFFFFF !important;
+        border: 3px solid #083C5D !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.09) !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+        cursor: default !important;
+        transition: none !important;
+    }
+
+    /* Dashboard journey metrics match Continue Your Journey card chrome. */
+    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"],
+    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"]:hover {
+        background: #F7FBFE !important;
+        background-color: #F7FBFE !important;
+        border: 2px solid #8A97A3 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08) !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+        transition: none !important;
+        opacity: 1 !important;
+    }
+
+    /* These specific light cards should remain light and static as well. */
+    html body [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"]:hover {
+        background: #F7FBFE !important;
+        border: 3px solid #0B4F71 !important;
+        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.09) !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+        transition: none !important;
+    }
+
+    /* Real controls keep the pointer cursor. */
+    html body .stButton button,
+    html body .stLinkButton a,
+    html body a[href],
+    html body [data-testid="stSidebar"] button,
+    html body [data-testid="stFormSubmitButton"] button,
+    html body [data-testid="stDownloadButton"] button {
+        cursor: pointer !important;
     }
 
     html body [data-testid="stMain"]
@@ -5112,42 +5670,80 @@ def google_calendar_deadline_url(
 
 if not st.user.is_logged_in:
 
-    render_page_header(
-        "STEM Pathways NYC",
-        (
-            "Explore your interests. Build your pathway. Discover what's next. "
-            "A student-focused platform designed to help high school students "
-            "explore STEM careers, majors, projects, skills, and opportunities."
+    st.markdown(
+        """
+        <div class="sp-landing-hero">
+            <div class="sp-landing-kicker">For NYC High School Students</div>
+            <h1>STEM Pathways NYC</h1>
+            <p class="sp-landing-headline">Find your path. Build your future.</p>
+            <p class="sp-landing-desc">
+                STEM Pathways NYC helps New York City high school students discover STEM careers,
+                colleges, research programs, internships, projects, and opportunities
+                — then turn those interests into a clear next step.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    with st.container(
+        key="landing_welcome"
+    ):
+
+        st.markdown(
+            '<div class="sp-landing-welcome-title">'
+            'Start building your STEM pathway</div>',
+            unsafe_allow_html=True
         )
-    )
 
-    st.divider()
+        st.markdown(
+            '<div class="sp-landing-welcome-copy">'
+            'Sign in to personalize your recommendations, save programs, '
+            'track applications, and build a college list in one place.'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
-    col1, col2, col3 = st.columns(
-        [1, 1.4, 1]
-    )
-
-    with col2:
-
-        with st.container(
-            border=True
+        if st.button(
+            "Continue with Google",
+            type="primary",
+            width="stretch",
+            key="google_continue"
         ):
+            st.login("google")
 
-            st.subheader(
-                "Welcome"
-            )
-
-            st.write(
-                "Sign in to create and save your personalized STEM pathway."
-            )
-
-            if st.button(
-                "Continue with Google",
-                type="primary",
-                use_container_width=True,
-                key="google_continue"
-            ):
-                st.login("google")
+    st.markdown(
+        """
+        <div class="sp-landing-lower">
+            <div class="sp-landing-features">
+                <div class="sp-landing-feature">
+                    <h3>Discover Opportunities</h3>
+                    <p>Find research programs, internships, scholarships, and STEM experiences available to students across New York City.</p>
+                </div>
+                <div class="sp-landing-feature">
+                    <h3>Explore Colleges</h3>
+                    <p>Discover colleges, majors, and programs that fit your goals and preferences.</p>
+                </div>
+                <div class="sp-landing-feature">
+                    <h3>Build Your Path</h3>
+                    <p>Track projects, applications, favorites, deadlines, and your STEM progress.</p>
+                </div>
+            </div>
+            <div class="sp-landing-purpose">
+                <h2>Built for NYC students who want more access to STEM opportunities.</h2>
+                <p>STEM Pathways NYC was created to make it easier for New York City high school students to find programs, explore careers, and plan their next steps.</p>
+            </div>
+            <div class="sp-landing-footer">
+                <div class="sp-landing-contact">
+                    <div class="sp-landing-contact-title">✉️ Questions or feedback?</div>
+                    <p>Have a suggestion, found a problem, or want to share feedback about STEM Pathways NYC? I'd love to hear from you.</p>
+                    <a href="mailto:danlopez0911@gmail.com">danlopez0911@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.stop()
 
