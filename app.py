@@ -63,30 +63,32 @@ st.markdown(
     }
 
     html, body, .stApp,
-    [data-testid="stAppViewContainer"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
-    [data-testid="stSidebar"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
-    [data-testid="stMain"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
-    [data-testid="stHeader"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
-    p, h1, h2, h3, h4, h5, h6, li, span, div, label, a, button, input, textarea, select,
-    [data-baseweb] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]),
+    [data-testid="stAppViewContainer"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stSidebar"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stMain"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stHeader"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]):not([class*="material-icons"]),
+    p, h1, h2, h3, h4, h5, h6, li, label, a, button, input, textarea, select,
+    span:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    div:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-baseweb] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]):not([class*="material-icons"]),
     [data-testid="stMarkdownContainer"],
-    [data-testid="stMarkdownContainer"] *,
+    [data-testid="stMarkdownContainer"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     [data-testid="stWidgetLabel"],
     [data-testid="stWidgetLabel"] *,
     [data-testid="stCaptionContainer"],
     [data-testid="stCaptionContainer"] *,
-    [data-testid="stMetric"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stAlert"] *,
-    [data-testid="stExpander"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stTabs"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stSelectbox"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stMultiSelect"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stTextInput"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stNumberInput"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stTextArea"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stRadio"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stCheckbox"] *:not([data-testid="stIconMaterial"]),
-    [data-testid="stSlider"] *:not([data-testid="stIconMaterial"]),
+    [data-testid="stMetric"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stAlert"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stExpander"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stTabs"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stSelectbox"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stMultiSelect"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stTextInput"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stNumberInput"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stTextArea"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stRadio"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stCheckbox"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stSlider"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     .stButton button,
     .stButton button *,
     .stLinkButton a,
@@ -1714,8 +1716,8 @@ st.markdown(
     html body .stApp p,
     html body .stApp li,
     html body .stApp label,
-    html body .stApp span,
-    html body .stApp div,
+    html body .stApp span:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    html body .stApp div:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body .stApp a,
     html body .stApp button,
     html body .stApp input,
@@ -1734,25 +1736,25 @@ st.markdown(
     html body [data-testid="stSidebar"] p,
     html body [data-testid="stSidebar"] label,
     html body [data-testid="stMarkdownContainer"],
-    html body [data-testid="stMarkdownContainer"] *,
-    html body [data-testid="stMetric"] *,
-    html body [data-testid="stButton"] *,
+    html body [data-testid="stMarkdownContainer"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    html body [data-testid="stMetric"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    html body [data-testid="stButton"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body [data-testid="stCaptionContainer"],
     html body [data-testid="stCaptionContainer"] *,
     html body [data-testid="stWidgetLabel"],
     html body [data-testid="stWidgetLabel"] *,
-    html body [data-testid="stAlert"] *,
-    html body [data-testid="stExpander"] *:not([data-testid="stIconMaterial"]),
-    html body [data-testid="stTabs"] *:not([data-testid="stIconMaterial"]),
+    html body [data-testid="stAlert"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    html body [data-testid="stExpander"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    html body [data-testid="stTabs"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body [data-baseweb="input"],
     html body [data-baseweb="input"] *,
     html body [data-baseweb="select"],
     html body [data-baseweb="select"] *,
     html body [data-baseweb="textarea"],
     html body [data-baseweb="textarea"] *,
-    html body [data-testid="stVerticalBlockBorderWrapper"] *:not([data-testid="stIconMaterial"]):not(svg):not(path),
+    html body [data-testid="stVerticalBlockBorderWrapper"] *:not([data-testid="stIconMaterial"]):not(svg):not(path):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body .stButton > button,
-    html body .stButton > button *,
+    html body .stButton > button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body .stLinkButton > a,
     html body .stLinkButton > a * {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
@@ -1799,8 +1801,8 @@ st.markdown(
     }
 
     html body .stApp button,
-    html body .stApp button *,
-    html body [data-testid="stButton"] *,
+    html body .stApp button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    html body [data-testid="stButton"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body .stButton > button,
     html body .stButton > button *,
     html body .stLinkButton > a,
@@ -1849,10 +1851,10 @@ st.markdown(
     [data-testid="stMain"],
     [data-testid="stSidebar"],
     [data-testid="stMarkdownContainer"],
-    [data-testid="stMarkdownContainer"] *,
-    [data-testid="stMetric"] *,
+    [data-testid="stMarkdownContainer"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    [data-testid="stMetric"] *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     button,
-    button *,
+    button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     input,
     textarea,
     select,
@@ -1876,7 +1878,7 @@ st.markdown(
         font-weight: 500 !important;
     }
 
-    button, button * {
+    button, button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]) {
         font-weight: 700 !important;
     }
 
@@ -1924,18 +1926,480 @@ st.markdown(
         -webkit-font-smoothing: antialiased !important;
     }
 
-    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"] {
+    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"],
+    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"]:hover {
         background: #F7FBFE !important;
-        border: 2.5px solid #0B4F71 !important;
+        background-color: #F7FBFE !important;
+        border: 2px solid #8A97A3 !important;
         border-radius: 16px !important;
-        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.09) !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08) !important;
         padding: 1.5rem 1.45rem !important;
+        cursor: default !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+        opacity: 1 !important;
     }
 
-    html body [data-testid="stMain"] .st-key-dash_journey_metrics [data-testid="stMetric"]:hover {
-        border-color: var(--sp-primary) !important;
-        box-shadow: 0 8px 18px rgba(1, 143, 199, 0.10) !important;
-        transform: translateY(-2px);
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-info-card),
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-info-card):hover {
+        border-style: solid !important;
+        border-width: 4px !important;
+        border-color: #003F5C !important;
+        outline: none !important;
+        transform: none !important;
+        filter: none !important;
+    }
+
+    html body [data-testid="stMain"]
+    [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child)
+    > div
+    > [data-testid="stVerticalBlock"][height="100%"],
+    html body [data-testid="stMain"]
+    [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child)
+    > div
+    > [data-testid="stVerticalBlock"][height="100%"]:hover {
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+
+    html body [data-testid="stMain"]
+    .st-key-dash_continue_journey
+    [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child)
+    > div
+    > [data-testid="stVerticalBlock"][height="100%"],
+    html body [data-testid="stMain"]
+    .st-key-dash_continue_journey
+    [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child)
+    > div
+    > [data-testid="stVerticalBlock"][height="100%"]:hover {
+        border: 2px solid #8A97A3 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08) !important;
+    }
+
+    html body [data-testid="stSidebar"] [data-testid="stSidebarHeader"] {
+        position: relative !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        min-height: 50px !important;
+        height: 50px !important;
+        padding: 0.35rem 0.4rem 0.2rem 0.4rem !important;
+        margin: 0 !important;
+        background: transparent !important;
+        overflow: visible !important;
+    }
+
+    html body [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"],
+    html body [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] button,
+    html body [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] [role="button"],
+    html body [data-testid="stSidebar"] [data-testid="stSidebarHeader"] button {
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+        min-height: 42px !important;
+        max-width: 42px !important;
+        max-height: 42px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #0B1F33 !important;
+        background-color: #0B1F33 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #0B1F33 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24) !important;
+        flex: 0 0 42px !important;
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        left: auto !important;
+        z-index: 6 !important;
+        overflow: hidden !important;
+    }
+
+    html body [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] svg,
+    html body [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] [data-testid="stIconMaterial"],
+    html body [data-testid="stSidebar"] [data-testid="stSidebarHeader"] button svg,
+    html body [data-testid="stSidebar"] [data-testid="stSidebarHeader"] button [data-testid="stIconMaterial"],
+    html body [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] span,
+    html body [data-testid="stSidebar"] [data-testid="stSidebarHeader"] button span {
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px !important;
+        min-height: 22px !important;
+        font-size: 22px !important;
+        line-height: 1 !important;
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    html body [data-testid="stSidebar"] [data-testid="stMarkdownContainer"]:has(.sp-sidebar-brand),
+    html body [data-testid="stSidebar"] [data-testid="stMarkdownContainer"]:has(.sp-sidebar-brand) *:not(.sp-sidebar-accent),
+    html body [data-testid="stSidebar"] [data-testid="stMarkdownContainer"]:has(.sp-sidebar-brand) pre,
+    html body [data-testid="stSidebar"] [data-testid="stMarkdownContainer"]:has(.sp-sidebar-brand) code,
+    html body [data-testid="stSidebar"] [data-testid="stElementContainer"]:has(.sp-sidebar-brand),
+    html body [data-testid="stSidebar"] .sp-sidebar-brand,
+    html body [data-testid="stSidebar"] .sp-sidebar-title,
+    html body [data-testid="stSidebar"] .sp-title-line,
+    html body [data-testid="stSidebar"] .sp-title-line span,
+    html body [data-testid="stSidebar"] .sp-title-blue,
+    html body [data-testid="stSidebar"] .sp-title-yellow,
+    html body [data-testid="stSidebar"] .sp-title-nyc {
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        outline: none !important;
+    }
+
+    html body [data-testid="stSidebar"] .sp-sidebar-brand {
+        width: max-content !important;
+        max-width: 100% !important;
+        margin: 0.2rem auto 0.55rem auto !important;
+        padding: 0 !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    html body [data-testid="stSidebar"] .sp-sidebar-title {
+        width: max-content !important;
+        max-width: 100% !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    html body [data-testid="stSidebar"] .sp-sidebar-title .sp-title-blue {
+        color: #72D2F2 !important;
+        -webkit-text-fill-color: #72D2F2 !important;
+        font-weight: 800 !important;
+        padding: 0 !important;
+    }
+
+    html body [data-testid="stSidebar"] .sp-sidebar-title .sp-title-yellow {
+        color: #F4C542 !important;
+        -webkit-text-fill-color: #F4C542 !important;
+        font-weight: 800 !important;
+        padding: 0 !important;
+    }
+
+    html body [data-testid="stSidebar"] .sp-sidebar-title .sp-title-nyc,
+    html body [data-testid="stSidebar"] .sp-sidebar-title .sp-title-nyc * {
+        display: block !important;
+        width: max-content !important;
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        letter-spacing: 0 !important;
+        word-spacing: 0 !important;
+        font-stretch: normal !important;
+        text-align: center !important;
+        color: #72D2F2 !important;
+        -webkit-text-fill-color: #72D2F2 !important;
+        font-weight: 800 !important;
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+    html body [data-testid="stSidebar"] .sp-sidebar-accent,
+    html body [data-testid="stSidebar"] .sp-sidebar-brand .sp-sidebar-accent,
+    html body [data-testid="stSidebar"] [data-testid="stMarkdownContainer"]:has(.sp-sidebar-brand) .sp-sidebar-accent {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 4px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        background: #72D2F2 !important;
+        background-color: #72D2F2 !important;
+        border-radius: 999px !important;
+    }
+
+    html body [data-testid="stSidebarCollapsedControl"],
+    html body [data-testid="stSidebarCollapsedControl"] button,
+    html body [data-testid="stSidebarCollapsedControl"] [role="button"] {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+        min-height: 48px !important;
+        max-width: 48px !important;
+        max-height: 48px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: fixed !important;
+        top: 0.75rem !important;
+        left: 0.75rem !important;
+        background: #0B1F33 !important;
+        background-color: #0B1F33 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #0B1F33 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24) !important;
+    }
+
+    html body [data-testid="stSidebarCollapsedControl"] svg,
+    html body [data-testid="stSidebarCollapsedControl"] [data-testid="stIconMaterial"],
+    html body [data-testid="stSidebarCollapsedControl"] span,
+    html body [data-testid="stSidebarCollapsedControl"] button svg,
+    html body [data-testid="stSidebarCollapsedControl"] button [data-testid="stIconMaterial"],
+    html body [data-testid="stSidebarCollapsedControl"] button span {
+        width: 26px !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        min-height: 26px !important;
+        font-size: 26px !important;
+        line-height: 1 !important;
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-project_equipment_expander,
+    html body [data-testid="stMain"] .st-key-project_equipment_expander [data-testid="stExpander"],
+    html body [data-testid="stMain"] .st-key-project_equipment_expander details {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-project_equipment_expander summary,
+    html body [data-testid="stMain"] .st-key-project_equipment_expander [data-testid="stExpanderHeader"],
+    html body [data-testid="stMain"] .st-key-project_equipment_expander [data-testid="stBaseButton-headerNoPadding"] {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 2.75rem !important;
+        margin: 0 !important;
+        padding: 0.7rem 0.95rem !important;
+        line-height: 1.35 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        transform: none !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-project_equipment_expander [data-testid="stExpanderDetails"],
+    html body [data-testid="stMain"] .st-key-project_equipment_expander [data-testid="stExpanderContent"],
+    html body [data-testid="stMain"] .st-key-project_equipment_expander details > div {
+        position: relative !important;
+        display: block !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0.15rem 0.95rem 0.95rem 0.95rem !important;
+        overflow: visible !important;
+        transform: none !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-project_equipment_choices,
+    html body [data-testid="stMain"] .st-key-project_equipment_choices [data-testid="stVerticalBlock"],
+    html body [data-testid="stMain"] .st-key-project_equipment_choices [data-testid="stElementContainer"] {
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-project_equipment_choices [data-testid="stWidgetLabel"],
+    html body [data-testid="stMain"] .st-key-project_equipment_choices [data-testid="stWidgetLabel"] p,
+    html body [data-testid="stMain"] .st-key-project_equipment_choices label {
+        position: relative !important;
+        display: block !important;
+        float: none !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 0 0.4rem 0 !important;
+        padding: 0 !important;
+        line-height: 1.35 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        transform: none !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-project_equipment_choices [data-baseweb="select"],
+    html body [data-testid="stMain"] .st-key-project_equipment_choices [data-baseweb="select"] > div,
+    html body [data-testid="stMain"] .st-key-project_equipment_choices [data-baseweb="input"],
+    html body [data-testid="stMain"] .st-key-project_equipment_choices [data-baseweb="input"] > div {
+        min-height: 42px !important;
+        height: auto !important;
+        padding-top: 0.4rem !important;
+        padding-bottom: 0.4rem !important;
+        padding-left: 0.7rem !important;
+        padding-right: 0.7rem !important;
+        box-sizing: border-box !important;
+        align-items: center !important;
+    }
+
+    [data-testid="stIconMaterial"],
+    [data-testid="stIconMaterial"] *,
+    [class*="material-symbols"],
+    [class*="material-icons"],
+    [data-testid="stExpander"] [data-testid="stIconMaterial"],
+    [data-testid="stExpander"] [data-testid="stIconMaterial"] *,
+    html body [data-testid="stIconMaterial"],
+    html body [data-testid="stIconMaterial"] *,
+    html body [class*="material-symbols"],
+    html body [class*="material-icons"],
+    html body .stApp [data-testid="stIconMaterial"],
+    html body .stApp [data-testid="stIconMaterial"] *,
+    html body .stApp [class*="material-symbols"],
+    html body .stApp [class*="material-icons"],
+    html body [data-testid="stExpander"] [data-testid="stIconMaterial"],
+    html body [data-testid="stExpander"] [data-testid="stIconMaterial"] *,
+    html body [data-testid="stExpander"] [class*="material-symbols"],
+    html body [data-testid="stExpander"] [class*="material-icons"],
+    html body [data-testid="stExpander"] span[class*="material-symbols"],
+    html body [data-testid="stExpander"] span[class*="material-icons"] {
+        font-family: "Material Symbols Rounded", "Material Symbols Outlined", "Material Symbols Sharp" !important;
+        font-weight: 400 !important;
+        font-style: normal !important;
+        letter-spacing: normal !important;
+        line-height: 1 !important;
+        text-transform: none !important;
+        white-space: nowrap !important;
+        word-wrap: normal !important;
+        direction: ltr !important;
+        -webkit-font-feature-settings: "liga" !important;
+        -webkit-font-smoothing: antialiased !important;
+        font-feature-settings: "liga" !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_category_label"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_category_label"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_category_label"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_category_label"] div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_category_label"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_category_label"] [data-testid="stMarkdownContainer"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_category_label"] [data-testid="stMarkdownContainer"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_category_label"] [data-testid="stMarkdownContainer"] strong,
+    html body .stApp [data-testid="stMain"] .college-category-label,
+    html body .stApp [data-testid="stMain"] p.college-category-label,
+    html body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"] p.college-category-label {
+        display: block !important;
+        text-align: left !important;
+        font-size: 1.35rem !important;
+        font-weight: 800 !important;
+        line-height: 1.3 !important;
+        letter-spacing: 0.01em !important;
+        margin-top: 0.45rem !important;
+        margin-bottom: 0.5rem !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 0 !important;
+        color: #083C5D !important;
+        background: none !important;
+        background-color: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        font-family: Inter, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif !important;
+    }
+
+    html body [data-testid="stMain"] .college-plain-stat,
+    html body [data-testid="stMain"] .college-plain-stat:hover,
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .college-plain-stat,
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .college-plain-stat:hover {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #AAB4BE !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        padding: 0.75rem 0.85rem !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        align-self: flex-start !important;
+    }
+
+    html body [data-testid="stMain"] [data-testid="stElementContainer"]:has(.college-plain-stat),
+    html body [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.college-plain-stat),
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stElementContainer"]:has(.college-plain-stat),
+    html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"]:has(.college-plain-stat) {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        flex: 0 0 auto !important;
+    }
+
+    html body [data-testid="stMain"] .college-plain-stat-label {
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        margin: 0 0 0.45rem 0 !important;
+        line-height: 1.35 !important;
+    }
+
+    html body [data-testid="stMain"] .college-plain-stat-value {
+        font-size: 1.45rem !important;
+        font-weight: 700 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        line-height: 1.25 !important;
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"] .college-plain-stat-value .college-competition-star-filled,
+    html body [data-testid="stMain"] .college-competition-star-filled {
+        color: #F4C542 !important;
+        -webkit-text-fill-color: #F4C542 !important;
+    }
+
+    html body [data-testid="stMain"] .college-plain-stat-value .college-competition-star-empty,
+    html body [data-testid="stMain"] .college-competition-star-empty {
+        color: #C5CED6 !important;
+        -webkit-text-fill-color: #C5CED6 !important;
+    }
+
+    html body [data-testid="stMain"] .college-plain-stat-body {
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"] .college-plain-stat-caption {
+        font-size: 0.85rem !important;
+        font-weight: 400 !important;
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        margin: 0.35rem 0 0 0 !important;
+        line-height: 1.35 !important;
     }
     </style>
     """,
@@ -2444,7 +2908,514 @@ extra_opportunities = [
         "paid_status": "Not paid",
         "requirements": "NYC student; eligibility varies by individual program",
         "url": "https://www.schools.nyc.gov/learning/subjects/stem"
-    }
+    },
+    {
+        "name": "NYU Tandon ARISE",
+        "organization": "New York University Tandon School of Engineering",
+        "description": "Free 10-week NYC summer research program combining research-skills training with six weeks of hands-on work in NYU faculty labs.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Computer Science;Robotics;Biomedical Engineering;Environmental Science;Data Science;Research",
+        "grades": "10;11",
+        "age_range": "Rising juniors and seniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed — program is free",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 deadline was February 27, 2026 at 5 PM",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — approximately 150 hours of lab research plus possible continued research collaboration",
+        "format": "Hybrid + In person — NYU Tandon, Brooklyn, NYC",
+        "paid_status": "Paid — 2026 participants received a $2,000 stipend",
+        "requirements": "NYC resident attending an NYC school; rising junior or senior; full 10-week commitment",
+        "url": "https://k12stem.engineering.nyu.edu/programs/arise"
+    },
+    {
+        "name": "Simons Summer Research Program",
+        "organization": "Stony Brook University",
+        "description": "Six-week mentored research program where high school juniors join active university research teams in science, mathematics, and engineering.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Computer Science;Mathematics;Physics;Biology;Chemistry;Research",
+        "grades": "11",
+        "age_range": "16+ by program start",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Check official cycle details",
+        "financial_aid": "Check official cycle details",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 deadline was February 5, 2026",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — full-time mentored university research",
+        "format": "In person — Stony Brook University, Long Island, NY",
+        "paid_status": "Check official cycle details",
+        "requirements": "Current 11th grader; U.S. citizen or permanent resident; age 16+ by program start; school nomination required",
+        "url": "https://www.stonybrook.edu/simons/"
+    },
+    {
+        "name": "MSK HOPP Summer Student Program",
+        "organization": "Memorial Sloan Kettering Cancer Center",
+        "description": "Eight-week cancer research internship placing high school juniors in translational biomedical research projects with MSK scientists.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Cancer Research;Biomedical Science;Medicine;Laboratory Research",
+        "grades": "11",
+        "age_range": "14+ by program start",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Next cycle date not yet announced; 2026 application closed February 6, 2026",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "HOPP reports sponsoring over 20 students annually; applicant count not publicly reported",
+        "internship_potential": "Yes — independent mentored cancer research project",
+        "format": "In person — Memorial Sloan Kettering, Manhattan, NYC",
+        "paid_status": "Paid — 2026 stipend was $1,200",
+        "requirements": "Current high school junior; live in NY/NJ/CT within 25 miles of MSK main campus; legally authorized to work in U.S.; 3.5 science GPA; full eight-week commitment",
+        "url": "https://www.mskcc.org/education-training/summer-student"
+    },
+    {
+        "name": "Columbia BRAINYAC",
+        "organization": "Columbia University Zuckerman Institute",
+        "description": "Immersive neuroscience apprenticeship where NYC high school students train and then conduct mentored research in Columbia neuroscience laboratories.",
+        "opportunity_type": "Research",
+        "fields": "Neuroscience;Biology;Biomedical Science;Psychology;Research",
+        "grades": "10;11",
+        "age_range": "Grade-based eligibility",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "2027 Cycle Opens October 2026",
+        "deadline": "2027 applications expected to open October 2026; deadline not yet posted",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — intensive mentored neuroscience laboratory research",
+        "format": "In person — Columbia University, NYC",
+        "paid_status": "Paid stipend — amount not publicly listed on current program page",
+        "requirements": "NYC resident in grade 10 or 11 and enrolled in an eligible partner program/school such as S-PREP, BioBus, Lang Youth Medical, Columbia Secondary School, or Double Discovery Center",
+        "url": "https://zuckermaninstitute.columbia.edu/brainyac"
+    },
+    {
+        "name": "MSK Bridge to Biostats Summer Program",
+        "organization": "Memorial Sloan Kettering Cancer Center",
+        "description": "Paid six-week summer program introducing NYC high school students to biostatistics, cancer data science, computing, and quantitative research.",
+        "opportunity_type": "Research",
+        "fields": "Data Science;Statistics;Computer Science;Cancer Research;Biostatistics;Mathematics",
+        "grades": "9;10;11",
+        "age_range": "Rising sophomore through rising senior",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 application closed February 27, 2026",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — paid experiential learning in biostatistics and cancer data science",
+        "format": "In person — Midtown Manhattan, NYC",
+        "paid_status": "Paid — current program page confirms paid participation; amount not publicly listed",
+        "requirements": "NYC resident attending school in NYC; rising sophomore through rising senior; interest in math/computing/data science; recommendation and transcript",
+        "url": "https://www.mskcc.org/education-training/bridge-to-biostats-summer-program-b2bsp"
+    },
+    {
+        "name": "Columbia YES in THE HEIGHTS",
+        "organization": "Columbia University Herbert Irving Comprehensive Cancer Center",
+        "description": "Eight-week cancer research internship matching high school scholars with Columbia research groups for hands-on biomedical research.",
+        "opportunity_type": "Research",
+        "fields": "Cancer Research;Biology;Biomedical Science;Medicine;Laboratory Research",
+        "grades": "10;11;12",
+        "age_range": "High school students — check current cycle requirements",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — eight-week cancer research internship",
+        "format": "In person — Columbia University Irving Medical Center, NYC",
+        "paid_status": "Check official 2027 cycle details",
+        "requirements": "Application materials include cover letter, resume, and full summer commitment; verify grade and neighborhood eligibility for current cycle",
+        "url": "https://www.cancer.columbia.edu/education/educational-opportunities/high-school-and-undergraduate-programs/yes-heights-program"
+    },
+    {
+        "name": "Columbia Secondary School Field Research Program (SSFRP)",
+        "organization": "Columbia University Lamont-Doherty Earth Observatory",
+        "description": "Six-week field and laboratory research program where students investigate ecology, earth science, environmental processes, and the Piermont Marsh.",
+        "opportunity_type": "Research",
+        "fields": "Environmental Science;Earth Science;Ecology;Climate Science;Biology;Research",
+        "grades": "9;10;11;12",
+        "age_range": "16+ by internship start",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 deadline was March 2, 2026",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — six weeks of field and laboratory research with Columbia mentors",
+        "format": "In person — Lamont-Doherty Earth Observatory, Palisades, NY",
+        "paid_status": "Check official 2027 cycle details",
+        "requirements": "Currently enrolled high school student; age 16+ by start; able to commute; full six-week commitment",
+        "url": "https://lamont.columbia.edu/education-outreach/student-summer-opportunities-SSFRP"
+    },
+    {
+        "name": "Columbia BrainSTORM Mentorship Program",
+        "organization": "Columbia University Irving Medical Center — Department of Neurology",
+        "description": "Year-long neuroscience mentorship program connecting high school students with research and educational experiences in neurology and brain science.",
+        "opportunity_type": "Research",
+        "fields": "Neuroscience;Neurology;Medicine;Biomedical Science;Research",
+        "grades": "9;10;11;12",
+        "age_range": "High school students nationwide",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "2026–27 cohort closed; Columbia currently says applications for the June 2027–May 2028 cohort will open in Fall 2027",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — long-term neuroscience mentorship and research exposure",
+        "format": "Mentorship program — see current cohort details",
+        "paid_status": "Not publicly listed",
+        "requirements": "High school student in grades 9–12; application includes research interests, personal statement, and resume/CV",
+        "url": "https://www.neurology.columbia.edu/education/additional-educational-programs/brain-seminar-teens-and-opportunities-research-mentorship-brainstorm"
+    },
+    {
+        "name": "MSK Science Enrichment Program (SEP)",
+        "organization": "Memorial Sloan Kettering Cancer Center",
+        "description": "Ten-month science enrichment and cancer-research pathway including an eight-week biomedical or computational lab internship at MSK.",
+        "opportunity_type": "Research",
+        "fields": "Cancer Research;Biology;Biomedical Science;Computational Biology;Medicine",
+        "grades": "11",
+        "age_range": "High school juniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Partner-School Nomination",
+        "deadline": "Current cycle timing depends on participating partner schools",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — eight-week biomedical or computational laboratory internship",
+        "format": "In person — Memorial Sloan Kettering, NYC",
+        "paid_status": "Paid — current program page lists a total $4,200 stipend",
+        "requirements": "High school junior; completed a full year of biology; must be nominated by an MSK SEP partner school",
+        "url": "https://www.mskcc.org/education-training/science-enrichment"
+    },
+    {
+        "name": "Rockefeller Summer Neuroscience Program (SNP)",
+        "organization": "The Rockefeller University / RockEDU",
+        "description": "Free two-week hands-on neuroscience program for NYC public high school students featuring experiments, mentorship, and student-designed research.",
+        "opportunity_type": "Research",
+        "fields": "Neuroscience;Biology;Biomedical Science;Experimental Design;Research",
+        "grades": "10;11;12",
+        "age_range": "16+ by program start",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "All necessary equipment, supplies, and meals are covered",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 deadline was March 15, 2026",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Research-focused course — students design experiments with mentors",
+        "format": "In person — Rockefeller University, Manhattan, NYC",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Must attend an NYC public high school and be at least 16 years old by program start",
+        "url": "https://www.rockefeller.edu/outreach/snp/"
+    },
+    {
+        "name": "CUNY STEM Research Academy",
+        "organization": "The City University of New York / College Now",
+        "description": "Two-semester NYC public-school research pathway with a spring research course followed by a competitive summer placement in a CUNY faculty laboratory.",
+        "opportunity_type": "Research",
+        "fields": "Science;Engineering;Computer Science;Mathematics;Laboratory Research;Research",
+        "grades": "10;11",
+        "age_range": "Grade-based eligibility varies by CUNY campus",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "2027 campus-specific dates not yet announced",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Varies by campus; CCNY selected 25 students for Spring 2026 and 10 continued to summer research",
+        "internship_potential": "Yes — selected students conduct summer research with CUNY faculty",
+        "format": "In person — participating CUNY campuses",
+        "paid_status": "Check individual CUNY campus for current stipend details",
+        "requirements": "NYC public high school student; requirements vary by campus and may include GPA, Regents scores, transcript, and writing sample",
+        "url": "https://www.cuny.edu/academics/current-initiatives/k16/stem-research-academy/"
+    },
+    {
+        "name": "BioBus High School Junior Scientist Internship",
+        "organization": "BioBus",
+        "description": "Paid NYC internship where students develop independent science research projects, build laboratory skills, and co-teach science programs for younger students.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Laboratory Research;Science Communication;Education;Research",
+        "grades": "9;10;11;12",
+        "age_range": "High school students — program-specific eligibility applies",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "2026–27 Closed",
+        "deadline": "2026–27 season closed; next application date not yet announced",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported; BioBus reported a record number of 2026–27 applications",
+        "internship_potential": "Yes — independent research plus science teaching/mentorship",
+        "format": "In person — Harlem citywide placements and Lower East Side/Chinatown placements",
+        "paid_status": "Paid hourly internship",
+        "requirements": "NYC high school student; specific location/program eligibility applies",
+        "url": "https://www.biobus.org/internship/"
+    },
+    {
+        "name": "Princeton AI4ALL",
+        "organization": "Princeton University",
+        "description": "Free residential AI program for low-income rising 11th graders combining lectures, mentorship, ethical AI discussions, and hands-on research projects.",
+        "opportunity_type": "Research",
+        "fields": "Artificial Intelligence;Computer Science;Machine Learning;Data Science;Research",
+        "grades": "10",
+        "age_range": "Rising 11th graders",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Tuition, housing, meals, and program field trip are covered",
+        "application_status": "Future Cycle",
+        "deadline": "Next cycle date should be confirmed on official site",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "No — research-project-based AI summer program",
+        "format": "Residential — Princeton University, New Jersey",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Rising 11th grader living and attending high school in U.S. or Puerto Rico; must meet Princeton AI4ALL low-income criteria",
+        "url": "https://ai4all.princeton.edu/about"
+    },
+    {
+        "name": "NASA GeneLab for High Schools (GL4HS)",
+        "organization": "NASA Ames Research Center",
+        "description": "Four-week intensive training program in space life sciences, bioinformatics, omics data, and computational biology.",
+        "opportunity_type": "Research",
+        "fields": "Bioinformatics;Computational Biology;Space Biology;Data Science;Biology;Research",
+        "grades": "10;11;12",
+        "age_range": "Rising juniors, rising seniors, and eligible incoming college freshmen",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Next cycle date not yet announced",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Research training — authentic space-biology and bioinformatics analysis",
+        "format": "Virtual",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "U.S. citizen or permanent resident attending a U.S. high school; rising junior/senior; 3.0+ unweighted GPA; at least one high school biology course; reliable computer/internet",
+        "url": "https://www.nasa.gov/ames/genelab-for-high-schools/"
+    },
+    {
+        "name": "NASA STEM Enhancement in Earth Science (SEES) High School Summer Intern",
+        "organization": "NASA / UT Austin Center for Space Research",
+        "description": "Nationally competitive research internship where high school students analyze NASA Earth and space data with scientists and engineers.",
+        "opportunity_type": "Research",
+        "fields": "Earth Science;Climate Science;Astronomy;Remote Sensing;Data Science;Space Science;Research",
+        "grades": "10;11",
+        "age_range": "Typically current 10th and 11th graders",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Check official cycle details",
+        "financial_aid": "Check official cycle details",
+        "application_status": "Future Cycle",
+        "deadline": "Next cycle date not yet announced",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — authentic NASA-supported data research and field investigation",
+        "format": "Virtual + selected in-person components depending on project",
+        "paid_status": "Check official cycle details",
+        "requirements": "High school sophomore or junior; current citizenship/eligibility requirements should be confirmed each cycle",
+        "url": "https://science.nasa.gov/sciact-team/stem-enhancement-in-earth-science/"
+    },
+    {
+        "name": "Boston University RISE Internship",
+        "organization": "Boston University",
+        "description": "Six-week full-time laboratory research program for rising seniors working approximately 40 hours per week with BU research mentors.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Computer Science;Physics;Biology;Chemistry;Neuroscience;Biomedical Engineering;Research",
+        "grades": "11",
+        "age_range": "Rising seniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Tuition required",
+        "financial_aid": "Financial aid application available; verify current cycle",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 application deadline was February 4, 2026",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported; BU states RISE places up to about 100 students in STEM labs",
+        "internship_potential": "Yes — approximately 40 hours/week of mentored research",
+        "format": "Residential or Commuter — Boston University",
+        "paid_status": "Not paid / Tuition-based Program",
+        "requirements": "Current high school junior entering senior year; U.S. citizen or permanent resident; application, transcript, essay, and recommendation",
+        "url": "https://www.bu.edu/summer/high-school-programs/rise-internship-practicum/"
+    },
+    {
+        "name": "George Mason Aspiring Scientists Summer Internship Program (ASSIP)",
+        "organization": "George Mason University",
+        "description": "Eight-week full-time research internship where high school and undergraduate students work with faculty on hypothesis-driven STEM research.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Chemistry;Computer Science;Engineering;Medicine;Neuroscience;Physics;Research",
+        "grades": "10;11;12",
+        "age_range": "15+",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Check official 2027 cycle details",
+        "financial_aid": "Check official 2027 cycle details",
+        "application_status": "2027 Opens Fall 2026",
+        "deadline": "2027 application opens Fall 2026; deadline not yet posted",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — full-time faculty-mentored STEM research and three college credits",
+        "format": "In person and/or approved research-site placements — George Mason University",
+        "paid_status": "Check official 2027 placement details",
+        "requirements": "Students age 15+; application and mentor matching; exact eligibility varies by research placement",
+        "url": "https://science.gmu.edu/assip"
+    },
+    {
+        "name": "Stanford Institutes of Medicine Summer Research Program (SIMR)",
+        "organization": "Stanford Medicine",
+        "description": "Eight-week biomedical research internship where high school juniors and seniors conduct hands-on research with Stanford mentors.",
+        "opportunity_type": "Research",
+        "fields": "Biomedical Science;Immunology;Cancer Research;Neuroscience;Bioinformatics;Stem Cell Biology;Bioengineering",
+        "grades": "11;12",
+        "age_range": "16+ by program start",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free to participate; application fee may apply",
+        "financial_aid": "Application fee waivers available",
+        "application_status": "2027 Opens December 18, 2026",
+        "deadline": "Applications for SIMR 2027 are scheduled to become available December 18, 2026; deadline not yet posted",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — eight weeks of mentored biomedical research",
+        "format": "In person — Stanford University, California",
+        "paid_status": "Paid — Stanford states interns earn at least a $500 stipend",
+        "requirements": "High school junior or senior; 16+ by program start; living and attending high school in U.S.; U.S. citizen or permanent resident",
+        "url": "https://med.stanford.edu/simr.html"
+    },
+    {
+        "name": "UCSB Research Mentorship Program (RMP)",
+        "organization": "University of California, Santa Barbara",
+        "description": "Competitive six-week research program pairing high school students with graduate, postdoctoral, or faculty mentors on interdisciplinary university-level research.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Computer Science;Biology;Physics;Chemistry;Mathematics;Social Science;Research",
+        "grades": "9;10;11",
+        "age_range": "Primarily current 10th and 11th graders; exceptional 9th graders considered",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Tuition required",
+        "financial_aid": "Check current UCSB pre-college scholarship/aid options",
+        "application_status": "Future Cycle",
+        "deadline": "Next cycle date not yet announced",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "No — intensive mentor-guided university research program",
+        "format": "Residential — UC Santa Barbara, California",
+        "paid_status": "Not paid / Tuition-based Program",
+        "requirements": "High school student in grade 10 or 11; outstanding 9th graders may be considered; minimum 3.80 weighted academic GPA; full program commitment",
+        "url": "https://www.summer.ucsb.edu/programs/research-mentorship-program/overview"
+    },
+    {
+        "name": "Princeton Laboratory Learning Program (LLP)",
+        "organization": "Princeton University",
+        "description": "Free full-time summer research experience placing local New Jersey high school students in ongoing Princeton science and engineering research projects.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Physics;Chemistry;Biology;Computer Science;Science;Research",
+        "grades": "10;11;12",
+        "age_range": "High school students — project-specific age requirements apply",
+        "boroughs_served": "",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 application window was February 15–March 15, 2026",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — full-time research alongside Princeton faculty and research staff",
+        "format": "In person — Princeton University, New Jersey",
+        "paid_status": "Unpaid / Free Research Experience",
+        "requirements": "Local New Jersey high school student; no housing or transportation provided; project-specific requirements apply",
+        "url": "https://scienceoutreach.princeton.edu/laboratory-learning-program"
+    },
+    {
+        "name": "Brookhaven National Laboratory High School Research Program (HSRP)",
+        "organization": "Brookhaven National Laboratory / U.S. Department of Energy",
+        "description": "Highly competitive six-week commuter research program where students collaborate with Brookhaven scientists, engineers, and technical staff on active STEM projects.",
+        "opportunity_type": "Research",
+        "fields": "Physics;Engineering;Computer Science;Materials Science;Biology;Environmental Science;Nuclear Science;Research",
+        "grades": "11;12",
+        "age_range": "16+ by program start",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Housing and transportation are not provided",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2027 date not yet announced; 2026 application closed March 20, 2026",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "internship_potential": "Yes — six weeks of collaborative research at a U.S. national laboratory",
+        "format": "In person / Commuter — Brookhaven National Laboratory, Upton, NY",
+        "paid_status": "Check official 2027 cycle details",
+        "requirements": "Recommended after completion of 11th grade; age 16+; U.S. citizen or permanent resident; health insurance; two recommendations; able to commute daily",
+        "url": "https://www.bnl.gov/education/programs/program.php?q=219"
+    },
+    {
+        "name": "Cold Spring Harbor Laboratory Partners for the Future",
+        "organization": "Cold Spring Harbor Laboratory",
+        "description": "Academic-year biomedical research program where nominated Long Island high school seniors work directly in Cold Spring Harbor Laboratory research groups.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Genetics;Genomics;Neuroscience;Cancer Research;Biomedical Science;Research",
+        "grades": "11;12",
+        "age_range": "Students entering senior year",
+        "boroughs_served": "",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "School Nomination",
+        "deadline": "Current nomination/application dates should be confirmed with CSHL",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported; each participating school science chair may nominate up to two students",
+        "internship_potential": "Yes — hands-on biomedical research in CSHL laboratories",
+        "format": "In person — Cold Spring Harbor Laboratory, Long Island, NY",
+        "paid_status": "Check official current-cycle details",
+        "requirements": "Long Island high school student entering senior year; must be nominated by school science chairperson",
+        "url": "https://www.cshl.edu/education/partners-for-the-future/"
+    },
+
 ]
 
 extra_df = pd.DataFrame(
@@ -2609,6 +3580,61 @@ def safe_int(value, default, minimum=None, maximum=None):
         number = min(maximum, number)
 
     return number
+
+
+def parse_college_acceptance_rate(rate):
+    """Return a numeric overall acceptance-rate percentage, or None."""
+
+    if rate is None:
+        return None
+
+    if isinstance(rate, bool):
+        return None
+
+    if isinstance(rate, (int, float)):
+        value = float(rate)
+        if value != value:
+            return None
+        if value < 0 or value > 100:
+            return None
+        return value
+
+    text = str(rate).strip()
+    if not text:
+        return None
+
+    match = re.search(r"(\d+(?:\.\d+)?)", text.replace(",", ""))
+    if not match:
+        return None
+
+    try:
+        value = float(match.group(1))
+    except (TypeError, ValueError):
+        return None
+
+    if value < 0 or value > 100:
+        return None
+
+    return value
+
+
+def college_selectivity_from_acceptance_rate(rate):
+    """Star rating from overall college acceptance rate. Same rule for every college."""
+
+    parsed = parse_college_acceptance_rate(rate)
+
+    if parsed is None:
+        return None, "Not rated"
+
+    if parsed < 25:
+        return 5, "Extremely Competitive"
+    if parsed < 46:
+        return 4, "Highly Competitive"
+    if parsed < 60:
+        return 3, "Competitive"
+    if parsed <= 80:
+        return 2, "Moderately Competitive"
+    return 1, "More Accessible"
 
 
 def supabase_can_write():
@@ -5137,7 +6163,11 @@ if page == "Dashboard":
         unsafe_allow_html=True
     )
 
-    action_row1 = st.columns(3)
+    journey_cards = st.container(
+        key="dash_continue_journey"
+    )
+
+    action_row1 = journey_cards.columns(3)
 
     with action_row1[0]:
 
@@ -5220,7 +6250,7 @@ if page == "Dashboard":
 
                 st.rerun()
 
-    action_row2 = st.columns(3)
+    action_row2 = journey_cards.columns(3)
 
     with action_row2[0]:
 
@@ -6415,6 +7445,31 @@ elif page == "Opportunities":
                 key="opportunity_filter_types"
             )
 
+            research_area_filter = st.multiselect(
+                "Research Area",
+                [
+                    "Artificial Intelligence",
+                    "Computer Science",
+                    "Engineering",
+                    "Biomedical Science",
+                    "Biology",
+                    "Neuroscience",
+                    "Cancer Research",
+                    "Data Science",
+                    "Mathematics",
+                    "Physics",
+                    "Chemistry",
+                    "Environmental Science",
+                    "Earth / Climate Science",
+                    "Bioinformatics / Computational Biology",
+                    "Medicine / Health",
+                    "Robotics",
+                    "Space Science",
+                    "General STEM / Interdisciplinary"
+                ],
+                key="opportunity_filter_research_areas"
+            )
+
             selectivity_filter = st.multiselect(
                 "Filter by selectivity",
                 [
@@ -6469,6 +7524,10 @@ elif page == "Opportunities":
                 "opportunity_search_age"
             ] = student_age
 
+            st.session_state[
+                "opportunity_search_research_areas"
+            ] = research_area_filter
+
         active_types = st.session_state.get(
             "opportunity_search_types",
             []
@@ -6482,6 +7541,11 @@ elif page == "Opportunities":
         active_age = st.session_state.get(
             "opportunity_search_age",
             "Any age"
+        )
+
+        active_research_areas = st.session_state.get(
+            "opportunity_search_research_areas",
+            []
         )
 
         search_submitted = st.session_state.get(
@@ -6684,6 +7748,210 @@ elif page == "Opportunities":
                 )
 
             return True
+
+        def research_areas_from_fields(
+            fields_value
+        ):
+
+            tokens = [
+                item.strip().lower()
+                for item in str(
+                    fields_value or ""
+                ).split(";")
+                if item.strip()
+            ]
+
+            areas = set()
+
+            def token_matches(
+                *needles
+            ):
+
+                for token in tokens:
+
+                    for needle in needles:
+
+                        if (
+                            token == needle
+                            or
+                            needle in token
+                        ):
+                            return True
+
+                return False
+
+            if (
+                token_matches(
+                    "artificial intelligence",
+                    "machine learning"
+                )
+                or
+                "ai" in tokens
+            ):
+                areas.add(
+                    "Artificial Intelligence"
+                )
+
+            if token_matches(
+                "computer science"
+            ):
+                areas.add(
+                    "Computer Science"
+                )
+
+            if token_matches(
+                "engineering"
+            ):
+                areas.add(
+                    "Engineering"
+                )
+
+            if token_matches(
+                "biomedical",
+                "bioengineering"
+            ):
+                areas.add(
+                    "Biomedical Science"
+                )
+
+            if token_matches(
+                "biology"
+            ):
+                areas.add(
+                    "Biology"
+                )
+
+            if token_matches(
+                "neuroscience",
+                "neurology"
+            ):
+                areas.add(
+                    "Neuroscience"
+                )
+
+            if token_matches(
+                "cancer"
+            ):
+                areas.add(
+                    "Cancer Research"
+                )
+
+            if token_matches(
+                "data science",
+                "data analysis",
+                "statistics",
+                "biostatistics"
+            ):
+                areas.add(
+                    "Data Science"
+                )
+
+            if (
+                token_matches(
+                    "mathematics"
+                )
+                or
+                "math" in tokens
+            ):
+                areas.add(
+                    "Mathematics"
+                )
+
+            if token_matches(
+                "physics"
+            ):
+                areas.add(
+                    "Physics"
+                )
+
+            if token_matches(
+                "chemistry"
+            ):
+                areas.add(
+                    "Chemistry"
+                )
+
+            if token_matches(
+                "environmental",
+                "ecology"
+            ):
+                areas.add(
+                    "Environmental Science"
+                )
+
+            if token_matches(
+                "earth science",
+                "climate",
+                "remote sensing"
+            ):
+                areas.add(
+                    "Earth / Climate Science"
+                )
+
+            if token_matches(
+                "bioinformatics",
+                "computational biology"
+            ):
+                areas.add(
+                    "Bioinformatics / Computational Biology"
+                )
+
+            if token_matches(
+                "medicine",
+                "health",
+                "immunology",
+                "genetics",
+                "genomics",
+                "stem cell"
+            ):
+                areas.add(
+                    "Medicine / Health"
+                )
+
+            if token_matches(
+                "robotics"
+            ):
+                areas.add(
+                    "Robotics"
+                )
+
+            if token_matches(
+                "space",
+                "aerospace",
+                "astronomy"
+            ):
+                areas.add(
+                    "Space Science"
+                )
+
+            general_tokens = {
+                "stem",
+                "science",
+                "research",
+                "technology",
+                "innovation",
+                "design thinking",
+                "laboratory research",
+                "career exploration",
+                "natural sciences",
+                "nuclear science",
+                "materials science",
+                "social science",
+                "education",
+                "science communication",
+                "experimental design"
+            }
+
+            if any(
+                token in general_tokens
+                for token in tokens
+            ):
+                areas.add(
+                    "General STEM / Interdisciplinary"
+                )
+
+            return areas
+
         def is_eligible(
             opportunity
         ):
@@ -6883,6 +8151,23 @@ elif page == "Opportunities":
 
                     continue
 
+                if (
+                    active_research_areas
+                    and
+                    not set(
+                        active_research_areas
+                    ).intersection(
+                        research_areas_from_fields(
+                            opportunity.get(
+                                "fields",
+                                ""
+                            )
+                        )
+                    )
+                ):
+
+                    continue
+
                 # Use the student's profile for personalization, but do not
                 # hide a search result solely because the saved profile grade
                 # may reflect the student's current rather than entering grade.
@@ -6950,9 +8235,11 @@ elif page == "Opportunities":
                         "opportunity_filter_types",
                         "opportunity_filter_selectivity",
                         "opportunity_filter_age",
+                        "opportunity_filter_research_areas",
                         "opportunity_search_types",
                         "opportunity_search_selectivity",
-                        "opportunity_search_age"
+                        "opportunity_search_age",
+                        "opportunity_search_research_areas"
                     ]:
 
                         st.session_state.pop(
@@ -6970,7 +8257,7 @@ elif page == "Opportunities":
 
                 st.warning(
                     "No opportunities matched every filter. Try removing one "
-                    "selectivity level or opportunity type and search again."
+                    "selectivity level, opportunity type, or research area and search again."
                 )
 
             for (
@@ -8471,8 +9758,8 @@ elif page == "College Suggestions":
                 "Computer Science", "Artificial Intelligence", "Data Science",
                 "Biomedical Engineering", "Biology", "Physics", "Mathematics", "Robotics"
             ],
-            "admit_rate": None,
-            "rate_label": "See official Stanford CDS",
+            "admit_rate": 3.8,
+            "rate_label": "Fall 2025 overall",
             "source_url": "https://irds.stanford.edu/data-findings/cds",
             "research": True
         },
@@ -8520,9 +9807,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Artificial Intelligence",
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
             ],
-            "admit_rate": 9.0,
-            "rate_label": "2026 non-Georgia admit rate",
-            "source_url": "https://admission.gatech.edu/",
+            "admit_rate": 13.3,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://irp.gatech.edu/files/CDS/CDS_2025-2026_FINAL_R4_03JUN2026.pdf",
             "research": True
         },
         {
@@ -8537,9 +9824,9 @@ elif page == "College Suggestions":
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
                 "Environmental Science", "Robotics"
             ],
-            "admit_rate": 14.0,
-            "rate_label": "Fall 2025 Michigan Engineering",
-            "source_url": "https://www.engin.umich.edu/about/facts-figures/",
+            "admit_rate": 16.4,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://obp.umich.edu/wp-content/uploads/pubdata/factsfigures/firstyearsprofile_umaa_2025.pdf",
             "research": True
         },
         {
@@ -8553,9 +9840,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Artificial Intelligence",
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
             ],
-            "admit_rate": 34.7,
-            "rate_label": "2025 College of Engineering",
-            "source_url": "https://admissions.purdue.edu/become-student/class-profile/",
+            "admit_rate": 49.9,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2025/06/CDS_2024-2025.pdf",
             "research": True
         },
         {
@@ -8651,9 +9938,9 @@ elif page == "College Suggestions":
                 "Data Science", "Biomedical Engineering", "Biology", "Physics",
                 "Mathematics", "Environmental Science"
             ],
-            "admit_rate": 4.2,
-            "rate_label": "Class of 2029 Regular Decision",
-            "source_url": "https://apply.jhu.edu/",
+            "admit_rate": 6.4,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://oira.jhu.edu/wp-content/uploads/CDS_2024-2025_JHU-2.pdf",
             "research": True
         },
         {
@@ -8682,8 +9969,8 @@ elif page == "College Suggestions":
                 "Engineering", "Electrical Engineering", "Mechanical Engineering",
                 "Computer Engineering"
             ],
-            "admit_rate": 23.0,
-            "rate_label": "2024-25 School of Engineering",
+            "admit_rate": 13.0,
+            "rate_label": "2024-25 overall",
             "source_url": "https://cooper.edu/admissions/faq",
             "research": True
         },
@@ -8731,9 +10018,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Biomedical Engineering",
                 "Biology", "Physics", "Mathematics", "Environmental Science"
             ],
-            "admit_rate": None,
-            "rate_label": "See official CCNY admissions data",
-            "source_url": "https://www.ccny.cuny.edu/admissions",
+            "admit_rate": 60.0,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.ccny.cuny.edu/sites/default/files/2025-03/20250324_FINAL%20CDS-2024-2025.pdf",
             "research": True
         },
         {
@@ -8748,9 +10035,152 @@ elif page == "College Suggestions":
                 "Data Science", "Biomedical Engineering", "Biology", "Physics",
                 "Mathematics", "Environmental Science"
             ],
-            "admit_rate": None,
-            "rate_label": "See official Stony Brook admissions data",
-            "source_url": "https://www.stonybrook.edu/undergraduate-admissions/",
+            "admit_rate": 48.2,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.stonybrook.edu/irpe/factbook/common-data-set.html",
+            "research": True
+        },
+        {
+            "name": "CUNY City Tech",
+            "location": "Brooklyn, NY",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Data Science",
+                "Mathematics", "Physics"
+            ],
+            "admit_rate": 80.3,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.citytech.cuny.edu/consumer-info/",
+            "research": True
+        },
+        {
+            "name": "UMass Lowell",
+            "location": "Lowell, MA",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Artificial Intelligence",
+                "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
+                "Robotics"
+            ],
+            "admit_rate": 83.0,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.uml.edu/docs/CDS_2024-2025%20Final_tcm18-403507.pdf",
+            "research": True
+        },
+        {
+            "name": "Western New England University",
+            "location": "Springfield, MA",
+            "region": "Northeast",
+            "setting": "Traditional college campus",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Data Science",
+                "Biomedical Engineering", "Mathematics"
+            ],
+            "admit_rate": 83.5,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://wne.edu/institutional-research/doc/WNE-CDS-2024-25-FINAL.pdf",
+            "research": True
+        },
+        {
+            "name": "UMass Boston",
+            "location": "Boston, MA",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Large",
+            "fields": [
+                "Computer Science", "Data Science", "Mathematics", "Physics"
+            ],
+            "admit_rate": 85.5,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.umb.edu/media/umassboston/editor-uploads/institutional-research-assessment-planning/TABLE7-Undergraduate--Admissions.pdf",
+            "research": True
+        },
+        {
+            "name": "Wentworth Institute of Technology",
+            "location": "Boston, MA",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Data Science",
+                "Biomedical Engineering", "Mathematics", "Robotics"
+            ],
+            "admit_rate": 87.8,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://wit.edu/sites/default/files/2026-02/Common%20Data%20Set%202025-2026%20%281%29.pdf",
+            "research": True
+        },
+        {
+            "name": "University of New Hampshire",
+            "location": "Durham, NH",
+            "region": "Northeast",
+            "setting": "Traditional college campus",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Data Science",
+                "Biomedical Engineering", "Physics", "Mathematics", "Environmental Science"
+            ],
+            "admit_rate": 88.2,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-07/CDS-2024-2025_7.18.25.pdf",
+            "research": True
+        },
+        {
+            "name": "UMass Dartmouth",
+            "location": "Dartmouth, MA",
+            "region": "Northeast",
+            "setting": "Traditional college campus",
+            "size": "Large",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Data Science",
+                "Biomedical Engineering", "Physics", "Mathematics"
+            ],
+            "admit_rate": 90.6,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/Data_Book_Fall24_Final-v2_6.26.25.pdf",
+            "research": True
+        },
+        {
+            "name": "Wilkes University",
+            "location": "Wilkes-Barre, PA",
+            "region": "Northeast",
+            "setting": "City / urban",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Science", "Data Science", "Physics", "Mathematics",
+                "Environmental Science"
+            ],
+            "admit_rate": 94.0,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.wilkes.edu/about-wilkes/offices-and-administration/institutional-research/_assets/fact-book-2025-26.pdf",
+            "research": True
+        },
+        {
+            "name": "University of Pittsburgh at Johnstown",
+            "location": "Johnstown, PA",
+            "region": "Northeast",
+            "setting": "Traditional college campus",
+            "size": "Medium",
+            "fields": [
+                "Engineering", "Electrical Engineering", "Mechanical Engineering",
+                "Computer Engineering", "Computer Science", "Data Science",
+                "Mathematics", "Physics"
+            ],
+            "admit_rate": 94.8,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://ir.pitt.edu/sites/default/files/assets/2024-2025_CDS_Johnstown.pdf",
             "research": True
         }
     ]
@@ -8760,19 +10190,25 @@ elif page == "College Suggestions":
     # --------------------------------------------------------
 
     def competitiveness_from_rate(rate):
-        if rate is None:
-            return None, "Not rated"
+        return college_selectivity_from_acceptance_rate(rate)
 
-        if rate < 7:
-            return 5, "Extremely Competitive"
-        elif rate < 15:
-            return 4, "Highly Competitive"
-        elif rate < 30:
-            return 3, "Competitive"
-        elif rate < 50:
-            return 2, "Moderately Competitive"
-        else:
-            return 1, "More Accessible"
+    def college_list_category(stars):
+        if stars is None:
+            return None
+        if stars >= 4:
+            return "Reach"
+        if stars >= 2:
+            return "Target"
+        if stars == 1:
+            return "Safety"
+        return None
+
+    def college_category_display_label(category):
+        return {
+            "Reach": "🎯 REACH",
+            "Target": "✅ TARGET",
+            "Safety": "🛡️ SAFETY"
+        }.get(category, category)
 
     # --------------------------------------------------------
     # PERSONALIZED COLLEGE MATCH
@@ -8946,64 +10382,105 @@ elif page == "College Suggestions":
         st.header("Best College Matches")
 
         st.write(
-            "Schools are ordered by your personalized **match score**, "
-            "not by prestige or acceptance rate."
+            "Colleges are scored first by how well they match your STEM interests "
+            "and preferences. Your strongest matches are then grouped as "
+            "**Reach**, **Target**, or **Safety** using selectivity stars. "
+            "Within each group, schools are ranked by your personalized **match score**."
         )
 
-        for rank, result in enumerate(
-            college_results[:15],
-            start=1
-        ):
+        def college_has_intended_field(result):
+            college_fields = result["college"].get("fields", [])
+            return any(
+                field in college_fields
+                for field, _
+                in discovery_results
+            )
 
+        def is_strong_personalized_match(result):
+            if not college_has_intended_field(result):
+                return False
+            return result.get("match_score", 0) >= 40
+
+        def render_college_match_card(
+            result,
+            rank,
+            category,
+            category_key
+        ):
             college = result["college"]
             match_score = result["match_score"]
             reasons = result["reasons"]
-            stars = result["stars"]
-            competitive_label = result["competitive_label"]
+            stars, competitive_label = competitiveness_from_rate(
+                college.get("admit_rate")
+            )
 
             with st.container(border=True):
 
-                title_col, match_col = st.columns(
-                    [3, 1]
+                st.subheader(
+                    f"{rank}. {college['name']}"
                 )
 
-                with title_col:
+                st.caption(
+                    f"{college['location']} • {college['setting']} • {college['size']}"
+                )
 
-                    st.subheader(
-                        f"{rank}. {college['name']}"
+                category_label = college_category_display_label(
+                    category
+                )
+                category_label_key = (
+                    "college_category_label_"
+                    f"{category_key}_{rank}_"
+                    + re.sub(
+                        r"[^A-Za-z0-9]+",
+                        "_",
+                        str(college["name"])
+                    )
+                )
+
+                with st.container(
+                    key=category_label_key
+                ):
+                    st.markdown(
+                        category_label
                     )
 
-                    st.caption(
-                        f"{college['location']} • {college['setting']} • {college['size']}"
-                    )
-
-                with match_col:
-
-                    st.metric(
-                        "Your Match",
-                        f"{match_score}%"
-                    )
-
-                info1, info2, info3 = st.columns(3)
+                info1, info2, info3, info4 = st.columns(4)
 
                 with info1:
 
                     if college["admit_rate"] is not None:
 
-                        st.metric(
-                            "Recent Admit Rate",
+                        admit_rate_value = (
                             f"{college['admit_rate']:.1f}%"
                         )
 
                     else:
 
-                        st.metric(
-                            "Recent Admit Rate",
-                            "See source"
+                        admit_rate_value = "See source"
+
+                    admit_rate_caption = ""
+
+                    if college.get("rate_label"):
+
+                        admit_rate_caption = (
+                            '<div class="college-plain-stat-caption">'
+                            + html_module.escape(
+                                str(college["rate_label"])
+                            )
+                            + "</div>"
                         )
 
-                    st.caption(
-                        college["rate_label"]
+                    st.markdown(
+                        '<div class="college-plain-stat">'
+                        '<div class="college-plain-stat-label">'
+                        "Recent Admit Rate"
+                        "</div>"
+                        '<div class="college-plain-stat-value">'
+                        f"{admit_rate_value}"
+                        "</div>"
+                        f"{admit_rate_caption}"
+                        "</div>",
+                        unsafe_allow_html=True
                     )
 
                 with info2:
@@ -9011,25 +10488,52 @@ elif page == "College Suggestions":
                     if stars is not None:
 
                         star_display = (
-                            "★" * stars
+                            (
+                                '<span class="college-competition-star-filled">'
+                                "★"
+                                "</span>"
+                            ) * stars
                             +
-                            "☆" * (5 - stars)
+                            (
+                                '<span class="college-competition-star-empty">'
+                                "☆"
+                                "</span>"
+                            ) * (5 - stars)
                         )
 
-                        st.metric(
-                            "Competition",
-                            star_display
+                        competition_caption = (
+                            '<div class="college-plain-stat-caption">'
+                            + html_module.escape(
+                                str(competitive_label)
+                            )
+                            + "</div>"
                         )
 
-                        st.caption(
-                            competitive_label
+                        st.markdown(
+                            '<div class="college-plain-stat">'
+                            '<div class="college-plain-stat-label">'
+                            "Competition"
+                            "</div>"
+                            '<div class="college-plain-stat-value">'
+                            f"{star_display}"
+                            "</div>"
+                            f"{competition_caption}"
+                            "</div>",
+                            unsafe_allow_html=True
                         )
 
                     else:
 
-                        st.metric(
-                            "Competition",
+                        st.markdown(
+                            '<div class="college-plain-stat">'
+                            '<div class="college-plain-stat-label">'
+                            "Competition"
+                            "</div>"
+                            '<div class="college-plain-stat-value">'
                             "Not rated"
+                            "</div>"
+                            "</div>",
+                            unsafe_allow_html=True
                         )
 
                 with info3:
@@ -9041,20 +10545,40 @@ elif page == "College Suggestions":
                         if field in college["fields"]
                     ]
 
-                    st.write(
-                        "**Matching fields**"
-                    )
-
                     if matching_fields:
-                        st.write(
-                            " • ".join(
-                                matching_fields[:4]
-                            )
+                        matching_fields_value = " • ".join(
+                            matching_fields[:4]
                         )
                     else:
-                        st.write(
-                            "General STEM option"
+                        matching_fields_value = "General STEM option"
+
+                    st.markdown(
+                        '<div class="college-plain-stat">'
+                        '<div class="college-plain-stat-label">'
+                        "Matching fields"
+                        "</div>"
+                        '<div class="college-plain-stat-body">'
+                        + html_module.escape(
+                            matching_fields_value
                         )
+                        + "</div>"
+                        "</div>",
+                        unsafe_allow_html=True
+                    )
+
+                with info4:
+
+                    st.markdown(
+                        '<div class="college-plain-stat">'
+                        '<div class="college-plain-stat-label">'
+                        "Your Match"
+                        "</div>"
+                        '<div class="college-plain-stat-value">'
+                        f"{match_score}%"
+                        "</div>"
+                        "</div>",
+                        unsafe_allow_html=True
+                    )
 
                 with st.expander(
                     "Why this school matches you"
@@ -9077,8 +10601,11 @@ elif page == "College Suggestions":
 
                     if st.button(
                         "Save College",
-                        key=f"favorite_college_{rank}_{college['name']}",
-                        use_container_width=True
+                        key=(
+                            f"favorite_college_{category_key}_"
+                            f"{rank}_{college['name']}"
+                        ),
+                        width="stretch"
                     ):
 
                         if add_favorite_college(
@@ -9103,8 +10630,99 @@ elif page == "College Suggestions":
                         st.link_button(
                             "View Admissions / Data Source",
                             college_source_url,
-                            use_container_width=True
+                            width="stretch"
                         )
+
+        grouped_matches = {
+            "Reach": [],
+            "Target": [],
+            "Safety": []
+        }
+
+        for result in college_results:
+
+            if not is_strong_personalized_match(result):
+                continue
+
+            stars, _ = competitiveness_from_rate(
+                result["college"].get("admit_rate")
+            )
+            category = college_list_category(stars)
+
+            if category:
+                grouped_matches[category].append(result)
+
+        category_sections = [
+            (
+                "Reach",
+                "reach",
+                "🎯 Reach Schools",
+                "Your strongest-matching colleges with 4–5 selectivity stars.",
+                7,
+                None
+            ),
+            (
+                "Target",
+                "target",
+                "✅ Target Schools",
+                "Your strongest-matching colleges with 2–3 selectivity stars.",
+                7,
+                None
+            ),
+            (
+                "Safety",
+                "safety",
+                "🛡️ Safety Schools",
+                "Your strongest-matching colleges with 1 selectivity star.",
+                6,
+                (
+                    "We need more colleges in our database that match "
+                    "your interests and have higher admission rates."
+                )
+            )
+        ]
+
+        for (
+            category,
+            category_key,
+            section_title,
+            section_caption,
+            max_schools,
+            empty_message
+        ) in category_sections:
+
+            section_results = grouped_matches[category][
+                :max_schools
+            ]
+
+            st.subheader(section_title)
+
+            st.write(section_caption)
+
+            if section_results:
+
+                for rank, result in enumerate(
+                    section_results,
+                    start=1
+                ):
+
+                    render_college_match_card(
+                        result,
+                        rank,
+                        category,
+                        category_key
+                    )
+
+            elif empty_message:
+
+                st.info(empty_message)
+
+            else:
+
+                st.write(
+                    "No strong matches in this category for your "
+                    "current interests and preferences."
+                )
 
         st.divider()
 
@@ -9152,8 +10770,8 @@ elif page == "My Favorite Colleges":
         },
         "Stanford University": {
             "location": "Stanford, CA",
-            "admit_rate": None,
-            "rate_label": "See official Stanford CDS",
+            "admit_rate": 3.8,
+            "rate_label": "Fall 2025 overall",
             "source_url": "https://irds.stanford.edu/data-findings/cds"
         },
         "Carnegie Mellon University": {
@@ -9170,21 +10788,21 @@ elif page == "My Favorite Colleges":
         },
         "Georgia Tech": {
             "location": "Atlanta, GA",
-            "admit_rate": 9.0,
-            "rate_label": "2026 non-Georgia admit rate",
-            "source_url": "https://admission.gatech.edu/"
+            "admit_rate": 13.3,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://irp.gatech.edu/files/CDS/CDS_2025-2026_FINAL_R4_03JUN2026.pdf"
         },
         "University of Michigan": {
             "location": "Ann Arbor, MI",
-            "admit_rate": 14.0,
-            "rate_label": "Fall 2025 Michigan Engineering",
-            "source_url": "https://www.engin.umich.edu/about/facts-figures/"
+            "admit_rate": 16.4,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://obp.umich.edu/wp-content/uploads/pubdata/factsfigures/firstyearsprofile_umaa_2025.pdf"
         },
         "Purdue University": {
             "location": "West Lafayette, IN",
-            "admit_rate": 34.7,
-            "rate_label": "2025 College of Engineering",
-            "source_url": "https://admissions.purdue.edu/become-student/class-profile/"
+            "admit_rate": 49.9,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2025/06/CDS_2024-2025.pdf"
         },
         "Cornell University": {
             "location": "Ithaca, NY",
@@ -9218,9 +10836,9 @@ elif page == "My Favorite Colleges":
         },
         "Johns Hopkins University": {
             "location": "Baltimore, MD",
-            "admit_rate": 4.2,
-            "rate_label": "Class of 2029 Regular Decision",
-            "source_url": "https://apply.jhu.edu/"
+            "admit_rate": 6.4,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://oira.jhu.edu/wp-content/uploads/CDS_2024-2025_JHU-2.pdf"
         },
         "Caltech": {
             "location": "Pasadena, CA",
@@ -9230,8 +10848,8 @@ elif page == "My Favorite Colleges":
         },
         "The Cooper Union": {
             "location": "New York, NY",
-            "admit_rate": 23.0,
-            "rate_label": "2024-25 School of Engineering",
+            "admit_rate": 13.0,
+            "rate_label": "2024-25 overall",
             "source_url": "https://cooper.edu/admissions/faq"
         },
         "NYU Tandon": {
@@ -9248,33 +10866,74 @@ elif page == "My Favorite Colleges":
         },
         "CCNY": {
             "location": "New York, NY",
-            "admit_rate": None,
-            "rate_label": "See official CCNY admissions data",
-            "source_url": "https://www.ccny.cuny.edu/admissions"
+            "admit_rate": 60.0,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.ccny.cuny.edu/sites/default/files/2025-03/20250324_FINAL%20CDS-2024-2025.pdf"
         },
         "Stony Brook University": {
             "location": "Stony Brook, NY",
-            "admit_rate": None,
-            "rate_label": "See official Stony Brook admissions data",
-            "source_url": "https://www.stonybrook.edu/undergraduate-admissions/"
+            "admit_rate": 48.2,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.stonybrook.edu/irpe/factbook/common-data-set.html"
+        },
+        "CUNY City Tech": {
+            "location": "Brooklyn, NY",
+            "admit_rate": 80.3,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.citytech.cuny.edu/consumer-info/"
+        },
+        "UMass Lowell": {
+            "location": "Lowell, MA",
+            "admit_rate": 83.0,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.uml.edu/docs/CDS_2024-2025%20Final_tcm18-403507.pdf"
+        },
+        "Western New England University": {
+            "location": "Springfield, MA",
+            "admit_rate": 83.5,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://wne.edu/institutional-research/doc/WNE-CDS-2024-25-FINAL.pdf"
+        },
+        "UMass Boston": {
+            "location": "Boston, MA",
+            "admit_rate": 85.5,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.umb.edu/media/umassboston/editor-uploads/institutional-research-assessment-planning/TABLE7-Undergraduate--Admissions.pdf"
+        },
+        "Wentworth Institute of Technology": {
+            "location": "Boston, MA",
+            "admit_rate": 87.8,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://wit.edu/sites/default/files/2026-02/Common%20Data%20Set%202025-2026%20%281%29.pdf"
+        },
+        "University of New Hampshire": {
+            "location": "Durham, NH",
+            "admit_rate": 88.2,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-07/CDS-2024-2025_7.18.25.pdf"
+        },
+        "UMass Dartmouth": {
+            "location": "Dartmouth, MA",
+            "admit_rate": 90.6,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/Data_Book_Fall24_Final-v2_6.26.25.pdf"
+        },
+        "Wilkes University": {
+            "location": "Wilkes-Barre, PA",
+            "admit_rate": 94.0,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://www.wilkes.edu/about-wilkes/offices-and-administration/institutional-research/_assets/fact-book-2025-26.pdf"
+        },
+        "University of Pittsburgh at Johnstown": {
+            "location": "Johnstown, PA",
+            "admit_rate": 94.8,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://ir.pitt.edu/sites/default/files/assets/2024-2025_CDS_Johnstown.pdf"
         }
     }
 
     def favorite_competitiveness(rate):
-
-        if rate is None:
-            return None, "Not rated"
-
-        if rate < 7:
-            return 5, "Extremely Competitive"
-        elif rate < 15:
-            return 4, "Highly Competitive"
-        elif rate < 30:
-            return 3, "Competitive"
-        elif rate < 50:
-            return 2, "Moderately Competitive"
-        else:
-            return 1, "More Accessible"
+        return college_selectivity_from_acceptance_rate(rate)
 
     # Recover the most recent personalized college matches from this session.
     last_match_lookup = {}
@@ -10768,7 +12427,10 @@ elif page == "Projects":
             key="project_time_choice"
         )
 
-    with st.expander("What equipment do you have? (optional)"):
+    with st.expander(
+        "What equipment do you have? (optional)",
+        key="project_equipment_expander"
+    ):
 
         equipment = st.multiselect(
             "Select everything you can access.",
