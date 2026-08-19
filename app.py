@@ -4225,17 +4225,25 @@ extra_opportunities = [
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
         "bronx_priority": "no",
         "cost": "Free",
-        "financial_aid": "Not needed — program is free",
+        "cost_category": "Free",
+        "financial_aid": "Not needed — program is fully funded",
+        "financial_aid_status": "Not needed — program is fully funded",
         "application_status": "Future Cycle",
-        "deadline": "Summer 2027 date not yet announced; 2026 deadline was February 27, 2026 at 5 PM",
+        "deadline": "February 27, 2026 at 5 PM",
         "selectivity": "Highly Competitive",
         "selectivity_stars": 4,
-        "acceptance_rate": "Not publicly reported",
-        "internship_potential": "Yes — approximately 150 hours of lab research plus possible continued research collaboration",
+        "acceptance_rate": "~4–8% estimated",
+        "acceptance_rate_confidence": "Estimated — Moderate confidence",
+        "acceptance_rate_source": "NYU does not publish an official acceptance rate. This is an unofficial estimate based on reported cohort size and secondary reporting.",
+        "eligibility_summary": "NYC resident attending an NYC high school; rising junior or senior; must commit to the full 10-week program.",
+        "stipend": "Paid — stipend provided to participants",
+        "stipend_display": "Paid — stipend provided to participants",
+        "internship_potential": "Yes — approximately 150 hours of faculty-mentored laboratory research",
         "format": "Hybrid + In person — NYU Tandon, Brooklyn, NYC",
-        "paid_status": "Paid — 2026 participants received a $2,000 stipend",
-        "requirements": "NYC resident attending an NYC school; rising junior or senior; full 10-week commitment",
-        "url": "https://k12stem.engineering.nyu.edu/programs/arise"
+        "paid_status": "Paid — stipend provided to participants",
+        "requirements": "NYC resident attending an NYC high school; rising junior or senior; must commit to the full 10-week program.",
+        "url": "https://k12stem.engineering.nyu.edu/programs/arise",
+        "last_verified": "2026-08-19"
     },
     {
         "name": "Simons Summer Research Program",
@@ -4720,6 +4728,37 @@ extra_opportunities = [
         "requirements": "Long Island high school student entering senior year; must be nominated by school science chairperson",
         "url": "https://www.cshl.edu/education/partners-for-the-future/"
     },
+    {
+        "name": "Cooper Union Summer STEM",
+        "organization": "The Cooper Union",
+        "description": "Highly selective in-person engineering and computer science program offering three- and six-week college-level courses and projects at Cooper Union.",
+        "opportunity_type": "Summer Program",
+        "fields": "Engineering;Computer Science;Robotics;Electrical Engineering;Design;STEM",
+        "grades": "9;10;11",
+        "age_range": "Completed grades 9, 10, or 11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Tuition required",
+        "financial_aid": "Available",
+        "application_status": "Future Cycle",
+        "deadline": "2027 applications launch December 11, 2026; deadline not yet posted",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Cooper Union does not publish an official Summer STEM acceptance rate.",
+        "eligibility_summary": "Students who completed grades 9, 10, or 11; international students may apply",
+        "cost_category": "Tuition required",
+        "tuition_cost": "$3,150 for 2026 3-week courses; $5,150 for 2026 6-week courses",
+        "financial_aid_status": "Full and partial financial aid available to qualifying students; NYC public-school students meeting income requirements may qualify",
+        "stipend_display": "Not paid",
+        "internship_potential": "No — college-level engineering and computer science courses and projects",
+        "format": "In person — The Cooper Union, Manhattan, NYC",
+        "paid_status": "Not paid / Tuition-based Program",
+        "requirements": "Completed grades 9, 10, or 11; application and cycle-specific supporting materials; some courses have additional math/science prerequisites",
+        "url": "https://cooper.edu/engineering/stem/summer",
+        "last_verified": "2026-08-19"
+    },
 
 ]
 
@@ -4788,6 +4827,14 @@ else:
         ignore_index=True
     )
 
+opportunities = pd.DataFrame(
+    apply_opportunity_transparency(
+        opportunities.to_dict(
+            "records"
+        )
+    )
+)
+
 
 try:
     careers = pd.read_csv("data/careers.csv")
@@ -4831,33 +4878,71 @@ def opportunity_text(
     return text
 
 
+def opportunity_field(
+    opportunity,
+    *keys,
+    fallback=""
+):
+
+    for key in keys:
+
+        text = opportunity_text(
+            opportunity.get(
+                key
+            ),
+            ""
+        )
+
+        if (
+            text
+            and
+            text.lower() not in {
+                "check official eligibility",
+                "unknown / check official site",
+                "not publicly reported",
+                "check official site",
+                "not specified",
+                "unknown",
+                "no aid stated",
+                "not stated",
+                "nan",
+                "none"
+            }
+        ):
+            return text
+
+    return fallback
+
+
 def opportunity_cost_display(
     opportunity
 ):
 
-    category = opportunity_text(
-        opportunity.get(
-            "cost_category"
-        )
+    cost = opportunity_field(
+        opportunity,
+        "cost",
+        "cost_category",
+        fallback="Unknown / check official site"
     )
 
-    if category == "Free":
+    if cost.lower() == "free":
         return "Free"
 
-    if category:
-        return category
-
-    return opportunity_text(
-        opportunity.get(
-            "cost"
-        ),
-        "Unknown / check official site"
-    )
+    return cost
 
 
 def opportunity_acceptance_source_label(
     opportunity
 ):
+
+    source = opportunity_field(
+        opportunity,
+        "acceptance_rate_source",
+        fallback=""
+    )
+
+    if source:
+        return source
 
     confidence = opportunity_text(
         opportunity.get(
@@ -4917,36 +5002,48 @@ def opportunity_transparency_stats_html(
     opportunity
 ):
 
-    eligibility = opportunity_text(
-        opportunity.get(
-            "eligibility_summary"
-        ),
-        "Check official eligibility"
+    eligibility = opportunity_field(
+        opportunity,
+        "eligibility_summary",
+        "requirements",
+        "application_requirements",
+        fallback="Check official eligibility"
     )
 
     cost = opportunity_cost_display(
         opportunity
     )
 
-    aid = opportunity_text(
-        opportunity.get(
-            "financial_aid_status"
-        ),
-        "Unknown / check official site"
+    aid = opportunity_field(
+        opportunity,
+        "financial_aid_status",
+        "financial_aid",
+        fallback="Unknown / check official site"
     )
 
-    stipend = opportunity_text(
-        opportunity.get(
-            "stipend_display"
-        ),
-        "Check official site"
+    if (
+        cost == "Free"
+        and
+        aid.lower() in {
+            "not needed",
+            "not needed — program is free",
+            "not needed — program is completely free"
+        }
+    ):
+        aid = "Not needed — program is fully funded"
+
+    stipend = opportunity_field(
+        opportunity,
+        "stipend_display",
+        "stipend",
+        "paid_status",
+        fallback="Check official site"
     )
 
-    rate = opportunity_text(
-        opportunity.get(
-            "acceptance_rate"
-        ),
-        "Not publicly reported"
+    rate = opportunity_field(
+        opportunity,
+        "acceptance_rate",
+        fallback="Not publicly reported"
     )
 
     source_label = opportunity_acceptance_source_label(
