@@ -828,11 +828,11 @@ st.markdown(
     }
 
     [data-testid="stMain"] .st-key-profile_cards {
-        width: min(920px, 100%) !important;
-        max-width: 920px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        margin-top: 2rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 0.35rem !important;
         margin-bottom: 0 !important;
     }
 
@@ -840,74 +840,8 @@ st.markdown(
     [data-testid="stMain"] .st-key-profile_cards > [data-testid="stLayoutWrapper"] > [data-testid="stVerticalBlock"] {
         display: flex !important;
         flex-direction: column !important;
-        gap: 2rem !important;
+        gap: 0 !important;
         width: 100% !important;
-    }
-
-    [data-testid="stMain"] .st-key-profile_cards [data-testid="stHorizontalBlock"] {
-        display: grid !important;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-        column-gap: 2rem !important;
-        row-gap: 2rem !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        align-items: stretch !important;
-        justify-content: center !important;
-    }
-
-    [data-testid="stMain"] .st-key-profile_cards [data-testid="stHorizontalBlock"] > div {
-        width: auto !important;
-        flex: none !important;
-        min-width: 0 !important;
-        height: 340px !important;
-        min-height: 340px !important;
-        max-height: 340px !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"] {
-        background: #FFFFFF !important;
-        border: 3px solid #083C5D !important;
-        border-radius: 16px !important;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08);
-        padding: 1.6rem 1.65rem !important;
-        min-height: 340px !important;
-        height: 340px !important;
-        max-height: 340px !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-        contain: paint;
-        isolation: isolate;
-        transform: none !important;
-        cursor: default !important;
-        width: 100% !important;
-    }
-
-    [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"] > [data-testid="stVerticalBlock"] {
-        height: 100% !important;
-        max-height: 100% !important;
-        min-height: 0 !important;
-        overflow: hidden !important;
-        gap: 0.45rem !important;
-        flex: 1 1 auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-    }
-
-    [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"] h2 {
-        margin-top: 0 !important;
-        margin-bottom: 0.7rem !important;
-        padding-top: 0 !important;
-        line-height: 1.25 !important;
-        flex-shrink: 0 !important;
     }
 
     .sp-profile-card {
@@ -920,6 +854,649 @@ st.markdown(
         min-height: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
+    }
+
+    .sp-profile-summary {
+        width: 100%;
+        margin: 0;
+    }
+
+    .sp-profile-summary > h2 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.45rem !important;
+        font-weight: 750 !important;
+        line-height: 1.2 !important;
+        margin: 0 0 0.3rem 0 !important;
+    }
+
+    .sp-profile-summary-subtitle {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.92rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 1rem 0 !important;
+    }
+
+    .sp-profile-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        width: 100%;
+        margin: 0;
+        align-items: stretch;
+    }
+
+    .sp-profile-summary-card {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 16px;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
+        padding: 1.15rem 1.2rem 1.2rem 1.3rem;
+        min-height: 172px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sp-profile-summary-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #083C5D, #018FC7);
+    }
+
+    .sp-profile-summary-head {
+        margin: 0 0 0.85rem 0;
+        width: 100%;
+    }
+
+    .sp-profile-summary-card h3 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.05rem !important;
+        font-weight: 750 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 0.85rem 0 !important;
+        min-height: 0 !important;
+    }
+
+    .sp-profile-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        width: 100%;
+    }
+
+    .sp-profile-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.36rem 0.7rem;
+        border-radius: 999px;
+        background: #E7F6FC;
+        color: #00658F !important;
+        -webkit-text-fill-color: #00658F !important;
+        border: 1px solid #B9E5F5;
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3;
+        margin: 0;
+    }
+
+    .sp-profile-stage {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.02rem !important;
+        font-weight: 750 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 0.75rem 0 !important;
+        background: #F7FBFE;
+        border: 1px solid #D7E5EC;
+        border-radius: 12px;
+        padding: 0.7rem 0.8rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .sp-profile-goal-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        background: #E7F6FC;
+        color: #00658F !important;
+        -webkit-text-fill-color: #00658F !important;
+        border: 1px solid #B9E5F5;
+        font-size: 0.84rem !important;
+        font-weight: 750 !important;
+        line-height: 1.3;
+    }
+
+    .sp-profile-note {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.86rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0.75rem 0 0 0 !important;
+    }
+
+    .sp-profile-empty {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-deadline_card_"] {
+        background: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07) !important;
+        padding: 1.2rem 1.25rem 1.1rem !important;
+        margin: 0 0 1rem 0 !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-deadline_card_"] [data-testid="stVerticalBlock"] {
+        background: transparent !important;
+        gap: 0.7rem !important;
+    }
+
+    .sp-deadline-card {
+        width: 100%;
+        margin: 0;
+    }
+
+    .sp-deadline-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.32rem 0.72rem;
+        border-radius: 999px;
+        font-size: 1.08rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0.02em;
+        margin: 0 0 0.7rem 0;
+    }
+
+    .sp-deadline-badge-open {
+        color: #14532D !important;
+        -webkit-text-fill-color: #14532D !important;
+        background: #E8F8EE;
+        border: 1px solid #B7E4C7;
+    }
+
+    .sp-deadline-badge-closed {
+        color: #991B1B !important;
+        -webkit-text-fill-color: #991B1B !important;
+        background: #FDECEC;
+        border: 1px solid #F5C2C2;
+    }
+
+    .sp-deadline-badge-upcoming {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+    }
+
+    .sp-deadline-card h3 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.22rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 0.35rem 0 !important;
+    }
+
+    .sp-deadline-meta {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 1rem 0 !important;
+    }
+
+    .sp-deadline-stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
+        width: 100%;
+        margin: 0 0 1rem 0;
+    }
+
+    .sp-deadline-stat-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.82rem !important;
+        font-weight: 750 !important;
+        line-height: 1.3 !important;
+        margin: 0 0 0.28rem 0 !important;
+    }
+
+    .sp-deadline-stat-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.98rem !important;
+        font-weight: 650 !important;
+        line-height: 1.35 !important;
+        margin: 0 !important;
+    }
+
+    .sp-deadline-time {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 12px;
+        padding: 0.65rem 0.75rem;
+        box-sizing: border-box;
+    }
+
+    .sp-deadline-time .sp-deadline-stat-value {
+        font-weight: 800 !important;
+        font-size: 1.05rem !important;
+    }
+
+    .sp-deadline-note {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.92rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+        margin: 0 0 0.9rem 0 !important;
+    }
+
+    .sp-deadline-note strong {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
+        display: block;
+        margin-bottom: 0.2rem;
+    }
+
+    .sp-deadline-note-closed strong {
+        color: #991B1B !important;
+        -webkit-text-fill-color: #991B1B !important;
+    }
+
+    .sp-deadline-fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        width: 100%;
+        margin: 0;
+    }
+
+    .sp-deadline-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.3rem 0.62rem;
+        border-radius: 999px;
+        background: #E7F6FC;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        border: 1px solid #B9E5F5;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3;
+        margin: 0;
+    }
+
+    [data-testid="stMain"] [class*="st-key-recommended_card_"] {
+        background: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07) !important;
+        padding: 1.2rem 1.25rem 1.1rem !important;
+        margin: 0 0 1rem 0 !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stVerticalBlock"] {
+        background: transparent !important;
+        gap: 0.7rem !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] {
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 14px !important;
+        background: #FFFFFF !important;
+        box-shadow: none !important;
+        overflow: hidden;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary,
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary p,
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary span {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 750 !important;
+    }
+
+    .sp-rec-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .sp-rec-heading {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .sp-rec-heading h3 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.22rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 0.3rem 0 !important;
+    }
+
+    .sp-rec-org {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+    }
+
+    .sp-rec-match {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 12px;
+        padding: 0.65rem 0.8rem;
+        min-width: 6.75rem;
+        box-sizing: border-box;
+        flex: 0 0 auto;
+    }
+
+    .sp-rec-match-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.82rem !important;
+        font-weight: 750 !important;
+        margin: 0 0 0.2rem 0 !important;
+    }
+
+    .sp-rec-match-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.25rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+    }
+
+    .sp-rec-desc {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+        margin: 0 0 1rem 0 !important;
+    }
+
+    .sp-rec-stats {
+        margin-bottom: 0.95rem;
+    }
+
+    .sp-rec-selectivity-note {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+        line-height: 1.35 !important;
+        margin: 0.28rem 0 0 0 !important;
+    }
+
+    .sp-rec-star-filled {
+        color: #F4C542 !important;
+        -webkit-text-fill-color: #F4C542 !important;
+        letter-spacing: 0.04em;
+    }
+
+    .sp-rec-star-empty {
+        color: #C5CED6 !important;
+        -webkit-text-fill-color: #C5CED6 !important;
+        letter-spacing: 0.04em;
+    }
+
+    .sp-rec-paid {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.28rem 0.62rem;
+        border-radius: 999px;
+        background: #E8F8EE;
+        color: #14532D !important;
+        -webkit-text-fill-color: #14532D !important;
+        border: 1px solid #B7E4C7;
+        font-size: 0.82rem !important;
+        font-weight: 750 !important;
+        line-height: 1.35;
+    }
+
+    .sp-project-examples-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        width: 100%;
+        align-items: stretch;
+        margin: 0;
+    }
+
+    .sp-project-example-card {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 16px;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
+        padding: 1.15rem 1.2rem 1.2rem;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 0;
+    }
+
+    .sp-project-level {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.28rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.78rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.04em;
+        line-height: 1.2 !important;
+        margin: 0 0 0.7rem 0;
+        width: fit-content;
+    }
+
+    .sp-project-level-beginner {
+        background: #E8F8EE;
+        color: #14532D !important;
+        -webkit-text-fill-color: #14532D !important;
+        border: 1px solid #B7E4C7;
+    }
+
+    .sp-project-level-intermediate {
+        background: #FFF6DE;
+        color: #8A5A12 !important;
+        -webkit-text-fill-color: #8A5A12 !important;
+        border: 1px solid #F0D48A;
+    }
+
+    .sp-project-level-advanced {
+        background: #FDECEC;
+        color: #991B1B !important;
+        -webkit-text-fill-color: #991B1B !important;
+        border: 1px solid #F5C2C2;
+    }
+
+    .sp-project-example-card h3 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.12rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 0.55rem 0 !important;
+    }
+
+    .sp-project-example-desc {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+        margin: 0 0 0.9rem 0 !important;
+        flex: 1 1 auto;
+    }
+
+    .sp-project-example-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .sp-project-meta-chip {
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+        border-radius: 12px;
+        padding: 0.4rem 0.65rem;
+        min-width: 0;
+    }
+
+    .sp-project-meta-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.72rem !important;
+        font-weight: 750 !important;
+        line-height: 1.2 !important;
+        margin: 0 0 0.12rem 0 !important;
+    }
+
+    .sp-project-meta-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.84rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important;
+        margin: 0 !important;
+    }
+
+    .sp-dash-direction-row {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        gap: 1rem;
+        width: 100%;
+        align-items: stretch;
+        margin: 0;
+    }
+
+    .sp-dash-card {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 16px;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
+        padding: 1.2rem 1.25rem 1.2rem;
+        box-sizing: border-box;
+        height: 100%;
+    }
+
+    .sp-dash-card h3 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.35rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        margin: 0 0 0.5rem 0 !important;
+    }
+
+    .sp-dash-card-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.05rem !important;
+        font-weight: 750 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 0.85rem 0 !important;
+    }
+
+    .sp-dash-card-copy {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.94rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+        margin: 0 0 0.95rem 0 !important;
+    }
+
+    .sp-dash-tag-block {
+        margin: 0 0 0.75rem 0;
+    }
+
+    .sp-dash-tag-block:last-child {
+        margin-bottom: 0;
+    }
+
+    .sp-dash-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.82rem !important;
+        font-weight: 750 !important;
+        line-height: 1.3 !important;
+        margin: 0 0 0.35rem 0 !important;
+    }
+
+    .sp-dash-tag {
+        display: inline-block;
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+        border-radius: 12px;
+        padding: 0.42rem 0.75rem;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.9rem !important;
+        font-weight: 650 !important;
+        line-height: 1.4 !important;
+        max-width: 100%;
+    }
+
+    .sp-dash-quick-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .sp-dash-stat-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.2rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+    }
+
+    .sp-dash-interests-card {
+        margin: 0;
+    }
+
+    .sp-dash-interest-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        width: 100%;
     }
 
     [data-testid="stMain"] [data-testid="stVerticalBlock"]:has(.st-key-profile_action_stack) {
@@ -1823,6 +2400,26 @@ st.markdown(
         .sp-landing-welcome-title {
             font-size: 1.4rem !important;
         }
+
+        .sp-profile-summary-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .sp-deadline-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .sp-rec-header {
+            flex-direction: column;
+        }
+
+        .sp-project-examples-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .sp-dash-direction-row {
+            grid-template-columns: 1fr;
+        }
     }
 
     /* FINAL sidebar nav — consistent light text, dark gray buttons, white active */
@@ -2225,6 +2822,143 @@ st.markdown(
         margin-top: 0 !important;
         margin-bottom: 0.5rem !important;
         line-height: 1.35 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-profile-summary > h2,
+    html body [data-testid="stMain"] .sp-profile-summary > h2 * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.45rem !important;
+        font-weight: 750 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    html body [data-testid="stMain"] .sp-profile-summary-subtitle,
+    html body [data-testid="stMain"] .sp-profile-summary-subtitle * {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-weight: 500 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-profile-summary-card h3,
+    html body [data-testid="stMain"] .sp-profile-summary-card h3 * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        margin-top: 0 !important;
+        margin-bottom: 0.85rem !important;
+    }
+
+    html body [data-testid="stMain"] .sp-profile-stage,
+    html body [data-testid="stMain"] .sp-profile-stage * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body [data-testid="stMain"] .sp-deadline-badge-open,
+    html body [data-testid="stMain"] .sp-deadline-badge-open * {
+        color: #14532D !important;
+        -webkit-text-fill-color: #14532D !important;
+        font-weight: 800 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-deadline-badge-closed,
+    html body [data-testid="stMain"] .sp-deadline-badge-closed *,
+    html body [data-testid="stMain"] .sp-deadline-note-closed strong {
+        color: #991B1B !important;
+        -webkit-text-fill-color: #991B1B !important;
+        font-weight: 800 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-deadline-badge-upcoming,
+    html body [data-testid="stMain"] .sp-deadline-badge-upcoming *,
+    html body [data-testid="stMain"] .sp-deadline-card h3,
+    html body [data-testid="stMain"] .sp-deadline-card h3 *,
+    html body [data-testid="stMain"] .sp-deadline-stat-label,
+    html body [data-testid="stMain"] .sp-deadline-stat-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body [data-testid="stMain"] .sp-deadline-pill,
+    html body [data-testid="stMain"] .sp-deadline-pill * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 700 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-rec-heading h3,
+    html body [data-testid="stMain"] .sp-rec-heading h3 *,
+    html body [data-testid="stMain"] .sp-rec-match-label,
+    html body [data-testid="stMain"] .sp-rec-match-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body [data-testid="stMain"] .sp-rec-star-filled,
+    html body [data-testid="stMain"] .sp-rec-star-filled * {
+        color: #F4C542 !important;
+        -webkit-text-fill-color: #F4C542 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-rec-star-empty,
+    html body [data-testid="stMain"] .sp-rec-star-empty * {
+        color: #C5CED6 !important;
+        -webkit-text-fill-color: #C5CED6 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-rec-paid,
+    html body [data-testid="stMain"] .sp-rec-paid * {
+        color: #14532D !important;
+        -webkit-text-fill-color: #14532D !important;
+        font-weight: 750 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-project-example-card h3,
+    html body [data-testid="stMain"] .sp-project-example-card h3 * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-project-level-beginner,
+    html body [data-testid="stMain"] .sp-project-level-beginner * {
+        color: #14532D !important;
+        -webkit-text-fill-color: #14532D !important;
+        font-weight: 800 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-project-level-intermediate,
+    html body [data-testid="stMain"] .sp-project-level-intermediate * {
+        color: #8A5A12 !important;
+        -webkit-text-fill-color: #8A5A12 !important;
+        font-weight: 800 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-project-level-advanced,
+    html body [data-testid="stMain"] .sp-project-level-advanced * {
+        color: #991B1B !important;
+        -webkit-text-fill-color: #991B1B !important;
+        font-weight: 800 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-dash-card h3,
+    html body [data-testid="stMain"] .sp-dash-card h3 *,
+    html body [data-testid="stMain"] .sp-dash-card-title,
+    html body [data-testid="stMain"] .sp-dash-label,
+    html body [data-testid="stMain"] .sp-dash-stat-value,
+    html body [data-testid="stMain"] .sp-dash-tag {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"],
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"]:hover {
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 14px !important;
+        background: #FFFFFF !important;
+        box-shadow: none !important;
+        transform: none !important;
     }
 
     html, body, .stApp,
@@ -6970,68 +7704,108 @@ if page == "Dashboard":
         "Your Current Direction"
     )
 
-    direction_col1, direction_col2 = (
-        st.columns(
-            [2, 1]
+    direction_title = html_module.escape(
+        str(
+            primary_interest
         )
     )
 
-    with direction_col1:
-
-        with st.container(
-            border=True
-        ):
-
-            st.subheader(
-                primary_interest
+    exploration_safe = html_module.escape(
+        str(
+            profile.get(
+                "exploration_stage",
+                ""
             )
+        )
+    )
 
-            st.write(
-                "This is currently your primary STEM interest. "
-                "It can change as you explore new fields and experiences."
+    weekly_safe = html_module.escape(
+        str(
+            profile.get(
+                "weekly_time",
+                ""
             )
+        )
+    )
 
-            st.write(
-                f"**Exploration stage:** "
-                f"{profile['exploration_stage']}"
+    grade_safe = html_module.escape(
+        str(
+            profile.get(
+                "grade",
+                ""
             )
+        )
+    )
 
-            st.write(
-                f"**Weekly STEM goal:** "
-                f"{profile['weekly_time']}"
+    borough_safe = html_module.escape(
+        str(
+            profile.get(
+                "borough",
+                ""
             )
+        )
+    )
 
-    with direction_col2:
-
-        with st.container(
-            border=True
-        ):
-
-            st.subheader(
-                "Quick Profile"
+    confidence_safe = html_module.escape(
+        str(
+            profile.get(
+                "confidence",
+                ""
             )
+        )
+    )
 
-            st.write(
-                f"**Grade:** {profile['grade']}"
-            )
+    preference_html = ""
 
-            st.write(
-                f"**Borough:** {profile['borough']}"
-            )
+    if profile.get(
+        "financial_support"
+    ):
+        preference_html = (
+            '<div class="sp-dash-tag-block">'
+            '<div class="sp-dash-label">Opportunity Preference</div>'
+            '<span class="sp-dash-tag">'
+            'Free / financially supported'
+            '</span>'
+            '</div>'
+        )
 
-            st.write(
-                f"**Interest confidence:** "
-                f"{profile['confidence']}/10"
-            )
-
-            if profile.get(
-                "financial_support"
-            ):
-
-                st.write(
-                    "**Opportunity preference:** "
-                    "Free / financially supported"
-                )
+    st.html(
+        '<div class="sp-dash-direction-row">'
+        '<div class="sp-dash-card">'
+        f'<h3>{direction_title}</h3>'
+        '<p class="sp-dash-card-copy">'
+        'This is currently your primary STEM interest. '
+        'It can change as you explore new fields and experiences.'
+        '</p>'
+        '<div class="sp-dash-tag-block">'
+        '<div class="sp-dash-label">Exploration Stage</div>'
+        f'<span class="sp-dash-tag">{exploration_safe}</span>'
+        '</div>'
+        '<div class="sp-dash-tag-block">'
+        '<div class="sp-dash-label">Weekly STEM Goal</div>'
+        f'<span class="sp-dash-tag">{weekly_safe}</span>'
+        '</div>'
+        '</div>'
+        '<div class="sp-dash-card">'
+        '<div class="sp-dash-card-title">Quick Profile</div>'
+        '<div class="sp-dash-quick-stats">'
+        '<div>'
+        '<div class="sp-dash-label">Grade</div>'
+        f'<div class="sp-dash-stat-value">{grade_safe}</div>'
+        '</div>'
+        '<div>'
+        '<div class="sp-dash-label">Borough</div>'
+        f'<div class="sp-dash-stat-value">{borough_safe}</div>'
+        '</div>'
+        '<div>'
+        '<div class="sp-dash-label">Interest Confidence</div>'
+        f'<div class="sp-dash-stat-value">{confidence_safe}/10</div>'
+        '</div>'
+        f'{preference_html}'
+        '</div>'
+        '</div>'
+        '</div>'
+    )
 
     # --------------------------------------------------------
     # INTERESTS
@@ -7043,24 +7817,42 @@ if page == "Dashboard":
         "Your STEM Interests"
     )
 
-    if profile.get(
+    interest_list = profile.get(
         "interests"
-    ):
+    ) or []
+
+    if interest_list:
 
         interest_pills = "".join(
             [
-                f'<span class="sp-pill">{interest}</span>'
-                for interest
-                in profile[
-                    "interests"
-                ]
+                '<span class="sp-deadline-pill">'
+                + html_module.escape(
+                    str(interest)
+                )
+                + '</span>'
+                for interest in interest_list
             ]
         )
 
-        st.markdown(
-            interest_pills,
-            unsafe_allow_html=True
+        interests_body = (
+            '<div class="sp-dash-interest-pills">'
+            f'{interest_pills}'
+            '</div>'
         )
+
+    else:
+
+        interests_body = (
+            '<p class="sp-dash-card-copy">'
+            'No STEM interests selected yet.'
+            '</p>'
+        )
+
+    st.html(
+        '<div class="sp-dash-card sp-dash-interests-card">'
+        f'{interests_body}'
+        '</div>'
+    )
 
     if st.button(
         "Update My Profile",
@@ -9194,97 +9986,561 @@ elif page == "Opportunities":
             )
         ) in enumerate(recommended_results[:4]):
 
-            with st.container(
-                border=True
+            def rec_clean_text(
+                value,
+                fallback=""
             ):
 
-                rec_title_col, rec_match_col = st.columns(
-                    [4, 1]
+                if value is None:
+                    return fallback
+
+                try:
+
+                    if pd.isna(
+                        value
+                    ):
+                        return fallback
+
+                except Exception:
+                    pass
+
+                text = str(
+                    value
+                ).strip()
+
+                if (
+                    not text
+                    or
+                    text.lower() == "nan"
+                ):
+                    return fallback
+
+                return text
+
+            def rec_window_status(
+                opportunity
+            ):
+
+                raw_status = rec_clean_text(
+                    opportunity.get(
+                        "application_status",
+                        ""
+                    )
                 )
 
-                with rec_title_col:
+                status_lower = raw_status.lower()
 
-                    st.subheader(
-                        recommended_opportunity[
-                            "name"
-                        ]
+                deadline_dt = parse_confirmed_deadline(
+                    opportunity.get(
+                        "deadline"
+                    )
+                )
+
+                days_left = None
+
+                if deadline_dt is not None:
+
+                    now_local = datetime.now(
+                        timezone.utc
                     )
 
-                    st.caption(
-                        recommended_opportunity.get(
-                            "organization",
-                            ""
+                    if deadline_dt.tzinfo is None:
+
+                        compare_deadline = deadline_dt.replace(
+                            tzinfo=timezone.utc
                         )
+
+                    else:
+
+                        compare_deadline = deadline_dt.astimezone(
+                            timezone.utc
+                        )
+
+                    days_left = (
+                        compare_deadline.date()
+                        -
+                        now_local.date()
+                    ).days
+
+                if (
+                    days_left is not None
+                    and
+                    days_left < 0
+                ):
+                    return "CLOSED"
+
+                if "closed" in status_lower:
+                    return "CLOSED"
+
+                if (
+                    "open now" in status_lower
+                    or
+                    status_lower == "open"
+                    or
+                    status_lower.startswith("open ")
+                ):
+                    return "OPEN NOW"
+
+                if (
+                    "future cycle" in status_lower
+                    or
+                    "opens " in status_lower
+                    or
+                    "not yet" in status_lower
+                    or
+                    "upcoming" in status_lower
+                    or
+                    status_lower == "future"
+                ):
+                    return "UPCOMING"
+
+                if (
+                    days_left is not None
+                    and
+                    days_left >= 0
+                ):
+                    return "OPEN NOW"
+
+                return "UPCOMING"
+
+            def rec_paid_display(
+                opportunity
+            ):
+
+                raw = rec_clean_text(
+                    opportunity.get(
+                        "paid_status",
+                        ""
+                    )
+                )
+
+                if not raw:
+                    return (
+                        "Check official site",
+                        "unknown"
                     )
 
-                with rec_match_col:
+                lower = raw.lower()
 
-                    st.metric(
-                        "Your Match",
-                        f"{recommended_score}%"
+                if (
+                    "check official" in lower
+                    or
+                    "not specified" in lower
+                ):
+                    return (
+                        "Check official site",
+                        "unknown"
                     )
 
-                st.write(
+                if (
+                    "unpaid" in lower
+                    or
+                    "not paid" in lower
+                    or
+                    "free program" in lower
+                    or
+                    lower == "free"
+                ):
+                    return (
+                        "Free",
+                        "free"
+                    )
+
+                if (
+                    "paid" in lower
+                    or
+                    "stipend" in lower
+                    or
+                    "$" in raw
+                ):
+                    return (
+                        raw,
+                        "paid"
+                    )
+
+                return (
+                    raw,
+                    "other"
+                )
+
+            def rec_pills_html(
+                labels
+            ):
+
+                return "".join(
+                    [
+                        '<span class="sp-deadline-pill">'
+                        + html_module.escape(
+                            str(label)
+                        )
+                        + '</span>'
+                        for label in labels
+                    ]
+                )
+
+            def rec_grade_pills(
+                grades_value
+            ):
+
+                raw = rec_clean_text(
+                    grades_value
+                )
+
+                if not raw:
+                    return []
+
+                lower = raw.lower()
+
+                if (
+                    "check" in lower
+                    or
+                    "official" in lower
+                    or
+                    "eligib" in lower
+                ):
+                    return []
+
+                range_match = re.search(
+                    r"\b(9|10|11|12)\s*[–-]\s*(9|10|11|12)\b",
+                    raw
+                )
+
+                if range_match:
+
+                    start = int(
+                        range_match.group(1)
+                    )
+
+                    end = int(
+                        range_match.group(2)
+                    )
+
+                    if start <= end:
+
+                        return [
+                            f"Grade {number}"
+                            for number in range(
+                                start,
+                                end + 1
+                            )
+                        ]
+
+                found = re.findall(
+                    r"\b(9|10|11|12)\b",
+                    raw
+                )
+
+                unique_grades = []
+
+                for number in found:
+
+                    label = f"Grade {number}"
+
+                    if label not in unique_grades:
+                        unique_grades.append(
+                            label
+                        )
+
+                return unique_grades
+
+            def rec_field_pills(
+                fields_value
+            ):
+
+                raw = rec_clean_text(
+                    fields_value
+                )
+
+                if not raw:
+                    return []
+
+                labels = []
+
+                for chunk in raw.replace(
+                    ",",
+                    ";"
+                ).split(";"):
+
+                    label = chunk.strip()
+
+                    if (
+                        label
+                        and
+                        label not in labels
+                    ):
+                        labels.append(
+                            label
+                        )
+
+                return labels
+
+            def rec_stat_html(
+                label,
+                value_html
+            ):
+
+                return (
+                    '<div class="sp-deadline-stat">'
+                    '<div class="sp-deadline-stat-label">'
+                    f'{label}'
+                    '</div>'
+                    '<div class="sp-deadline-stat-value">'
+                    f'{value_html}'
+                    '</div>'
+                    '</div>'
+                )
+
+            window_status = rec_window_status(
+                recommended_opportunity
+            )
+
+            if window_status == "OPEN NOW":
+                badge_class = "sp-deadline-badge-open"
+            elif window_status == "CLOSED":
+                badge_class = "sp-deadline-badge-closed"
+            else:
+                badge_class = "sp-deadline-badge-upcoming"
+
+            star_display = selectivity_to_stars(
+                recommended_opportunity
+            )
+
+            filled_stars = star_display.count(
+                "★"
+            )
+
+            empty_stars = star_display.count(
+                "☆"
+            )
+
+            stars_html = (
+                '<span class="sp-rec-star-filled">'
+                + ("★" * filled_stars)
+                + '</span>'
+                + '<span class="sp-rec-star-empty">'
+                + ("☆" * empty_stars)
+                + '</span>'
+            )
+
+            selectivity_label = rec_clean_text(
+                recommended_opportunity.get(
+                    "selectivity",
+                    ""
+                )
+            )
+
+            if selectivity_label:
+
+                stars_html += (
+                    '<div class="sp-rec-selectivity-note">'
+                    + html_module.escape(
+                        selectivity_label
+                    )
+                    + '</div>'
+                )
+
+            paid_text, paid_kind = rec_paid_display(
+                recommended_opportunity
+            )
+
+            if paid_kind == "paid":
+                paid_html = (
+                    '<span class="sp-rec-paid">'
+                    + html_module.escape(
+                        paid_text
+                    )
+                    + '</span>'
+                )
+            else:
+                paid_html = html_module.escape(
+                    paid_text
+                )
+
+            grade_labels = rec_grade_pills(
+                recommended_opportunity.get(
+                    "grades",
+                    ""
+                )
+            )
+
+            if grade_labels:
+                grades_html = (
+                    '<div class="sp-deadline-fields">'
+                    + rec_pills_html(
+                        grade_labels
+                    )
+                    + '</div>'
+                )
+            else:
+                grades_html = html_module.escape(
+                    rec_clean_text(
+                        recommended_opportunity.get(
+                            "grades",
+                            ""
+                        ),
+                        "Check eligibility"
+                    )
+                )
+
+            field_labels = rec_field_pills(
+                recommended_opportunity.get(
+                    "fields",
+                    ""
+                )
+            )
+
+            fields_html = ""
+
+            if field_labels:
+                fields_html = (
+                    '<div class="sp-deadline-fields">'
+                    + rec_pills_html(
+                        field_labels
+                    )
+                    + '</div>'
+                )
+
+            name_safe = html_module.escape(
+                rec_clean_text(
+                    recommended_opportunity.get(
+                        "name",
+                        "Opportunity"
+                    ),
+                    "Opportunity"
+                )
+            )
+
+            org_safe = html_module.escape(
+                rec_clean_text(
+                    recommended_opportunity.get(
+                        "organization",
+                        ""
+                    )
+                )
+            )
+
+            desc_safe = html_module.escape(
+                rec_clean_text(
                     recommended_opportunity.get(
                         "description",
                         ""
                     )
                 )
+            )
 
-                rec1, rec2, rec3 = st.columns(3)
+            type_safe = html_module.escape(
+                rec_clean_text(
+                    recommended_opportunity.get(
+                        "opportunity_type",
+                        ""
+                    ),
+                    "Not listed"
+                )
+            )
 
-                with rec1:
+            acceptance_safe = html_module.escape(
+                rec_clean_text(
+                    recommended_opportunity.get(
+                        "acceptance_rate",
+                        ""
+                    ),
+                    "Not publicly reported"
+                )
+            )
 
-                    st.write(
-                        f"**Type:** "
-                        f"{recommended_opportunity.get('opportunity_type', 'Not listed')}"
+            deadline_safe = html_module.escape(
+                rec_clean_text(
+                    recommended_opportunity.get(
+                        "deadline",
+                        ""
+                    ),
+                    "Check official site"
+                )
+            )
+
+            ages_safe = html_module.escape(
+                rec_clean_text(
+                    recommended_opportunity.get(
+                        "age_range",
+                        ""
+                    ),
+                    "Check official eligibility"
+                )
+            )
+
+            internship_safe = html_module.escape(
+                rec_clean_text(
+                    recommended_opportunity.get(
+                        "internship_potential",
+                        ""
+                    ),
+                    "Not specified"
+                )
+            )
+
+            match_safe = html_module.escape(
+                str(
+                    recommended_score
+                )
+            )
+
+            with st.container(
+                key=f"recommended_card_{rec_index}"
+            ):
+
+                st.html(
+                    '<div class="sp-deadline-card">'
+                    f'<span class="sp-deadline-badge {badge_class}">'
+                    f'{window_status}'
+                    '</span>'
+                    '<div class="sp-rec-header">'
+                    '<div class="sp-rec-heading">'
+                    f'<h3>{name_safe}</h3>'
+                    f'<p class="sp-rec-org">{org_safe}</p>'
+                    '</div>'
+                    '<div class="sp-rec-match">'
+                    '<div class="sp-rec-match-label">Your Match</div>'
+                    f'<div class="sp-rec-match-value">{match_safe}%</div>'
+                    '</div>'
+                    '</div>'
+                    f'<p class="sp-rec-desc">{desc_safe}</p>'
+                    '<div class="sp-deadline-stats sp-rec-stats">'
+                    + rec_stat_html(
+                        "Type",
+                        type_safe
                     )
-
-                    st.write(
-                        f"**Grades:** "
-                        f"{recommended_opportunity.get('grades', 'Check eligibility')}"
+                    + rec_stat_html(
+                        "Selectivity",
+                        stars_html
                     )
-
-                    st.write(
-                        f"**Ages:** "
-                        f"{recommended_opportunity.get('age_range', 'Check official eligibility')}"
+                    + rec_stat_html(
+                        "Paid",
+                        paid_html
                     )
-
-                with rec2:
-
-                    rec_star_display = (
-                        selectivity_to_stars(
-                            recommended_opportunity
-                        )
+                    + rec_stat_html(
+                        "Grades",
+                        grades_html
                     )
-
-                    st.write(
-                        f"**Selectivity:** "
-                        f"{rec_star_display}"
+                    + rec_stat_html(
+                        "Acceptance Rate",
+                        acceptance_safe
                     )
-
-
-                    st.write(
-                        f"**Acceptance Rate:** "
-                        f"{recommended_opportunity.get('acceptance_rate', 'Not publicly reported')}"
+                    + rec_stat_html(
+                        "Deadline",
+                        deadline_safe
                     )
-
-                with rec3:
-
-                    st.write(
-                        f"**Paid:** "
-                        f"{recommended_opportunity.get('paid_status', 'Check official site')}"
+                    + rec_stat_html(
+                        "Ages",
+                        ages_safe
                     )
-
-                    st.write(
-                        f"**Deadline:** "
-                        f"{recommended_opportunity.get('deadline', 'Check official site')}"
+                    + rec_stat_html(
+                        "Internship Potential",
+                        internship_safe
                     )
-
-                    st.write(
-                        f"**Internship Potential:** "
-                        f"{recommended_opportunity.get('internship_potential', 'Not specified')}"
-                    )
+                    + '</div>'
+                    + fields_html
+                    + '</div>'
+                )
 
                 with st.expander(
                     "Why this is recommended"
@@ -9471,6 +10727,48 @@ elif page == "Deadline Calendar":
                 return "This Month", days_left
 
             return "Upcoming", days_left
+
+
+        def calendar_window_status(
+            days_left,
+            application_status
+        ):
+
+            raw_status = str(
+                application_status or ""
+            ).strip()
+
+            status_lower = raw_status.lower()
+
+            if days_left < 0:
+                return "CLOSED"
+
+            if "closed" in status_lower:
+                return "CLOSED"
+
+            if (
+                "open now" in status_lower
+                or
+                status_lower == "open"
+                or
+                status_lower.startswith("open ")
+            ):
+                return "OPEN NOW"
+
+            if (
+                "future cycle" in status_lower
+                or
+                "opens " in status_lower
+                or
+                "not yet" in status_lower
+                or
+                "upcoming" in status_lower
+                or
+                status_lower == "future"
+            ):
+                return "UPCOMING"
+
+            return "OPEN NOW"
 
 
         def format_deadline_date(
@@ -9861,99 +11159,145 @@ elif page == "Deadline Calendar":
                     month_label
                 )
 
-                for item in month_items:
+                for card_index, item in enumerate(month_items):
+
+                    window_status = calendar_window_status(
+                        item["days_left"],
+                        item.get(
+                            "application_status",
+                            ""
+                        )
+                    )
+
+                    if window_status == "OPEN NOW":
+                        badge_class = "sp-deadline-badge-open"
+                        note_class = "sp-deadline-note"
+                        note_html = (
+                            "<strong>Applications are currently open.</strong>"
+                            "Deadline: "
+                            + html_module.escape(
+                                str(item["deadline_text"])
+                            )
+                        )
+                    elif window_status == "CLOSED":
+                        badge_class = "sp-deadline-badge-closed"
+                        note_class = "sp-deadline-note sp-deadline-note-closed"
+                        note_html = (
+                            "<strong>Applications are currently closed.</strong>"
+                        )
+                    else:
+                        badge_class = "sp-deadline-badge-upcoming"
+                        note_class = "sp-deadline-note"
+                        note_html = (
+                            "<strong>Applications have not opened yet.</strong>"
+                        )
+
+                    if item["days_left"] < 0:
+                        time_left_text = "Passed"
+                    elif item["days_left"] == 0:
+                        time_left_text = "Today"
+                    elif item["days_left"] == 1:
+                        time_left_text = "1 day"
+                    else:
+                        time_left_text = (
+                            f"{item['days_left']} days"
+                        )
+
+                    field_labels = []
+
+                    for chunk in str(
+                        item.get("fields") or ""
+                    ).replace(",", ";").split(";"):
+                        label = chunk.strip()
+                        if label:
+                            field_labels.append(
+                                label
+                            )
+
+                    fields_html = ""
+
+                    if field_labels:
+                        fields_html = (
+                            '<div class="sp-deadline-fields">'
+                            + "".join(
+                                [
+                                    '<span class="sp-deadline-pill">'
+                                    + html_module.escape(
+                                        label
+                                    )
+                                    + '</span>'
+                                    for label in field_labels
+                                ]
+                            )
+                            + '</div>'
+                        )
+
+                    name_safe = html_module.escape(
+                        str(item["name"])
+                    )
+
+                    org_safe = html_module.escape(
+                        str(item.get("organization") or "")
+                    )
+
+                    type_safe = html_module.escape(
+                        str(item.get("type") or "")
+                    )
+
+                    meta_parts = [
+                        part
+                        for part in [org_safe, type_safe]
+                        if part
+                    ]
+
+                    meta_html = (
+                        " • ".join(
+                            meta_parts
+                        )
+                    )
+
+                    cost_safe = html_module.escape(
+                        str(item.get("cost") or "").strip()
+                        or "—"
+                    )
+
+                    deadline_safe = html_module.escape(
+                        str(item["deadline_text"])
+                    )
 
                     with st.container(
-                        border=True
+                        key=f"deadline_card_{month_key}_{card_index}"
                     ):
 
-                        title_col, countdown_col = (
-                            st.columns(
-                                [4, 1]
-                            )
+                        st.html(
+                            '<div class="sp-deadline-card">'
+                            f'<span class="sp-deadline-badge {badge_class}">'
+                            f'{window_status}'
+                            '</span>'
+                            f'<h3>{name_safe}</h3>'
+                            f'<p class="sp-deadline-meta">{meta_html}</p>'
+                            '<div class="sp-deadline-stats">'
+                            '<div class="sp-deadline-stat">'
+                            '<div class="sp-deadline-stat-label">Deadline</div>'
+                            f'<div class="sp-deadline-stat-value">{deadline_safe}</div>'
+                            '</div>'
+                            '<div class="sp-deadline-stat">'
+                            '<div class="sp-deadline-stat-label">Status</div>'
+                            f'<div class="sp-deadline-stat-value">{window_status}</div>'
+                            '</div>'
+                            '<div class="sp-deadline-stat">'
+                            '<div class="sp-deadline-stat-label">Cost</div>'
+                            f'<div class="sp-deadline-stat-value">{cost_safe}</div>'
+                            '</div>'
+                            '<div class="sp-deadline-stat sp-deadline-time">'
+                            '<div class="sp-deadline-stat-label">Time Left</div>'
+                            f'<div class="sp-deadline-stat-value">{html_module.escape(time_left_text)}</div>'
+                            '</div>'
+                            '</div>'
+                            f'<p class="{note_class}">{note_html}</p>'
+                            f'{fields_html}'
+                            '</div>'
                         )
-
-                        with title_col:
-
-                            st.subheader(
-                                item['name']
-                            )
-
-                            st.caption(
-                                f"{item['organization']} • {item['type']}"
-                            )
-
-                        with countdown_col:
-
-                            if item["days_left"] < 0:
-
-                                st.metric(
-                                    "Status",
-                                    "Closed"
-                                )
-
-                            elif item["days_left"] == 0:
-
-                                st.metric(
-                                    "Time Left",
-                                    "Today"
-                                )
-
-                            elif item["days_left"] == 1:
-
-                                st.metric(
-                                    "Time Left",
-                                    "1 day"
-                                )
-
-                            else:
-
-                                st.metric(
-                                    "Time Left",
-                                    f"{item['days_left']} days"
-                                )
-
-                        details1, details2, details3 = (
-                            st.columns(3)
-                        )
-
-                        with details1:
-
-                            st.write(
-                                f"**Deadline:** "
-                                f"{item['deadline_text']}"
-                            )
-
-                        with details2:
-
-                            st.write(
-                                f"**Status:** "
-                                f"{item['status']}"
-                            )
-
-                        with details3:
-
-                            st.write(
-                                f"**Cost:** "
-                                f"{item['cost']}"
-                            )
-
-                        if item[
-                            "application_status"
-                        ]:
-
-                            st.caption(
-                                f"Program note: "
-                                f"{item['application_status']}"
-                            )
-
-                        if item["fields"]:
-
-                            st.write(
-                                "**Fields:** "
-                                +
-                                item["fields"]
-                            )
 
                         deadline_calendar_url = google_calendar_deadline_url(
                             item["name"],
@@ -13409,35 +14753,146 @@ elif page == "Projects":
 
         st.header("Examples of What You Can Build")
 
-        example_cols = st.columns(3)
+        st.markdown(
+            '<div class="sp-section-subtitle">'
+            'Explore a few project ideas across different skill levels.'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
-        for index, project in enumerate(
-            project_catalog[:6]
-        ):
+        example_cards_html = []
 
-            with example_cols[
-                index % 3
-            ]:
+        for project in project_catalog[:6]:
 
-                with st.container(
-                    border=True
+            level_text = str(
+                project.get(
+                    "level",
+                    ""
+                )
+            ).strip()
+
+            level_lower = level_text.lower()
+
+            if "beginner" in level_lower:
+                level_class = "sp-project-level-beginner"
+                level_label = "BEGINNER"
+            elif "advanced" in level_lower:
+                level_class = "sp-project-level-advanced"
+                level_label = "ADVANCED"
+            else:
+                level_class = "sp-project-level-intermediate"
+                level_label = "INTERMEDIATE"
+
+            title_safe = html_module.escape(
+                str(
+                    project.get(
+                        "title",
+                        "Project"
+                    )
+                )
+            )
+
+            desc_safe = html_module.escape(
+                str(
+                    project.get(
+                        "description",
+                        ""
+                    )
+                )
+            )
+
+            time_safe = html_module.escape(
+                str(
+                    project.get(
+                        "time",
+                        ""
+                    )
+                )
+            )
+
+            cost_safe = html_module.escape(
+                str(
+                    project.get(
+                        "cost",
+                        ""
+                    )
+                )
+            )
+
+            skill_labels = []
+
+            for skill in (
+                project.get(
+                    "skills",
+                    []
+                )
+                or
+                []
+            ):
+
+                skill_text = str(
+                    skill
+                ).strip()
+
+                if (
+                    skill_text
+                    and
+                    skill_text not in skill_labels
                 ):
-
-                    st.caption(
-                        project["level"]
+                    skill_labels.append(
+                        skill_text
                     )
 
-                    st.subheader(
-                        project["title"]
-                    )
+                if len(skill_labels) >= 4:
+                    break
 
-                    st.write(
-                        project["description"]
-                    )
+            skills_html = ""
 
-                    st.caption(
-                        f"{project['time']} • {project['cost']} cost"
+            if skill_labels:
+
+                skills_html = (
+                    '<div class="sp-deadline-fields">'
+                    + "".join(
+                        [
+                            '<span class="sp-deadline-pill">'
+                            + html_module.escape(
+                                skill
+                            )
+                            + '</span>'
+                            for skill in skill_labels
+                        ]
                     )
+                    + '</div>'
+                )
+
+            example_cards_html.append(
+                '<div class="sp-project-example-card">'
+                f'<span class="sp-project-level {level_class}">'
+                f'{level_label}'
+                '</span>'
+                f'<h3>{title_safe}</h3>'
+                f'<p class="sp-project-example-desc">{desc_safe}</p>'
+                '<div class="sp-project-example-meta">'
+                '<div class="sp-project-meta-chip">'
+                '<div class="sp-project-meta-label">Time</div>'
+                f'<div class="sp-project-meta-value">{time_safe}</div>'
+                '</div>'
+                '<div class="sp-project-meta-chip">'
+                '<div class="sp-project-meta-label">Cost</div>'
+                f'<div class="sp-project-meta-value">{cost_safe}</div>'
+                '</div>'
+                '</div>'
+                f'{skills_html}'
+                '</div>'
+            )
+
+        st.html(
+            '<div class="sp-project-examples-grid">'
+            + "".join(
+                example_cards_html
+            )
+            + '</div>'
+        )
 
     st.divider()
 
@@ -15202,134 +16657,122 @@ elif page == "My Profile":
 
     st.divider()
 
-    profile_cards = st.container(
-        key="profile_cards",
-        gap="medium"
+    def profile_chip_html(
+        values
+    ):
+        return "".join(
+            [
+                '<span class="sp-profile-chip">'
+                f'{html_module.escape(str(value))}'
+                '</span>'
+                for value in values
+            ]
+        )
+
+    interests = profile.get(
+        "interests"
+    ) or []
+
+    goals = profile.get(
+        "goals"
+    ) or []
+
+    experience_areas = profile.get(
+        "experience_areas"
+    ) or []
+
+    if interests:
+        interests_body = (
+            '<div class="sp-profile-chips">'
+            f'{profile_chip_html(interests)}'
+            '</div>'
+        )
+    else:
+        interests_body = (
+            '<p class="sp-profile-empty">'
+            'No STEM interests selected.'
+            '</p>'
+        )
+
+    if goals:
+        goals_body = (
+            '<div class="sp-profile-chips">'
+            f'{profile_chip_html(goals)}'
+            '</div>'
+        )
+    else:
+        goals_body = (
+            '<p class="sp-profile-empty">'
+            'No goals selected.'
+            '</p>'
+        )
+
+    if experience_areas:
+        experience_body = (
+            '<div class="sp-profile-chips">'
+            f'{profile_chip_html(experience_areas)}'
+            '</div>'
+        )
+    else:
+        experience_body = (
+            '<p class="sp-profile-empty">'
+            'No previous STEM experience selected.'
+            '</p>'
+        )
+
+    stage_text = html_module.escape(
+        str(profile.get("exploration_stage") or "")
     )
 
-    col1, col2 = profile_cards.columns(2, gap="medium")
+    weekly_time = html_module.escape(
+        str(profile.get("weekly_time") or "")
+    )
 
-    with col1:
+    stage_extra = ""
 
-        with st.container(
-            border=True,
-            height=340
-        ):
+    if profile.get(
+        "financial_support"
+    ):
+        stage_extra = (
+            '<p class="sp-profile-note">'
+            'Opportunity preference: Prioritize free or financially supported programs'
+            '</p>'
+        )
 
-            st.markdown(
-                '<div class="sp-profile-card"></div>',
-                unsafe_allow_html=True
-            )
+    with st.container(
+        key="profile_cards"
+    ):
 
-            st.header(
-                "STEM Interests"
-            )
-
-            for interest in (
-                profile["interests"]
-            ):
-
-                st.write(
-                    f"• {interest}"
-                )
-
-    with col2:
-
-        with st.container(
-            border=True,
-            height=340
-        ):
-
-            st.markdown(
-                '<div class="sp-profile-card"></div>',
-                unsafe_allow_html=True
-            )
-
-            st.header(
-                "Goals"
-            )
-
-            for goal in (
-                profile["goals"]
-            ):
-
-                st.write(
-                    f"• {goal}"
-                )
-
-    col3, col4 = profile_cards.columns(2, gap="medium")
-
-    with col3:
-
-        with st.container(
-            border=True,
-            height=340
-        ):
-
-            st.markdown(
-                '<div class="sp-profile-card"></div>',
-                unsafe_allow_html=True
-            )
-
-            st.header(
-                "Previous Experience"
-            )
-
-            if profile[
-                "experience_areas"
-            ]:
-
-                for experience in (
-                    profile[
-                        "experience_areas"
-                    ]
-                ):
-
-                    st.write(
-                        f"• {experience}"
-                    )
-
-            else:
-
-                st.write(
-                    "No previous STEM experience selected."
-                )
-
-    with col4:
-
-        with st.container(
-            border=True,
-            height=340
-        ):
-
-            st.markdown(
-                '<div class="sp-profile-card"></div>',
-                unsafe_allow_html=True
-            )
-
-            st.header(
-                "Current Exploration Stage"
-            )
-
-            st.write(
-                profile[
-                    "exploration_stage"
-                ]
-            )
-
-            st.write(
-                f"**Weekly STEM goal:** "
-                f"{profile['weekly_time']}"
-            )
-
-            if profile[
-                "financial_support"
-            ]:
-
-                st.write(
-                    "**Opportunity preference:** "
-                    "Prioritize free or financially supported programs"
-                )
+        st.html(
+            '<div class="sp-profile-summary">'
+            '<h2>Your STEM Profile</h2>'
+            '<p class="sp-profile-summary-subtitle">'
+            'A quick view of your interests, goals, and experience.'
+            '</p>'
+            '<div class="sp-profile-summary-grid">'
+            '<div class="sp-profile-summary-card">'
+            '<h3>STEM Interests</h3>'
+            f'{interests_body}'
+            '</div>'
+            '<div class="sp-profile-summary-card">'
+            '<h3>Goals</h3>'
+            f'{goals_body}'
+            '</div>'
+            '<div class="sp-profile-summary-card">'
+            '<h3>Previous Experience</h3>'
+            f'{experience_body}'
+            '</div>'
+            '<div class="sp-profile-summary-card">'
+            '<h3>Current Exploration Stage</h3>'
+            f'<p class="sp-profile-stage">{stage_text}</p>'
+            '<span class="sp-profile-goal-pill">'
+            f'Weekly STEM goal: {weekly_time}'
+            '</span>'
+            f'{stage_extra}'
+            '</div>'
+            '</div>'
+            '</div>'
+        )
 
     with st.container(
         key="profile_action_stack",
