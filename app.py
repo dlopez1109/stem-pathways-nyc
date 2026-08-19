@@ -7,6 +7,10 @@ from datetime import datetime, timezone
 from urllib.parse import quote_plus
 from supabase import create_client
 import logging
+from opportunity_transparency import (
+    apply_opportunity_transparency,
+    CONFIDENCE_SOURCE_LABEL,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -1260,6 +1264,15 @@ st.markdown(
         font-weight: 500 !important;
         line-height: 1.35 !important;
         margin: 0.28rem 0 0 0 !important;
+    }
+
+    .sp-rate-source {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.72rem !important;
+        font-weight: 500 !important;
+        line-height: 1.3 !important;
+        margin: 0.22rem 0 0 0 !important;
     }
 
     .sp-rec-star-filled {
@@ -4710,6 +4723,10 @@ extra_opportunities = [
 
 ]
 
+apply_opportunity_transparency(
+    extra_opportunities
+)
+
 extra_df = pd.DataFrame(
     extra_opportunities
 )
@@ -4722,12 +4739,23 @@ else:
         "selectivity": "Not rated yet",
         "selectivity_stars": 0,
         "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Not publicly reported",
         "internship_potential": "Not specified",
         "format": "Check official site",
         "paid_status": "Check official site",
         "requirements": "Check official site",
         "deadline": "Check official site",
-        "age_range": "Check official eligibility"
+        "age_range": "Check official eligibility",
+        "eligibility_summary": "Check official eligibility",
+        "cost_category": "Unknown / check official site",
+        "tuition_cost": "",
+        "financial_aid_status": "Unknown / check official site",
+        "scholarship_availability": "No aid stated",
+        "stipend_status": "Unknown",
+        "stipend_amount": "",
+        "stipend_display": "Check official site",
+        "last_verified": "2026-08-19"
     }
 
     for column, default_value in opportunity_defaults.items():
@@ -4770,6 +4798,185 @@ except Exception:
 # ============================================================
 # HELPER FUNCTIONS
 # ============================================================
+
+def opportunity_text(
+    value,
+    fallback=""
+):
+
+    if value is None:
+        return fallback
+
+    try:
+
+        if pd.isna(
+            value
+        ):
+            return fallback
+
+    except Exception:
+        pass
+
+    text = str(
+        value
+    ).strip()
+
+    if (
+        not text
+        or
+        text.lower() == "nan"
+    ):
+        return fallback
+
+    return text
+
+
+def opportunity_cost_display(
+    opportunity
+):
+
+    category = opportunity_text(
+        opportunity.get(
+            "cost_category"
+        )
+    )
+
+    if category == "Free":
+        return "Free"
+
+    if category:
+        return category
+
+    return opportunity_text(
+        opportunity.get(
+            "cost"
+        ),
+        "Unknown / check official site"
+    )
+
+
+def opportunity_acceptance_source_label(
+    opportunity
+):
+
+    confidence = opportunity_text(
+        opportunity.get(
+            "acceptance_rate_confidence"
+        ),
+        "Not available"
+    )
+
+    return CONFIDENCE_SOURCE_LABEL.get(
+        confidence,
+        ""
+    )
+
+
+def opportunity_stat_html(
+    label,
+    value,
+    note=""
+):
+
+    note_html = ""
+
+    if note:
+
+        note_html = (
+            '<div class="sp-rate-source">'
+            + html_module.escape(
+                str(
+                    note
+                )
+            )
+            + '</div>'
+        )
+
+    return (
+        '<div class="sp-deadline-stat">'
+        '<div class="sp-deadline-stat-label">'
+        + html_module.escape(
+            str(
+                label
+            )
+        )
+        + '</div>'
+        '<div class="sp-deadline-stat-value">'
+        + html_module.escape(
+            str(
+                value
+            )
+        )
+        + note_html
+        + '</div>'
+        '</div>'
+    )
+
+
+def opportunity_transparency_stats_html(
+    opportunity
+):
+
+    eligibility = opportunity_text(
+        opportunity.get(
+            "eligibility_summary"
+        ),
+        "Check official eligibility"
+    )
+
+    cost = opportunity_cost_display(
+        opportunity
+    )
+
+    aid = opportunity_text(
+        opportunity.get(
+            "financial_aid_status"
+        ),
+        "Unknown / check official site"
+    )
+
+    stipend = opportunity_text(
+        opportunity.get(
+            "stipend_display"
+        ),
+        "Check official site"
+    )
+
+    rate = opportunity_text(
+        opportunity.get(
+            "acceptance_rate"
+        ),
+        "Not publicly reported"
+    )
+
+    source_label = opportunity_acceptance_source_label(
+        opportunity
+    )
+
+    return (
+        opportunity_stat_html(
+            "Eligibility",
+            eligibility
+        )
+        + opportunity_stat_html(
+            "Cost",
+            cost
+        )
+        + opportunity_stat_html(
+            "Financial Aid",
+            aid
+        )
+        + opportunity_stat_html(
+            "Stipend",
+            stipend
+        )
+        + opportunity_stat_html(
+            "Acceptance Rate",
+            rate,
+            source_label
+        )
+    )
+
 
 def format_salary(value):
 
@@ -9694,6 +9901,14 @@ elif page == "Opportunities":
                         )
                     )
 
+                    st.html(
+                        '<div class="sp-deadline-stats sp-rec-stats">'
+                        + opportunity_transparency_stats_html(
+                            opportunity
+                        )
+                        + '</div>'
+                    )
+
                     details1, details2, details3 = st.columns(3)
 
                     with details1:
@@ -9701,16 +9916,6 @@ elif page == "Opportunities":
                         st.write(
                             f"**Type:** "
                             f"{opportunity.get('opportunity_type', 'Not listed')}"
-                        )
-
-                        st.write(
-                            f"**Grades:** "
-                            f"{opportunity.get('grades', 'Check eligibility')}"
-                        )
-
-                        st.write(
-                            f"**Ages:** "
-                            f"{opportunity.get('age_range', 'Check official eligibility')}"
                         )
 
                     with details2:
@@ -9726,32 +9931,11 @@ elif page == "Opportunities":
                             f"{search_star_display}"
                         )
 
-
-                        st.write(
-                            f"**Acceptance Rate:** "
-                            f"{opportunity.get('acceptance_rate', 'Not publicly reported')}"
-                        )
-
-                        st.write(
-                            f"**Paid:** "
-                            f"{opportunity.get('paid_status', 'Check official site')}"
-                        )
-
                     with details3:
 
                         st.write(
                             f"**Deadline:** "
                             f"{opportunity.get('deadline', 'Check official site')}"
-                        )
-
-                        st.write(
-                            f"**Format:** "
-                            f"{opportunity.get('format', 'Check official site')}"
-                        )
-
-                        st.write(
-                            f"**Internship Potential:** "
-                            f"{opportunity.get('internship_potential', 'Not specified')}"
                         )
 
                     with st.expander(
@@ -9775,6 +9959,16 @@ elif page == "Opportunities":
                         st.write(
                             f"**Requirements:** "
                             f"{opportunity.get('requirements', 'Check official site')}"
+                        )
+
+                        st.write(
+                            f"**Format:** "
+                            f"{opportunity.get('format', 'Check official site')}"
+                        )
+
+                        st.write(
+                            f"**Internship Potential:** "
+                            f"{opportunity.get('internship_potential', 'Not specified')}"
                         )
 
                     calendar_url = google_calendar_deadline_url(
@@ -10505,6 +10699,9 @@ elif page == "Opportunities":
                     '</div>'
                     f'<p class="sp-rec-desc">{desc_safe}</p>'
                     '<div class="sp-deadline-stats sp-rec-stats">'
+                    + opportunity_transparency_stats_html(
+                        recommended_opportunity
+                    )
                     + rec_stat_html(
                         "Type",
                         type_safe
@@ -10514,24 +10711,8 @@ elif page == "Opportunities":
                         stars_html
                     )
                     + rec_stat_html(
-                        "Paid",
-                        paid_html
-                    )
-                    + rec_stat_html(
-                        "Grades",
-                        grades_html
-                    )
-                    + rec_stat_html(
-                        "Acceptance Rate",
-                        acceptance_safe
-                    )
-                    + rec_stat_html(
                         "Deadline",
                         deadline_safe
-                    )
-                    + rec_stat_html(
-                        "Ages",
-                        ages_safe
                     )
                     + rec_stat_html(
                         "Internship Potential",
