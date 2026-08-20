@@ -4928,7 +4928,105 @@ def opportunity_cost_display(
     if cost.lower() == "free":
         return "Free"
 
+    tuition = opportunity_field(
+        opportunity,
+        "tuition_cost",
+        fallback=""
+    )
+
+    if (
+        tuition
+        and
+        tuition.lower() not in cost.lower()
+        and
+        cost.lower() in {
+            "tuition required",
+            "tuition-based",
+            "paid program"
+        }
+    ):
+        return f"{cost} — {tuition}"
+
     return cost
+
+
+def opportunity_eligibility_display(
+    opportunity
+):
+
+    eligibility = opportunity_field(
+        opportunity,
+        "eligibility_summary",
+        "requirements",
+        "application_requirements",
+        fallback=""
+    )
+
+    if eligibility:
+        return eligibility
+
+    details = []
+
+    grades = opportunity_field(
+        opportunity,
+        "eligible_grades",
+        "grades",
+        fallback=""
+    )
+
+    if grades:
+        details.append(
+            f"Grades {grades.replace(';', ', ')}"
+        )
+
+    age = opportunity_field(
+        opportunity,
+        "age_requirements",
+        "age_range",
+        fallback=""
+    )
+
+    if age and age.lower() not in " ".join(details).lower():
+        details.append(age)
+
+    return " • ".join(details) or "Check official eligibility"
+
+
+def opportunity_financial_aid_display(
+    opportunity,
+    cost
+):
+
+    aid = opportunity_field(
+        opportunity,
+        "financial_aid_status",
+        "financial_aid",
+        "scholarship_availability",
+        fallback=""
+    )
+
+    if cost == "Free":
+        if not aid or aid.lower() in {
+            "not needed",
+            "not needed — program is free",
+            "not needed — program is completely free"
+        }:
+            return "Not needed — program is fully funded"
+
+    if aid:
+        return aid
+
+    raw_aid = opportunity_text(
+        opportunity.get(
+            "financial_aid"
+        ),
+        ""
+    )
+
+    if raw_aid:
+        return raw_aid
+
+    return "Unknown / check official site"
 
 
 def opportunity_acceptance_source_label(
@@ -5002,35 +5100,18 @@ def opportunity_transparency_stats_html(
     opportunity
 ):
 
-    eligibility = opportunity_field(
+    eligibility = opportunity_eligibility_display(
         opportunity,
-        "eligibility_summary",
-        "requirements",
-        "application_requirements",
-        fallback="Check official eligibility"
     )
 
     cost = opportunity_cost_display(
         opportunity
     )
 
-    aid = opportunity_field(
+    aid = opportunity_financial_aid_display(
         opportunity,
-        "financial_aid_status",
-        "financial_aid",
-        fallback="Unknown / check official site"
+        cost
     )
-
-    if (
-        cost == "Free"
-        and
-        aid.lower() in {
-            "not needed",
-            "not needed — program is free",
-            "not needed — program is completely free"
-        }
-    ):
-        aid = "Not needed — program is fully funded"
 
     stipend = opportunity_field(
         opportunity,
