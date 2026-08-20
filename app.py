@@ -1165,6 +1165,20 @@ st.markdown(
         margin: 0 0 1rem 0 !important;
     }
 
+    /* Keep recommendations readable on wide screens and mirror the compact
+       reference-card layout instead of stretching across the whole page. */
+    [data-testid="stMain"] [class*="st-key-recommended_card_"] {
+        width: min(100%, 68rem) !important;
+        max-width: 68rem !important;
+        margin: 0 auto 1.35rem !important;
+        padding: 1.55rem 1.65rem 1.35rem !important;
+        box-sizing: border-box !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-recommended_card_"] .sp-deadline-card {
+        background: #FFFFFF !important;
+    }
+
     [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stVerticalBlock"],
     [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stVerticalBlock"] {
         background: transparent !important;
@@ -1208,7 +1222,7 @@ st.markdown(
     .sp-rec-heading h3 {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.22rem !important;
+        font-size: 1.45rem !important;
         font-weight: 800 !important;
         line-height: 1.25 !important;
         margin: 0 0 0.3rem 0 !important;
@@ -1217,7 +1231,7 @@ st.markdown(
     .sp-rec-org {
         color: #4A5D6B !important;
         -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.9rem !important;
+        font-size: 1rem !important;
         font-weight: 500 !important;
         line-height: 1.4 !important;
         margin: 0 !important;
@@ -1227,8 +1241,8 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid #D5DEE6;
         border-radius: 12px;
-        padding: 0.65rem 0.8rem;
-        min-width: 6.75rem;
+        padding: 0.8rem 1rem;
+        min-width: 8.25rem;
         box-sizing: border-box;
         flex: 0 0 auto;
     }
@@ -1244,7 +1258,7 @@ st.markdown(
     .sp-rec-match-value {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.25rem !important;
+        font-size: 1.65rem !important;
         font-weight: 800 !important;
         line-height: 1.2 !important;
         margin: 0 !important;
@@ -1253,13 +1267,16 @@ st.markdown(
     .sp-rec-desc {
         color: #4A5D6B !important;
         -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.95rem !important;
+        font-size: 1rem !important;
         font-weight: 500 !important;
         line-height: 1.5 !important;
         margin: 0 0 1rem 0 !important;
     }
 
     .sp-rec-stats {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        column-gap: 1.1rem;
+        row-gap: 1.15rem;
         margin-bottom: 0.95rem;
     }
 
