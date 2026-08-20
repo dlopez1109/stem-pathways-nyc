@@ -1155,7 +1155,8 @@ st.markdown(
         margin: 0;
     }
 
-    [data-testid="stMain"] [class*="st-key-recommended_card_"] {
+    [data-testid="stMain"] [class*="st-key-recommended_card_"],
+    [data-testid="stMain"] [class*="st-key-search_result_card_"] {
         background: #FFFFFF !important;
         border: 1px solid #D5DEE6 !important;
         border-radius: 16px !important;
@@ -1164,12 +1165,14 @@ st.markdown(
         margin: 0 0 1rem 0 !important;
     }
 
-    [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stVerticalBlock"] {
+    [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stVerticalBlock"],
+    [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stVerticalBlock"] {
         background: transparent !important;
         gap: 0.7rem !important;
     }
 
-    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] {
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"],
+    html body [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stExpander"] {
         border: 1px solid #D5DEE6 !important;
         border-radius: 14px !important;
         background: #FFFFFF !important;
@@ -1179,7 +1182,10 @@ st.markdown(
 
     html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary,
     html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary p,
-    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary span {
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary span,
+    html body [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stExpander"] summary,
+    html body [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stExpander"] summary p,
+    html body [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stExpander"] summary span {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
         font-weight: 750 !important;
@@ -9870,6 +9876,151 @@ elif page == "Opportunities":
             )
 
 
+        def search_card_clean_text(
+            value,
+            fallback=""
+        ):
+
+            if value is None:
+                return fallback
+
+            try:
+
+                if pd.isna(
+                    value
+                ):
+                    return fallback
+
+            except Exception:
+                pass
+
+            text = str(
+                value
+            ).strip()
+
+            if (
+                not text
+                or
+                text.lower() == "nan"
+            ):
+                return fallback
+
+            return text
+
+
+        def search_card_window_status(
+            opportunity
+        ):
+
+            raw_status = search_card_clean_text(
+                opportunity.get(
+                    "application_status",
+                    ""
+                )
+            )
+
+            status_lower = raw_status.lower()
+
+            deadline_dt = parse_confirmed_deadline(
+                opportunity.get(
+                    "deadline"
+                )
+            )
+
+            if deadline_dt is not None:
+
+                if deadline_dt.tzinfo is None:
+                    compare_deadline = deadline_dt.replace(
+                        tzinfo=timezone.utc
+                    )
+                else:
+                    compare_deadline = deadline_dt.astimezone(
+                        timezone.utc
+                    )
+
+                if compare_deadline.date() < datetime.now(
+                    timezone.utc
+                ).date():
+                    return "CLOSED"
+
+            if "closed" in status_lower:
+                return "CLOSED"
+
+            if (
+                "open now" in status_lower
+                or
+                status_lower == "open"
+                or
+                status_lower.startswith(
+                    "open "
+                )
+            ):
+                return "OPEN NOW"
+
+            return "UPCOMING"
+
+
+        def search_card_pills_html(
+            fields_value
+        ):
+
+            raw = search_card_clean_text(
+                fields_value
+            )
+
+            if not raw:
+                return ""
+
+            labels = []
+
+            for chunk in raw.replace(
+                ",",
+                ";"
+            ).split(";"):
+
+                label = chunk.strip()
+
+                if label and label not in labels:
+                    labels.append(
+                        label
+                    )
+
+            if not labels:
+                return ""
+
+            return (
+                '<div class="sp-deadline-fields">'
+                + "".join(
+                    '<span class="sp-deadline-pill">'
+                    + html_module.escape(
+                        label
+                    )
+                    + '</span>'
+                    for label in labels
+                )
+                + '</div>'
+            )
+
+
+        def search_card_stat_html(
+            label,
+            value_html
+        ):
+
+            return (
+                '<div class="sp-deadline-stat">'
+                '<div class="sp-deadline-stat-label">'
+                + html_module.escape(
+                    label
+                )
+                + '</div>'
+                '<div class="sp-deadline-stat-value">'
+                + value_html
+                + '</div>'
+                '</div>'
+            )
+
+
         # ----------------------------------------------------
         # SEARCH RESULTS
         # ----------------------------------------------------
@@ -10043,78 +10194,162 @@ elif page == "Opportunities":
             ) in enumerate(search_results):
 
                 with st.container(
-                    border=True
+                    key=f"search_result_card_{result_index}"
                 ):
 
-                    title_col, match_col = st.columns(
-                        [4, 1]
+                    window_status = search_card_window_status(
+                        opportunity
                     )
 
-                    with title_col:
+                    if window_status == "OPEN NOW":
+                        badge_class = "sp-deadline-badge-open"
+                    elif window_status == "CLOSED":
+                        badge_class = "sp-deadline-badge-closed"
+                    else:
+                        badge_class = "sp-deadline-badge-upcoming"
 
-                        st.subheader(
-                            opportunity[
-                                "name"
-                            ]
+                    star_display = selectivity_to_stars(
+                        opportunity
+                    )
+
+                    filled_stars = star_display.count(
+                        "★"
+                    )
+
+                    empty_stars = star_display.count(
+                        "☆"
+                    )
+
+                    stars_html = (
+                        '<span class="sp-rec-star-filled">'
+                        + ("★" * filled_stars)
+                        + '</span>'
+                        '<span class="sp-rec-star-empty">'
+                        + ("☆" * empty_stars)
+                        + '</span>'
+                    )
+
+                    selectivity_label = search_card_clean_text(
+                        opportunity.get(
+                            "selectivity",
+                            ""
+                        )
+                    )
+
+                    if selectivity_label:
+                        stars_html += (
+                            '<div class="sp-rec-selectivity-note">'
+                            + html_module.escape(
+                                selectivity_label
+                            )
+                            + '</div>'
                         )
 
-                        st.caption(
+                    name_safe = html_module.escape(
+                        search_card_clean_text(
                             opportunity.get(
-                                "organization",
-                                ""
+                                "name"
+                            ),
+                            "Opportunity"
+                        )
+                    )
+
+                    org_safe = html_module.escape(
+                        search_card_clean_text(
+                            opportunity.get(
+                                "organization"
                             )
                         )
+                    )
 
-                    with match_col:
-
-                        st.metric(
-                            "Profile Match",
-                            f"{score}%"
+                    desc_safe = html_module.escape(
+                        search_card_clean_text(
+                            opportunity.get(
+                                "description"
+                            )
                         )
+                    )
 
-                    st.write(
+                    type_safe = html_module.escape(
+                        search_card_clean_text(
+                            opportunity.get(
+                                "opportunity_type"
+                            ),
+                            "Not listed"
+                        )
+                    )
+
+                    deadline_safe = html_module.escape(
+                        search_card_clean_text(
+                            opportunity.get(
+                                "deadline"
+                            ),
+                            "Check official site"
+                        )
+                    )
+
+                    internship_safe = html_module.escape(
+                        search_card_clean_text(
+                            opportunity.get(
+                                "internship_potential"
+                            ),
+                            "Not specified"
+                        )
+                    )
+
+                    match_safe = html_module.escape(
+                        str(
+                            score
+                        )
+                    )
+
+                    fields_html = search_card_pills_html(
                         opportunity.get(
-                            "description",
+                            "fields",
                             ""
                         )
                     )
 
                     st.html(
+                        '<div class="sp-deadline-card">'
+                        f'<span class="sp-deadline-badge {badge_class}">'
+                        f'{window_status}'
+                        '</span>'
+                        '<div class="sp-rec-header">'
+                        '<div class="sp-rec-heading">'
+                        f'<h3>{name_safe}</h3>'
+                        f'<p class="sp-rec-org">{org_safe}</p>'
+                        '</div>'
+                        '<div class="sp-rec-match">'
+                        '<div class="sp-rec-match-label">Your Match</div>'
+                        f'<div class="sp-rec-match-value">{match_safe}%</div>'
+                        '</div>'
+                        '</div>'
+                        f'<p class="sp-rec-desc">{desc_safe}</p>'
                         '<div class="sp-deadline-stats sp-rec-stats">'
                         + opportunity_transparency_stats_html(
                             opportunity
                         )
+                        + search_card_stat_html(
+                            "Type",
+                            type_safe
+                        )
+                        + search_card_stat_html(
+                            "Selectivity",
+                            stars_html
+                        )
+                        + search_card_stat_html(
+                            "Deadline",
+                            deadline_safe
+                        )
+                        + search_card_stat_html(
+                            "Internship Potential",
+                            internship_safe
+                        )
+                        + '</div>'
+                        + fields_html
                         + '</div>'
                     )
-
-                    details1, details2, details3 = st.columns(3)
-
-                    with details1:
-
-                        st.write(
-                            f"**Type:** "
-                            f"{opportunity.get('opportunity_type', 'Not listed')}"
-                        )
-
-                    with details2:
-
-                        search_star_display = (
-                            selectivity_to_stars(
-                                opportunity
-                            )
-                        )
-
-                        st.write(
-                            f"**Selectivity:** "
-                            f"{search_star_display}"
-                        )
-
-                    with details3:
-
-                        st.write(
-                            f"**Deadline:** "
-                            f"{opportunity.get('deadline', 'Check official site')}"
-                        )
 
                     with st.expander(
                         "Why this may match you"
