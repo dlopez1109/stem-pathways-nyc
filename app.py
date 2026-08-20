@@ -4807,23 +4807,58 @@ else:
         if column not in opportunities.columns:
             opportunities[column] = default_value
 
-    # Avoid duplicates if a program already exists in the CSV.
-    existing_names = set(
+    # Enrich matching CSV rows before removing curated duplicates.  The CSV is
+    # the primary record used by recommendation cards, so simply dropping a
+    # matching curated row would also drop its Opportunity 2.0 fields.
+    normalized_existing_names = (
         opportunities["name"]
         .astype(str)
         .str.strip()
         .str.lower()
     )
-
-    extra_df = extra_df[
-        ~extra_df["name"]
+    normalized_existing_urls = (
+        opportunities["url"]
+        .fillna("")
         .astype(str)
         .str.strip()
         .str.lower()
-        .isin(
-            existing_names
-        )
-    ]
+        .str.rstrip("/")
+    )
+    matched_curated_rows = []
+
+    for curated_index, curated_record in extra_df.to_dict(
+        "index"
+    ).items():
+        curated_name = str(
+            curated_record.get("name", "")
+        ).strip().lower()
+        curated_url = str(
+            curated_record.get("url", "")
+        ).strip().lower().rstrip("/")
+
+        matching_rows = normalized_existing_names == curated_name
+        if curated_url:
+            matching_rows = (
+                matching_rows
+                | (normalized_existing_urls == curated_url)
+            )
+
+        if matching_rows.any():
+            matched_curated_rows.append(curated_index)
+            for field, value in curated_record.items():
+                if field == "name":
+                    continue
+                if field not in opportunities.columns:
+                    opportunities[field] = None
+                elif opportunities[field].dtype != object:
+                    opportunities[field] = opportunities[field].astype(
+                        object
+                    )
+                opportunities.loc[matching_rows, field] = value
+
+    extra_df = extra_df.drop(
+        index=matched_curated_rows
+    )
 
     opportunities = pd.concat(
         [
