@@ -1,3 +1,4 @@
+import os
 import html as html_module
 import streamlit as st
 import pandas as pd
@@ -10,10 +11,24 @@ import logging
 from opportunity_transparency import (
     apply_opportunity_transparency,
     CONFIDENCE_SOURCE_LABEL,
+    NAME_ALIASES,
 )
 
 
 logger = logging.getLogger(__name__)
+
+# Streamlit OAuth loads Google metadata from this process. Inherited
+# HTTP(S)_PROXY values (for example from the IDE) return 403 and break
+# /auth/login before Google's authorize URL can be created.
+for _proxy_key in (
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "ALL_PROXY",
+    "http_proxy",
+    "https_proxy",
+    "all_proxy",
+):
+    os.environ.pop(_proxy_key, None)
 
 
 # ============================================================
@@ -350,37 +365,42 @@ st.markdown(
         font-weight: 600 !important;
     }
 
-    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"]:has(.sp-sidebar-brand) {
-        width: max-content;
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"]:has(.sp-sidebar-brand),
+    [data-testid="stSidebar"] [data-testid="stElementContainer"]:has(.sp-sidebar-brand) {
+        width: 100%;
         max-width: 100%;
+        overflow: visible;
+        box-sizing: border-box;
     }
 
     .sp-sidebar-brand {
-        width: max-content;
+        width: 100%;
         max-width: 100%;
-        padding: 0;
+        padding: 0 0.5rem;
         margin: 0 0 0.5rem 0;
-        text-align: left;
+        text-align: center;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        overflow: visible;
     }
 
     .sp-sidebar-title {
         display: flex;
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;
         justify-content: flex-start;
-        width: max-content;
+        width: 100%;
         max-width: 100%;
         margin: 0;
         padding: 0;
         line-height: 1.02;
         font-weight: 800;
-        letter-spacing: -0.035em;
+        letter-spacing: -0.05em;
         text-align: center;
         box-sizing: border-box;
+        overflow: visible;
     }
 
     .sp-sidebar-title .sp-title-line {
@@ -388,19 +408,23 @@ st.markdown(
         flex-wrap: nowrap;
         align-items: baseline;
         justify-content: center;
-        gap: 0.32em;
-        font-size: 2.12rem;
+        gap: 0.16em;
+        width: 100%;
+        font-size: clamp(1.28rem, 1.12rem + 1.05vw, 1.62rem);
         line-height: 1.05;
         font-weight: 800;
+        letter-spacing: -0.05em;
         margin: 0;
-        padding: 0;
+        padding: 0 0.12em;
         white-space: nowrap;
+        box-sizing: border-box;
+        overflow: visible;
     }
 
     .sp-sidebar-title .sp-title-nyc {
         display: block;
         width: 100%;
-        font-size: 2.18rem;
+        font-size: clamp(1.32rem, 1.16rem + 1.1vw, 1.68rem);
         line-height: 1.05;
         font-weight: 800;
         letter-spacing: 0 !important;
@@ -410,6 +434,7 @@ st.markdown(
         margin: 0.1rem 0 0 0;
         padding: 0;
         box-sizing: border-box;
+        overflow: visible;
     }
 
     [data-testid="stSidebar"] .sp-sidebar-title .sp-title-blue {
@@ -2925,14 +2950,26 @@ st.markdown(
         max-width: 720px;
     }
 
+    .sp-resource-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 36px 40px;
+        align-items: stretch;
+        width: 100%;
+        margin: 0;
+    }
+
     .sp-resource-card {
         display: flex;
         flex-direction: column;
-        gap: 0.85rem;
-        width: 100%;
+        height: 100%;
         box-sizing: border-box;
-        background: transparent !important;
-        min-height: 0;
+        background: #FFFFFF;
+        border: 1px solid #B9E5F5;
+        border-top: 4px solid #018FC7;
+        border-radius: 20px;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
+        padding: 32px 36px;
     }
 
     .sp-resource-card-title {
@@ -2942,7 +2979,7 @@ st.markdown(
         font-weight: 800 !important;
         line-height: 1.2 !important;
         letter-spacing: -0.02em;
-        margin: 0 !important;
+        margin: 0 0 0.75rem 0 !important;
     }
 
     .sp-resource-card-desc {
@@ -2951,78 +2988,466 @@ st.markdown(
         font-size: 0.95rem !important;
         font-weight: 500 !important;
         line-height: 1.55 !important;
-        margin: 0 !important;
-        flex: 1 1 auto;
+        margin: 0 0 20px 0 !important;
+    }
+
+    .sp-resource-card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 8px;
+        margin: 0 0 24px 0;
     }
 
     .sp-resource-card-tags .sp-deadline-fields {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.4rem;
-        margin: 0.1rem 0 0.15rem 0;
+        align-items: flex-start;
+        gap: 8px;
+        margin: 0;
     }
 
-    html body [data-testid="stMain"] [class*="st-key-resources_page"] [data-testid="stHorizontalBlock"] {
-        align-items: stretch !important;
-        gap: 1.2rem !important;
-        margin: 0 0 1.2rem 0 !important;
+    .sp-resource-card-action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: auto;
+        box-sizing: border-box;
+        background: #FFFFFF;
+        border: 1px solid #018FC7;
+        border-radius: 12px;
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-size: 0.92rem !important;
+        font-weight: 750 !important;
+        line-height: 1.2 !important;
+        text-decoration: none !important;
+        min-height: 2.7rem;
+        padding: 0.7rem 1rem;
     }
 
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"],
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"]:hover {
-        background: #FFFFFF !important;
-        background-color: #FFFFFF !important;
-        border: 1px solid #B9E5F5 !important;
-        border-top: 4px solid #018FC7 !important;
-        border-radius: 20px !important;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07) !important;
-        padding: 1.35rem 1.35rem 1.2rem !important;
+    .sp-resource-card-action:hover {
+        background: #E7F6FC;
+    }
+
+    @media (max-width: 900px) {
+        .sp-resource-grid {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+    }
+
+    .sp-gpa-hero {
+        background: #FFFFFF;
+        border: 1px solid #B9E5F5;
+        border-top: 4px solid #018FC7;
+        border-radius: 20px;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
+        padding: 1.55rem 1.7rem 1.4rem;
+        margin: 0 0 0.95rem 0;
+        box-sizing: border-box;
+    }
+
+    .sp-gpa-kicker {
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-size: 0.74rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin: 0 0 0.45rem 0 !important;
+    }
+
+    .sp-gpa-hero h1 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.85rem !important;
+        font-weight: 800 !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.03em;
+        margin: 0 0 0.45rem 0 !important;
+    }
+
+    .sp-gpa-hero p {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.98rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
         margin: 0 !important;
-        height: 100% !important;
+        max-width: 740px;
+    }
+
+    .sp-gpa-banner {
+        border-radius: 12px;
+        padding: 0.7rem 0.9rem;
+        font-size: 0.88rem !important;
+        font-weight: 550 !important;
+        line-height: 1.45 !important;
+        margin: 0 0 1rem 0;
+        box-sizing: border-box;
+    }
+
+    .sp-gpa-banner-info {
+        background: #F7FBFD;
+        border: 1px solid #B9E5F5;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    .sp-gpa-banner-warning {
+        background: #FFF8EB;
+        border: 1px solid #F0D59A;
+        color: #8A5A12 !important;
+        -webkit-text-fill-color: #8A5A12 !important;
+    }
+
+    .sp-gpa-banner-success {
+        background: #F0F9F4;
+        border: 1px solid #B7E0C6;
+        color: #14532D !important;
+        -webkit-text-fill-color: #14532D !important;
+    }
+
+    .sp-gpa-section-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.2rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 0.3rem 0 !important;
+    }
+
+    .sp-gpa-section-copy {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+        margin: 0 0 0.9rem 0 !important;
+    }
+
+    .sp-gpa-count {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.35rem;
+        min-height: 2.5rem;
+    }
+
+    .sp-gpa-count-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.86rem !important;
+        font-weight: 750 !important;
+        margin: 0 !important;
+    }
+
+    .sp-gpa-count-bar {
+        width: 100%;
+        max-width: 220px;
+        height: 6px;
+        border-radius: 999px;
+        background: #E7F6FC;
+        overflow: hidden;
+    }
+
+    .sp-gpa-count-bar > div {
+        height: 100%;
+        border-radius: 999px;
+        background: #018FC7;
+    }
+
+    .sp-gpa-course-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.78rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin: 0 !important;
+    }
+
+    .sp-gpa-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.85rem;
+        width: 100%;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .sp-gpa-stat-grid:has(> :nth-child(2):last-child) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sp-gpa-stat {
+        background: #FFFFFF;
+        border: 1px solid #B9E5F5;
+        border-top: 3px solid #018FC7;
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06);
+        padding: 0.85rem 0.95rem 0.9rem;
+        box-sizing: border-box;
+        min-height: 0;
+    }
+
+    .sp-gpa-stat-label {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.76rem !important;
+        font-weight: 750 !important;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin: 0 0 0.28rem 0 !important;
+    }
+
+    .sp-gpa-stat-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.35rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+    }
+
+    .sp-gpa-stat-note {
+        color: #7A8A96 !important;
+        -webkit-text-fill-color: #7A8A96 !important;
+        font-size: 0.78rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0.28rem 0 0 0 !important;
+    }
+
+    .sp-gpa-empty {
+        background: #FFFFFF;
+        border: 1px dashed #B9E5F5;
+        border-radius: 16px;
+        padding: 1.15rem 1.2rem;
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.92rem !important;
+        line-height: 1.5 !important;
+        margin: 0 0 0.85rem 0;
+    }
+
+    html body [data-testid="stMain"] .st-key-gpa_page,
+    html body [data-testid="stMain"] .st-key-gpa_page[data-testid="stVerticalBlock"],
+    html body [data-testid="stMain"] .st-key-gpa_page[data-testid="stVerticalBlockBorderWrapper"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stHorizontalBlock"] {
+        align-items: start !important;
+        margin-bottom: 0 !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stHorizontalBlock"] > div {
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-gpa_course_card_"],
+    html body [data-testid="stMain"] [class*="st-key-gpa_course_card_"]:hover {
+        background: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-top: 3px solid #018FC7 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
+        padding: 0.8rem 0.95rem 0.85rem !important;
+        margin: 0 0 0.75rem 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
         overflow: visible !important;
         transform: none !important;
-        box-sizing: border-box !important;
     }
 
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] [data-testid="stVerticalBlock"] {
+    html body [data-testid="stMain"] [class*="st-key-gpa_course_card_"] [data-testid="stVerticalBlock"] {
         background: transparent !important;
-        gap: 1rem !important;
-        height: 100% !important;
-        justify-content: space-between !important;
+        gap: 0.4rem !important;
+        height: auto !important;
     }
 
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] .stButton {
-        margin-top: auto !important;
+    html body [data-testid="stMain"] [class*="st-key-gpa_course_card_"] .stButton,
+    html body [data-testid="stMain"] [class*="st-key-gpa_course_card_"] [data-testid="stElementContainer"]:has(.stButton) {
+        margin-top: 0 !important;
+        width: auto !important;
     }
 
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] .stButton > button,
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] .stButton > button:hover,
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] .stButton > button:focus,
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] .stButton > button:active {
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stWidgetLabel"] p,
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stWidgetLabel"] {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.78rem !important;
+        font-weight: 750 !important;
+        margin-bottom: 0.2rem !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-gpa-hero) [data-testid="stTextInput"] input,
+    html body [data-testid="stMain"]:has(.sp-gpa-hero) [data-testid="stNumberInput"] input,
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stTextInput"] input,
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stNumberInput"] input {
+        background: #FFFFFF !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 10px !important;
+        min-height: 2.35rem !important;
+        font-size: 0.9rem !important;
+        box-shadow: none !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-gpa-hero) [data-testid="stTextInput"] input:focus,
+    html body [data-testid="stMain"]:has(.sp-gpa-hero) [data-testid="stNumberInput"] input:focus,
+    html body [data-testid="stMain"]:has(.sp-gpa-hero) [data-baseweb="select"] > div:focus-within,
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stTextInput"] input:focus,
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stNumberInput"] input:focus,
+    html body [data-testid="stMain"] .st-key-gpa_page [data-baseweb="select"] > div:focus-within {
+        border-color: #018FC7 !important;
+        box-shadow: 0 0 0 3px rgba(1, 143, 199, 0.16) !important;
+        outline: none !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-gpa-hero) [data-baseweb="select"] > div,
+    html body [data-testid="stMain"]:has(.sp-gpa-hero) [data-baseweb="input"],
+    html body [data-testid="stMain"] .st-key-gpa_page [data-baseweb="select"] > div,
+    html body [data-testid="stMain"] .st-key-gpa_page [data-baseweb="input"] {
         background: #FFFFFF !important;
         background-color: #FFFFFF !important;
-        border: 1px solid #018FC7 !important;
+        border-color: #D5DEE6 !important;
+        color: #083C5D !important;
+        min-height: 2.35rem !important;
+        box-shadow: none !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stAlert"] {
+        border: 1px solid #B9E5F5 !important;
+        border-width: 1px !important;
         border-radius: 12px !important;
         box-shadow: none !important;
-        color: #018FC7 !important;
-        -webkit-text-fill-color: #018FC7 !important;
-        font-weight: 750 !important;
-        font-size: 0.92rem !important;
-        min-height: 2.7rem !important;
+        padding: 0.7rem 0.9rem !important;
+        background: #F7FBFD !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stExpander"],
+    html body [data-testid="stMain"] .st-key-gpa_page [data-testid="stExpander"]:hover {
+        border: 1px solid #D5DEE6 !important;
+        border-width: 1px !important;
+        border-radius: 12px !important;
+        background: #FFFFFF !important;
+        box-shadow: none !important;
         transform: none !important;
     }
 
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] .stButton > button:hover {
-        background: #E7F6FC !important;
-        background-color: #E7F6FC !important;
+    html body [data-testid="stMain"] .st-key-gpa_add_course .stButton > button,
+    html body [data-testid="stMain"] .st-key-gpa_calculate_course_gpa .stButton > button,
+    html body [data-testid="stMain"] .st-key-gpa_confirm_results .stButton > button,
+    html body [data-testid="stMain"] .st-key-gpa_restart_confirm .stButton > button {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        border: 1px solid #018FC7 !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        min-height: 2.5rem !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
     }
 
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] .stButton > button p,
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] .stButton > button span,
-    html body [data-testid="stMain"] [class*="st-key-resource_card_"] .stButton > button div {
+    html body [data-testid="stMain"] .st-key-gpa_add_course .stButton > button:hover:not(:disabled),
+    html body [data-testid="stMain"] .st-key-gpa_calculate_course_gpa .stButton > button:hover:not(:disabled),
+    html body [data-testid="stMain"] .st-key-gpa_confirm_results .stButton > button:hover:not(:disabled),
+    html body [data-testid="stMain"] .st-key-gpa_restart_confirm .stButton > button:hover:not(:disabled) {
+        background: #0178A8 !important;
+        background-color: #0178A8 !important;
+        border-color: #0178A8 !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-gpa_add_course .stButton > button p,
+    html body [data-testid="stMain"] .st-key-gpa_add_course .stButton > button span,
+    html body [data-testid="stMain"] .st-key-gpa_calculate_course_gpa .stButton > button p,
+    html body [data-testid="stMain"] .st-key-gpa_calculate_course_gpa .stButton > button span,
+    html body [data-testid="stMain"] .st-key-gpa_confirm_results .stButton > button p,
+    html body [data-testid="stMain"] .st-key-gpa_confirm_results .stButton > button span,
+    html body [data-testid="stMain"] .st-key-gpa_restart_confirm .stButton > button p,
+    html body [data-testid="stMain"] .st-key-gpa_restart_confirm .stButton > button span {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-gpa_add_course .stButton > button:disabled,
+    html body [data-testid="stMain"] [class*="st-key-gpa_remove_course_"] .stButton > button:disabled {
+        opacity: 0.45 !important;
+        cursor: not-allowed !important;
+        background: #F3F6F8 !important;
+        border-color: #D5DEE6 !important;
+        color: #7A8A96 !important;
+        -webkit-text-fill-color: #7A8A96 !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-gpa_remove_course_"] .stButton > button {
+        background: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        min-height: 2.15rem !important;
+        font-size: 0.82rem !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-gpa_remove_course_"] .stButton > button:hover:not(:disabled) {
+        background: #FDF2F2 !important;
+        border-color: #E8B4B4 !important;
+        color: #9B2C2C !important;
+        -webkit-text-fill-color: #9B2C2C !important;
+    }
+
+    html body [data-testid="stMain"] .st-key-gpa_calculate_course_gpa {
+        max-width: 260px;
+        margin: 0.35rem 0 0.75rem 0;
+    }
+
+    html body [data-testid="stMain"] .st-key-gpa_restart_request .stButton > button,
+    html body [data-testid="stMain"] .st-key-gpa_restart_cancel .stButton > button {
+        background: #FFFFFF !important;
+        border: 1px solid #018FC7 !important;
         color: #018FC7 !important;
         -webkit-text-fill-color: #018FC7 !important;
-        font-weight: 750 !important;
+        min-height: 2.4rem !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-gpa_converter_panel"],
+    html body [data-testid="stMain"] [class*="st-key-gpa_results_panel"],
+    html body [data-testid="stMain"] [class*="st-key-gpa_restart_panel"] {
+        background: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
+        padding: 1.05rem 1.15rem 1.1rem !important;
+        margin: 0.35rem 0 0.9rem 0 !important;
+        height: auto !important;
+    }
+
+    @media (max-width: 768px) {
+        .sp-gpa-hero h1 {
+            font-size: 1.45rem !important;
+        }
+
+        .sp-gpa-stat-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        html body [data-testid="stMain"] [class*="st-key-gpa_course_card_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(4):last-child) {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.55rem !important;
+        }
     }
 
     .sp-dash-direction-row {
@@ -3119,6 +3544,19 @@ st.markdown(
 
     .sp-dash-interests-card {
         margin: 0;
+    }
+
+    .stem-interests-heading-wrapper,
+    [data-testid="stMain"] .st-key-stem_interests_heading_wrapper,
+    [data-testid="stMain"] [data-testid="stElementContainer"]:has(> .st-key-stem_interests_heading_wrapper) {
+        margin-top: 28px !important;
+        margin-bottom: 24px !important;
+    }
+
+    .update-profile-button-wrapper,
+    [data-testid="stMain"] .st-key-update_profile_button_wrapper,
+    [data-testid="stMain"] [data-testid="stElementContainer"]:has(> .st-key-update_profile_button_wrapper) {
+        margin-top: 24px !important;
     }
 
     .sp-dash-interest-pills {
@@ -3572,10 +4010,10 @@ st.markdown(
 
     .sp-hero {
         background: linear-gradient(135deg, rgba(0,63,92,0.99), rgba(1,143,199,0.95));
-        border-radius: 20px;
-        padding: 1.75rem 1.9rem;
-        box-shadow: 0 14px 32px rgba(0, 63, 92, 0.18);
-        margin: 0.15rem 0 0 0;
+        border-radius: 16px;
+        padding: 1.15rem 1.45rem 1.2rem;
+        box-shadow: 0 8px 22px rgba(0, 63, 92, 0.14);
+        margin: 0;
         position: relative;
         overflow: hidden;
     }
@@ -3583,21 +4021,26 @@ st.markdown(
     .sp-hero::after {
         content: "";
         position: absolute;
-        width: 240px;
-        height: 240px;
-        right: -70px;
-        top: -90px;
+        width: 150px;
+        height: 150px;
+        right: -46px;
+        top: -62px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.05);
+    }
+
+    .sp-hero .sp-kicker {
+        margin-bottom: 0.32rem;
+        letter-spacing: 0.1em;
     }
 
     .sp-hero h1 {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
-        margin: 0 0 0.4rem 0;
-        font-size: 1.85rem !important;
+        margin: 0 0 0.28rem 0;
+        font-size: 1.52rem !important;
         font-weight: 800 !important;
-        line-height: 1.12;
+        line-height: 1.18;
         position: relative;
         z-index: 1;
     }
@@ -3606,11 +4049,305 @@ st.markdown(
         color: #EAF6FC !important;
         -webkit-text-fill-color: #EAF6FC !important;
         margin: 0;
-        font-size: 0.93rem !important;
+        font-size: 0.9rem !important;
         font-weight: 500 !important;
-        max-width: 720px;
+        line-height: 1.45 !important;
+        max-width: 680px;
         position: relative;
         z-index: 1;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stMainBlockContainer"] {
+        max-width: 1080px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] {
+        gap: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(.sp-hero) {
+        margin: 0 0 3.75rem 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [data-testid="stHeading"]),
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([class*="st-key-dash_continue_heading"]) {
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_continue_heading"],
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_continue_heading"][data-testid="stVerticalBlockBorderWrapper"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_continue_heading"] [data-testid="stHeaderActionElements"],
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_continue_heading"] [data-testid="stHeaderActionElements"] *,
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_continue_heading"] [data-testid="stHeading"] a,
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_continue_heading"] [data-testid="stHeadingWithActionElements"] a {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stHeading"] {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stHeading"] h2 {
+        font-size: 1.28rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.02em;
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) .sp-section-subtitle {
+        margin: 0 !important;
+        font-size: 0.88rem !important;
+        line-height: 1.4 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(.sp-section-subtitle) {
+        margin: 24px 0 32px 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([class*="st-key-dash_continue_journey"]) {
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([class*="st-key-dash_journey_metrics"]) {
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(.sp-dash-empty) {
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([data-testid="stDivider"]) {
+        margin: 64px 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([class*="st-key-dash_continue_journey"]) + [data-testid="stElementContainer"]:has([data-testid="stDivider"]) {
+        margin: 72px 0 56px 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stDivider"] {
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stDivider"] hr {
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) button:focus-visible,
+    html body [data-testid="stMain"]:has(.sp-hero) a:focus-visible {
+        outline: 2px solid #018FC7 !important;
+        outline-offset: 2px !important;
+    }
+
+    .sp-dash-metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.85rem;
+        align-items: stretch;
+        width: 100%;
+        margin: 0 0 24px 0;
+    }
+
+    .sp-dash-metric {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        height: 100%;
+        box-sizing: border-box;
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06);
+        padding: 1rem 1.05rem 0.95rem;
+        min-height: 0;
+    }
+
+    .sp-dash-metric-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.42rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        letter-spacing: -0.02em;
+        margin: 0 0 0.28rem 0 !important;
+        overflow-wrap: anywhere;
+    }
+
+    .sp-dash-metric-label {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.78rem !important;
+        font-weight: 650 !important;
+        line-height: 1.3 !important;
+        letter-spacing: 0.01em;
+        margin: 0 !important;
+    }
+
+    .sp-dash-empty {
+        display: flex;
+        align-items: center;
+        background: #F7FBFD;
+        border: 1px solid #B9E5F5;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(8, 60, 93, 0.04);
+        padding: 0.75rem 0.9rem;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .sp-dash-empty p {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.88rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"],
+    html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"]:hover,
+    html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"][data-testid="stVerticalBlockBorderWrapper"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"][data-testid="stVerticalBlock"],
+    html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"] > [data-testid="stVerticalBlock"] {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 2rem !important;
+        row-gap: 40px !important;
+        column-gap: 2rem !important;
+        align-items: stretch !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"],
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"]:hover,
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"][data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]),
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]):hover {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 18px !important;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
+        padding: 1.9rem !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+        overflow: hidden;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] > [data-testid="stVerticalBlock"],
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] [data-testid="stVerticalBlock"]:not([class*="st-key-dash_journey_card_"]) {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+        min-height: 0 !important;
+    }
+
+    .sp-dash-action-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.05rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.02em;
+        margin: 0 0 0.85rem 0 !important;
+    }
+
+    .sp-dash-action-copy {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.88rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] [data-testid="stHeaderActionElements"],
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] [data-testid="stHeading"] a {
+        display: none !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] [data-testid="stElementContainer"]:has(.stButton),
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton {
+        margin-top: auto !important;
+        margin-bottom: 0 !important;
+        padding-top: 0.85rem !important;
+        width: 100% !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button,
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:focus,
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:active {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #018FC7 !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-weight: 750 !important;
+        font-size: 0.88rem !important;
+        min-height: 2.35rem !important;
+        height: auto !important;
+        padding: 0.4rem 0.75rem !important;
+        transform: none !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:hover {
+        background: #E7F6FC !important;
+        background-color: #E7F6FC !important;
+        border-color: #018FC7 !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:focus-visible {
+        outline: 2px solid #018FC7 !important;
+        outline-offset: 2px !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button p,
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button span,
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button div {
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-weight: 750 !important;
     }
 
     .sp-page-header {
@@ -3792,6 +4529,14 @@ st.markdown(
         max-width: 720px;
     }
 
+    .sp-landing-stats-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+        width: 100%;
+        margin: 0;
+    }
+
     .sp-landing-stats {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3801,13 +4546,39 @@ st.markdown(
     }
 
     .sp-landing-stat {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         background: #FFFFFF;
         border: 1px solid #D5DEE6;
         border-radius: 16px;
         box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06);
-        padding: 0.95rem 1rem 0.9rem;
+        padding: 1.05rem 1rem 0.95rem;
         text-align: center;
         box-sizing: border-box;
+        min-height: 138px;
+        overflow: hidden;
+    }
+
+    .sp-landing-stat-icon {
+        width: 1.85rem;
+        height: 1.85rem;
+        border-radius: 8px;
+        background: #E7F6FC;
+        color: #018FC7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 0 0.48rem 0;
+        flex: 0 0 auto;
+    }
+
+    .sp-landing-stat-icon svg {
+        display: block;
+        width: 1rem;
+        height: 1rem;
     }
 
     .sp-landing-stat-value {
@@ -3827,6 +4598,17 @@ st.markdown(
         font-weight: 650 !important;
         line-height: 1.3 !important;
         margin: 0 !important;
+    }
+
+    .sp-landing-stats-note {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.78rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        text-align: center;
+        margin: 0 auto !important;
+        max-width: 36rem;
     }
 
     .sp-landing-feature {
@@ -4008,6 +4790,15 @@ st.markdown(
     }
 
     @media (max-width: 1100px) {
+        html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"][data-testid="stVerticalBlock"],
+        html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"] > [data-testid="stVerticalBlock"] {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+
+        .sp-dash-metric-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .sp-college-stat-grid,
         .sp-rec-info-grid,
         .sp-app-info-grid,
@@ -4020,6 +4811,10 @@ st.markdown(
         .sp-stem-dir-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         }
+
+        .sp-landing-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     @media (max-width: 768px) {
@@ -4030,8 +4825,32 @@ st.markdown(
         }
 
         .sp-hero {
-            padding: 1.5rem;
-            border-radius: 18px;
+            padding: 1.05rem 1.15rem 1.1rem;
+            border-radius: 14px;
+        }
+
+        .sp-dash-metric-grid {
+            grid-template-columns: 1fr;
+        }
+
+        html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"][data-testid="stVerticalBlock"],
+        html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"] > [data-testid="stVerticalBlock"] {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+            row-gap: 40px !important;
+            column-gap: 2rem !important;
+        }
+
+        html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(.sp-hero) {
+            margin: 0 0 3rem 0 !important;
+        }
+
+        html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([data-testid="stDivider"]) {
+            margin: 64px 0 !important;
+        }
+
+        html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([class*="st-key-dash_continue_journey"]) + [data-testid="stElementContainer"]:has([data-testid="stDivider"]) {
+            margin: 72px 0 56px 0 !important;
         }
 
         .sp-hero h1 {
@@ -4374,6 +5193,8 @@ st.markdown(
     html body [data-testid="stMain"] .sp-landing-purpose p *,
     html body [data-testid="stMain"] .sp-landing-contact p,
     html body [data-testid="stMain"] .sp-landing-contact p *,
+    html body [data-testid="stMain"] .sp-landing-stats-note,
+    html body [data-testid="stMain"] .sp-landing-stats-note *,
     html body [data-testid="stMain"] .sp-landing-impact-copy,
     html body [data-testid="stMain"] .sp-landing-impact-copy * {
         color: #4A5D6B !important;
@@ -4742,10 +5563,22 @@ st.markdown(
     html body [data-testid="stMain"] .sp-resources-hero h1,
     html body [data-testid="stMain"] .sp-resources-hero h1 *,
     html body [data-testid="stMain"] .sp-resource-card-title,
-    html body [data-testid="stMain"] .sp-resource-card-title * {
+    html body [data-testid="stMain"] .sp-resource-card-title *,
+    html body [data-testid="stMain"] .sp-gpa-hero h1,
+    html body [data-testid="stMain"] .sp-gpa-hero h1 *,
+    html body [data-testid="stMain"] .sp-gpa-section-title,
+    html body [data-testid="stMain"] .sp-gpa-stat-value {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
         font-weight: 800 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-resource-card-action,
+    html body [data-testid="stMain"] .sp-resource-card-action * {
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-weight: 750 !important;
+        text-decoration: none !important;
     }
 
     html body [data-testid="stMain"] .sp-project-level-beginner,
@@ -4769,6 +5602,26 @@ st.markdown(
         font-weight: 800 !important;
     }
 
+    html body [data-testid="stMain"] .sp-dash-action-copy,
+    html body [data-testid="stMain"] .sp-dash-action-copy * {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-weight: 500 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-dash-metric-label,
+    html body [data-testid="stMain"] .sp-dash-metric-label * {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-weight: 650 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-dash-action-title,
+    html body [data-testid="stMain"] .sp-dash-action-title *,
+    html body [data-testid="stMain"] .sp-dash-metric-value,
+    html body [data-testid="stMain"] .sp-dash-metric-value *,
+    html body [data-testid="stMain"] .sp-dash-empty p,
+    html body [data-testid="stMain"] .sp-dash-empty p *,
     html body [data-testid="stMain"] .sp-dash-card h3,
     html body [data-testid="stMain"] .sp-dash-card h3 *,
     html body [data-testid="stMain"] .sp-dash-card-title,
@@ -4978,22 +5831,31 @@ st.markdown(
 
     /* Keep the top title centered and let the underline follow its width. */
     html body [data-testid="stSidebar"] .sp-sidebar-brand {
-        width: max-content !important;
+        width: 100% !important;
         max-width: 100% !important;
+        padding: 0 0.5rem !important;
+        overflow: visible !important;
     }
 
     html body [data-testid="stSidebar"] .sp-sidebar-title {
-        width: max-content !important;
+        width: 100% !important;
         max-width: 100% !important;
-        align-items: stretch !important;
+        align-items: center !important;
+        overflow: visible !important;
     }
 
     html body [data-testid="stSidebar"] .sp-sidebar-title .sp-title-line {
-        width: max-content !important;
+        width: 100% !important;
         max-width: 100% !important;
         margin-left: auto !important;
         margin-right: auto !important;
         justify-content: center !important;
+        gap: 0.16em !important;
+        font-size: clamp(1.28rem, 1.12rem + 1.05vw, 1.62rem) !important;
+        letter-spacing: -0.05em !important;
+        padding: 0 0.12em !important;
+        overflow: visible !important;
+        white-space: nowrap !important;
     }
 
     /* Slightly longer line so it visually lines up with the full brand title. */
@@ -5037,6 +5899,22 @@ st.markdown(
         opacity: 1 !important;
         cursor: default !important;
         transition: none !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"],
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"]:hover,
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"][data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]),
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]):hover {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 18px !important;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
+        padding: 1.9rem !important;
+        transform: none !important;
+        filter: none !important;
     }
 
     /* Dashboard journey metrics match Continue Your Journey card chrome. */
@@ -5099,9 +5977,10 @@ st.markdown(
     [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child)
     > div
     > [data-testid="stVerticalBlock"][height="100%"]:hover {
-        border: 2px solid #8A97A3 !important;
-        border-radius: 16px !important;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08) !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
     }
 
     html body [data-testid="stSidebar"] [data-testid="stSidebarHeader"] {
@@ -5190,19 +6069,21 @@ st.markdown(
     }
 
     html body [data-testid="stSidebar"] .sp-sidebar-brand {
-        width: max-content !important;
+        width: 100% !important;
         max-width: 100% !important;
         margin: 0.2rem auto 0.55rem auto !important;
-        padding: 0 !important;
+        padding: 0 0.5rem !important;
         align-items: center !important;
         text-align: center !important;
+        overflow: visible !important;
     }
 
     html body [data-testid="stSidebar"] .sp-sidebar-title {
-        width: max-content !important;
+        width: 100% !important;
         max-width: 100% !important;
         align-items: center !important;
         text-align: center !important;
+        overflow: visible !important;
     }
 
     html body [data-testid="stSidebar"] .sp-sidebar-title .sp-title-blue {
@@ -5233,8 +6114,10 @@ st.markdown(
         color: #72D2F2 !important;
         -webkit-text-fill-color: #72D2F2 !important;
         font-weight: 800 !important;
+        font-size: clamp(1.32rem, 1.16rem + 1.1vw, 1.68rem) !important;
         background: transparent !important;
         padding: 0 !important;
+        overflow: visible !important;
     }
 
     html body [data-testid="stSidebar"] .sp-sidebar-accent,
@@ -5565,24 +6448,56 @@ st.markdown(
         box-sizing: border-box !important;
     }
 
-    html body .stApp [data-testid="stMain"] [class*="st-key-resource_card_"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-resource_card_"]:hover,
-    html body .stApp [data-testid="stMain"] [class*="st-key-resource_card_"][data-testid="stVerticalBlock"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-resource_card_"][data-testid="stVerticalBlock"]:hover,
-    html body .stApp [data-testid="stMain"] [class*="st-key-resource_card_"][data-testid="stVerticalBlockBorderWrapper"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-resource_card_"][data-testid="stVerticalBlockBorderWrapper"]:hover {
-        background: #FFFFFF !important;
-        background-color: #FFFFFF !important;
-        border: 1px solid #B9E5F5 !important;
-        border-top: 4px solid #018FC7 !important;
-        border-radius: 20px !important;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07) !important;
-        padding: 1.35rem 1.35rem 1.2rem !important;
+    html body .stApp [data-testid="stMain"] [class*="st-key-resources_page"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resources_page"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resources_page"][data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resources_page"][data-testid="stVerticalBlockBorderWrapper"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
         margin: 0 !important;
-        height: 100% !important;
+        height: auto !important;
         overflow: visible !important;
         transform: none !important;
-        box-sizing: border-box !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .st-key-gpa_page,
+    html body .stApp [data-testid="stMain"] .st-key-gpa_page:hover,
+    html body .stApp [data-testid="stMain"] .st-key-gpa_page[data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] .st-key-gpa_page[data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(.st-key-gpa_page) {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+        transform: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_course_card_"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_course_card_"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_course_card_"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_course_card_"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-gpa_course_card_"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-gpa_course_card_"]):hover {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-top: 3px solid #018FC7 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
+        padding: 0.8rem 0.95rem 0.85rem !important;
+        margin: 0 0 0.75rem 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stVerticalBlock"],
@@ -5915,6 +6830,1706 @@ st.markdown(
             font-size: 1.2rem !important;
         }
     }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"][data-testid="stVerticalBlockBorderWrapper"] {
+        max-width: 1080px !important;
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        transform: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"][data-testid="stVerticalBlock"] {
+        gap: 24px !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
+    .sp-matcher-callout {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+        border-radius: 12px;
+        box-shadow: none;
+        padding: 12px 16px;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .sp-matcher-callout-icon {
+        width: 1.35rem;
+        height: 1.35rem;
+        color: #018FC7;
+        flex: 0 0 auto;
+        margin-top: 0.1rem;
+    }
+
+    .sp-matcher-callout-icon svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .sp-matcher-callout p {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    .sp-matcher-callout strong {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]):hover {
+        display: flex !important;
+        flex-direction: column !important;
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
+        padding: 32px !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stVerticalBlock"]:not([class*="st-key-college_matcher_step1"]) {
+        gap: 24px !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .sp-matcher-step-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.28rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.02em;
+        margin: 0 0 8px 0 !important;
+    }
+
+    .sp-matcher-step-copy {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.92rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 0 8px 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stWidgetLabel"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stWidgetLabel"] label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.92rem !important;
+        font-weight: 650 !important;
+        margin-bottom: 8px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="select"] > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="input"] > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stSelectbox"] > div > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stMultiSelect"] > div > div {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        min-height: 2.6rem !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="select"] > div:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stSelectbox"] > div > div:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stMultiSelect"] > div > div:hover {
+        background: #F7FBFD !important;
+        border-color: #B9E5F5 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="select"] > div:focus-within,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stSelectbox"] > div > div:focus-within,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stMultiSelect"] > div > div:focus-within {
+        background: #FFFFFF !important;
+        border-color: #018FC7 !important;
+        box-shadow: 0 0 0 3px rgba(1, 143, 199, 0.16) !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="select"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="select"] div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stSelectbox"] input,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stMultiSelect"] input {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        background: transparent !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="select"] svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stSelectbox"] svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stMultiSelect"] svg {
+        color: #083C5D !important;
+        fill: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="select"] [aria-disabled="true"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="select"] > div[aria-disabled="true"] {
+        background: #F4F7F9 !important;
+        color: #7A8A96 !important;
+        -webkit-text-fill-color: #7A8A96 !important;
+        opacity: 0.72;
+        cursor: not-allowed !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="tag"] {
+        background: #E7F6FC !important;
+        background-color: #E7F6FC !important;
+        border: 1px solid #B9E5F5 !important;
+        border-radius: 999px !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 650 !important;
+        padding: 0.15rem 0.45rem 0.15rem 0.65rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="tag"] span {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="tag"] svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-baseweb="tag"] [role="presentation"] {
+        color: #018FC7 !important;
+        fill: #018FC7 !important;
+    }
+
+    .sp-matcher-slider-head {
+        display: flex;
+        align-items: center;
+        margin: 0 0 8px 0;
+    }
+
+    .sp-matcher-slider-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.92rem !important;
+        font-weight: 650 !important;
+        line-height: 1.35 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stWidgetLabel"] {
+        display: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSlider"] {
+        padding-top: 0.35rem !important;
+        padding-bottom: 1.85rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSlider"] * {
+        user-select: none !important;
+        -webkit-user-select: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSlider"] *::selection {
+        background: transparent !important;
+        color: inherit !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] div {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] {
+        opacity: 1 !important;
+        margin-top: 14px !important;
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.78rem !important;
+        font-weight: 550 !important;
+        line-height: 1.25 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] span {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] span {
+        background-image: none !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #B9E5F5 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 6px rgba(8, 60, 93, 0.08) !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.78rem !important;
+        font-weight: 750 !important;
+        line-height: 1.2 !important;
+        padding: 0.2rem 0.5rem !important;
+        top: -2.15em !important;
+        white-space: nowrap !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] [data-testid="stMarkdownContainer"] {
+        background: transparent !important;
+        background-color: transparent !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-baseweb="slider"] > div:not([role="slider"]) {
+        height: 4px !important;
+        background-color: #018FC7 !important;
+        background-blend-mode: hue !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 999px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSlider"] [role="slider"] {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        background-image: none !important;
+        border: 2px solid #FFFFFF !important;
+        border-radius: 50% !important;
+        box-shadow: 0 2px 6px rgba(8, 60, 93, 0.22) !important;
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stExpander"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stExpander"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stExpanderDetails"] {
+        background: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 12px rgba(8, 60, 93, 0.04) !important;
+        overflow: hidden !important;
+        transform: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stExpander"] summary {
+        padding: 16px 20px !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 750 !important;
+        font-size: 1.05rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stExpander"] summary svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stExpander"] summary [data-testid="stExpanderIcon"] {
+        color: #018FC7 !important;
+        fill: #018FC7 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stExpanderDetails"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stExpander"] [data-testid="stExpanderDetails"] {
+        padding: 8px 20px 24px 20px !important;
+        border-top: 1px solid #E7F0F5 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stCheckbox"] label,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_quiz"] [data-testid="stCheckbox"] p {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] {
+        margin-top: 24px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button:focus,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button:active {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        border: 1px solid #018FC7 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 6px 16px rgba(1, 143, 199, 0.18) !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 750 !important;
+        min-height: 2.75rem !important;
+        max-width: 100% !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button div {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 750 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button:hover {
+        background: #0178A8 !important;
+        background-color: #0178A8 !important;
+        border-color: #0178A8 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button:focus-visible {
+        outline: 2px solid #018FC7 !important;
+        outline-offset: 2px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button:disabled,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button[disabled],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button[aria-disabled="true"] {
+        background: #8CCBE3 !important;
+        background-color: #8CCBE3 !important;
+        border-color: #8CCBE3 !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        cursor: not-allowed !important;
+        box-shadow: none !important;
+        opacity: 0.78;
+    }
+
+    html:has(.sp-matcher-callout) [data-baseweb="popover"],
+    html:has(.sp-matcher-callout) [data-baseweb="menu"],
+    html:has(.sp-matcher-callout) [role="listbox"] {
+        background: #FFFFFF !important;
+        color: #083C5D !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.12) !important;
+    }
+
+    html:has(.sp-matcher-callout) [data-baseweb="popover"] li,
+    html:has(.sp-matcher-callout) [role="option"] {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html:has(.sp-matcher-callout) [role="option"]:hover,
+    html:has(.sp-matcher-callout) [role="option"][aria-selected="true"] {
+        background: #E7F6FC !important;
+        color: #083C5D !important;
+    }
+
+    @media (max-width: 768px) {
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"][data-testid="stVerticalBlockBorderWrapper"],
+        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) {
+            padding: 24px 20px !important;
+        }
+
+        .sp-matcher-step-title {
+            font-size: 1.15rem !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSlider"] {
+            padding-bottom: 2.15rem !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] {
+            font-size: 0.72rem !important;
+            margin-top: 16px !important;
+        }
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"][data-testid="stVerticalBlockBorderWrapper"] {
+        max-width: 1100px !important;
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        transform: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"][data-testid="stVerticalBlock"] {
+        gap: 24px !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    .sp-stemq-title-block {
+        margin: 0;
+    }
+
+    .sp-stemq-page-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.32rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.02em;
+        margin: 0 0 8px 0 !important;
+    }
+
+    .sp-stemq-page-sub {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.92rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_interests"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_interests"]):hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_ratings"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_ratings"]):hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_environment"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_environment"]):hover {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 18px !important;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
+        padding: 32px !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"] > [data-testid="stVerticalBlock"] {
+        gap: 20px !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .sp-stemq-card-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.12rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stWidgetLabel"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stWidgetLabel"] label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.92rem !important;
+        font-weight: 650 !important;
+        margin-bottom: 8px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-baseweb="select"] > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stSelectbox"] > div > div {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        min-height: 2.6rem !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-baseweb="select"] > div:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stSelectbox"] > div > div:hover {
+        background: #F7FBFD !important;
+        border-color: #B9E5F5 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-baseweb="select"] > div:focus-within,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stSelectbox"] > div > div:focus-within {
+        background: #FFFFFF !important;
+        border-color: #018FC7 !important;
+        box-shadow: 0 0 0 3px rgba(1, 143, 199, 0.16) !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-baseweb="select"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-baseweb="select"] div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stSelectbox"] input {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        background: transparent !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-baseweb="select"] svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stSelectbox"] svg {
+        color: #083C5D !important;
+        fill: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"][data-testid="stVerticalBlockBorderWrapper"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"][data-testid="stVerticalBlock"] {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 16px 20px !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_s_"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_s_"]):hover {
+        background: #F4FAFD !important;
+        background-color: #F4FAFD !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 14px !important;
+        box-shadow: none !important;
+        padding: 16px 18px 12px !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stVerticalBlock"]:not([class*="st-key-stemq_s_"]) {
+        gap: 6px !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSlider"] {
+        max-width: 100% !important;
+        padding: 0.15rem 0.55rem 0.15rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSlider"] * {
+        user-select: none !important;
+        -webkit-user-select: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSlider"] *::selection {
+        background: transparent !important;
+        color: inherit !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderTickBar"] {
+        display: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        background-image: none !important;
+        border: 1px solid #018FC7 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 6px rgba(8, 60, 93, 0.12) !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 0.76rem !important;
+        font-weight: 750 !important;
+        line-height: 1.2 !important;
+        padding: 0.16rem 0.45rem !important;
+        top: -2.05em !important;
+        white-space: nowrap !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] [data-testid="stMarkdownContainer"] {
+        background: transparent !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-baseweb="slider"] > div:not([role="slider"]) {
+        height: 4px !important;
+        background-color: #018FC7 !important;
+        background-blend-mode: hue !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 999px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSlider"] [role="slider"] {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        background-image: none !important;
+        border: 2px solid #FFFFFF !important;
+        border-radius: 50% !important;
+        box-shadow: 0 2px 6px rgba(8, 60, 93, 0.22) !important;
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .sp-stemq-slider-ends {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 0 0.55rem;
+        color: #5A6A78;
+        font-size: 0.74rem;
+        font-weight: 550;
+        line-height: 1.3;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] {
+        margin-top: 8px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton {
+        display: flex !important;
+        justify-content: center !important;
+        max-width: 380px !important;
+        margin: 8px auto 0 auto !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button:focus,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button:active {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        border: 1px solid #018FC7 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 6px 16px rgba(1, 143, 199, 0.18) !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 750 !important;
+        min-height: 2.75rem !important;
+        width: 100% !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button div {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 750 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button:hover {
+        background: #0178A8 !important;
+        background-color: #0178A8 !important;
+        border-color: #0178A8 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button:focus-visible {
+        outline: 2px solid #018FC7 !important;
+        outline-offset: 2px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button:disabled,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button[disabled],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button[aria-disabled="true"] {
+        background: #8CCBE3 !important;
+        background-color: #8CCBE3 !important;
+        border-color: #8CCBE3 !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        cursor: not-allowed !important;
+        box-shadow: none !important;
+        opacity: 0.78;
+    }
+
+    html:has(.sp-stemq-page-title) [data-baseweb="popover"],
+    html:has(.sp-stemq-page-title) [data-baseweb="menu"],
+    html:has(.sp-stemq-page-title) [role="listbox"] {
+        background: #FFFFFF !important;
+        color: #083C5D !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.12) !important;
+    }
+
+    html:has(.sp-stemq-page-title) [data-baseweb="popover"] li,
+    html:has(.sp-stemq-page-title) [role="option"] {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html:has(.sp-stemq-page-title) [role="option"]:hover,
+    html:has(.sp-stemq-page-title) [role="option"][aria-selected="true"] {
+        background: #E7F6FC !important;
+        color: #083C5D !important;
+    }
+
+    @media (max-width: 768px) {
+        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"],
+        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_interests"]),
+        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_ratings"]),
+        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_environment"]) {
+            padding: 24px 20px !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"] > [data-testid="stVerticalBlock"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"][data-testid="stVerticalBlock"] {
+            grid-template-columns: 1fr !important;
+        }
+
+        .sp-stemq-page-title {
+            font-size: 1.18rem !important;
+        }
+
+        .sp-stemq-slider-ends {
+            font-size: 0.68rem;
+            gap: 8px;
+        }
+    }
+
+    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [data-testid="stMainBlockContainer"] {
+        max-width: 1080px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) .sp-page-header {
+        padding: 0.85rem 1.2rem !important;
+        margin: 0 0 1.5rem 0 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 20px rgba(0, 63, 92, 0.14) !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) .sp-page-header h1 {
+        font-size: 1.38rem !important;
+        margin-bottom: 0.28rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) .sp-page-header p {
+        font-size: 0.88rem !important;
+        max-width: 720px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"][data-testid="stVerticalBlockBorderWrapper"] {
+        max-width: 1080px !important;
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        transform: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"][data-testid="stVerticalBlock"] {
+        gap: 64px !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    .sp-fb-callout {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+        border-radius: 12px;
+        box-shadow: none;
+        padding: 12px 16px;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .sp-fb-callout-icon {
+        width: 1.35rem;
+        height: 1.35rem;
+        color: #018FC7;
+        flex: 0 0 auto;
+        margin-top: 0.1rem;
+    }
+
+    .sp-fb-callout-icon svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .sp-fb-callout p {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_overall"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_overall"]):hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_working"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_working"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_working"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_working"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_working"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_working"]):hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_improve"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_improve"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_improve"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_improve"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_improve"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_improve"]):hover {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #B9E5F5 !important;
+        border-radius: 18px !important;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
+        padding: 32px !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        transform: none !important;
+        filter: none !important;
+        cursor: default !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_overall"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_overall"]):hover {
+        padding: 20px 24px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_working"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_improve"] > [data-testid="stVerticalBlock"] {
+        gap: 20px !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] > [data-testid="stVerticalBlock"] {
+        gap: 24px !important;
+    }
+
+    .sp-fb-card-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.12rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 6px 0 !important;
+    }
+
+    .sp-fb-card-sub {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stWidgetLabel"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stWidgetLabel"] label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.92rem !important;
+        font-weight: 650 !important;
+        margin-bottom: 8px !important;
+        white-space: normal !important;
+        overflow: visible !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 8px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] > div > div:not([data-testid="stWidgetLabel"]) {
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        gap: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 0 !important;
+        align-items: stretch !important;
+        border: 1.5px solid #D5DEE6 !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        background: #FFFFFF !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [data-baseweb="radio"] {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 50px !important;
+        min-height: 50px !important;
+        max-height: 50px !important;
+        margin: 0 !important;
+        padding: 0 8px !important;
+        box-sizing: border-box !important;
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        background-image: none !important;
+        border: none !important;
+        border-right: 1.5px solid #D5DEE6 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        cursor: pointer !important;
+        text-align: center !important;
+        gap: 6px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:last-child,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:last-child,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:last-child {
+        border-right: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(1) [data-testid="stRadioOption"]::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label::after {
+        content: "★ Poor";
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.78rem !important;
+        font-weight: 650 !important;
+        line-height: 1.2 !important;
+        letter-spacing: -0.01em;
+        white-space: nowrap !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:nth-child(2)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:nth-child(2)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(2) [data-testid="stRadioOption"]::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:nth-child(2)::after {
+        content: "★★ Fair";
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:nth-child(3)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:nth-child(3)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(3) [data-testid="stRadioOption"]::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:nth-child(3)::after {
+        content: "★★★ Good";
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:nth-child(4)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:nth-child(4)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(4) [data-testid="stRadioOption"]::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:nth-child(4)::after {
+        content: "★★★★ Very Good";
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:nth-child(5)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:nth-child(5)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(5) [data-testid="stRadioOption"]::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:nth-child(5)::after {
+        content: "★★★★★ Excellent";
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:hover:not(:has(input:checked)),
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:hover:not(:has(input:checked)),
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [data-baseweb="radio"]:hover:not(:has(input:checked)) {
+        background: #F7FBFD !important;
+        background-color: #F7FBFD !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:has(input:checked),
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"][data-selected],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:has(input:checked),
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [data-baseweb="radio"]:has(input:checked) {
+        background: #E7F6FC !important;
+        background-color: #E7F6FC !important;
+        background-image: none !important;
+        box-shadow: inset 0 0 0 1.5px #018FC7 !important;
+        z-index: 1 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:has(input:checked)::before,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:has(input:checked)::before,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:has(input:checked)::before {
+        content: "";
+        width: 12px;
+        height: 12px;
+        flex: 0 0 12px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23018FC7' d='M6.2 11.2L2.8 7.8l1.1-1.1 2.3 2.3 5.1-5.1 1.1 1.1z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 12px 12px;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"][data-focus-visible],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:has(input:focus-visible),
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:has(input:focus-visible) {
+        outline: 2px solid #018FC7 !important;
+        outline-offset: -2px !important;
+        z-index: 2 !important;
+    }
+
+    /* Hide Streamlit 1.61 radio mark: outer/inner circles only */
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"] [class*="etak9234"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"] [class*="etak9235"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"] > div > div > div:first-child,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [data-baseweb="radio"] > div:first-child,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [data-baseweb="radio"] svg {
+        display: none !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        border: none !important;
+        background: none !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        pointer-events: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"] > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] p {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+        pointer-events: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] input[type="radio"] {
+        position: absolute !important;
+        opacity: 0 !important;
+        width: 1px !important;
+        height: 1px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        border: none !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_feeling"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_feeling"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_feeling"][data-testid="stVerticalBlockBorderWrapper"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_feeling"] [data-testid="stHorizontalBlock"] {
+        gap: 16px !important;
+        align-items: stretch !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_feeling"] [data-testid="stHorizontalBlock"] > div {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_field"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_field"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_field"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_field"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_ease_field"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_ease_field"]):hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_feeling_field"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_feeling_field"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_feeling_field"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_feeling_field"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_feeling_field"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_feeling_field"]):hover {
+        background: #F4FAFD !important;
+        background-color: #F4FAFD !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 14px !important;
+        box-shadow: none !important;
+        padding: 12px 14px 10px !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        height: 100% !important;
+        transform: none !important;
+        cursor: default !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_field"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_field"] [data-testid="stVerticalBlock"]:not([class*="st-key-feedback_ease_field"]),
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_feeling_field"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_feeling_field"] [data-testid="stVerticalBlock"]:not([class*="st-key-feedback_feeling_field"]) {
+        gap: 6px !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        height: 100% !important;
+        justify-content: flex-start !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_feeling_field"] [data-testid="stSelectbox"] {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_feeling_field"] [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_field"] [data-testid="stWidgetLabel"] {
+        margin-bottom: 10px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-testid="stSlider"] {
+        max-width: 100% !important;
+        padding: 0.55rem 0.7rem 0.15rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-testid="stSlider"] * {
+        user-select: none !important;
+        -webkit-user-select: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-testid="stSliderTickBar"] {
+        display: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-testid="stSliderThumbValue"] {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        background-image: none !important;
+        border: 1px solid #018FC7 !important;
+        border-radius: 6px !important;
+        box-shadow: 0 2px 6px rgba(8, 60, 93, 0.12) !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 0.68rem !important;
+        font-weight: 750 !important;
+        line-height: 1.15 !important;
+        padding: 0.08rem 0.32rem !important;
+        top: -1.65em !important;
+        min-width: 1.15rem !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-testid="stSliderThumbValue"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-testid="stSliderThumbValue"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-testid="stSliderThumbValue"] [data-testid="stMarkdownContainer"] {
+        background: transparent !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-baseweb="slider"] {
+        accent-color: #018FC7 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-baseweb="slider"] > div:not([role="slider"]) {
+        height: 4px !important;
+        background-color: #D5DEE6 !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 999px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-baseweb="slider"] > div:not([role="slider"]) > div {
+        background-color: #018FC7 !important;
+        background-blend-mode: hue !important;
+        border-radius: 999px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease"] [data-testid="stSlider"] [role="slider"] {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        background-image: none !important;
+        border: 2px solid #FFFFFF !important;
+        border-radius: 50% !important;
+        box-shadow: 0 2px 6px rgba(8, 60, 93, 0.22) !important;
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .sp-fb-slider-ends {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 0 0.7rem;
+        color: #5A6A78;
+        font-size: 0.74rem;
+        font-weight: 550;
+        line-height: 1.3;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-baseweb="select"] > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stSelectbox"] > div > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stMultiSelect"] > div > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-baseweb="input"] > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-baseweb="textarea"] > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] textarea {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-baseweb="select"] > div:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stSelectbox"] > div > div:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stMultiSelect"] > div > div:hover {
+        background: #F7FBFD !important;
+        border-color: #B9E5F5 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-baseweb="select"] > div:focus-within,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stSelectbox"] > div > div:focus-within,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stMultiSelect"] > div > div:focus-within,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] textarea:focus {
+        background: #FFFFFF !important;
+        border-color: #018FC7 !important;
+        box-shadow: 0 0 0 3px rgba(1, 143, 199, 0.16) !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-baseweb="select"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-baseweb="select"] div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stSelectbox"] input,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stMultiSelect"] input {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        background: transparent !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-baseweb="select"] svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-testid="stSelectbox"] svg {
+        color: #083C5D !important;
+        fill: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] [data-baseweb="tag"] {
+        background: #E7F6FC !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        border: 1px solid #B9E5F5 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_recommend"] [data-testid="stRadio"] label,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_recommend"] [data-testid="stRadio"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_recommend"] [data-testid="stRadio"] span {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] {
+        margin-top: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton {
+        display: flex !important;
+        justify-content: center !important;
+        max-width: 320px !important;
+        margin: 0 auto !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button:focus,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button:active {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        border: 1px solid #018FC7 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 6px 16px rgba(1, 143, 199, 0.18) !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 750 !important;
+        min-height: 2.75rem !important;
+        width: 100% !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button div {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 750 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button:hover {
+        background: #0178A8 !important;
+        background-color: #0178A8 !important;
+        border-color: #0178A8 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button:focus-visible {
+        outline: 2px solid #018FC7 !important;
+        outline-offset: 2px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button:disabled,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button[disabled],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button[aria-disabled="true"] {
+        background: #8CCBE3 !important;
+        background-color: #8CCBE3 !important;
+        border-color: #8CCBE3 !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        cursor: not-allowed !important;
+        box-shadow: none !important;
+        opacity: 0.78;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] [data-testid="stCaptionContainer"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] [data-testid="stCaptionContainer"] p {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        text-align: center !important;
+        margin-top: 8px !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [data-testid="stAlert"] {
+        border: 1px solid #B9E5F5 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+    }
+
+    html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
+    html:has([class*="st-key-feedback_page"]) [data-baseweb="menu"],
+    html:has([class*="st-key-feedback_page"]) [role="listbox"] {
+        background: #FFFFFF !important;
+        color: #083C5D !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.12) !important;
+    }
+
+    html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"] li,
+    html:has([class*="st-key-feedback_page"]) [role="option"] {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html:has([class*="st-key-feedback_page"]) [role="option"]:hover,
+    html:has([class*="st-key-feedback_page"]) [role="option"][aria-selected="true"] {
+        background: #E7F6FC !important;
+        color: #083C5D !important;
+    }
+
+    @media (max-width: 900px) {
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] > div > div:not([data-testid="stWidgetLabel"]) {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+            border: none !important;
+            overflow: visible !important;
+            background: transparent !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label,
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label,
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [data-baseweb="radio"] {
+            border: 1.5px solid #D5DEE6 !important;
+            border-radius: 10px !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:last-child,
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:last-child,
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:last-child {
+            border-right: 1.5px solid #D5DEE6 !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:has(input:checked),
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"][data-selected] {
+            border-color: #018FC7 !important;
+            box-shadow: none !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_ease_feeling"] [data-testid="stHorizontalBlock"] {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"],
+        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_overall"]) {
+            padding: 18px 16px !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_working"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_improve"],
+        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_working"]),
+        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-feedback_improve"]) {
+            padding: 24px 20px !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"] > [data-testid="stVerticalBlock"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_page"][data-testid="stVerticalBlock"] {
+            gap: 56px !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label,
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [data-baseweb="radio"] {
+            min-height: 50px !important;
+            height: 50px !important;
+        }
+    }
+
+    @media (max-width: 520px) {
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] > div > div:not([data-testid="stWidgetLabel"]) {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    html body .stApp [data-testid="stMain"] [data-testid="stElementContainer"]:has(.sp-opportunities-page) {
+        display: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stForm"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stForm"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stAlert"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stAlert"]:hover {
+        border: 1.5px solid #083C5D !important;
+        border-width: 1.5px !important;
+        border-style: solid !important;
+        border-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stExpander"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stExpander"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stExpander"],
+    html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stExpander"]:hover {
+        border: 1.5px solid #0b4568 !important;
+        box-shadow: none !important;
+        border-radius: 14px !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stExpander"] details,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stExpander"] [data-testid="stExpanderDetails"],
+    html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stExpander"] details,
+    html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stExpander"] [data-testid="stExpanderDetails"] {
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stVerticalBlockBorderWrapper"]:has(> [data-testid="stExpander"]),
+    html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stVerticalBlockBorderWrapper"]:has(> [data-testid="stExpander"]):hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stVerticalBlockBorderWrapper"]:has(> [data-testid="stVerticalBlock"] > [data-testid="stExpander"]),
+    html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stVerticalBlockBorderWrapper"]:has(> [data-testid="stVerticalBlock"] > [data-testid="stExpander"]):hover {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stExpander"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stExpander"]:hover {
+        border: 1px solid #D5DEE6 !important;
+        box-shadow: none !important;
+        border-radius: 14px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [data-testid="stElementContainer"]:has(.sp-project-explorer-page) {
+        display: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_equipment_expander"] [data-testid="stExpander"],
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_equipment_expander"][data-testid="stExpander"],
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_equipment_expander"] [data-testid="stExpander"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_equipment_expander"][data-testid="stExpander"]:hover {
+        border: 1.5px solid #0b4568 !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_equipment_expander"] details,
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_equipment_expander"] [data-testid="stExpanderDetails"],
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_equipment_expander"] [data-testid="stExpanderContent"] {
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_equipment_expander"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_equipment_expander"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-project_equipment_expander"]),
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-project_equipment_expander"]):hover {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_find_projects"] .stButton > button,
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_find_projects"] .stButton > button:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_find_projects"] .stButton > button:focus,
+    html body .stApp [data-testid="stMain"]:has(.sp-project-explorer-page) [class*="st-key-project_find_projects"] .stButton > button:active {
+        border: 1.5px solid #0b4568 !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [data-testid="stElementContainer"]:has(.sp-my-applications-page) {
+        display: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"],
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] .privacy-notice {
+        border: 1.5px solid #0b4568 !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-application_privacy_notice"]),
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-application_privacy_notice"]):hover {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"]::before,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"]::after {
+        border: none !important;
+        box-shadow: none !important;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -6053,7 +8668,7 @@ extra_opportunities = [
         "deadline": "Summer 2027 date not yet announced; 2026 deadline was December 10, 2025",
         "selectivity": "Extremely Competitive",
         "selectivity_stars": 5,
-        "acceptance_rate": "50 U.S. students selected from 1,500+ U.S. applicants in published CEE guidance",
+        "acceptance_rate": "~3% calculated",
         "internship_potential": "Yes — intensive mentored research experience",
         "format": "Residential — MIT, Cambridge, Massachusetts",
         "paid_status": "Not paid / Free Program",
@@ -6157,7 +8772,7 @@ extra_opportunities = [
         "organization": "American Museum of Natural History",
         "description": "Paid year-long NYC research program where students conduct original research with AMNH-affiliated scientists.",
         "opportunity_type": "Research",
-        "fields": "Biology;Earth Science;Astronomy;Data Science;Computer Science;Natural Sciences;Research",
+        "fields": "Biology;Earth Science / Geoscience;Astrophysics / Astronomy;Data Science;Computer Science;Natural Sciences;Research",
         "grades": "10;11",
         "age_range": "No simple age range publicly specified — current 10th or 11th graders",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
@@ -6300,7 +8915,7 @@ extra_opportunities = [
             "connected to NASA aerospace and space missions."
         ),
         "opportunity_type": "Summer Program",
-        "fields": "Engineering;Aerospace;Mechanical Engineering;Electrical Engineering",
+        "fields": "Engineering;Aerospace Engineering;Mechanical Engineering;Electrical Engineering",
         "grades": "11;12",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
         "bronx_priority": "no",
@@ -6452,7 +9067,7 @@ extra_opportunities = [
         "eligibility_summary": "Rising juniors and seniors; must be a full-time NYC resident and attend an NYC school",
         "stipend": "$2,000 upon successful completion",
         "stipend_display": "$2,000 upon successful completion",
-        "internship_potential": "Yes — approximately 150 hours of faculty-mentored laboratory research",
+        "internship_potential": "Yes — approximately 150 hours of mentored NYU lab research",
         "format": "Hybrid + In person — NYU Tandon, Brooklyn, NYC",
         "paid_status": "$2,000 stipend upon successful completion",
         "requirements": "Rising junior or senior; full-time NYC resident; must attend an NYC school; at least one year of high school science and one year of high school math; full 10-week commitment.",
@@ -6780,7 +9395,7 @@ extra_opportunities = [
         "organization": "NASA / UT Austin Center for Space Research",
         "description": "Nationally competitive research internship where high school students analyze NASA Earth and space data with scientists and engineers.",
         "opportunity_type": "Research",
-        "fields": "Earth Science;Climate Science;Astronomy;Remote Sensing;Data Science;Space Science;Research",
+        "fields": "Earth Science / Geoscience;Climate Science;Astronomy;Astrophysics / Astronomy;Remote Sensing;Data Science;Space Science;Research",
         "grades": "10;11",
         "age_range": "Typically current 10th and 11th graders",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
@@ -8051,11 +10666,977 @@ extra_opportunities = [
         "url": "https://www.usaeop.com/program/ecybermission/",
         "last_verified": "2026-08-21",
         "financial_aid_status": "Not needed — no student entry fee"
+    },
+    {
+        "name": "MIT PRIMES-USA",
+        "organization": "Massachusetts Institute of Technology",
+        "description": "Free year-long distance-mentored mathematics research program. High school sophomores and juniors living in the United States outside Greater Boston work on unsolved problems in mathematics, theoretical computer science, or computational biology with graduate-student and faculty mentors.",
+        "opportunity_type": "Research",
+        "fields": "Mathematics;Computer Science;Computational Biology;Research",
+        "grades": "10;11",
+        "age_range": "High school sophomores and juniors, or homeschooled students of the same age",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Free",
+        "financial_aid": "Not needed — program is free",
+        "financial_aid_status": "Not needed — program is free",
+        "application_status": "Future Cycle",
+        "application_opens": "September 2026",
+        "opens_date_type": "estimated",
+        "deadline": "2027 cycle application link expected on the official page in September 2026; 2026 deadline was December 1, 2025 (historical)",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page states that a small number of candidates is admitted and a very advanced background is expected. No acceptance rate is published.",
+        "eligibility_summary": "U.S. high school sophomores and juniors living outside Greater Boston; NYC students are eligible for the remote PRIMES-USA section",
+        "eligible_grades": "10;11",
+        "age_requirements": "High school sophomores and juniors, including homeschooled students of the same age",
+        "nyc_residency_required": "No — open to U.S. students outside Greater Boston",
+        "nyc_school_required": "No",
+        "citizenship_requirement": "Must reside in the United States; students outside the U.S. are directed to CrowdMath",
+        "stipend": "None stated",
+        "stipend_display": "None / Not paid — free program",
+        "stipend_status": "Unpaid",
+        "stipend_amount": "",
+        "internship_potential": "Yes — year-long mentored original mathematics research",
+        "format": "Remote — teleconferencing mentorship",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "U.S. high school sophomore or junior living outside Greater Boston; personal computer with administrator privileges, webcam, and high-speed internet. Advanced mathematical background expected. Students outside the U.S. are not eligible.",
+        "url": "https://math.mit.edu/research/highschool/primes/usa/index.html",
+        "source_url": "https://math.mit.edu/research/highschool/primes/usa/apply-usa.html",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — program is free",
+        "scholarship_availability": "Not needed — program is free",
+        "other_restrictions": "Non-local students communicate via teleconferencing. Official page lists a four-phase year-long timetable and required reading and research reports."
+    },
+    {
+        "name": "ACS Project SEED",
+        "organization": "American Chemical Society",
+        "description": "Paid 8–10 week summer chemistry research fellowship. Eligible high school students commute to academic or industry labs, complete a mentored research project, and prepare a report or poster. Virtual research projects and a virtual summer camp are also offered.",
+        "opportunity_type": "Research",
+        "fields": "Chemistry;Biology;Materials Science;Environmental Science;Research",
+        "grades": "10;11;12",
+        "age_range": "Preferably current sophomores, juniors, or seniors; 2026 high school graduates were eligible",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — paid fellowship; income-eligibility rules apply",
+        "financial_aid_status": "Not needed — paid fellowship; income-eligibility rules apply",
+        "application_status": "Future Cycle",
+        "application_opens": "February",
+        "opens_date_type": "estimated",
+        "deadline": "Next-cycle student deadline not yet announced; 2026 student application closed April 6, 2026 (historical)",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page reports 350+ students supported each year across 40 U.S. states and territories. No acceptance rate is published.",
+        "eligibility_summary": "Income-eligible U.S. high school students who have completed at least one high school chemistry course; NYC students apply to local Project SEED sites",
+        "eligible_grades": "10;11;12",
+        "age_requirements": "Preferably current sophomores, juniors, or seniors; students under 18 need parent/guardian permission",
+        "nyc_residency_required": "No — national program with local research sites",
+        "nyc_school_required": "No",
+        "income_requirement": "Yes — family income must not exceed 300% of the Federal Poverty Guidelines, or another listed income-eligibility document",
+        "required_coursework": "At least one high school chemistry course",
+        "stipend": "$4,000 fellowship award/stipend for Summer I and Summer II",
+        "stipend_display": "$4,000 fellowship award/stipend (official 2026 program page)",
+        "stipend_status": "Paid",
+        "stipend_amount": "$4,000",
+        "internship_potential": "Yes — 8–10 weeks of mentored chemistry research",
+        "format": "In person at a local Project SEED site; virtual research projects also offered",
+        "paid_status": "Paid — $4,000 fellowship award/stipend",
+        "requirements": "Income documentation; completed high school chemistry; parent/guardian permission if under 18; availability for the summer research period. Placement depends on a local site coordinator.",
+        "url": "https://www.acs.org/education/students/highschool/seed.html",
+        "source_url": "https://www.acs.org/education/students/highschool/seed/apply.html",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — paid fellowship",
+        "scholarship_availability": "Not needed — students receive a fellowship stipend",
+        "other_restrictions": "Students commute daily to a research lab for in-person projects. Use the official Project SEED locator to confirm a nearby site."
+    },
+    {
+        "name": "Urban Barcode Research Program (UBRP)",
+        "organization": "Cold Spring Harbor Laboratory DNA Learning Center",
+        "description": "Pinkerton-supported NYC high school research mentorship. Students complete biodiversity and DNA-barcoding lab training at DNALC NYC in Brooklyn, then work with scientist mentors on student-driven DNA barcoding projects during the academic year and present at a spring symposium.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Ecology;Environmental Science;Genetics;Conservation Biology;Research",
+        "grades": "9;10;11;12",
+        "age_range": "At least 13 years old; NYC high school students",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — program is funded; students who complete requirements receive a stipend",
+        "financial_aid_status": "Not needed — program is funded",
+        "application_status": "Future Cycle",
+        "application_opens": "Spring",
+        "opens_date_type": "estimated",
+        "deadline": "Next-cycle deadline not yet announced; 2026–27 application closed May 26, 2026 (historical)",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page states that approximately 36 students will be invited to continue after interviews. Applicant count is not published.",
+        "eligibility_summary": "NYC high school students who are at least 13 and reside in New York City",
+        "eligible_grades": "9;10;11;12",
+        "age_requirements": "At least 13 years of age",
+        "nyc_residency_required": "Yes — must reside in New York City",
+        "nyc_school_required": "Yes — must be a New York City high school student",
+        "stipend": "$500 for students who complete 55 research hours and present at the symposium",
+        "stipend_display": "$500 upon completing 55 research hours and presenting at the symposium",
+        "stipend_status": "Paid",
+        "stipend_amount": "$500",
+        "internship_potential": "Yes — academic-year mentored DNA barcoding research",
+        "format": "In person — DNALC NYC, Downtown Brooklyn, plus mentor-lab research",
+        "paid_status": "Paid — $500 stipend after required research hours and symposium presentation",
+        "requirements": "NYC resident and NYC high school student; age 13+; must attend in-person group interviews and two weeks of August/September lab training if accepted; minimum 55 research hours during the academic year.",
+        "url": "https://dnabarcoding101.org/programs/ubrp/index.html",
+        "source_url": "https://dnabarcoding101.org/programs/ubrp/ubrp-application.html",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — program is funded",
+        "scholarship_availability": "Not needed — program is funded",
+        "other_restrictions": "Required lab training at DNALC NYC in Downtown Brooklyn. Part of the NYC Science Research Mentoring Consortium."
+    },
+    {
+        "name": "Urban Barcode Project (UBP)",
+        "organization": "Cold Spring Harbor Laboratory DNA Learning Center",
+        "description": "Free DNA-barcoding research program for high school teams in the New York metropolitan area. Teams of 2–4 students, sponsored by a trained teacher or qualified mentor, design a biodiversity or food-authentication project and receive equipment, reagents, and sequencing for up to 30 samples.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Ecology;Environmental Science;Genetics;Conservation Biology;Research",
+        "grades": "9;10;11;12",
+        "age_range": "Grades 9–12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Free",
+        "financial_aid": "Not needed — selected teams receive free lab access and sequencing",
+        "financial_aid_status": "Not needed — selected teams receive free lab access and sequencing",
+        "application_status": "Future Cycle",
+        "application_opens": "Fall",
+        "opens_date_type": "estimated",
+        "deadline": "Next-cycle proposal deadlines not yet announced; 2025–26 final proposal deadline was January 7, 2026 (historical)",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page states proposals are judged for originality, creativity, relevance, plausibility, and scientific merit. No acceptance rate is published.",
+        "eligibility_summary": "Grades 9–12 in the New York metropolitan area; team of 2–4 students with a qualified teacher or mentor",
+        "eligible_grades": "9;10;11;12",
+        "age_requirements": "High school grades 9–12",
+        "nyc_residency_required": "No — open to the New York metropolitan area",
+        "nyc_school_required": "No — NYC students are eligible; team members do not have to be from the same school",
+        "school_nomination_required": "Yes — a trained science teacher or qualified mentor must sponsor the team",
+        "stipend": "None stated",
+        "stipend_display": "None / Not paid — free access to equipment, reagents, and sequencing",
+        "stipend_status": "Unpaid",
+        "stipend_amount": "",
+        "internship_potential": "Yes — student-designed DNA barcoding research with lab support",
+        "format": "Hybrid — school or open-lab work plus a City Tech symposium",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Team of 2–4 high school students in grades 9–12; sponsoring teacher must complete DNALC barcoding training unless the mentor already has barcoding experience; written project proposal.",
+        "url": "https://dnabarcoding101.org/programs/ubp/",
+        "source_url": "https://dnabarcoding101.org/programs/",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — selected teams receive free experimental support",
+        "scholarship_availability": "Not needed — no student participation fee stated",
+        "other_restrictions": "Sponsoring teachers must attend a DNA Learning Center training workshop before student proposals are accepted."
+    },
+    {
+        "name": "Barcode Long Island",
+        "organization": "Cold Spring Harbor Laboratory DNA Learning Center",
+        "description": "Free student DNA-barcoding research program documenting biodiversity on and around Long Island. Brooklyn and Queens high school teams can participate when sponsored by a trained science teacher. The program provides training, equipment, materials, and sequencing support.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Ecology;Environmental Science;Genetics;Marine Biology;Research",
+        "grades": "9;10;11;12",
+        "age_range": "Grades 9–12",
+        "boroughs_served": "Brooklyn;Queens",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Free",
+        "financial_aid": "Not needed — training, equipment, and materials are provided",
+        "financial_aid_status": "Not needed — training, equipment, and materials are provided",
+        "application_status": "Seasonal",
+        "application_opens": "Opening date: Not announced",
+        "opens_date_type": "unknown",
+        "deadline": "Opening date: Not announced — teachers register after completing a DNALC training workshop; confirm current campaign dates on the official page",
+        "selectivity": "Accessible / Lottery or Placement Based",
+        "selectivity_stars": 2,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Participation is through a trained teacher who mentors a team of 2–4 students. No student acceptance rate is published.",
+        "eligibility_summary": "Grades 9–12 at high schools on Long Island, in Brooklyn, or in Queens, through a trained teacher",
+        "eligible_grades": "9;10;11;12",
+        "age_requirements": "High school grades 9–12",
+        "nyc_residency_required": "No — Brooklyn and Queens schools are eligible; Bronx, Manhattan, and Staten Island are not listed",
+        "nyc_school_required": "No — Brooklyn or Queens high school, or a Long Island high school",
+        "borough_restrictions": "Official eligibility is limited to high schools on Long Island, in Brooklyn, or in Queens",
+        "school_nomination_required": "Yes — a science or science-research teacher must complete DNALC mentor training",
+        "stipend": "None stated",
+        "stipend_display": "None / Not paid — free program support",
+        "stipend_status": "Unpaid",
+        "stipend_amount": "",
+        "internship_potential": "Yes — student-designed biodiversity research with DNA barcoding",
+        "format": "Hybrid — school labs, Open Lab sessions, and a BLI symposium",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Team of 2–4 students in grades 9–12; sponsoring teacher from a Long Island, Brooklyn, or Queens high school must complete a DNA Learning Center training workshop.",
+        "url": "https://dnabarcoding101.org/programs/bli/",
+        "source_url": "https://dnabarcoding101.org/programs/",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — training, equipment, and materials are provided",
+        "scholarship_availability": "Not needed — no student participation fee stated"
+    },
+    {
+        "name": "New York Bioforce",
+        "organization": "HYPOTHEkids",
+        "description": "Free science-research training program for NYC public and charter high school students from low-resource backgrounds. Students complete Saturday research-skills training, then a six-week paid summer internship in academic, industry, or health-care labs and present a research poster at the American Museum of Natural History.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Biomedical Engineering;Data Science;Medicine;Research",
+        "grades": "11;12",
+        "age_range": "11th or 12th grade",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — free program with a paid summer internship",
+        "financial_aid_status": "Not needed — free program with a paid summer internship",
+        "application_status": "Future Cycle",
+        "application_opens": "Winter",
+        "opens_date_type": "estimated",
+        "deadline": "2026 applications have closed; next-cycle deadline not yet announced",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page states acceptance decisions are made on a rolling basis. No acceptance rate is published.",
+        "eligibility_summary": "NYCDOE public or charter 11th or 12th graders who can show educational or economic disadvantage",
+        "eligible_grades": "11;12",
+        "age_requirements": "11th or 12th grade (class years listed on the current official page)",
+        "nyc_residency_required": "Not stated as a separate cutoff beyond NYC public or charter school enrollment",
+        "nyc_school_required": "Yes — NYCDOE public or charter high school",
+        "income_requirement": "Yes — school Economic Need Index of 80% or higher, or family eligibility for Medicaid, SNAP, TANF, or similar aid",
+        "stipend": "Paid summer internship; official page states payment is arranged through SYEP after acceptance",
+        "stipend_display": "Paid summer internship via SYEP; exact hourly amount not published on the current program page",
+        "stipend_status": "Paid",
+        "stipend_amount": "",
+        "internship_potential": "Yes — 150-hour mentored summer lab or health-care internship after 50 hours of spring training",
+        "format": "Hybrid — Saturday training at Columbia University plus in-person summer internship",
+        "paid_status": "Paid — summer internship paid through SYEP after acceptance",
+        "requirements": "11th or 12th grader at a NYCDOE public or charter high school; educational or economic disadvantage documentation; Saturday spring training and six-week summer internship commitment. Prior research experience is not required.",
+        "url": "https://www.hypothekids.org/nybioforce",
+        "source_url": "https://www.hypothekids.org/hsprograms",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — program is free",
+        "scholarship_availability": "Not needed — program is free",
+        "other_restrictions": "Official page instructs students not to apply to SYEP before applying to NY Bioforce. Some placements are with the Weill Cornell High School Catalyst Program."
+    },
+    {
+        "name": "Jackson Laboratory Summer Student Program",
+        "organization": "The Jackson Laboratory",
+        "description": "Paid 10-week residential genetics and genomics research fellowship at The Jackson Laboratory in Bar Harbor, Maine, or The Jackson Laboratory for Genomic Medicine in Farmington, Connecticut. Graduating high school seniors and undergraduates join a lab, complete a mentored project, and present their work.",
+        "opportunity_type": "Research",
+        "fields": "Genetics;Genomics;Biology;Computational Biology;Research",
+        "grades": "12",
+        "age_range": "Graduating high school seniors and undergraduates",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — stipend, room, board, and round-trip travel are provided",
+        "financial_aid_status": "Not needed — stipend, room, board, and round-trip travel are provided",
+        "application_status": "Future Cycle",
+        "application_opens": "Opening date: Not announced",
+        "opens_date_type": "unknown",
+        "deadline": "Next-cycle deadline not yet announced; 2026 application closed January 26, 2026 at 5:00 p.m. ET (historical)",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official admission page states admission is competitive and does not publish an acceptance rate.",
+        "eligibility_summary": "Graduating high school seniors and undergraduates; NYC students are eligible if they can attend the full residential program",
+        "eligible_grades": "12",
+        "age_requirements": "Official program page describes the program for undergraduates and graduating high school seniors",
+        "nyc_residency_required": "No",
+        "nyc_school_required": "No",
+        "stipend": "$7,500 plus room, board, and round-trip travel",
+        "stipend_display": "$7,500 plus room, board, and round-trip travel",
+        "stipend_status": "Paid",
+        "stipend_amount": "$7,500",
+        "internship_potential": "Yes — full-time mentored genetics/genomics research",
+        "format": "Residential — Bar Harbor, Maine or Farmington, Connecticut",
+        "paid_status": "Paid — $7,500 stipend plus room, board, and travel",
+        "requirements": "Graduating high school senior or undergraduate; full 10-week commitment; no other job, internship, or summer classes during the program. Students provide application materials through the official JAX portal.",
+        "url": "https://www.jax.org/education-and-learning/high-school-students-and-undergraduates/learn-earn-and-explore",
+        "source_url": "https://www.jax.org/education-and-learning/high-school-students-and-undergraduates/learn-earn-and-explore/admission",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — fellowship covers stipend, room, board, and travel",
+        "scholarship_availability": "Not needed — program is fully funded",
+        "other_restrictions": "40-hour weekly commitment including lab work, professional development, and journal club."
+    },
+    {
+        "name": "NYU GSTEM Summer Research Program",
+        "organization": "New York University Courant Institute of Mathematical Sciences",
+        "description": "Six-week NYC summer research program pairing current high school juniors with STEM mentors at NYU and partner institutions. Students complete a research project, write a paper, give an oral presentation, and receive an NYU transcript with a letter grade. Need-based aid and a Winston Data Foundation full scholarship are available.",
+        "opportunity_type": "Research",
+        "fields": "Mathematics;Computer Science;Biology;Physics;Chemistry;Data Science;Research",
+        "grades": "11",
+        "age_range": "Current high school juniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "2026 program cost $5,750; optional housing with meal plan $3,966",
+        "cost_category": "Financial aid available",
+        "financial_aid": "Need-based scholarship toward the $5,750 program cost; Winston Data Foundation full scholarship also available",
+        "financial_aid_status": "Need-based aid and a full Winston Data Foundation scholarship are available toward the program cost; housing aid is limited",
+        "application_status": "Future Cycle",
+        "application_opens": "Opening date: Not announced",
+        "opens_date_type": "unknown",
+        "deadline": "Summer 2026 application is closed; next-cycle deadline not yet announced",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page states the program admits 40 students each summer. Applicant count is not published.",
+        "eligibility_summary": "Current high school juniors living in the United States; international students who do not currently live in the U.S. are not eligible",
+        "eligible_grades": "11",
+        "age_requirements": "Current juniors only; sophomores are no longer accepted",
+        "nyc_residency_required": "No — commuter and residential options; NYC students are eligible",
+        "nyc_school_required": "No",
+        "citizenship_requirement": "Must currently live in the United States",
+        "stipend": "None stated",
+        "stipend_display": "None / Not paid — tuition program with financial aid",
+        "stipend_status": "Unpaid",
+        "stipend_amount": "",
+        "internship_potential": "Yes — five weeks of mentored STEM research after orientation week",
+        "format": "In person — NYC research sites; optional NYU housing",
+        "paid_status": "Not paid — fee-based program with financial aid",
+        "requirements": "Current junior living in the United States; full six-week attendance is mandatory. Mentors may be at NYU or partner campuses including Columbia, City College, CUNY ASRC, Brooklyn College, and Hunter College.",
+        "url": "https://wp.nyu.edu/gstem/",
+        "source_url": "https://wp.nyu.edu/gstem/frequently-asked-questions/",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "2026 program cost $5,750; optional six-week housing with meal plan $3,966",
+        "scholarship_availability": "Need-based scholarship and Winston Data Foundation full scholarship toward the program cost",
+        "other_restrictions": "Students cannot choose their mentor or project. Financial aid is available toward the $5,750 program cost; official FAQ states housing assistance is not generally available except for Winston Data Scholarship recipients who may request additional housing support."
+    },
+    {
+        "name": "Navy Science and Engineering Apprenticeship Program (SEAP)",
+        "organization": "Office of Naval Research / Department of the Navy",
+        "description": "Competitive eight-week paid summer research apprenticeship placing high school students in Department of the Navy laboratories. Students work with scientists and engineers on real naval research. Applications are accepted each year from August 1 through November 1.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Computer Science;Physics;Chemistry;Mathematics;Research",
+        "grades": "10;11;12",
+        "age_range": "At least 16 by the internship start date; some labs list exceptions",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — paid apprenticeship; students arrange their own housing and transportation",
+        "financial_aid_status": "Not needed — paid apprenticeship",
+        "application_status": "Future Cycle",
+        "application_opens": "August 1",
+        "opens_date_type": "estimated",
+        "deadline": "Annual window is August 1–November 1; official page currently lists 2026 applications as closed. Confirm the next cycle on the SEAP site.",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page describes SEAP as competitive, with around 300 placements across more than 38 laboratories. No acceptance rate is published.",
+        "eligibility_summary": "U.S. citizen high school students who have completed at least grade 9 and will be 16 by the start date; NYC students must be able to reach a participating Navy lab",
+        "eligible_grades": "10;11;12",
+        "age_requirements": "At least 16 on or before the internship start date; some labs make exceptions or require age 18",
+        "nyc_residency_required": "No",
+        "nyc_school_required": "No",
+        "citizenship_requirement": "U.S. citizenship required at most labs; a few labs consider permanent residents",
+        "stipend": "Paid bi-weekly; amount depends on years of SEAP participation",
+        "stipend_display": "Paid — official lab materials list $4,000 for new students and $4,500 for returning students; confirm the current amount on the SEAP site",
+        "stipend_status": "Paid",
+        "stipend_amount": "",
+        "internship_potential": "Yes — eight weeks of full-time Navy laboratory research",
+        "format": "In person — participating Department of the Navy laboratories",
+        "paid_status": "Paid stipend; amount varies by year of participation",
+        "requirements": "Currently enrolled in high school and have completed grade 9; typically age 16+ by start date; U.S. citizen for most labs; able to work at a participating laboratory. Graduating seniors are eligible. Students provide their own transportation and housing.",
+        "url": "https://www.navalsteminterns.us/seap/",
+        "source_url": "https://www.navalsteminterns.us/seap/faqs.html",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — paid apprenticeship",
+        "scholarship_availability": "Not needed — students receive a stipend",
+        "other_restrictions": "Students should only apply to laboratories they can reach for an eight-week, 40-hour-per-week summer commitment. Housing is not provided."
+    },
+    {
+        "name": "AEOP High School Internships",
+        "organization": "Army Educational Outreach Program",
+        "description": "Paid high school research internships at U.S. Army research laboratories, centers, and partner university labs. Students work with a scientist or engineer mentor on Army-sponsored research. Positions are generally in-person and require living within commuting distance of the assigned lab.",
+        "opportunity_type": "Research",
+        "fields": "Engineering;Computer Science;Physics;Chemistry;Biology;Mathematics;Research",
+        "grades": "9;10;11;12",
+        "age_range": "At least 14; some sites require age 15 or 16",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — participation is free and interns receive an educational stipend",
+        "financial_aid_status": "Not needed — participation is free and interns receive an educational stipend",
+        "application_status": "Seasonal",
+        "application_opens": "Varies by position",
+        "opens_date_type": "estimated",
+        "deadline": "Deadlines vary by posted internship; browse current positions on the official AEOP internships site",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page states internships are competitive and does not publish an acceptance rate.",
+        "eligibility_summary": "U.S. citizens or legal permanent residents currently enrolled in high school; NYC students must live within commuting distance of a posted lab",
+        "eligible_grades": "9;10;11;12",
+        "age_requirements": "At least 14 years of age; additional age rules may apply by site",
+        "nyc_residency_required": "No",
+        "nyc_school_required": "No",
+        "citizenship_requirement": "U.S. citizen or legal permanent resident",
+        "stipend": "Educational stipend; amount varies by location and duration",
+        "stipend_display": "Paid educational stipend; amount varies by location and duration and is provided in the award letter",
+        "stipend_status": "Paid",
+        "stipend_amount": "",
+        "internship_potential": "Yes — mentored research at an Army lab or partner university",
+        "format": "In person at the assigned laboratory; some academic-year part-time posts exist",
+        "paid_status": "Paid — educational stipend varies by site",
+        "requirements": "U.S. citizen or legal permanent resident; currently enrolled in high school; at least 14 years old; apply only to locations where housing is already available. No application fee.",
+        "url": "https://aeopinternships-fellowships.org/internships/",
+        "source_url": "https://aeopinternships-fellowships.org/faq/",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — participation is free",
+        "scholarship_availability": "Not needed — interns receive a stipend",
+        "other_restrictions": "Transportation, meals, and housing are not provided. Some sites require underserved or military-connected eligibility."
+    },
+    {
+        "name": "UC Santa Cruz Science Internship Program (SIP)",
+        "organization": "University of California, Santa Cruz",
+        "description": "Eight-week mentored research program in which high school students join UC Santa Cruz research groups. The 2026 format was one online research week followed by seven in-person weeks. The program charges tuition and an application fee; need-based scholarships and application-fee waivers are available.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Computer Science;Engineering;Physics;Astronomy;Environmental Science;Research",
+        "grades": "9;10;11",
+        "age_range": "14–17 for the duration of the program; some projects require age 16+",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Fee required — 2026 tuition and fees are posted on the official Applying to SIP page; $68 application fee",
+        "cost_category": "Financial aid available",
+        "financial_aid": "Need-based full and partial scholarships; application-fee waivers available by emailing the SIP office",
+        "financial_aid_status": "Need-based scholarships and application-fee waivers are available",
+        "application_status": "Future Cycle",
+        "application_opens": "Opening date: Not announced",
+        "opens_date_type": "unknown",
+        "deadline": "SIP 2026 has concluded; next-cycle deadline not yet announced",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official pages do not publish an acceptance rate.",
+        "eligibility_summary": "High school students ages 14–17; students who will have graduated by the summer are generally ineligible; NYC students may attend with campus housing or a local guardian",
+        "eligible_grades": "9;10;11",
+        "age_requirements": "Ages 14–17 for the full program; some projects require age 16+",
+        "nyc_residency_required": "No",
+        "nyc_school_required": "No",
+        "citizenship_requirement": "U.S. citizen, green-card holder, U.S. resident, Canadian citizen, or other statuses listed on the official FAQ",
+        "stipend": "None stated",
+        "stipend_display": "None / Not paid — fee-based program with scholarships",
+        "stipend_status": "Unpaid",
+        "stipend_amount": "",
+        "internship_potential": "Yes — mentored open-ended research in a UCSC research group",
+        "format": "Hybrid — one online week plus seven in-person weeks in Santa Cruz, California",
+        "paid_status": "Not paid — tuition program with need-based scholarships",
+        "requirements": "Age 14–17 during the program; one teacher or mentor reference; application fee or approved waiver. Students who expect to have graduated by the summer are generally ineligible. Out-of-area students need campus housing or a local guardian.",
+        "url": "https://sip.ucsc.edu/",
+        "source_url": "https://sip.ucsc.edu/applying-to-sip/",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "Posted on the official Applying to SIP page for each cycle; 2026 application fee was $68",
+        "scholarship_availability": "Full and partial need-based scholarships; application-fee waivers by email to ucsc-sip@ucsc.edu",
+        "other_restrictions": "Apply only through the official UCSC SIP portal. The official page warns applicants not to pay third-party placement fees."
+    },
+    {
+        "name": "Wave Hill Woodland Ecology Research Mentorship (WERM)",
+        "organization": "Wave Hill",
+        "description": "Paid 14-month Bronx ecology research internship. NYC high school students complete college coursework, woodland fieldwork, academic-year workshops, and a mentored research project, then present at a summer symposium.",
+        "opportunity_type": "Research",
+        "fields": "Ecology;Environmental Science;Biology;Geographic Information Systems;Research",
+        "grades": "9;10;11",
+        "age_range": "15 years old by July 1 of the start year; enrolled in high school",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — paid internship with college credit",
+        "financial_aid_status": "Not needed — paid internship with college credit",
+        "application_status": "Future Cycle",
+        "application_opens": "Winter",
+        "opens_date_type": "estimated",
+        "deadline": "2026 applications are closed; official page says to check back next winter for 2027 internships",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page does not publish an acceptance rate.",
+        "eligibility_summary": "NYC high school students who will be 15 by July 1 and are eligible to work in the United States",
+        "eligible_grades": "9;10;11",
+        "age_requirements": "15 years old by July 1, 2026 on the current official page; must remain enrolled in high school",
+        "nyc_residency_required": "Yes — New York City resident",
+        "nyc_school_required": "Not stated beyond high school enrollment",
+        "stipend": "Approximately $3,500 paid across the 14-month program",
+        "stipend_display": "Approximately $3,500 across the program",
+        "stipend_status": "Paid",
+        "stipend_amount": "Approximately $3,500",
+        "internship_potential": "Yes — 14 months of fieldwork, coursework, and mentored research",
+        "format": "In person — Wave Hill, Bronx, plus University of Mount Saint Vincent coursework",
+        "paid_status": "Paid — approximately $3,500 across 14 months",
+        "requirements": "Enrolled in high school; age 15+ by July 1 of the start year; NYC resident eligible to work in the United States; able to work in unpaved natural areas and commit to all three program phases. Indoor program spaces include stairs and are not wheelchair accessible.",
+        "url": "https://www.wavehill.org/education/youth-internships/werm",
+        "source_url": "https://www.wavehill.org/education/youth-internships",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — paid internship; three college courses are included",
+        "scholarship_availability": "Not needed — program pays a stipend and includes college credit",
+        "other_restrictions": "Must commit to the full 14 months. Fieldwork involves unpaved natural areas and tools."
+    },
+    {
+        "name": "RISE Environmentor Internship",
+        "organization": "Rockaway Initiative for Sustainability and Equity",
+        "description": "Paid environmental research mentorship for NYC high school students who live or attend school in or near the Rockaway peninsula. Students complete spring/summer training and six weeks of mentored field research on Jamaica Bay and the Rockaway shoreline.",
+        "opportunity_type": "Research",
+        "fields": "Environmental Science;Marine Biology;Ecology;Conservation Biology;Research",
+        "grades": "9;10;11",
+        "age_range": "Ninth- to eleventh-grade students on the current official page",
+        "boroughs_served": "Queens;Brooklyn",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — paid internship",
+        "financial_aid_status": "Not needed — paid internship",
+        "application_status": "Future Cycle",
+        "application_opens": "November",
+        "opens_date_type": "estimated",
+        "deadline": "Next-cycle deadline not yet announced; Consortium listing states applications generally open in November",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official pages do not publish an acceptance rate.",
+        "eligibility_summary": "NYC students in grades 9–11 who live or attend school in or near the Rockaway peninsula",
+        "eligible_grades": "9;10;11",
+        "age_requirements": "Ninth- to eleventh-grade students as stated on the current official RISE page",
+        "nyc_residency_required": "Yes — live in New York City",
+        "nyc_school_required": "Yes — attend school in or near the Rockaway peninsula",
+        "borough_restrictions": "Official page prioritizes students who live or attend school in or near the Rockaway peninsula; Shore Corps participants are prioritized",
+        "stipend": "Up to $1,200",
+        "stipend_display": "Up to $1,200 stipend",
+        "stipend_status": "Paid",
+        "stipend_amount": "Up to $1,200",
+        "internship_potential": "Yes — mentored shoreline and Jamaica Bay field research",
+        "format": "In person — RISE, Far Rockaway, Queens",
+        "paid_status": "Paid — up to $1,200 stipend",
+        "requirements": "NYC resident; grade 9–11; live or attend school in or near the Rockaway peninsula; commit to the in-person summer research schedule. Official 2026 dates: June through mid-August, Monday–Thursday, 10:00 a.m. to 3:00 p.m.",
+        "url": "https://www.riserockaway.org/rise/programs/youth/environmentor-internship/",
+        "source_url": "https://www.studentresearchnyc.org/our_programs/environmentor/",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — paid internship",
+        "scholarship_availability": "Not needed — students receive a stipend",
+        "other_restrictions": "Entirely in-person. Part of the NYC Science Research Mentoring Consortium / Pinkerton Science Scholars."
+    },
+    {
+        "name": "Genspace Biorocket Research Internship",
+        "organization": "Genspace",
+        "description": "Paid six-month biology and genetic-engineering research internship for NYC public and charter high school students age 16 and older. Students learn lab techniques, design a summer research project with scientist mentors, and receive science-communication training.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Genetics;Biotechnology;Research",
+        "grades": "10;11;12",
+        "age_range": "16 or older by orientation",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — paid internship",
+        "financial_aid_status": "Not needed — paid internship",
+        "application_status": "Future Cycle",
+        "application_opens": "November 1",
+        "opens_date_type": "estimated",
+        "deadline": "Expected to open: November 1; next-cycle deadline not yet announced on the official page",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page does not publish an acceptance rate.",
+        "eligibility_summary": "NYC public or charter high school students age 16+ who live or attend school within about 45 minutes of Genspace; exceptions may be possible",
+        "eligible_grades": "10;11;12",
+        "age_requirements": "16 years of age or older by orientation",
+        "nyc_residency_required": "No — live or attend a NYC public or charter school within 45 minutes of Genspace",
+        "nyc_school_required": "Yes — NYC public or charter high school, with a stated 45-minute travel preference",
+        "stipend": "$2,000",
+        "stipend_display": "$2,000 stipend",
+        "stipend_status": "Paid",
+        "stipend_amount": "$2,000",
+        "internship_potential": "Yes — six-month mentored biology research internship",
+        "format": "Hybrid — in-person lab sessions in Brooklyn plus virtual Fridays in summer",
+        "paid_status": "Paid — $2,000 stipend",
+        "requirements": "Age 16+ by orientation; NYC public or charter student; live or attend school within 45 minutes of Genspace or request an exception; commit from February through August. No transcript or minimum GPA is required.",
+        "url": "https://www.genspace.org/biorocket",
+        "source_url": "https://www.studentresearchnyc.org/programs/",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — paid internship",
+        "scholarship_availability": "Not needed — students receive a stipend",
+        "other_restrictions": "Official 2026 schedule listed a spring after-school session and a July 6–August 14 summer session. Part of the NYC Science Research Mentoring Consortium."
+    },
+    {
+        "name": "BEYOND ALBERT High School Research Program",
+        "organization": "Montefiore Einstein Comprehensive Cancer Center / Albert Einstein College of Medicine",
+        "description": "Paid eight-week summer cancer-research program plus academic-year workshops for Bronx high school students. Participants work in Montefiore Einstein faculty labs, prepare research presentations, and can earn Lehman College Now credit.",
+        "opportunity_type": "Research",
+        "fields": "Biology;Cancer Research;Biomedical Science;Medicine;Research",
+        "grades": "11;12",
+        "age_range": "At least 16 by the summer start date",
+        "boroughs_served": "Bronx",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — paid program with meal voucher and OMNY card",
+        "financial_aid_status": "Not needed — paid program with meal voucher and OMNY card",
+        "application_status": "Future Cycle",
+        "application_opens": "November 1",
+        "opens_date_type": "confirmed",
+        "deadline": "January 12; official page states applications are accepted from November 1 to January 12",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page does not publish an acceptance rate.",
+        "eligibility_summary": "Rising juniors and seniors who are at least 16, live in the Bronx, and attend a Bronx high school",
+        "eligible_grades": "11;12",
+        "age_requirements": "At least 16 years old by the summer session start date",
+        "nyc_residency_required": "Yes — must live in the Bronx",
+        "nyc_school_required": "Yes — must attend a Bronx high school",
+        "borough_restrictions": "Bronx residents attending a Bronx high school",
+        "stipend": "$2,500 for completing the summer program, plus a daily meal voucher and OMNY card",
+        "stipend_display": "$2,500 summer stipend, daily meal voucher, and OMNY card",
+        "stipend_status": "Paid",
+        "stipend_amount": "$2,500",
+        "internship_potential": "Yes — full-time mentored cancer-center laboratory research",
+        "format": "In person — Albert Einstein College of Medicine, Bronx",
+        "paid_status": "Paid — $2,500 summer stipend plus meal voucher and OMNY card",
+        "requirements": "Rising junior or senior; age 16+ by summer start; live in the Bronx and attend a Bronx high school; full eight-week Monday–Friday, 9:00 a.m.–5:00 p.m. summer commitment; transcript, parental permission, short answers, and one recommendation.",
+        "url": "https://montefioreeinstein.org/cancer/education/research/high-school-program",
+        "source_url": "https://einsteinmed.edu/education/pathway-programs/pathway-programs-middle-high-school-students",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — paid program",
+        "scholarship_availability": "Not needed — stipend, meal voucher, OMNY card, and up to 3 Lehman College Now credits",
+        "other_restrictions": "Distinct from the Einstein–Montefiore Summer High School Research Program. Academic-year Thursday workshops run September through May."
+    },
+    {
+        "name": "Project TRUE (Teens Researching Urban Ecology)",
+        "organization": "Wildlife Conservation Society / Fordham University",
+        "description": "Urban ecology research program for Bronx high school sophomores and juniors. Small student teams work with Fordham undergraduate mentors and WCS educators on field projects covering wildlife, water quality, and invasive species, then continue on Saturdays in the fall.",
+        "opportunity_type": "Research",
+        "fields": "Ecology;Environmental Science;Biology;Conservation Biology;Research",
+        "grades": "10;11",
+        "age_range": "High school sophomores and juniors",
+        "boroughs_served": "Bronx",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "cost_category": "Free",
+        "financial_aid": "Not needed — Pinkerton-funded Consortium program; stipend amount is not published on the current official Bronx Zoo page",
+        "financial_aid_status": "Not needed — no participation fee stated",
+        "application_status": "Future Cycle",
+        "application_opens": "January",
+        "opens_date_type": "estimated",
+        "deadline": "Expected to open: January–February; official internship page lists applications due in late February",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official pages do not publish an acceptance rate.",
+        "eligibility_summary": "Bronx residents who are high school sophomores or juniors in good standing and eligible to work in the United States",
+        "eligible_grades": "10;11",
+        "age_requirements": "High school sophomore or junior in good standing",
+        "nyc_residency_required": "Yes — Bronx resident",
+        "nyc_school_required": "Not stated beyond Bronx residency and high school enrollment",
+        "borough_restrictions": "Bronx residents only",
+        "stipend": "Not published on the current official Bronx Zoo page",
+        "stipend_display": "Not published on the official Bronx Zoo page; program is a Pinkerton-funded NYC Science Research Mentoring Consortium member",
+        "stipend_status": "Unknown",
+        "stipend_amount": "",
+        "internship_potential": "Yes — summer and fall urban ecology field research",
+        "format": "In person — Bronx Zoo and NYC field sites",
+        "paid_status": "Not stated on the official Bronx Zoo page",
+        "requirements": "Bronx resident; sophomore or junior in good standing; comfortable indoors and outdoors; eligible to work in the United States; attend summer sessions and 14 fall Saturdays.",
+        "url": "https://bronxzoo.com/teens/project-true",
+        "source_url": "https://bronxzoo.com/teens/project-true/internship",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None stated — no student fee is listed",
+        "scholarship_availability": "Not needed — no participation fee stated",
+        "other_restrictions": "Prior research experience is not required. Part of the NYC Science Research Mentoring Consortium."
+    },
+    {
+        "name": "Bronx River EELS Internship",
+        "organization": "Bronx River Alliance",
+        "description": "Paid 14-month environmental science internship. NYC public high school students complete Bronx River fieldwork, a Lehman College environmental science class, academic-year mentorship, and a full scientific research project.",
+        "opportunity_type": "Research",
+        "fields": "Ecology;Environmental Science;Marine Biology;Research",
+        "grades": "11;12",
+        "age_range": "Entering 11th or 12th grade",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — paid internship with college credit",
+        "financial_aid_status": "Not needed — paid internship with college credit",
+        "application_status": "Future Cycle",
+        "application_opens": "January",
+        "opens_date_type": "estimated",
+        "deadline": "Expected to open: January; next-cycle deadline not yet announced",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Consortium program page does not publish an acceptance rate.",
+        "eligibility_summary": "NYC public high school students entering 11th or 12th grade with an 80+ average in math, science, and English",
+        "eligible_grades": "11;12",
+        "age_requirements": "Entering 11th or 12th grade",
+        "nyc_residency_required": "Not stated beyond NYC public high school enrollment",
+        "nyc_school_required": "Yes — NYC public high school",
+        "gpa_requirement": "Average of 80 or above in math, science, and English",
+        "stipend": "Up to $4,000 over the full internship",
+        "stipend_display": "Up to $4,000 over the 14-month program",
+        "stipend_status": "Paid",
+        "stipend_amount": "Up to $4,000",
+        "internship_potential": "Yes — year-plus fieldwork and a mentored research project",
+        "format": "In person — Bronx River field sites and CUNY Lehman College",
+        "paid_status": "Paid — up to $4,000 stipend",
+        "requirements": "NYC public high school student entering 11th or 12th grade; 80+ average in math, science, and English; commit to the 14-month internship.",
+        "url": "https://www.studentresearchnyc.org/our_programs/environmental-enrichment-and-leadership-for-students-eels/",
+        "source_url": "https://bronxriver.org/",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — paid internship; college credit through CUNY Lehman College",
+        "scholarship_availability": "Not needed — stipend and college credit are included",
+        "other_restrictions": "Part of the NYC Science Research Mentoring Consortium. Confirm the current application window on the Bronx River Alliance site."
+    },
+    {
+        "name": "Hudson River Park Science Leadership Program",
+        "organization": "Hudson River Park Trust",
+        "description": "Paid summer marine and geoscience research internship at Hudson River Park. The program uses near-peer mentoring and is designed for high school students from underrepresented communities in STEM, with pathway partnerships including The Young Women’s Leadership School and Intrepid GOALS for Girls.",
+        "opportunity_type": "Research",
+        "fields": "Marine Biology;Environmental Science;Ecology;Geoscience;Research",
+        "grades": "11;12",
+        "age_range": "High school students; new applicants are recommended to be rising juniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — paid internship",
+        "financial_aid_status": "Not needed — paid internship",
+        "application_status": "Future Cycle",
+        "application_opens": "March",
+        "opens_date_type": "estimated",
+        "deadline": "Expected to open: March; next-cycle deadline not yet announced",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official and Consortium pages do not publish an acceptance rate.",
+        "eligibility_summary": "Pathway-based: female-identifying high school students with prior Hudson River Park INCLUDES, Intrepid GOALS for Girls, or Young Women’s Leadership School enrollment, as stated on the Consortium program page",
+        "eligible_grades": "11;12",
+        "age_requirements": "High school; new applicants recommended to be rising juniors",
+        "nyc_residency_required": "Not stated as a separate cutoff; program is described for New York City students",
+        "nyc_school_required": "Prior participation in listed NYC partner programs or TYWLS enrollment",
+        "prior_program_requirement": "Hudson River Park INCLUDES, Intrepid GOALS for Girls, or The Young Women’s Leadership School, as listed on the Consortium page",
+        "stipend": "Paid internship; current stipend amount is not published on the official internship page",
+        "stipend_display": "Paid internship — stipend amount not published on the current official page",
+        "stipend_status": "Paid",
+        "stipend_amount": "",
+        "internship_potential": "Yes — mentored Hudson River field research",
+        "format": "In person — Hudson River Park, Manhattan",
+        "paid_status": "Paid internship — amount not published on the current official page",
+        "requirements": "Meet the pathway-eligibility rules posted for the current cycle; commit to full summer participation. Confirm current partner-program prerequisites on the Consortium and Hudson River Park pages.",
+        "url": "https://www.studentresearchnyc.org/our_programs/science-leadership-program/",
+        "source_url": "https://hudsonriverpark.org/the-park/parks-river-project/science/internship-opportunities/",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — paid internship",
+        "scholarship_availability": "Not needed — students receive a stipend",
+        "other_restrictions": "Hudson River Park’s current internship page states the River Project team does not have open positions at this time and points to seasonal roles starting in February. Confirm the next SLP cycle before applying."
+    },
+    {
+        "name": "Wave Hill Forest Project",
+        "organization": "Wave Hill",
+        "description": "Paid summer internship in urban woodland restoration and ecology. NYC high school students complete hands-on fieldwork at Wave Hill, take an accredited college course on restoring New York City’s natural areas, and join field trips with partner youth programs.",
+        "opportunity_type": "Internship",
+        "fields": "Ecology;Environmental Science;Biology",
+        "grades": "9;10;11;12",
+        "age_range": "16 years old by May 1 of the program year",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "cost_category": "Paid/Stipend",
+        "financial_aid": "Not needed — paid through NYC SYEP",
+        "financial_aid_status": "Not needed — paid through NYC SYEP",
+        "application_status": "Future Cycle",
+        "application_opens": "Winter",
+        "opens_date_type": "estimated",
+        "deadline": "2026 applications are closed; official page says to check back next winter for 2027 internships. SYEP Part 2 historically had a March 1 deadline.",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official page does not publish an acceptance rate.",
+        "eligibility_summary": "NYC high school students who will be 16 by May 1 and are eligible to work in the United States",
+        "eligible_grades": "9;10;11;12",
+        "age_requirements": "16 years old by May 1 of the program year",
+        "nyc_residency_required": "Yes — New York City resident",
+        "nyc_school_required": "Not stated beyond high school enrollment",
+        "stipend": "Approximately $2,275, paid through NYC SYEP",
+        "stipend_display": "Approximately $2,275, paid through NYC SYEP",
+        "stipend_status": "Paid",
+        "stipend_amount": "Approximately $2,275",
+        "internship_potential": "Yes — paid summer ecological restoration internship with college credit",
+        "format": "In person — Wave Hill, Bronx",
+        "paid_status": "Paid — approximately $2,275 through NYC SYEP",
+        "requirements": "Enrolled in high school; age 16+ by May 1; NYC resident eligible to work in the United States; able to do rigorous fieldwork. Selected interns must also complete the NYC SYEP application.",
+        "url": "https://www.wavehill.org/education/youth-internships/forest-project",
+        "source_url": "https://www.wavehill.org/education/youth-internships",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — paid internship; one college course is included",
+        "scholarship_availability": "Not needed — stipend and college credit are included",
+        "other_restrictions": "Indoor program spaces include stairs and are not wheelchair accessible."
+    },
+    {
+        "name": "Hk Maker Lab",
+        "organization": "HYPOTHEkids / Columbia Engineering",
+        "description": "Free five-week summer engineering-design program, in collaboration with Columbia Engineering, for rising high school juniors and seniors. Students receive intensive engineering design training.",
+        "opportunity_type": "Summer Program",
+        "fields": "Engineering;Design;STEM",
+        "grades": "10;11",
+        "age_range": "Rising juniors and seniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "cost_category": "Free",
+        "financial_aid": "Not needed — official page describes the program as free",
+        "financial_aid_status": "Not needed — official page describes the program as free",
+        "application_status": "Future Cycle",
+        "application_opens": "Opening date: Not announced",
+        "opens_date_type": "unknown",
+        "deadline": "Opening date: Not announced — confirm the next cycle on the official HYPOTHEkids high school programs page",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "acceptance_rate_source": "Official high school programs page does not publish an acceptance rate or detailed deadline.",
+        "eligibility_summary": "Rising high school juniors and seniors; confirm current NYC eligibility on the official page",
+        "eligible_grades": "10;11",
+        "age_requirements": "Rising juniors and seniors",
+        "nyc_residency_required": "Not stated on the current high school programs page",
+        "nyc_school_required": "Not stated on the current high school programs page",
+        "stipend": "None stated",
+        "stipend_display": "None stated — free program",
+        "stipend_status": "Unpaid",
+        "stipend_amount": "",
+        "internship_potential": "No — intensive engineering design training",
+        "format": "In person — Columbia Engineering collaboration; confirm current site on the official page",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Rising junior or senior. Confirm current application materials and NYC eligibility on the official HYPOTHEkids page.",
+        "url": "https://www.hypothekids.org/hsprograms",
+        "source_url": "https://www.hypothekids.org/hsprograms",
+        "last_verified": "2026-08-22",
+        "tuition_cost": "None — official page describes the program as free",
+        "scholarship_availability": "Not needed — program is free"
     }
 ]
 
+# Opening dates taken only from existing published language in this app.
+# confirmed = a specific calendar date; estimated = month/season; unknown = not announced.
+OPPORTUNITY_OPENS_DATES = {
+    "New York Academy of Sciences Junior Academy": ("April 1, 2026", "confirmed"),
+    "Stanford Institutes of Medicine Summer Research Program (SIMR)": ("December 18, 2026", "confirmed"),
+    "Regeneron Science Talent Search": ("June 1, 2026", "confirmed"),
+    "Congressional App Challenge": ("May 1, 2026", "confirmed"),
+    "Diamond Challenge": ("September 16, 2026", "confirmed"),
+    "Cooper Union Summer STEM": ("December 11, 2026", "confirmed"),
+    "Columbia University Science Honors Program (SHP)": ("Early February", "estimated"),
+    "AMNH Science Research Mentoring Program (SRMP)": ("Winter 2027", "estimated"),
+    "Learn & Earn": ("September", "estimated"),
+    "Work, Learn & Grow": ("Spring", "estimated"),
+    "NYC Summer Youth Employment Program (SYEP)": ("Spring", "estimated"),
+    "Columbia BRAINYAC": ("October 2026", "estimated"),
+    "Columbia BrainSTORM Mentorship Program": ("Fall 2027", "estimated"),
+    "George Mason Aspiring Scientists Summer Internship Program (ASSIP)": ("Fall 2026", "estimated"),
+    "CCNY CREST HIRES": ("January", "estimated"),
+    "MITES Summer": ("November", "estimated"),
+    "MITES Semester": ("November", "estimated"),
+    "MIT Beaver Works Summer Institute": ("Winter", "estimated"),
+    "CCNY STEM Institute": ("Varies by semester", "estimated"),
+    "Baruch STEP Academy": ("Varies by semester", "estimated"),
+    "Einstein Enrichment Program": ("Varies", "estimated"),
+    "Einstein–Montefiore Summer High School Research Program": ("Varies", "estimated"),
+    "PROMYS": ("January 2027", "estimated"),
+}
+
+
+def apply_opportunity_opens_dates(records, fill_missing=True):
+
+    for record in records:
+
+        name = str(
+            record.get(
+                "name"
+            ) or ""
+        ).strip()
+        alias = NAME_ALIASES.get(
+            name,
+            name
+        )
+        known = (
+            OPPORTUNITY_OPENS_DATES.get(
+                name
+            )
+            or
+            OPPORTUNITY_OPENS_DATES.get(
+                alias
+            )
+        )
+
+        if known:
+
+            record["application_opens"] = known[0]
+            record["opens_date_type"] = known[1]
+            continue
+
+        if fill_missing:
+
+            opens = record.get(
+                "application_opens"
+            )
+            opens_text = (
+                ""
+                if opens is None
+                else str(
+                    opens
+                ).strip()
+            )
+
+            if (
+                not opens_text
+                or
+                opens_text.lower() == "nan"
+            ):
+                record["application_opens"] = ""
+
+            if not str(
+                record.get(
+                    "opens_date_type"
+                ) or ""
+            ).strip():
+                record["opens_date_type"] = "unknown"
+
+    return records
+
+
 apply_opportunity_transparency(
     extra_opportunities
+)
+apply_opportunity_opens_dates(
+    extra_opportunities,
+    fill_missing=False
 )
 
 extra_df = pd.DataFrame(
@@ -8077,6 +11658,8 @@ else:
         "paid_status": "Check official site",
         "requirements": "Check official site",
         "deadline": "Check official site",
+        "application_opens": "",
+        "opens_date_type": "unknown",
         "age_range": "Check official eligibility",
         "eligibility_summary": "Check official eligibility",
         "cost_category": "Unknown / check official site",
@@ -8155,9 +11738,11 @@ else:
     )
 
 opportunities = pd.DataFrame(
-    apply_opportunity_transparency(
-        opportunities.to_dict(
-            "records"
+    apply_opportunity_opens_dates(
+        apply_opportunity_transparency(
+            opportunities.to_dict(
+                "records"
+            )
         )
     )
 )
@@ -9267,7 +12852,13 @@ def project_recommendation_card_html(
     )
 
 
-def resource_track_card_html(title, description, skills):
+def resource_track_card_html(
+    title,
+    description,
+    skills,
+    button_label="",
+    button_page=""
+):
 
     title_safe = html_module.escape(title or "")
     desc_safe = html_module.escape(description or "")
@@ -9295,12 +12886,55 @@ def resource_track_card_html(title, description, skills):
             "</div>"
         )
 
+    action_html = ""
+    if button_label and button_page:
+        action_html = (
+            '<a class="sp-resource-card-action" '
+            f'href="?resource_go={quote_plus(str(button_page))}">'
+            + html_module.escape(button_label)
+            + "</a>"
+        )
+
     return (
         '<div class="sp-resource-card">'
         f'<h3 class="sp-resource-card-title">{title_safe}</h3>'
         f'<p class="sp-resource-card-desc">{desc_safe}</p>'
         f"{tags_html}"
+        f"{action_html}"
         "</div>"
+    )
+
+
+def gpa_stat_card_html(label, value, note=""):
+
+    label_safe = html_module.escape(label or "")
+    value_safe = html_module.escape(str(value))
+    note_html = ""
+
+    if note:
+        note_html = (
+            '<div class="sp-gpa-stat-note">'
+            + html_module.escape(str(note))
+            + "</div>"
+        )
+
+    return (
+        '<div class="sp-gpa-stat">'
+        f'<div class="sp-gpa-stat-label">{label_safe}</div>'
+        f'<div class="sp-gpa-stat-value">{value_safe}</div>'
+        f"{note_html}"
+        "</div>"
+    )
+
+
+def gpa_banner_html(message, kind="info"):
+
+    kind_safe = kind if kind in {"info", "warning", "success"} else "info"
+
+    return (
+        f'<div class="sp-gpa-banner sp-gpa-banner-{kind_safe}" role="status">'
+        + html_module.escape(str(message))
+        + "</div>"
     )
 
 
@@ -10800,6 +14434,71 @@ def opportunity_eligibility_card_html(
     )
 
 
+def opportunity_opens_display(opportunity):
+
+    kind = opportunity_text(
+        opportunity.get(
+            "opens_date_type"
+        ),
+        ""
+    ).lower()
+    raw = opportunity_field(
+        opportunity,
+        "application_opens",
+        "opens_date",
+        fallback=""
+    )
+    raw_lower = raw.lower()
+
+    unknown_markers = (
+        "not yet announced",
+        "not announced",
+        "future cycle",
+        "check official",
+        "tbd"
+    )
+
+    if kind == "confirmed" and raw:
+        return f"Opens: {raw}"
+
+    if kind == "estimated" and raw:
+        return f"Expected to open: {raw}"
+
+    if (
+        not raw
+        or
+        any(
+            marker in raw_lower
+            for marker in unknown_markers
+        )
+        or
+        "opened" in raw_lower
+    ):
+        return "Opening date: Not announced"
+
+    exact_date = re.fullmatch(
+        r"(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}",
+        raw
+    )
+
+    if exact_date:
+        return f"Opens: {raw}"
+
+    cleaned = raw
+
+    for prefix in (
+        "typically ",
+        "expected to open ",
+        "expected ",
+        "applications typically open in "
+    ):
+        if cleaned.lower().startswith(prefix):
+            cleaned = cleaned[len(prefix):].strip()
+            break
+
+    return f"Expected to open: {cleaned or raw}"
+
+
 def opportunity_info_grid_html(
     opportunity
 ):
@@ -11223,6 +14922,9 @@ def opportunity_info_grid_html(
             "Deadline",
             html_module.escape(
                 deadline
+            ),
+            note=opportunity_opens_display(
+                opportunity
             )
         )
         + opportunity_dash_stat_html(
@@ -12910,11 +16612,21 @@ if not st.user.is_logged_in:
         ):
             st.login("google")
 
+    landing_stats_df = pd.DataFrame()
     landing_opp_count = 0
+    landing_free_count = 0
+    landing_research_count = 0
+    landing_type_count = 0
 
     try:
 
-        if (
+        if extra_opportunities:
+
+            landing_stats_df = pd.DataFrame(
+                extra_opportunities
+            )
+
+        elif (
             isinstance(
                 opportunities,
                 pd.DataFrame
@@ -12923,10 +16635,23 @@ if not st.user.is_logged_in:
             not opportunities.empty
         ):
 
-            if "name" in opportunities.columns:
+            landing_stats_df = opportunities.copy()
+
+        if (
+            isinstance(
+                landing_stats_df,
+                pd.DataFrame
+            )
+            and
+            not landing_stats_df.empty
+        ):
+
+            landing_stats_df = landing_stats_df.copy()
+
+            if "name" in landing_stats_df.columns:
 
                 landing_names = (
-                    opportunities[
+                    landing_stats_df[
                         "name"
                     ]
                     .astype(
@@ -12934,42 +16659,156 @@ if not st.user.is_logged_in:
                     )
                     .str.strip()
                 )
-                landing_names = landing_names[
-                    ~landing_names.str.lower().isin(
-                        {
-                            "",
-                            "nan",
-                            "none"
-                        }
-                    )
+                landing_valid = ~landing_names.str.lower().isin(
+                    {
+                        "",
+                        "nan",
+                        "none"
+                    }
+                )
+                landing_stats_df = landing_stats_df.loc[
+                    landing_valid
+                ].copy()
+                landing_stats_df[
+                    "_landing_name"
+                ] = landing_names[
+                    landing_valid
                 ]
-                landing_opp_count = int(
-                    landing_names.nunique()
+                landing_stats_df = landing_stats_df.drop_duplicates(
+                    "_landing_name",
+                    keep="first"
                 )
 
-            else:
+            landing_opp_count = int(
+                len(
+                    landing_stats_df
+                )
+            )
 
-                landing_opp_count = int(
-                    len(
-                        opportunities
+            if not landing_stats_df.empty:
+
+                if "cost" in landing_stats_df.columns:
+                    landing_cost = (
+                        landing_stats_df[
+                            "cost"
+                        ]
+                        .fillna(
+                            ""
+                        )
+                        .astype(
+                            str
+                        )
+                        .str.strip()
                     )
+                else:
+                    landing_cost = pd.Series(
+                        [""]
+                        * len(
+                            landing_stats_df
+                        ),
+                        index=landing_stats_df.index
+                    )
+
+                if "cost_category" in landing_stats_df.columns:
+                    landing_cost_category = (
+                        landing_stats_df[
+                            "cost_category"
+                        ]
+                        .fillna(
+                            ""
+                        )
+                        .astype(
+                            str
+                        )
+                        .str.strip()
+                    )
+                else:
+                    landing_cost_category = pd.Series(
+                        [""]
+                        * len(
+                            landing_stats_df
+                        ),
+                        index=landing_stats_df.index
+                    )
+
+                landing_cost_norm = landing_cost.str.casefold()
+                landing_cost_cat_norm = landing_cost_category.str.casefold()
+                landing_fee_or_aid = landing_cost_cat_norm.isin(
+                    {
+                        "financial aid available",
+                        "fee required"
+                    }
                 )
+                landing_free_count = int(
+                    (
+                        (
+                            landing_cost_cat_norm.eq(
+                                "free"
+                            )
+                            |
+                            landing_cost_cat_norm.eq(
+                                "paid/stipend"
+                            )
+                            |
+                            (
+                                landing_cost_norm.eq(
+                                    "free"
+                                )
+                                &
+                                ~landing_fee_or_aid
+                            )
+                        )
+                        &
+                        ~landing_fee_or_aid
+                    ).sum()
+                )
+
+                if "opportunity_type" in landing_stats_df.columns:
+                    landing_types = (
+                        landing_stats_df[
+                            "opportunity_type"
+                        ]
+                        .fillna(
+                            ""
+                        )
+                        .astype(
+                            str
+                        )
+                        .str.strip()
+                    )
+                    landing_research_count = int(
+                        landing_types.str.casefold().eq(
+                            "research"
+                        ).sum()
+                    )
+                    landing_type_count = int(
+                        landing_types[
+                            landing_types
+                            !=
+                            ""
+                        ].nunique()
+                    )
 
     except Exception:
 
         landing_opp_count = 0
+        landing_free_count = 0
+        landing_research_count = 0
+        landing_type_count = 0
 
-    if landing_opp_count >= 100:
-        landing_opp_value = "100+"
-    elif landing_opp_count > 0:
-        landing_opp_value = str(
-            landing_opp_count
-        )
-    else:
-        landing_opp_value = "100+"
+    landing_opp_value = "100+"
 
     landing_opp_value_safe = html_module.escape(
         landing_opp_value
+    )
+    landing_free_value_safe = html_module.escape(
+        f"{landing_free_count}+"
+    )
+    landing_research_value_safe = html_module.escape(
+        "50+"
+    )
+    landing_type_value_safe = html_module.escape(
+        f"{landing_type_count}+"
     )
 
     st.markdown(
@@ -12980,19 +16819,72 @@ if not st.user.is_logged_in:
                     Explore research programs, internships, scholarships, competitions,
                     and other STEM opportunities for NYC high school students.
                 </p>
-                <div class="sp-landing-stats">
-                    <div class="sp-landing-stat">
-                        <div class="sp-landing-stat-value">{landing_opp_value_safe}</div>
-                        <div class="sp-landing-stat-label">STEM Opportunities</div>
+                <div class="sp-landing-stats-wrap">
+                    <div class="sp-landing-stats">
+                        <div class="sp-landing-stat">
+                            <div class="sp-landing-stat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+                                    <path d="M8 9h8M8 13h5"></path>
+                                </svg>
+                            </div>
+                            <div class="sp-landing-stat-value">{landing_opp_value_safe}</div>
+                            <div class="sp-landing-stat-label">STEM Opportunities</div>
+                        </div>
+                        <div class="sp-landing-stat">
+                            <div class="sp-landing-stat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 3h4v6l5 8H5l5-8z"></path>
+                                    <path d="M9 21h6"></path>
+                                </svg>
+                            </div>
+                            <div class="sp-landing-stat-value">Multiple</div>
+                            <div class="sp-landing-stat-label">STEM Fields</div>
+                        </div>
+                        <div class="sp-landing-stat">
+                            <div class="sp-landing-stat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z"></path>
+                                    <circle cx="12" cy="10" r="2.2"></circle>
+                                </svg>
+                            </div>
+                            <div class="sp-landing-stat-value">NYC</div>
+                            <div class="sp-landing-stat-label">Focused</div>
+                        </div>
+                        <div class="sp-landing-stat">
+                            <div class="sp-landing-stat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="8"></circle>
+                                    <path d="M8.5 12.2l2.3 2.3 4.7-5"></path>
+                                </svg>
+                            </div>
+                            <div class="sp-landing-stat-value">{landing_free_value_safe}</div>
+                            <div class="sp-landing-stat-label">Free Programs</div>
+                        </div>
+                        <div class="sp-landing-stat">
+                            <div class="sp-landing-stat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="8" cy="8" r="2.4"></circle>
+                                    <path d="M10 10l8 8M16.2 16.2l2.3 2.3M13.6 18.8l2.4-2.4"></path>
+                                </svg>
+                            </div>
+                            <div class="sp-landing-stat-value">{landing_research_value_safe}</div>
+                            <div class="sp-landing-stat-label">Research Programs</div>
+                        </div>
+                        <div class="sp-landing-stat">
+                            <div class="sp-landing-stat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4" y="4" width="7" height="7" rx="1.4"></rect>
+                                    <rect x="13" y="4" width="7" height="7" rx="1.4"></rect>
+                                    <rect x="4" y="13" width="7" height="7" rx="1.4"></rect>
+                                    <rect x="13" y="13" width="7" height="7" rx="1.4"></rect>
+                                </svg>
+                            </div>
+                            <div class="sp-landing-stat-value">{landing_type_value_safe}</div>
+                            <div class="sp-landing-stat-label">Opportunity Types</div>
+                        </div>
                     </div>
-                    <div class="sp-landing-stat">
-                        <div class="sp-landing-stat-value">Multiple</div>
-                        <div class="sp-landing-stat-label">STEM Fields</div>
-                    </div>
-                    <div class="sp-landing-stat">
-                        <div class="sp-landing-stat-value">NYC</div>
-                        <div class="sp-landing-stat-label">Focused</div>
-                    </div>
+                    <p class="sp-landing-stats-note">Statistics are based on the current opportunity database and may change as listings are updated.</p>
                 </div>
             </div>
             <div class="sp-landing-features">
@@ -13569,7 +17461,7 @@ with st.sidebar:
         '<div class="sp-sidebar-title">'
         '<div class="sp-title-line">'
         '<span class="sp-title-blue">STEM</span>'
-        '<span class="sp-title-yellow">Pathways</span>'
+        '<span class="sp-title-yellow">PATHWAYS</span>'
         '</div>'
         '<div class="sp-title-nyc">NYC</div>'
         '<div class="sp-sidebar-accent"></div>'
@@ -13888,44 +17780,35 @@ if page == "Dashboard":
         unsafe_allow_html=True
     )
 
-    dash_metrics = st.container(
-        key="dash_journey_metrics"
-    )
+    with st.container(key="dash_journey_metrics"):
 
-    journey1, journey2, journey3, journey4 = (
-        dash_metrics.columns(4)
-    )
-
-    with journey1:
-
-        st.metric(
-            "Primary Interest",
-            primary_interest
-        )
-
-    with journey2:
-
-        st.metric(
-            "Saved Programs",
-            len(
-                dashboard_saved_apps
-            )
-        )
-
-    with journey3:
-
-        st.metric(
-            "Favorite Colleges",
-            len(
-                dashboard_favorites
-            )
-        )
-
-    with journey4:
-
-        st.metric(
-            "Applications Submitted",
-            submitted_applications
+        st.html(
+            '<div class="sp-dash-metric-grid">'
+            '<article class="sp-dash-metric">'
+            '<div class="sp-dash-metric-value">'
+            + html_module.escape(str(primary_interest))
+            + "</div>"
+            '<div class="sp-dash-metric-label">Primary Interest</div>'
+            "</article>"
+            '<article class="sp-dash-metric">'
+            '<div class="sp-dash-metric-value">'
+            + html_module.escape(str(len(dashboard_saved_apps)))
+            + "</div>"
+            '<div class="sp-dash-metric-label">Saved Programs</div>'
+            "</article>"
+            '<article class="sp-dash-metric">'
+            '<div class="sp-dash-metric-value">'
+            + html_module.escape(str(len(dashboard_favorites)))
+            + "</div>"
+            '<div class="sp-dash-metric-label">Favorite Colleges</div>'
+            "</article>"
+            '<article class="sp-dash-metric">'
+            '<div class="sp-dash-metric-value">'
+            + html_module.escape(str(submitted_applications))
+            + "</div>"
+            '<div class="sp-dash-metric-label">Applications Submitted</div>'
+            "</article>"
+            "</div>"
         )
 
     # --------------------------------------------------------
@@ -14012,16 +17895,20 @@ if page == "Dashboard":
 
     elif dashboard_saved_apps:
 
-        st.info(
-            "You have saved opportunities, but none currently have a "
-            "specific upcoming deadline in the database."
+        st.html(
+            '<div class="sp-dash-empty" role="status">'
+            "<p>You have saved opportunities, but none currently have a "
+            "specific upcoming deadline in the database.</p>"
+            "</div>"
         )
 
     else:
 
-        st.info(
-            "Save opportunities you care about and their upcoming deadlines "
-            "will appear here automatically."
+        st.html(
+            '<div class="sp-dash-empty" role="status">'
+            "<p>Save opportunities you care about and their upcoming deadlines "
+            "will appear here automatically.</p>"
+            "</div>"
         )
 
     st.divider()
@@ -14030,215 +17917,135 @@ if page == "Dashboard":
     # CONTINUE YOUR JOURNEY
     # --------------------------------------------------------
 
-    st.header(
-        "Continue Your Journey"
-    )
+    with st.container(key="dash_continue_heading"):
+
+        st.header(
+            "Continue Your Journey"
+        )
 
     st.markdown(
         '<div class="sp-section-subtitle">Choose what you want to work on next.</div>',
         unsafe_allow_html=True
     )
 
-    journey_cards = st.container(
-        key="dash_continue_journey"
-    )
+    saved_count = len(dashboard_saved_apps)
 
-    action_row1 = journey_cards.columns(3)
+    if active_applications == 1:
+        applications_copy = "You currently have 1 application in progress."
+    elif active_applications:
+        applications_copy = (
+            f"You currently have {active_applications} applications in progress."
+        )
+    elif saved_count == 1:
+        applications_copy = "You have 1 saved opportunity."
+    elif saved_count:
+        applications_copy = (
+            f"You have {saved_count} saved opportunities."
+        )
+    else:
+        applications_copy = (
+            "Save opportunities and manage your application "
+            "progress in one place."
+        )
 
-    with action_row1[0]:
+    if dashboard_favorites:
+        top_favorite = dashboard_favorites[0].get(
+            "college_name",
+            "Your top college"
+        )
+        favorites_copy = f"Your top favorite is {top_favorite}."
+    else:
+        favorites_copy = (
+            "Save colleges you like and arrange them in your "
+            "personal order."
+        )
 
-        with st.container(
-            border=True
-        ):
-
-            st.subheader(
-                "Explore Your Path"
-            )
-
-            st.write(
+    continue_cards = [
+        {
+            "id": "pathway",
+            "title": "Explore Your Path",
+            "copy": (
                 "Discover majors, careers, salary data, skills, and "
                 "possible STEM directions."
-            )
-
-            if st.button(
-                "Open My STEM Pathway",
-                key="dashboard_pathway_v2",
-                use_container_width=True
-            ):
-
-                st.session_state.current_page = (
-                    "My STEM Pathway"
-                )
-
-                st.rerun()
-
-    with action_row1[1]:
-
-        with st.container(
-            border=True
-        ):
-
-            st.subheader(
-                "Discover Colleges"
-            )
-
-            st.write(
+            ),
+            "button": "Open My STEM Pathway",
+            "key": "dashboard_pathway_v2",
+            "page": "My STEM Pathway"
+        },
+        {
+            "id": "colleges",
+            "title": "Discover Colleges",
+            "copy": (
                 "Answer simple questions and find colleges connected "
                 "to your interests and preferences."
-            )
-
-            if st.button(
-                "Find College Matches",
-                key="dashboard_colleges_v2",
-                use_container_width=True
-            ):
-
-                st.session_state.current_page = (
-                    "College Suggestions"
-                )
-
-                st.rerun()
-
-    with action_row1[2]:
-
-        with st.container(
-            border=True
-        ):
-
-            st.subheader(
-                "Build Something"
-            )
-
-            st.write(
+            ),
+            "button": "Find College Matches",
+            "key": "dashboard_colleges_v2",
+            "page": "College Suggestions"
+        },
+        {
+            "id": "projects",
+            "title": "Build Something",
+            "copy": (
                 "Get personalized project ideas based on what you want "
                 "to create and the tools you have."
-            )
-
-            if st.button(
-                "Explore Projects",
-                key="dashboard_projects_v2",
-                use_container_width=True
-            ):
-
-                st.session_state.current_page = (
-                    "Projects"
-                )
-
-                st.rerun()
-
-    action_row2 = journey_cards.columns(3)
-
-    with action_row2[0]:
-
-        with st.container(
-            border=True
-        ):
-
-            st.subheader(
-                "Find Opportunities"
-            )
-
-            st.write(
+            ),
+            "button": "Explore Projects",
+            "key": "dashboard_projects_v2",
+            "page": "Projects"
+        },
+        {
+            "id": "opportunities",
+            "title": "Find Opportunities",
+            "copy": (
                 "Discover programs, research, internships, courses, "
                 "and scholarships."
-            )
+            ),
+            "button": "Browse Opportunities",
+            "key": "dashboard_opportunities_v2",
+            "page": "Opportunities"
+        },
+        {
+            "id": "applications",
+            "title": "Track Applications",
+            "copy": applications_copy,
+            "button": "Open My Applications",
+            "key": "dashboard_applications_v2",
+            "page": "My Applications"
+        },
+        {
+            "id": "favorites",
+            "title": "Review Your College List",
+            "copy": favorites_copy,
+            "button": "Open Favorite Colleges",
+            "key": "dashboard_favorites_v2",
+            "page": "My Favorite Colleges"
+        }
+    ]
 
-            if st.button(
-                "Browse Opportunities",
-                key="dashboard_opportunities_v2",
-                use_container_width=True
-            ):
+    with st.container(key="dash_continue_journey"):
 
-                st.session_state.current_page = (
-                    "Opportunities"
+        for card in continue_cards:
+
+            with st.container(key=f"dash_journey_card_{card['id']}", border=True):
+
+                st.html(
+                    '<h3 class="sp-dash-action-title">'
+                    + html_module.escape(card["title"])
+                    + "</h3>"
+                    + '<p class="sp-dash-action-copy">'
+                    + html_module.escape(card["copy"])
+                    + "</p>"
                 )
 
-                st.rerun()
+                if st.button(
+                    card["button"],
+                    key=card["key"],
+                    use_container_width=True
+                ):
 
-    with action_row2[1]:
-
-        with st.container(
-            border=True
-        ):
-
-            st.subheader(
-                "Track Applications"
-            )
-
-            if active_applications:
-
-                st.write(
-                    f"You currently have **{active_applications}** "
-                    f"application(s) in progress."
-                )
-
-            elif dashboard_saved_apps:
-
-                st.write(
-                    f"You have **{len(dashboard_saved_apps)}** saved "
-                    "opportunity/opportunities."
-                )
-
-            else:
-
-                st.write(
-                    "Save opportunities and manage your application "
-                    "progress in one place."
-                )
-
-            if st.button(
-                "Open My Applications",
-                key="dashboard_applications_v2",
-                use_container_width=True
-            ):
-
-                st.session_state.current_page = (
-                    "My Applications"
-                )
-
-                st.rerun()
-
-    with action_row2[2]:
-
-        with st.container(
-            border=True
-        ):
-
-            st.subheader(
-                "Review Your College List"
-            )
-
-            if dashboard_favorites:
-
-                top_favorite = (
-                    dashboard_favorites[0].get(
-                        "college_name",
-                        "Your top college"
-                    )
-                )
-
-                st.write(
-                    f"Your current #1 favorite is **{top_favorite}**."
-                )
-
-            else:
-
-                st.write(
-                    "Save colleges you like and arrange them in your "
-                    "personal order."
-                )
-
-            if st.button(
-                "Open Favorite Colleges",
-                key="dashboard_favorites_v2",
-                use_container_width=True
-            ):
-
-                st.session_state.current_page = (
-                    "My Favorite Colleges"
-                )
-
-                st.rerun()
+                    st.session_state.current_page = card["page"]
+                    st.rerun()
 
     st.divider()
 
@@ -14359,9 +18166,11 @@ if page == "Dashboard":
 
     st.divider()
 
-    st.header(
-        "Your STEM Interests"
-    )
+    with st.container(key="stem_interests_heading_wrapper"):
+
+        st.header(
+            "Your STEM Interests"
+        )
 
     interest_list = profile.get(
         "interests"
@@ -14400,16 +18209,18 @@ if page == "Dashboard":
         '</div>'
     )
 
-    if st.button(
-        "Update My Profile",
-        key="dashboard_edit_profile_v2"
-    ):
+    with st.container(key="update_profile_button_wrapper"):
 
-        st.session_state.profile_completed = (
-            False
-        )
+        if st.button(
+            "Update My Profile",
+            key="dashboard_edit_profile_v2"
+        ):
 
-        st.rerun()
+            st.session_state.profile_completed = (
+                False
+            )
+
+            st.rerun()
 
 
 # ============================================================
@@ -14431,100 +18242,127 @@ elif page == "My STEM Pathway":
         "not determine what you must study or become."
     )
 
-    st.divider()
+    with st.container(key="stemq_form"):
 
-    st.header(
-        "Discover Your STEM Direction"
-    )
+        st.html(
+            '<div class="sp-stemq-title-block">'
+            '<h2 class="sp-stemq-page-title">'
+            "Discover Your STEM Direction"
+            "</h2>"
+            '<p class="sp-stemq-page-sub">'
+            "Answer a few questions about how you like to work. "
+            "There are no right or wrong answers."
+            "</p>"
+            "</div>"
+        )
 
-    preferred_work = st.selectbox(
-        "Which type of work sounds most interesting?",
-        [
-            "Building physical machines or products",
-            "Designing electronics and circuits",
-            "Programming software",
-            "Working with data and artificial intelligence",
-            "Solving healthcare problems",
-            "Conducting scientific research",
-            "Working with mathematics and models",
-            "Improving the environment",
-            "Building robots and automated systems",
-            "I am not sure yet"
-        ]
-    )
+        def stemq_interest_slider(label, card_key):
+            with st.container(key=card_key):
+                value = st.slider(label, 1, 10, 5)
+                st.html(
+                    '<div class="sp-stemq-slider-ends" aria-hidden="true">'
+                    "<span>1 — Not interested</span>"
+                    "<span>10 — Very interested</span>"
+                    "</div>"
+                )
+                return value
 
-    favorite_activity = st.selectbox(
-        "Which activity sounds most enjoyable?",
-        [
-            "Designing something in CAD",
-            "Building a circuit",
-            "Writing a program",
-            "Analyzing a dataset",
-            "Running an experiment",
-            "Building a robot",
-            "Solving difficult math problems",
-            "Designing a healthcare device",
-            "Studying the environment",
-            "I am not sure yet"
-        ]
-    )
+        with st.container(key="stemq_interests", border=True):
 
-    programming_score = st.slider(
-        "How much do you enjoy programming?",
-        1,
-        10,
-        5
-    )
+            st.html(
+                '<h3 class="sp-stemq-card-title">Your Interests</h3>'
+            )
 
-    hands_on_score = st.slider(
-        "How much do you enjoy building physical things?",
-        1,
-        10,
-        5
-    )
+            preferred_work = st.selectbox(
+                "Which type of work sounds most interesting?",
+                [
+                    "Building physical machines or products",
+                    "Designing electronics and circuits",
+                    "Programming software",
+                    "Working with data and artificial intelligence",
+                    "Solving healthcare problems",
+                    "Conducting scientific research",
+                    "Working with mathematics and models",
+                    "Improving the environment",
+                    "Building robots and automated systems",
+                    "I am not sure yet"
+                ]
+            )
 
-    math_score = st.slider(
-        "How much do you enjoy mathematics?",
-        1,
-        10,
-        5
-    )
+            favorite_activity = st.selectbox(
+                "Which activity sounds most enjoyable?",
+                [
+                    "Designing something in CAD",
+                    "Building a circuit",
+                    "Writing a program",
+                    "Analyzing a dataset",
+                    "Running an experiment",
+                    "Building a robot",
+                    "Solving difficult math problems",
+                    "Designing a healthcare device",
+                    "Studying the environment",
+                    "I am not sure yet"
+                ]
+            )
 
-    electronics_score = st.slider(
-        "How interested are you in electronics and circuits?",
-        1,
-        10,
-        5
-    )
+        with st.container(key="stemq_ratings", border=True):
 
-    science_score = st.slider(
-        "How interested are you in science and research?",
-        1,
-        10,
-        5
-    )
+            st.html(
+                '<h3 class="sp-stemq-card-title">Rate Your Interests</h3>'
+            )
 
-    data_score = st.slider(
-        "How interested are you in data, statistics, or AI?",
-        1,
-        10,
-        5
-    )
+            with st.container(key="stemq_slider_grid"):
 
-    preferred_environment = st.selectbox(
-        "Which environment sounds most appealing?",
-        [
-            "Technology company",
-            "Engineering design company",
-            "Engineering laboratory",
-            "Research laboratory",
-            "Hospital or healthcare technology",
-            "Manufacturing company",
-            "University or research institution",
-            "Environmental organization",
-            "I am not sure yet"
-        ]
-    )
+                programming_score = stemq_interest_slider(
+                    "How much do you enjoy programming?",
+                    "stemq_s_programming"
+                )
+
+                hands_on_score = stemq_interest_slider(
+                    "How much do you enjoy building physical things?",
+                    "stemq_s_handson"
+                )
+
+                math_score = stemq_interest_slider(
+                    "How much do you enjoy mathematics?",
+                    "stemq_s_math"
+                )
+
+                electronics_score = stemq_interest_slider(
+                    "How interested are you in electronics and circuits?",
+                    "stemq_s_electronics"
+                )
+
+                science_score = stemq_interest_slider(
+                    "How interested are you in science and research?",
+                    "stemq_s_science"
+                )
+
+                data_score = stemq_interest_slider(
+                    "How interested are you in data, statistics, or AI?",
+                    "stemq_s_data"
+                )
+
+        with st.container(key="stemq_environment", border=True):
+
+            st.html(
+                '<h3 class="sp-stemq-card-title">Your Ideal Environment</h3>'
+            )
+
+            preferred_environment = st.selectbox(
+                "Which environment sounds most appealing?",
+                [
+                    "Technology company",
+                    "Engineering design company",
+                    "Engineering laboratory",
+                    "Research laboratory",
+                    "Hospital or healthcare technology",
+                    "Manufacturing company",
+                    "University or research institution",
+                    "Environmental organization",
+                    "I am not sure yet"
+                ]
+            )
 
     # ========================================================
     # CAREER DATABASE
@@ -15026,21 +18864,23 @@ elif page == "My STEM Pathway":
     # GENERATE RESULTS
     # ========================================================
 
-    if st.button(
-        "Generate My STEM Recommendations",
-        type="primary",
-        use_container_width=True
-    ):
+    with st.container(key="stemq_submit"):
 
-        ranked = sorted(
-            scores.items(),
-            key=lambda item: item[1],
-            reverse=True
-        )
+        if st.button(
+            "Generate My STEM Recommendations",
+            type="primary",
+            use_container_width=True
+        ):
 
-        st.session_state.career_results = (
-            ranked[:3]
-        )
+            ranked = sorted(
+                scores.items(),
+                key=lambda item: item[1],
+                reverse=True
+            )
+
+            st.session_state.career_results = (
+                ranked[:3]
+            )
 
     if st.session_state.career_results:
 
@@ -15354,6 +19194,10 @@ elif page == "My STEM Pathway":
 # ============================================================
 
 elif page == "Opportunities":
+
+    st.html(
+        '<div class="sp-opportunities-page" aria-hidden="true"></div>'
+    )
 
     render_page_header(
         "Opportunities",
@@ -18241,134 +22085,164 @@ elif page == "College Suggestions":
         )
     )
 
-    st.info(
-        "Match score measures how well a college fits your interests and preferences. "
-        "It is NOT your chance of admission."
-    )
+    with st.container(key="college_matcher_quiz"):
 
-    st.divider()
-
-    # --------------------------------------------------------
-    # SIMPLE INTEREST QUESTIONS
-    # --------------------------------------------------------
-
-    st.header("1. Explore What You Might Like")
-
-    q1 = st.multiselect(
-        "What kinds of things sound interesting to you?",
-        [
-            "Building or fixing things",
-            "Computers and technology",
-            "Coding or making apps",
-            "Robots and electronics",
-            "Math and solving puzzles",
-            "Science and experiments",
-            "Medicine and the human body",
-            "Nature, climate, and the environment",
-            "Working with data and patterns",
-            "Designing or creating new things",
-            "I'm not sure yet"
-        ],
-        key="college_discovery_interests_v2"
-    )
-
-    q2 = st.selectbox(
-        "Which school subject do you enjoy most?",
-        [
-            "I'm not sure",
-            "Math",
-            "Science",
-            "Computer Science / Technology",
-            "Biology",
-            "Physics",
-            "A mix of math and science"
-        ],
-        key="college_discovery_subject_v2"
-    )
-
-    q3 = st.selectbox(
-        "What type of work sounds most enjoyable?",
-        [
-            "I'm not sure",
-            "Building something with my hands",
-            "Working on a computer",
-            "Solving difficult problems",
-            "Designing new products or systems",
-            "Running experiments or doing research",
-            "Helping people through science or technology",
-            "Analyzing information and finding patterns"
-        ],
-        key="college_discovery_work_v2"
-    )
-
-    q4 = st.selectbox(
-        "Would you rather work mostly with...",
-        [
-            "I'm not sure",
-            "Hardware, machines, or physical objects",
-            "Software and computers",
-            "People and healthcare",
-            "Numbers and data",
-            "Science and research",
-            "The environment",
-            "A mix of hardware and software"
-        ],
-        key="college_discovery_environment_v2"
-    )
-
-    q5 = st.select_slider(
-        "How much do you enjoy math?",
-        options=[
-            "Not much",
-            "A little",
-            "It's okay",
-            "I like it",
-            "I really like it"
-        ],
-        value="It's okay",
-        key="college_discovery_math_v2"
-    )
-
-    # --------------------------------------------------------
-    # OPTIONAL COLLEGE PREFERENCES
-    # --------------------------------------------------------
-
-    with st.expander("2. College Preferences (optional)"):
-
-        college_location = st.selectbox(
-            "Where would you be interested in going to college?",
-            [
-                "I'm open to anywhere",
-                "NYC / close to home",
-                "Northeast U.S.",
-                "Anywhere in the U.S."
-            ],
-            key="college_discovery_location_v2"
+        st.html(
+            '<div class="sp-matcher-callout" role="status">'
+            '<div class="sp-matcher-callout-icon" aria-hidden="true">'
+            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" '
+            'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" '
+            'stroke-linejoin="round">'
+            '<circle cx="12" cy="12" r="9"></circle>'
+            '<path d="M12 11v5M12 8h.01"></path>'
+            "</svg>"
+            "</div>"
+            "<p>Match score measures how well a college fits your interests "
+            "and preferences. "
+            "<strong>It is NOT your chance of admission.</strong></p>"
+            "</div>"
         )
 
-        college_setting = st.selectbox(
-            "What kind of college environment sounds best?",
-            [
-                "I'm not sure",
-                "City / urban",
-                "Traditional college campus",
-                "Small college",
-                "Large university"
-            ],
-            key="college_discovery_setting_v2"
-        )
+        # --------------------------------------------------------
+        # SIMPLE INTEREST QUESTIONS
+        # --------------------------------------------------------
 
-        research_priority = st.checkbox(
-            "Research opportunities are important to me",
-            value=True,
-            key="college_discovery_research_v2"
-        )
+        with st.container(key="college_matcher_step1", border=True):
 
-        aid_priority = st.checkbox(
-            "Financial aid / affordability is very important to me",
-            value=bool(profile.get("financial_support", False)),
-            key="college_discovery_aid_v2"
-        )
+            st.html(
+                '<h2 class="sp-matcher-step-title">'
+                "1. Explore What You Might Like"
+                "</h2>"
+                '<p class="sp-matcher-step-copy">'
+                "Answer a few questions about what you enjoy. "
+                "There are no right or wrong answers."
+                "</p>"
+            )
+
+            q1 = st.multiselect(
+                "What kinds of things sound interesting to you?",
+                [
+                    "Building or fixing things",
+                    "Computers and technology",
+                    "Coding or making apps",
+                    "Robots and electronics",
+                    "Math and solving puzzles",
+                    "Science and experiments",
+                    "Medicine and the human body",
+                    "Nature, climate, and the environment",
+                    "Working with data and patterns",
+                    "Designing or creating new things",
+                    "I'm not sure yet"
+                ],
+                key="college_discovery_interests_v2"
+            )
+
+            q2 = st.selectbox(
+                "Which school subject do you enjoy most?",
+                [
+                    "I'm not sure",
+                    "Math",
+                    "Science",
+                    "Computer Science / Technology",
+                    "Biology",
+                    "Physics",
+                    "A mix of math and science"
+                ],
+                key="college_discovery_subject_v2"
+            )
+
+            q3 = st.selectbox(
+                "What type of work sounds most enjoyable?",
+                [
+                    "I'm not sure",
+                    "Building something with my hands",
+                    "Working on a computer",
+                    "Solving difficult problems",
+                    "Designing new products or systems",
+                    "Running experiments or doing research",
+                    "Helping people through science or technology",
+                    "Analyzing information and finding patterns"
+                ],
+                key="college_discovery_work_v2"
+            )
+
+            q4 = st.selectbox(
+                "Would you rather work mostly with...",
+                [
+                    "I'm not sure",
+                    "Hardware, machines, or physical objects",
+                    "Software and computers",
+                    "People and healthcare",
+                    "Numbers and data",
+                    "Science and research",
+                    "The environment",
+                    "A mix of hardware and software"
+                ],
+                key="college_discovery_environment_v2"
+            )
+
+            st.html(
+                '<div class="sp-matcher-slider-head">'
+                '<span class="sp-matcher-slider-label">'
+                "How much do you enjoy math?"
+                "</span>"
+                "</div>"
+            )
+
+            q5 = st.select_slider(
+                "How much do you enjoy math?",
+                options=[
+                    "Not much",
+                    "A little",
+                    "It's okay",
+                    "I like it",
+                    "I really like it"
+                ],
+                value="It's okay",
+                key="college_discovery_math_v2",
+                label_visibility="collapsed"
+            )
+
+        # --------------------------------------------------------
+        # OPTIONAL COLLEGE PREFERENCES
+        # --------------------------------------------------------
+
+        with st.expander("2. College Preferences (optional)"):
+
+            college_location = st.selectbox(
+                "Where would you be interested in going to college?",
+                [
+                    "I'm open to anywhere",
+                    "NYC / close to home",
+                    "Northeast U.S.",
+                    "Anywhere in the U.S."
+                ],
+                key="college_discovery_location_v2"
+            )
+
+            college_setting = st.selectbox(
+                "What kind of college environment sounds best?",
+                [
+                    "I'm not sure",
+                    "City / urban",
+                    "Traditional college campus",
+                    "Small college",
+                    "Large university"
+                ],
+                key="college_discovery_setting_v2"
+            )
+
+            research_priority = st.checkbox(
+                "Research opportunities are important to me",
+                value=True,
+                key="college_discovery_research_v2"
+            )
+
+            aid_priority = st.checkbox(
+                "Financial aid / affordability is very important to me",
+                value=bool(profile.get("financial_support", False)),
+                key="college_discovery_aid_v2"
+            )
 
     # --------------------------------------------------------
     # FIELD DISCOVERY SCORING
@@ -19040,48 +22914,50 @@ elif page == "College Suggestions":
 
         return min(round(score), max_score), reasons
 
-    if st.button(
-        "Discover My Best-Fit Colleges",
-        type="primary",
-        use_container_width=True
-    ):
+    with st.container(key="college_matcher_submit"):
 
-        ranked_fields = sorted(
-            field_scores.items(),
-            key=lambda x: x[1],
-            reverse=True
-        )
+        if st.button(
+            "Discover My Best-Fit Colleges",
+            type="primary",
+            use_container_width=True
+        ):
 
-        top_fields = ranked_fields[:4]
-
-        results = []
-
-        for college in college_catalog:
-            match_score, reasons = college_match_score(
-                college,
-                top_fields
+            ranked_fields = sorted(
+                field_scores.items(),
+                key=lambda x: x[1],
+                reverse=True
             )
 
-            stars, competitive_label = competitiveness_from_rate(
-                college["admit_rate"]
+            top_fields = ranked_fields[:4]
+
+            results = []
+
+            for college in college_catalog:
+                match_score, reasons = college_match_score(
+                    college,
+                    top_fields
+                )
+
+                stars, competitive_label = competitiveness_from_rate(
+                    college["admit_rate"]
+                )
+
+                results.append({
+                    "college": college,
+                    "match_score": match_score,
+                    "reasons": reasons,
+                    "stars": stars,
+                    "competitive_label": competitive_label
+                })
+
+            results.sort(
+                key=lambda item: item["match_score"],
+                reverse=True
             )
 
-            results.append({
-                "college": college,
-                "match_score": match_score,
-                "reasons": reasons,
-                "stars": stars,
-                "competitive_label": competitive_label
-            })
-
-        results.sort(
-            key=lambda item: item["match_score"],
-            reverse=True
-        )
-
-        st.session_state["college_discovery_results_v3"] = top_fields
-        st.session_state["college_match_results_v3"] = results
-        st.rerun()
+            st.session_state["college_discovery_results_v3"] = top_fields
+            st.session_state["college_match_results_v3"] = results
+            st.rerun()
 
     discovery_results = st.session_state.get(
         "college_discovery_results_v3"
@@ -19967,6 +23843,10 @@ elif page == "My Favorite Colleges":
 
 elif page == "My Applications":
 
+    st.html(
+        '<div class="sp-my-applications-page my-applications-page" aria-hidden="true"></div>'
+    )
+
     render_page_header(
         "My Applications",
         (
@@ -19975,10 +23855,12 @@ elif page == "My Applications":
         )
     )
 
-    st.info(
-        "Your tracker is private to your signed-in account. "
-        "Saving an opportunity does not submit an application."
-    )
+    with st.container(key="application_privacy_notice"):
+
+        st.info(
+            "Your tracker is private to your signed-in account. "
+            "Saving an opportunity does not submit an application."
+        )
 
     st.divider()
 
@@ -20420,6 +24302,10 @@ elif page == "My Applications":
 # ============================================================
 
 elif page == "Projects":
+
+    st.html(
+        '<div class="sp-project-explorer-page project-explorer-page" aria-hidden="true"></div>'
+    )
 
     render_page_header(
         "Project Explorer",
@@ -21250,7 +25136,8 @@ elif page == "Projects":
     if st.button(
         "Find Projects for Me",
         type="primary",
-        use_container_width=True
+        use_container_width=True,
+        key="project_find_projects"
     ):
 
         ranked_projects = []
@@ -21544,6 +25431,19 @@ elif page == "Projects":
 
 elif page == "Resources":
 
+    resource_go = st.query_params.get("resource_go")
+    allowed_resource_pages = {
+        "Projects",
+        "Opportunities",
+        "My STEM Pathway"
+    }
+
+    if resource_go in allowed_resource_pages:
+        st.session_state.current_page = resource_go
+        if "resource_go" in st.query_params:
+            del st.query_params["resource_go"]
+        st.rerun()
+
     resource_tracks = [
         {
             "id": "programming",
@@ -21627,36 +25527,22 @@ elif page == "Resources":
             "</div>"
         )
 
-        for row_start in (0, 2):
-
-            row_cols = st.columns(2, gap="large")
-
-            for col, track in zip(
-                row_cols,
-                resource_tracks[row_start:row_start + 2]
-            ):
-
-                with col:
-
-                    with st.container(
-                        key=f"resource_card_{track['id']}"
-                    ):
-
-                        st.html(
-                            resource_track_card_html(
-                                track["title"],
-                                track["description"],
-                                track["skills"]
-                            )
-                        )
-
-                        if st.button(
-                            track["button"],
-                            key=track["key"],
-                            width="stretch"
-                        ):
-                            st.session_state.current_page = track["page"]
-                            st.rerun()
+        st.html(
+            '<div class="sp-resource-grid">'
+            + "".join(
+                [
+                    resource_track_card_html(
+                        track["title"],
+                        track["description"],
+                        track["skills"],
+                        track["button"],
+                        track["page"]
+                    )
+                    for track in resource_tracks
+                ]
+            )
+            + "</div>"
+        )
 
 
 # ============================================================
@@ -21688,616 +25574,652 @@ elif page == "GPA Calculator":
         for key in keys_to_remove:
             del st.session_state[key]
 
-    render_page_header(
-        "GPA Calculator & Converter",
-        (
-            "Estimate your unweighted and weighted GPA, then convert between "
-            "a 4.0 scale and a 100-point average."
-        )
-    )
+    with st.container(key="gpa_page"):
 
-    st.info(
-        "GPA policies vary by high school, college, and university. "
-        "Weighted GPA and scale conversions on this page are estimates "
-        "for planning purposes, not official transcript calculations."
-    )
-
-    st.divider()
-
-    calculator_tab, converter_tab = st.tabs(
-        [
-            "Course GPA Calculator",
-            "GPA Scale Converter"
-        ]
-    )
-
-    # --------------------------------------------------------
-    # COURSE GPA CALCULATOR
-    # --------------------------------------------------------
-
-    with calculator_tab:
-
-        st.header(
-            "Calculate Your GPA"
+        st.html(
+            '<div class="sp-gpa-hero">'
+            '<div class="sp-gpa-kicker">Planning Tools</div>'
+            "<h1>GPA Calculator & Converter</h1>"
+            "<p>Estimate your unweighted and weighted GPA, then convert "
+            "between a 4.0 scale and a 100-point average.</p>"
+            "</div>"
         )
 
-        st.write(
-            "Enter your courses, letter grades, course levels, and credits. "
-            "The calculator will estimate both unweighted and weighted GPA."
-        )
-
-        # Dynamic course list: starts with 5 courses and allows up to 15.
-        if "gpa_course_ids" not in st.session_state:
-            st.session_state.gpa_course_ids = [0, 1, 2, 3, 4]
-
-        if "gpa_next_course_id" not in st.session_state:
-            st.session_state.gpa_next_course_id = 5
-
-        course_control_col1, course_control_col2 = st.columns([1, 2])
-
-        with course_control_col1:
-            if st.button(
-                "Add Course",
-                use_container_width=True,
-                key="gpa_add_course",
-                disabled=len(st.session_state.gpa_course_ids) >= 15
-            ):
-                new_course_id = st.session_state.gpa_next_course_id
-                st.session_state.gpa_course_ids.append(new_course_id)
-                st.session_state.gpa_next_course_id += 1
-                st.session_state.gpa_results_confirmed = False
-                st.rerun()
-
-        with course_control_col2:
-            st.caption(
-                f"{len(st.session_state.gpa_course_ids)} of 15 courses added"
+        st.html(
+            gpa_banner_html(
+                "GPA policies vary by high school, college, and university. "
+                "Weighted GPA and scale conversions on this page are estimates "
+                "for planning purposes, not official transcript calculations.",
+                "info"
             )
-
-        if len(st.session_state.gpa_course_ids) >= 15:
-            st.info(
-                "You reached the 15-course maximum. Remove a course if you want to add a different one."
-            )
-
-        grade_points = {
-            "A+": 4.0,
-            "A": 4.0,
-            "A-": 3.7,
-            "B+": 3.3,
-            "B": 3.0,
-            "B-": 2.7,
-            "C+": 2.3,
-            "C": 2.0,
-            "C-": 1.7,
-            "D+": 1.3,
-            "D": 1.0,
-            "F": 0.0
-        }
-
-        level_bonus = {
-            "Regular": 0.0,
-            "Honors": 0.5,
-            "AP / IB": 1.0,
-            "Dual Enrollment": 1.0
-        }
-
-        course_rows = []
-
-        st.markdown(
-            "#### Your Courses"
         )
 
-        for display_index, course_id in enumerate(
-            list(st.session_state.gpa_course_ids),
-            start=1
-        ):
-
-            with st.container(
-                border=True
-            ):
-
-                title_col, remove_col = st.columns([4, 1])
-
-                with title_col:
-                    st.caption(
-                        f"Course {display_index}"
-                    )
-
-                with remove_col:
-                    if st.button(
-                        "Remove",
-                        key=f"gpa_remove_course_{course_id}",
-                        use_container_width=True,
-                        disabled=len(st.session_state.gpa_course_ids) <= 1
-                    ):
-                        st.session_state.gpa_course_ids.remove(course_id)
-
-                        for course_key in [
-                            f"gpa_course_name_{course_id}",
-                            f"gpa_letter_grade_{course_id}",
-                            f"gpa_course_level_{course_id}",
-                            f"gpa_credits_{course_id}",
-                        ]:
-                            st.session_state.pop(course_key, None)
-
-                        st.session_state.gpa_calculation_result = None
-                        st.session_state.gpa_results_confirmed = False
-                        st.rerun()
-
-                name_col, grade_col, level_col, credit_col = st.columns(
-                    [2.4, 1, 1.6, 1]
-                )
-
-                with name_col:
-
-                    course_name = st.text_input(
-                        "Course",
-                        value="",
-                        placeholder="e.g. AP Biology",
-                        key=f"gpa_course_name_{course_id}"
-                    )
-
-                with grade_col:
-
-                    letter_grade = st.selectbox(
-                        "Grade",
-                        list(grade_points.keys()),
-                        index=1,
-                        key=f"gpa_letter_grade_{course_id}"
-                    )
-
-                with level_col:
-
-                    course_level = st.selectbox(
-                        "Level",
-                        list(level_bonus.keys()),
-                        key=f"gpa_course_level_{course_id}"
-                    )
-
-                with credit_col:
-
-                    credits = st.number_input(
-                        "Credits",
-                        min_value=0.25,
-                        max_value=4.0,
-                        value=1.0,
-                        step=0.25,
-                        key=f"gpa_credits_{course_id}"
-                    )
-
-                course_rows.append(
-                    {
-                        "name": course_name.strip() or f"Course {display_index}",
-                        "grade": letter_grade,
-                        "level": course_level,
-                        "credits": float(credits)
-                    }
-                )
-
-        if st.button(
-            "Calculate My GPA",
-            type="primary",
-            use_container_width=True,
-            key="gpa_calculate_course_gpa"
-        ):
-
-            total_credits = sum(
-                course["credits"]
-                for course in course_rows
-            )
-
-            if total_credits <= 0:
-
-                st.warning(
-                    "Please enter at least one course with credits."
-                )
-
-            else:
-
-                unweighted_quality_points = sum(
-                    grade_points[course["grade"]]
-                    * course["credits"]
-                    for course in course_rows
-                )
-
-                weighted_quality_points = sum(
-                    (
-                        grade_points[course["grade"]]
-                        + level_bonus[course["level"]]
-                    )
-                    * course["credits"]
-                    for course in course_rows
-                )
-
-                unweighted_gpa = (
-                    unweighted_quality_points
-                    / total_credits
-                )
-
-                weighted_gpa = (
-                    weighted_quality_points
-                    / total_credits
-                )
-
-                if unweighted_gpa >= 4.0:
-                    estimated_100 = "93–100"
-                elif unweighted_gpa >= 3.7:
-                    estimated_100 = "90–92"
-                elif unweighted_gpa >= 3.3:
-                    estimated_100 = "87–89"
-                elif unweighted_gpa >= 3.0:
-                    estimated_100 = "83–86"
-                elif unweighted_gpa >= 2.7:
-                    estimated_100 = "80–82"
-                elif unweighted_gpa >= 2.3:
-                    estimated_100 = "77–79"
-                elif unweighted_gpa >= 2.0:
-                    estimated_100 = "73–76"
-                elif unweighted_gpa >= 1.7:
-                    estimated_100 = "70–72"
-                elif unweighted_gpa >= 1.3:
-                    estimated_100 = "67–69"
-                elif unweighted_gpa >= 1.0:
-                    estimated_100 = "65–66"
-                else:
-                    estimated_100 = "Below 65"
-
-                calculation_rows = []
-
-                for course in course_rows:
-
-                    base = grade_points[
-                        course["grade"]
-                    ]
-
-                    weighted = (
-                        base
-                        + level_bonus[
-                            course["level"]
-                        ]
-                    )
-
-                    calculation_rows.append(
-                        {
-                            "Course": course["name"],
-                            "Grade": course["grade"],
-                            "Level": course["level"],
-                            "Credits": course["credits"],
-                            "Unweighted Points": round(base, 2),
-                            "Weighted Points": round(weighted, 2)
-                        }
-                    )
-
-                st.session_state.gpa_calculation_result = {
-                    "unweighted_gpa": unweighted_gpa,
-                    "weighted_gpa": weighted_gpa,
-                    "estimated_100": estimated_100,
-                    "calculation_rows": calculation_rows
-                }
-
-                st.session_state.gpa_results_confirmed = False
-
-        if st.session_state.gpa_calculation_result:
-
-            result = st.session_state.gpa_calculation_result
-
-            st.divider()
-
-            st.subheader(
-                "Your Estimated Results"
-            )
-
-            result_col1, result_col2, result_col3 = st.columns(3)
-
-            with result_col1:
-
-                st.metric(
-                    "Unweighted GPA",
-                    f"{result['unweighted_gpa']:.2f} / 4.00"
-                )
-
-            with result_col2:
-
-                st.metric(
-                    "Estimated Weighted GPA",
-                    f"{result['weighted_gpa']:.2f}"
-                )
-
-            with result_col3:
-
-                st.metric(
-                    "Approx. 100-Point Range",
-                    result["estimated_100"]
-                )
-
-            st.caption(
-                "Weighted estimate used here: Regular +0.0, Honors +0.5, "
-                "AP/IB +1.0, Dual Enrollment +1.0. Your school may use a different system."
-            )
-
-            with st.expander(
-                "See course-by-course calculation"
-            ):
-
-                st.dataframe(
-                    pd.DataFrame(
-                        result["calculation_rows"]
-                    ),
-                    use_container_width=True,
-                    hide_index=True
-                )
-
-            st.divider()
-
-            if st.session_state.gpa_results_confirmed:
-
-                st.success(
-                    "GPA results confirmed. You can still restart the calculator "
-                    "below if you want to try different courses or grades."
-                )
-
-            else:
-
-                st.write(
-                    "If these courses and grades look correct, confirm your results. "
-                    "Nothing is saved to your official school record."
-                )
-
-                if st.button(
-                    "Confirm My GPA Results",
-                    type="primary",
-                    use_container_width=True,
-                    key="gpa_confirm_results"
-                ):
-
-                    st.session_state.gpa_results_confirmed = True
-                    st.rerun()
-
-    # --------------------------------------------------------
-    # GPA SCALE CONVERTER
-    # --------------------------------------------------------
-
-    with converter_tab:
-
-        st.header(
-            "GPA Scale Converter"
-        )
-
-        st.write(
-            "Use this tool when you know your GPA on one scale and want an "
-            "approximate equivalent on another."
-        )
-
-        conversion_direction = st.radio(
-            "Convert from",
+        calculator_tab, converter_tab = st.tabs(
             [
-                "4.0 GPA → 100-Point Scale",
-                "100-Point Average → 4.0 GPA"
-            ],
-            horizontal=True,
-            key="gpa_conversion_direction"
-        )
-
-        st.divider()
-
-        if conversion_direction == "4.0 GPA → 100-Point Scale":
-
-            four_point_gpa = st.number_input(
-                "Enter your GPA on a 4.0 scale",
-                min_value=0.0,
-                max_value=4.0,
-                value=3.50,
-                step=0.01,
-                format="%.2f",
-                key="gpa_four_point_input"
-            )
-
-            if four_point_gpa >= 4.0:
-                hundred_range = "93–100"
-                letter_equivalent = "A / A+"
-            elif four_point_gpa >= 3.7:
-                hundred_range = "90–92"
-                letter_equivalent = "A-"
-            elif four_point_gpa >= 3.3:
-                hundred_range = "87–89"
-                letter_equivalent = "B+"
-            elif four_point_gpa >= 3.0:
-                hundred_range = "83–86"
-                letter_equivalent = "B"
-            elif four_point_gpa >= 2.7:
-                hundred_range = "80–82"
-                letter_equivalent = "B-"
-            elif four_point_gpa >= 2.3:
-                hundred_range = "77–79"
-                letter_equivalent = "C+"
-            elif four_point_gpa >= 2.0:
-                hundred_range = "73–76"
-                letter_equivalent = "C"
-            elif four_point_gpa >= 1.7:
-                hundred_range = "70–72"
-                letter_equivalent = "C-"
-            elif four_point_gpa >= 1.3:
-                hundred_range = "67–69"
-                letter_equivalent = "D+"
-            elif four_point_gpa >= 1.0:
-                hundred_range = "65–66"
-                letter_equivalent = "D"
-            else:
-                hundred_range = "Below 65"
-                letter_equivalent = "F"
-
-            result_col1, result_col2 = st.columns(2)
-
-            with result_col1:
-
-                st.metric(
-                    "Estimated 100-Point Equivalent",
-                    hundred_range
-                )
-
-            with result_col2:
-
-                st.metric(
-                    "Approximate Letter Grade",
-                    letter_equivalent
-                )
-
-        else:
-
-            hundred_average = st.number_input(
-                "Enter your average on a 100-point scale",
-                min_value=0.0,
-                max_value=100.0,
-                value=90.0,
-                step=0.1,
-                format="%.1f",
-                key="gpa_hundred_point_input"
-            )
-
-            if hundred_average >= 93:
-                converted_gpa = 4.0
-                letter_equivalent = "A / A+"
-            elif hundred_average >= 90:
-                converted_gpa = 3.7
-                letter_equivalent = "A-"
-            elif hundred_average >= 87:
-                converted_gpa = 3.3
-                letter_equivalent = "B+"
-            elif hundred_average >= 83:
-                converted_gpa = 3.0
-                letter_equivalent = "B"
-            elif hundred_average >= 80:
-                converted_gpa = 2.7
-                letter_equivalent = "B-"
-            elif hundred_average >= 77:
-                converted_gpa = 2.3
-                letter_equivalent = "C+"
-            elif hundred_average >= 73:
-                converted_gpa = 2.0
-                letter_equivalent = "C"
-            elif hundred_average >= 70:
-                converted_gpa = 1.7
-                letter_equivalent = "C-"
-            elif hundred_average >= 67:
-                converted_gpa = 1.3
-                letter_equivalent = "D+"
-            elif hundred_average >= 65:
-                converted_gpa = 1.0
-                letter_equivalent = "D"
-            else:
-                converted_gpa = 0.0
-                letter_equivalent = "F"
-
-            result_col1, result_col2 = st.columns(2)
-
-            with result_col1:
-
-                st.metric(
-                    "Estimated 4.0 GPA",
-                    f"{converted_gpa:.1f} / 4.0"
-                )
-
-            with result_col2:
-
-                st.metric(
-                    "Approximate Letter Grade",
-                    letter_equivalent
-                )
-
-        st.divider()
-
-        st.markdown(
-            "#### Approximate Conversion Guide"
-        )
-
-        conversion_table = pd.DataFrame(
-            [
-                ["93–100", "A / A+", "4.0"],
-                ["90–92", "A-", "3.7"],
-                ["87–89", "B+", "3.3"],
-                ["83–86", "B", "3.0"],
-                ["80–82", "B-", "2.7"],
-                ["77–79", "C+", "2.3"],
-                ["73–76", "C", "2.0"],
-                ["70–72", "C-", "1.7"],
-                ["67–69", "D+", "1.3"],
-                ["65–66", "D", "1.0"],
-                ["Below 65", "F", "0.0"]
-            ],
-            columns=[
-                "100-Point Range",
-                "Letter Grade",
-                "Approx. 4.0 GPA"
+                "Course GPA Calculator",
+                "GPA Scale Converter"
             ]
         )
 
-        st.dataframe(
-            conversion_table,
-            use_container_width=True,
-            hide_index=True
-        )
+        # --------------------------------------------------------
+        # COURSE GPA CALCULATOR
+        # --------------------------------------------------------
 
-        st.warning(
-            "There is no universal official conversion between a 4.0 GPA "
-            "and a 100-point average. Colleges may recalculate grades using "
-            "their own methods, so use these results only as an estimate."
-        )
+        with calculator_tab:
 
-    # --------------------------------------------------------
-    # CONFIRM / RESTART AREA
-    # --------------------------------------------------------
+            st.html(
+                '<div class="sp-gpa-section-title">Calculate Your GPA</div>'
+                '<p class="sp-gpa-section-copy">'
+                "Enter your courses, letter grades, course levels, and credits. "
+                "The calculator will estimate both unweighted and weighted GPA."
+                "</p>"
+            )
 
-    st.divider()
+            # Dynamic course list: starts with 5 courses and allows up to 15.
+            if "gpa_course_ids" not in st.session_state:
+                st.session_state.gpa_course_ids = [0, 1, 2, 3, 4]
 
-    st.subheader(
-        "Finished?"
-    )
+            if "gpa_next_course_id" not in st.session_state:
+                st.session_state.gpa_next_course_id = 5
 
-    st.write(
-        "If you entered something incorrectly or want to test a different set "
-        "of grades, you can restart the GPA tools without affecting your profile."
-    )
+            course_count = len(st.session_state.gpa_course_ids)
+            at_course_limit = course_count >= 15
 
-    if not st.session_state.gpa_show_restart_confirmation:
+            with st.container(key="gpa_course_toolbar"):
+                course_control_col1, course_control_col2 = st.columns(
+                    [1.15, 2.85],
+                    vertical_alignment="center"
+                )
 
-        if st.button(
-            "Start Over",
-            use_container_width=True,
-            key="gpa_restart_request"
-        ):
+                with course_control_col1:
+                    if st.button(
+                        "Add Course",
+                        width="stretch",
+                        key="gpa_add_course",
+                        disabled=at_course_limit
+                    ):
+                        new_course_id = st.session_state.gpa_next_course_id
+                        st.session_state.gpa_course_ids.append(new_course_id)
+                        st.session_state.gpa_next_course_id += 1
+                        st.session_state.gpa_results_confirmed = False
+                        st.session_state.gpa_calc_error = None
+                        st.rerun()
 
-            st.session_state.gpa_show_restart_confirmation = True
-            st.rerun()
+                with course_control_col2:
+                    bar_width = min(100.0, (course_count / 15) * 100)
+                    st.html(
+                        '<div class="sp-gpa-count">'
+                        f'<div class="sp-gpa-count-label">'
+                        f"{course_count} of 15 courses added"
+                        "</div>"
+                        '<div class="sp-gpa-count-bar" role="progressbar" '
+                        f'aria-valuemin="1" aria-valuemax="15" '
+                        f'aria-valuenow="{course_count}" '
+                        f'aria-label="{course_count} of 15 courses added">'
+                        f'<div style="width:{bar_width:.1f}%;"></div>'
+                        "</div>"
+                        "</div>"
+                    )
 
-    else:
+            if at_course_limit:
+                st.html(
+                    gpa_banner_html(
+                        "You reached the 15-course maximum. Remove a course if you want to add a different one.",
+                        "warning"
+                    )
+                )
 
-        st.warning(
-            "Start over? This will clear the courses, grades, calculator results, "
-            "and converter inputs on this page."
-        )
+            grade_points = {
+                "A+": 4.0,
+                "A": 4.0,
+                "A-": 3.7,
+                "B+": 3.3,
+                "B": 3.0,
+                "B-": 2.7,
+                "C+": 2.3,
+                "C": 2.0,
+                "C-": 1.7,
+                "D+": 1.3,
+                "D": 1.0,
+                "F": 0.0
+            }
 
-        restart_col1, restart_col2 = st.columns(2)
+            level_bonus = {
+                "Regular": 0.0,
+                "Honors": 0.5,
+                "AP / IB": 1.0,
+                "Dual Enrollment": 1.0
+            }
 
-        with restart_col1:
+            course_rows = []
+
+            st.html(
+                '<div class="sp-gpa-section-title">Your Courses</div>'
+            )
+
+            if not st.session_state.gpa_course_ids:
+                st.html(
+                    '<div class="sp-gpa-empty">'
+                    "No courses yet. Use Add Course to start estimating your GPA."
+                    "</div>"
+                )
+
+            for display_index, course_id in enumerate(
+                list(st.session_state.gpa_course_ids),
+                start=1
+            ):
+
+                with st.container(
+                    key=f"gpa_course_card_{course_id}"
+                ):
+
+                    title_col, remove_col = st.columns(
+                        [5, 1.15],
+                        vertical_alignment="center"
+                    )
+
+                    with title_col:
+                        st.html(
+                            f'<div class="sp-gpa-course-label">'
+                            f"Course {display_index}"
+                            "</div>"
+                        )
+
+                    with remove_col:
+                        if st.button(
+                            "Remove",
+                            key=f"gpa_remove_course_{course_id}",
+                            width="stretch",
+                            disabled=len(st.session_state.gpa_course_ids) <= 1
+                        ):
+                            st.session_state.gpa_course_ids.remove(course_id)
+
+                            for course_key in [
+                                f"gpa_course_name_{course_id}",
+                                f"gpa_letter_grade_{course_id}",
+                                f"gpa_course_level_{course_id}",
+                                f"gpa_credits_{course_id}",
+                            ]:
+                                st.session_state.pop(course_key, None)
+
+                            st.session_state.gpa_calculation_result = None
+                            st.session_state.gpa_results_confirmed = False
+                            st.session_state.gpa_calc_error = None
+                            st.rerun()
+
+                    name_col, grade_col, level_col, credit_col = st.columns(
+                        [2.4, 1, 1.6, 1],
+                        vertical_alignment="bottom"
+                    )
+
+                    with name_col:
+
+                        course_name = st.text_input(
+                            "Course name",
+                            value="",
+                            placeholder="e.g. AP Biology",
+                            key=f"gpa_course_name_{course_id}"
+                        )
+
+                    with grade_col:
+
+                        letter_grade = st.selectbox(
+                            "Grade",
+                            list(grade_points.keys()),
+                            index=1,
+                            key=f"gpa_letter_grade_{course_id}"
+                        )
+
+                    with level_col:
+
+                        course_level = st.selectbox(
+                            "Level",
+                            list(level_bonus.keys()),
+                            key=f"gpa_course_level_{course_id}"
+                        )
+
+                    with credit_col:
+
+                        credits = st.number_input(
+                            "Credits",
+                            min_value=0.25,
+                            max_value=4.0,
+                            value=1.0,
+                            step=0.25,
+                            key=f"gpa_credits_{course_id}"
+                        )
+
+                    course_rows.append(
+                        {
+                            "name": course_name.strip() or f"Course {display_index}",
+                            "grade": letter_grade,
+                            "level": course_level,
+                            "credits": float(credits)
+                        }
+                    )
 
             if st.button(
-                "Yes, Start Over",
+                "Calculate My GPA",
                 type="primary",
-                use_container_width=True,
-                key="gpa_restart_confirm",
-                on_click=reset_gpa_tools
-            ):
-                pass
-
-        with restart_col2:
-
-            if st.button(
-                "Cancel",
-                use_container_width=True,
-                key="gpa_restart_cancel"
+                width="stretch",
+                key="gpa_calculate_course_gpa"
             ):
 
-                st.session_state.gpa_show_restart_confirmation = False
-                st.rerun()
+                total_credits = sum(
+                    course["credits"]
+                    for course in course_rows
+                )
+
+                if total_credits <= 0:
+
+                    st.session_state.gpa_calc_error = (
+                        "Please enter at least one course with credits."
+                    )
+
+                else:
+
+                    st.session_state.gpa_calc_error = None
+
+                    unweighted_quality_points = sum(
+                        grade_points[course["grade"]]
+                        * course["credits"]
+                        for course in course_rows
+                    )
+
+                    weighted_quality_points = sum(
+                        (
+                            grade_points[course["grade"]]
+                            + level_bonus[course["level"]]
+                        )
+                        * course["credits"]
+                        for course in course_rows
+                    )
+
+                    unweighted_gpa = (
+                        unweighted_quality_points
+                        / total_credits
+                    )
+
+                    weighted_gpa = (
+                        weighted_quality_points
+                        / total_credits
+                    )
+
+                    if unweighted_gpa >= 4.0:
+                        estimated_100 = "93–100"
+                    elif unweighted_gpa >= 3.7:
+                        estimated_100 = "90–92"
+                    elif unweighted_gpa >= 3.3:
+                        estimated_100 = "87–89"
+                    elif unweighted_gpa >= 3.0:
+                        estimated_100 = "83–86"
+                    elif unweighted_gpa >= 2.7:
+                        estimated_100 = "80–82"
+                    elif unweighted_gpa >= 2.3:
+                        estimated_100 = "77–79"
+                    elif unweighted_gpa >= 2.0:
+                        estimated_100 = "73–76"
+                    elif unweighted_gpa >= 1.7:
+                        estimated_100 = "70–72"
+                    elif unweighted_gpa >= 1.3:
+                        estimated_100 = "67–69"
+                    elif unweighted_gpa >= 1.0:
+                        estimated_100 = "65–66"
+                    else:
+                        estimated_100 = "Below 65"
+
+                    calculation_rows = []
+
+                    for course in course_rows:
+
+                        base = grade_points[
+                            course["grade"]
+                        ]
+
+                        weighted = (
+                            base
+                            + level_bonus[
+                                course["level"]
+                            ]
+                        )
+
+                        calculation_rows.append(
+                            {
+                                "Course": course["name"],
+                                "Grade": course["grade"],
+                                "Level": course["level"],
+                                "Credits": course["credits"],
+                                "Unweighted Points": round(base, 2),
+                                "Weighted Points": round(weighted, 2)
+                            }
+                        )
+
+                    st.session_state.gpa_calculation_result = {
+                        "unweighted_gpa": unweighted_gpa,
+                        "weighted_gpa": weighted_gpa,
+                        "estimated_100": estimated_100,
+                        "calculation_rows": calculation_rows
+                    }
+
+                    st.session_state.gpa_results_confirmed = False
+
+            calc_error = st.session_state.get("gpa_calc_error")
+
+            if calc_error:
+                st.html(
+                    gpa_banner_html(calc_error, "warning")
+                )
+
+            if st.session_state.gpa_calculation_result:
+
+                result = st.session_state.gpa_calculation_result
+
+                with st.container(key="gpa_results_panel"):
+
+                    st.html(
+                        '<div class="sp-gpa-section-title">Your Estimated Results</div>'
+                        '<div class="sp-gpa-stat-grid">'
+                        + gpa_stat_card_html(
+                            "Unweighted GPA",
+                            f"{result['unweighted_gpa']:.2f} / 4.00"
+                        )
+                        + gpa_stat_card_html(
+                            "Estimated Weighted GPA",
+                            f"{result['weighted_gpa']:.2f}"
+                        )
+                        + gpa_stat_card_html(
+                            "Approx. 100-Point Range",
+                            result["estimated_100"]
+                        )
+                        + "</div>"
+                    )
+
+                    st.caption(
+                        "Weighted estimate used here: Regular +0.0, Honors +0.5, "
+                        "AP/IB +1.0, Dual Enrollment +1.0. Your school may use a different system."
+                    )
+
+                    with st.expander(
+                        "See course-by-course calculation"
+                    ):
+
+                        st.dataframe(
+                            pd.DataFrame(
+                                result["calculation_rows"]
+                            ),
+                            width="stretch",
+                            hide_index=True
+                        )
+
+                    if st.session_state.gpa_results_confirmed:
+
+                        st.html(
+                            gpa_banner_html(
+                                "GPA results confirmed. You can still restart the calculator "
+                                "below if you want to try different courses or grades.",
+                                "success"
+                            )
+                        )
+
+                    else:
+
+                        st.caption(
+                            "If these courses and grades look correct, confirm your results. "
+                            "Nothing is saved to your official school record."
+                        )
+
+                        if st.button(
+                            "Confirm My GPA Results",
+                            type="primary",
+                            width="stretch",
+                            key="gpa_confirm_results"
+                        ):
+
+                            st.session_state.gpa_results_confirmed = True
+                            st.rerun()
+
+        # --------------------------------------------------------
+        # GPA SCALE CONVERTER
+        # --------------------------------------------------------
+
+        with converter_tab:
+
+            with st.container(key="gpa_converter_panel"):
+
+                st.html(
+                    '<div class="sp-gpa-section-title">GPA Scale Converter</div>'
+                    '<p class="sp-gpa-section-copy">'
+                    "Use this tool when you know your GPA on one scale and want an "
+                    "approximate equivalent on another."
+                    "</p>"
+                )
+
+                conversion_direction = st.radio(
+                    "Convert from",
+                    [
+                        "4.0 GPA → 100-Point Scale",
+                        "100-Point Average → 4.0 GPA"
+                    ],
+                    horizontal=True,
+                    key="gpa_conversion_direction"
+                )
+
+                if conversion_direction == "4.0 GPA → 100-Point Scale":
+
+                    four_point_gpa = st.number_input(
+                        "Enter your GPA on a 4.0 scale",
+                        min_value=0.0,
+                        max_value=4.0,
+                        value=3.50,
+                        step=0.01,
+                        format="%.2f",
+                        key="gpa_four_point_input"
+                    )
+
+                    if four_point_gpa >= 4.0:
+                        hundred_range = "93–100"
+                        letter_equivalent = "A / A+"
+                    elif four_point_gpa >= 3.7:
+                        hundred_range = "90–92"
+                        letter_equivalent = "A-"
+                    elif four_point_gpa >= 3.3:
+                        hundred_range = "87–89"
+                        letter_equivalent = "B+"
+                    elif four_point_gpa >= 3.0:
+                        hundred_range = "83–86"
+                        letter_equivalent = "B"
+                    elif four_point_gpa >= 2.7:
+                        hundred_range = "80–82"
+                        letter_equivalent = "B-"
+                    elif four_point_gpa >= 2.3:
+                        hundred_range = "77–79"
+                        letter_equivalent = "C+"
+                    elif four_point_gpa >= 2.0:
+                        hundred_range = "73–76"
+                        letter_equivalent = "C"
+                    elif four_point_gpa >= 1.7:
+                        hundred_range = "70–72"
+                        letter_equivalent = "C-"
+                    elif four_point_gpa >= 1.3:
+                        hundred_range = "67–69"
+                        letter_equivalent = "D+"
+                    elif four_point_gpa >= 1.0:
+                        hundred_range = "65–66"
+                        letter_equivalent = "D"
+                    else:
+                        hundred_range = "Below 65"
+                        letter_equivalent = "F"
+
+                    st.html(
+                        '<div class="sp-gpa-stat-grid">'
+                        + gpa_stat_card_html(
+                            "Estimated 100-Point Equivalent",
+                            hundred_range
+                        )
+                        + gpa_stat_card_html(
+                            "Approximate Letter Grade",
+                            letter_equivalent
+                        )
+                        + "</div>"
+                    )
+
+                else:
+
+                    hundred_average = st.number_input(
+                        "Enter your average on a 100-point scale",
+                        min_value=0.0,
+                        max_value=100.0,
+                        value=90.0,
+                        step=0.1,
+                        format="%.1f",
+                        key="gpa_hundred_point_input"
+                    )
+
+                    if hundred_average >= 93:
+                        converted_gpa = 4.0
+                        letter_equivalent = "A / A+"
+                    elif hundred_average >= 90:
+                        converted_gpa = 3.7
+                        letter_equivalent = "A-"
+                    elif hundred_average >= 87:
+                        converted_gpa = 3.3
+                        letter_equivalent = "B+"
+                    elif hundred_average >= 83:
+                        converted_gpa = 3.0
+                        letter_equivalent = "B"
+                    elif hundred_average >= 80:
+                        converted_gpa = 2.7
+                        letter_equivalent = "B-"
+                    elif hundred_average >= 77:
+                        converted_gpa = 2.3
+                        letter_equivalent = "C+"
+                    elif hundred_average >= 73:
+                        converted_gpa = 2.0
+                        letter_equivalent = "C"
+                    elif hundred_average >= 70:
+                        converted_gpa = 1.7
+                        letter_equivalent = "C-"
+                    elif hundred_average >= 67:
+                        converted_gpa = 1.3
+                        letter_equivalent = "D+"
+                    elif hundred_average >= 65:
+                        converted_gpa = 1.0
+                        letter_equivalent = "D"
+                    else:
+                        converted_gpa = 0.0
+                        letter_equivalent = "F"
+
+                    st.html(
+                        '<div class="sp-gpa-stat-grid">'
+                        + gpa_stat_card_html(
+                            "Estimated 4.0 GPA",
+                            f"{converted_gpa:.1f} / 4.0"
+                        )
+                        + gpa_stat_card_html(
+                            "Approximate Letter Grade",
+                            letter_equivalent
+                        )
+                        + "</div>"
+                    )
+
+                st.html(
+                    '<div class="sp-gpa-section-title">Approximate Conversion Guide</div>'
+                )
+
+                conversion_table = pd.DataFrame(
+                    [
+                        ["93–100", "A / A+", "4.0"],
+                        ["90–92", "A-", "3.7"],
+                        ["87–89", "B+", "3.3"],
+                        ["83–86", "B", "3.0"],
+                        ["80–82", "B-", "2.7"],
+                        ["77–79", "C+", "2.3"],
+                        ["73–76", "C", "2.0"],
+                        ["70–72", "C-", "1.7"],
+                        ["67–69", "D+", "1.3"],
+                        ["65–66", "D", "1.0"],
+                        ["Below 65", "F", "0.0"]
+                    ],
+                    columns=[
+                        "100-Point Range",
+                        "Letter Grade",
+                        "Approx. 4.0 GPA"
+                    ]
+                )
+
+                st.dataframe(
+                    conversion_table,
+                    width="stretch",
+                    hide_index=True
+                )
+
+                st.html(
+                    gpa_banner_html(
+                        "There is no universal official conversion between a 4.0 GPA "
+                        "and a 100-point average. Colleges may recalculate grades using "
+                        "their own methods, so use these results only as an estimate.",
+                        "warning"
+                    )
+                )
+
+        # --------------------------------------------------------
+        # CONFIRM / RESTART AREA
+        # --------------------------------------------------------
+
+        with st.container(key="gpa_restart_panel"):
+
+            st.html(
+                '<div class="sp-gpa-section-title">Finished?</div>'
+                '<p class="sp-gpa-section-copy">'
+                "If you entered something incorrectly or want to test a different set "
+                "of grades, you can restart the GPA tools without affecting your profile."
+                "</p>"
+            )
+
+            if not st.session_state.gpa_show_restart_confirmation:
+
+                if st.button(
+                    "Start Over",
+                    width="stretch",
+                    key="gpa_restart_request"
+                ):
+
+                    st.session_state.gpa_show_restart_confirmation = True
+                    st.rerun()
+
+            else:
+
+                st.html(
+                    gpa_banner_html(
+                        "Start over? This will clear the courses, grades, calculator results, "
+                        "and converter inputs on this page.",
+                        "warning"
+                    )
+                )
+
+                restart_col1, restart_col2 = st.columns(2)
+
+                with restart_col1:
+
+                    if st.button(
+                        "Yes, Start Over",
+                        type="primary",
+                        width="stretch",
+                        key="gpa_restart_confirm",
+                        on_click=reset_gpa_tools
+                    ):
+                        pass
+
+                with restart_col2:
+
+                    if st.button(
+                        "Cancel",
+                        width="stretch",
+                        key="gpa_restart_cancel"
+                    ):
+
+                        st.session_state.gpa_show_restart_confirmation = False
+                        st.rerun()
 
 
 # ============================================================
@@ -22931,317 +26853,340 @@ elif page == "Admin Dashboard":
 elif page == "Feedback":
 
     render_page_header(
-        "Share Your Feedback",
+        "Feedback",
         (
             "Help improve STEM Pathways NYC by telling us what worked, "
             "what felt confusing, and what you would like to see next."
         )
     )
 
-    st.info(
-        "Your feedback is used to improve the platform. "
-        "You can return and update your response later."
-    )
-
-    st.divider()
-
     existing_feedback = load_user_feedback(
         user_sub
     ) or {}
 
-    # --------------------------------------------------------
-    # STAR RATING
-    # --------------------------------------------------------
 
-    st.header(
-        "Overall Experience"
-    )
+    with st.container(key="feedback_page"):
 
-    rating_options = {
-        "★☆☆☆☆  1 — Poor": 1,
-        "★★☆☆☆  2 — Fair": 2,
-        "★★★☆☆  3 — Good": 3,
-        "★★★★☆  4 — Very Good": 4,
-        "★★★★★  5 — Excellent": 5
-    }
-
-    existing_rating = int(
-        existing_feedback.get(
-            "rating",
-            5
+        st.html(
+            '<div class="sp-fb-callout" role="status">'
+            '<div class="sp-fb-callout-icon" aria-hidden="true">'
+            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" '
+            'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" '
+            'stroke-linejoin="round">'
+            '<circle cx="12" cy="12" r="9"></circle>'
+            '<path d="M12 11v5M12 8h.01"></path>'
+            "</svg>"
+            "</div>"
+            "<p>Your feedback is used to improve the platform. "
+            "You can return and update your response later.</p>"
+            "</div>"
         )
-        or 5
-    )
 
-    default_rating_label = next(
-        (
-            label
-            for label, value
-            in rating_options.items()
-            if value
-            ==
-            existing_rating
-        ),
-        "★★★★★  5 — Excellent"
-    )
+        # --------------------------------------------------------
+        # STAR RATING
+        # --------------------------------------------------------
 
-    rating_label = st.radio(
-        "How would you rate STEM Pathways NYC overall?",
-        list(
-            rating_options.keys()
-        ),
-        index=list(
-            rating_options.keys()
-        ).index(
-            default_rating_label
-        ),
-        key="feedback_rating"
-    )
+        with st.container(key="feedback_overall", border=True):
 
-    rating = rating_options[
-        rating_label
-    ]
-
-    st.metric(
-        "Your Rating",
-        "★" * rating
-        +
-        "☆" * (
-            5 - rating
-        )
-    )
-
-    # --------------------------------------------------------
-    # EASE OF USE / FEELING
-    # --------------------------------------------------------
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        existing_ease = int(
-            existing_feedback.get(
-                "ease_of_use",
-                4
+            st.html(
+                '<h2 class="sp-fb-card-title">Overall Experience</h2>'
+                '<p class="sp-fb-card-sub">'
+                "Rate the site and how it feels to use."
+                "</p>"
             )
-            or 4
-        )
 
-        ease_of_use = st.slider(
-            "How easy is the website to use?",
-            1,
-            5,
-            existing_ease,
-            help=(
-                "1 = very difficult to navigate, "
-                "5 = very easy to navigate"
-            ),
-            key="feedback_ease"
-        )
+            rating_options = {
+                "★☆☆☆☆  1 — Poor": 1,
+                "★★☆☆☆  2 — Fair": 2,
+                "★★★☆☆  3 — Good": 3,
+                "★★★★☆  4 — Very Good": 4,
+                "★★★★★  5 — Excellent": 5
+            }
 
-    with col2:
-
-        feeling_options = [
-            "I really like it",
-            "I like it",
-            "It's okay",
-            "I'm unsure about it",
-            "I don't like it yet"
-        ]
-
-        saved_feeling = (
-            existing_feedback.get(
-                "overall_feeling",
-                "I really like it"
-            )
-            or
-            "I really like it"
-        )
-
-        overall_feeling = st.selectbox(
-            "How do you feel about the website overall?",
-            feeling_options,
-            index=(
-                feeling_options.index(
-                    saved_feeling
+            existing_rating = int(
+                existing_feedback.get(
+                    "rating",
+                    5
                 )
-                if saved_feeling
-                in feeling_options
-                else 0
-            ),
-            key="feedback_feeling"
-        )
-
-    st.divider()
-
-    # --------------------------------------------------------
-    # FAVORITE FEATURES
-    # --------------------------------------------------------
-
-    st.header(
-        "What Is Working?"
-    )
-
-    feature_options = [
-        "Dashboard",
-        "My STEM Pathway",
-        "Career recommendations",
-        "Salary information",
-        "Opportunities",
-        "Deadline Calendar",
-        "College Suggestions",
-        "College match scores",
-        "Favorite Colleges",
-        "Application Tracker",
-        "Project Explorer",
-        "GPA Calculator",
-        "Resources",
-        "Profile"
-    ]
-
-    saved_features = text_to_list(
-        existing_feedback.get(
-            "favorite_features"
-        )
-    )
-
-    favorite_features = st.multiselect(
-        "Which parts of STEM Pathways NYC have been most useful to you?",
-        feature_options,
-        default=[
-            feature
-            for feature
-            in saved_features
-            if feature
-            in feature_options
-        ],
-        key="feedback_features"
-    )
-
-    st.divider()
-
-    # --------------------------------------------------------
-    # IMPROVEMENTS
-    # --------------------------------------------------------
-
-    st.header(
-        "What Should We Improve?"
-    )
-
-    improvements = st.text_area(
-        "What felt confusing, difficult, missing, or could be better?",
-        value=(
-            existing_feedback.get(
-                "improvements",
-                ""
-            )
-            or
-            ""
-        ),
-        placeholder=(
-            "Example: I want more filters for colleges, "
-            "the sidebar feels crowded, or I want more beginner projects..."
-        ),
-        height=140,
-        key="feedback_improvements"
-    )
-
-    additional_comments = st.text_area(
-        "Anything else you want us to know? (optional)",
-        value=(
-            existing_feedback.get(
-                "additional_comments",
-                ""
-            )
-            or
-            ""
-        ),
-        placeholder=(
-            "Share ideas, feature requests, or anything you liked."
-        ),
-        height=120,
-        key="feedback_comments"
-    )
-
-    recommend_options = [
-        "Yes",
-        "Maybe",
-        "No"
-    ]
-
-    saved_recommend = (
-        existing_feedback.get(
-            "would_recommend",
-            "Yes"
-        )
-        or
-        "Yes"
-    )
-
-    would_recommend = st.radio(
-        "Would you recommend STEM Pathways NYC to another student?",
-        recommend_options,
-        index=(
-            recommend_options.index(
-                saved_recommend
-            )
-            if saved_recommend
-            in recommend_options
-            else 0
-        ),
-        horizontal=True,
-        key="feedback_recommend"
-    )
-
-    st.divider()
-
-    if st.button(
-        "Submit Feedback",
-        type="primary",
-        use_container_width=True
-    ):
-
-        feedback_payload = {
-            "rating":
-                rating,
-
-            "ease_of_use":
-                ease_of_use,
-
-            "overall_feeling":
-                overall_feeling,
-
-            "favorite_features":
-                favorite_features,
-
-            "improvements":
-                improvements.strip(),
-
-            "additional_comments":
-                additional_comments.strip(),
-
-            "would_recommend":
-                would_recommend
-        }
-
-        if save_user_feedback(
-            user_sub,
-            user_email,
-            feedback_payload
-        ):
-
-            st.success(
-                "Thank you — your feedback has been saved."
+                or 5
             )
 
-            st.balloons()
+            default_rating_label = next(
+                (
+                    label
+                    for label, value
+                    in rating_options.items()
+                    if value
+                    ==
+                    existing_rating
+                ),
+                "★★★★★  5 — Excellent"
+            )
 
-    if existing_feedback:
+            rating_label = st.radio(
+                "How would you rate STEM Pathways NYC overall?",
+                list(
+                    rating_options.keys()
+                ),
+                index=list(
+                    rating_options.keys()
+                ).index(
+                    default_rating_label
+                ),
+                horizontal=True,
+                key="feedback_rating"
+            )
 
-        st.caption(
-            "You have already submitted feedback before. "
-            "Submitting again will update your existing response."
-        )
+            rating = rating_options[
+                rating_label
+            ]
+
+            # --------------------------------------------------------
+            # EASE OF USE / FEELING
+            # --------------------------------------------------------
+
+            with st.container(key="feedback_ease_feeling"):
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+
+                    existing_ease = int(
+                        existing_feedback.get(
+                            "ease_of_use",
+                            4
+                        )
+                        or 4
+                    )
+
+                    with st.container(key="feedback_ease_field"):
+
+                        ease_of_use = st.slider(
+                            "How easy is the website to use?",
+                            1,
+                            5,
+                            existing_ease,
+                            key="feedback_ease"
+                        )
+
+                        st.html(
+                            '<div class="sp-fb-slider-ends" aria-hidden="true">'
+                            "<span>Difficult</span>"
+                            "<span>Very easy</span>"
+                            "</div>"
+                        )
+
+                with col2:
+
+                    feeling_options = [
+                        "I really like it",
+                        "I like it",
+                        "It's okay",
+                        "I'm unsure about it",
+                        "I don't like it yet"
+                    ]
+
+                    saved_feeling = (
+                        existing_feedback.get(
+                            "overall_feeling",
+                            "I really like it"
+                        )
+                        or
+                        "I really like it"
+                    )
+
+                    with st.container(key="feedback_feeling_field"):
+
+                        overall_feeling = st.selectbox(
+                            "How do you feel about the website overall?",
+                            feeling_options,
+                            index=(
+                                feeling_options.index(
+                                    saved_feeling
+                                )
+                                if saved_feeling
+                                in feeling_options
+                                else 0
+                            ),
+                            key="feedback_feeling"
+                        )
+
+        # --------------------------------------------------------
+        # FAVORITE FEATURES
+        # --------------------------------------------------------
+
+        with st.container(key="feedback_working", border=True):
+
+            st.html(
+                '<h2 class="sp-fb-card-title">What Is Working?</h2>'
+                '<p class="sp-fb-card-sub">'
+                "Select any parts of the site that have been useful so far."
+                "</p>"
+            )
+
+            feature_options = [
+                "Dashboard",
+                "My STEM Pathway",
+                "Career recommendations",
+                "Salary information",
+                "Opportunities",
+                "Deadline Calendar",
+                "College Suggestions",
+                "College match scores",
+                "Favorite Colleges",
+                "Application Tracker",
+                "Project Explorer",
+                "GPA Calculator",
+                "Resources",
+                "Profile"
+            ]
+
+            saved_features = text_to_list(
+                existing_feedback.get(
+                    "favorite_features"
+                )
+            )
+
+            favorite_features = st.multiselect(
+                "Which parts of STEM Pathways NYC have been most useful to you?",
+                feature_options,
+                default=[
+                    feature
+                    for feature
+                    in saved_features
+                    if feature
+                    in feature_options
+                ],
+                key="feedback_features"
+            )
+
+        # --------------------------------------------------------
+        # IMPROVEMENTS
+        # --------------------------------------------------------
+
+        with st.container(key="feedback_improve", border=True):
+
+            st.html(
+                '<h2 class="sp-fb-card-title">What Should We Improve?</h2>'
+                '<p class="sp-fb-card-sub">'
+                "Share what felt confusing or what you would like to see next."
+                "</p>"
+            )
+
+            improvements = st.text_area(
+                "What felt confusing, difficult, missing, or could be better?",
+                value=(
+                    existing_feedback.get(
+                        "improvements",
+                        ""
+                    )
+                    or
+                    ""
+                ),
+                placeholder=(
+                    "Example: I want more filters for colleges, "
+                    "the sidebar feels crowded, or I want more beginner projects..."
+                ),
+                height=140,
+                key="feedback_improvements"
+            )
+
+            additional_comments = st.text_area(
+                "Anything else you want us to know? (optional)",
+                value=(
+                    existing_feedback.get(
+                        "additional_comments",
+                        ""
+                    )
+                    or
+                    ""
+                ),
+                placeholder=(
+                    "Share ideas, feature requests, or anything you liked."
+                ),
+                height=120,
+                key="feedback_comments"
+            )
+
+            recommend_options = [
+                "Yes",
+                "Maybe",
+                "No"
+            ]
+
+            saved_recommend = (
+                existing_feedback.get(
+                    "would_recommend",
+                    "Yes"
+                )
+                or
+                "Yes"
+            )
+
+            would_recommend = st.radio(
+                "Would you recommend STEM Pathways NYC to another student?",
+                recommend_options,
+                index=(
+                    recommend_options.index(
+                        saved_recommend
+                    )
+                    if saved_recommend
+                    in recommend_options
+                    else 0
+                ),
+                horizontal=True,
+                key="feedback_recommend"
+            )
+
+        with st.container(key="feedback_submit"):
+
+            if st.button(
+                "Submit Feedback",
+                type="primary",
+                use_container_width=True
+            ):
+
+                feedback_payload = {
+                    "rating":
+                        rating,
+
+                    "ease_of_use":
+                        ease_of_use,
+
+                    "overall_feeling":
+                        overall_feeling,
+
+                    "favorite_features":
+                        favorite_features,
+
+                    "improvements":
+                        improvements.strip(),
+
+                    "additional_comments":
+                        additional_comments.strip(),
+
+                    "would_recommend":
+                        would_recommend
+                }
+
+                if save_user_feedback(
+                    user_sub,
+                    user_email,
+                    feedback_payload
+                ):
+
+                    st.success(
+                        "Thank you — your feedback has been saved."
+                    )
+
+                    st.balloons()
+
+            if existing_feedback:
+
+                st.caption(
+                    "You have already submitted feedback before. "
+                    "Submitting again will update your existing response."
+                )
 
 
 
