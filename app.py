@@ -6833,13 +6833,14 @@ st.markdown(
         box-shadow: none !important;
         color: #0B4568 !important;
         -webkit-text-fill-color: #0B4568 !important;
+        padding-right: 2.1rem !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] input,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="input"] *,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] > div > div,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] span,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="input"] input,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] [data-baseweb="tag"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] [aria-selected],
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]),
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stSelectbox"] input,
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] input,
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stTextInput"] input {
@@ -6847,6 +6848,14 @@ st.markdown(
         -webkit-text-fill-color: #0B4568 !important;
         font-size: 0.88rem !important;
         background: transparent !important;
+        background-color: transparent !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] > div > div {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] input::placeholder,
@@ -6860,17 +6869,52 @@ st.markdown(
         opacity: 1 !important;
     }
 
+    /* Chevron only: keep the arrow container invisible; color the path alone. */
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] > div > div:last-child,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stSelectbox"] [data-baseweb="select"] > div > div:last-child,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] [data-baseweb="select"] > div > div:last-child {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: transparent !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] svg,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] svg path,
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stSelectbox"] svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] svg {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 0.85rem !important;
+        height: 0.85rem !important;
+        min-width: 0.85rem !important;
+        min-height: 0.85rem !important;
+        display: block !important;
+        color: transparent !important;
+        -webkit-text-fill-color: transparent !important;
+        fill: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] svg path,
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stSelectbox"] svg path,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] svg,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] svg path,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stIconMaterial"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [class*="material-symbols"] {
-        color: #0B4568 !important;
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] svg path {
         fill: #0B4568 !important;
-        -webkit-text-fill-color: #0B4568 !important;
+        stroke: #0B4568 !important;
+        color: #0B4568 !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="tag"] {
@@ -8719,6 +8763,414 @@ st.markdown(
         box-shadow: none !important;
         background: transparent !important;
         padding: 0 !important;
+    }
+
+    /* ============================================================
+       ADMIN DASHBOARD
+       ============================================================ */
+
+    html body .stApp [data-testid="stMain"]:has(.sp-admin-page) [data-testid="stMainBlockContainer"] {
+        max-width: 1120px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .sp-admin-page {
+        width: 100%;
+    }
+
+    .sp-admin-privacy {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.55rem;
+        background: #F0F9F4;
+        border: 1px solid #C5E4D3;
+        border-radius: 12px;
+        padding: 0.65rem 0.85rem;
+        margin: 0 0 1.55rem 0;
+        box-sizing: border-box;
+    }
+
+    .sp-admin-privacy-icon {
+        color: #1A7F4B !important;
+        -webkit-text-fill-color: #1A7F4B !important;
+        font-size: 0.95rem !important;
+        font-weight: 800 !important;
+        line-height: 1.35 !important;
+        flex: 0 0 auto;
+        margin-top: 0.05rem;
+    }
+
+    .sp-admin-privacy p {
+        color: #3D5A4A !important;
+        -webkit-text-fill-color: #3D5A4A !important;
+        font-size: 0.84rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    .sp-admin-section {
+        margin: 0 0 1.85rem 0;
+    }
+
+    .sp-admin-section-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.22rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.02em;
+        margin: 0 0 0.35rem 0 !important;
+    }
+
+    .sp-admin-section-sub {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.88rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 0.95rem 0 !important;
+    }
+
+    .sp-admin-metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.85rem;
+        width: 100%;
+        margin: 0;
+    }
+
+    .sp-admin-metric-grid.sp-admin-metric-grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 0.85rem;
+    }
+
+    .sp-admin-metric-grid.sp-admin-metric-grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .sp-admin-stat {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 14px;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06);
+        padding: 1rem 1.05rem 0.95rem;
+        box-sizing: border-box;
+        min-width: 0;
+        height: 100%;
+    }
+
+    .sp-admin-stat-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.78rem !important;
+        font-weight: 750 !important;
+        line-height: 1.3 !important;
+        letter-spacing: 0.01em;
+        margin: 0 0 0.45rem 0 !important;
+    }
+
+    .sp-admin-stat-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 2rem !important;
+        font-weight: 800 !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.03em;
+        margin: 0 0 0.28rem 0 !important;
+        overflow-wrap: anywhere;
+    }
+
+    .sp-admin-stat-note {
+        color: #607487 !important;
+        -webkit-text-fill-color: #607487 !important;
+        font-size: 0.78rem !important;
+        font-weight: 500 !important;
+        line-height: 1.35 !important;
+        margin: 0 !important;
+    }
+
+    .sp-admin-stars {
+        display: flex;
+        gap: 0.12rem;
+        margin: 0.35rem 0 0 0;
+        line-height: 1;
+    }
+
+    .sp-admin-star-on {
+        color: #F4C542 !important;
+        -webkit-text-fill-color: #F4C542 !important;
+        font-size: 0.95rem !important;
+    }
+
+    .sp-admin-star-off {
+        color: #D5DEE6 !important;
+        -webkit-text-fill-color: #D5DEE6 !important;
+        font-size: 0.95rem !important;
+    }
+
+    .sp-admin-panel {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 14px;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06);
+        padding: 1.05rem 1.15rem 1rem;
+        box-sizing: border-box;
+        margin: 0 0 0.85rem 0;
+    }
+
+    .sp-admin-panel-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.95rem !important;
+        font-weight: 750 !important;
+        line-height: 1.3 !important;
+        margin: 0 0 0.85rem 0 !important;
+    }
+
+    .sp-admin-analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.85rem;
+        margin: 0 0 0.95rem 0;
+    }
+
+    .sp-admin-dist-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.85rem;
+        margin: 0 0 0.95rem 0;
+    }
+
+    .sp-admin-bar-row {
+        display: grid;
+        grid-template-columns: 4.2rem minmax(0, 1fr) 2.4rem;
+        gap: 0.55rem;
+        align-items: center;
+        margin: 0 0 0.45rem 0;
+    }
+
+    .sp-admin-bar-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .sp-admin-bar-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.78rem !important;
+        font-weight: 650 !important;
+        line-height: 1.2 !important;
+        white-space: nowrap;
+    }
+
+    .sp-admin-bar-track {
+        width: 100%;
+        height: 8px;
+        background: #EEF3F7;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .sp-admin-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #018FC7, #38BDF8);
+        border-radius: 999px;
+        min-width: 0;
+    }
+
+    .sp-admin-bar-count {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.78rem !important;
+        font-weight: 650 !important;
+        text-align: right;
+    }
+
+    .sp-admin-feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        margin: 0;
+    }
+
+    .sp-admin-feature-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        background: #F7FBFD;
+        border: 1px solid #E3EDF3;
+        border-radius: 10px;
+        padding: 0.55rem 0.75rem;
+    }
+
+    .sp-admin-feature-name {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.88rem !important;
+        font-weight: 650 !important;
+        margin: 0 !important;
+        min-width: 0;
+    }
+
+    .sp-admin-feature-count {
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-size: 0.82rem !important;
+        font-weight: 750 !important;
+        white-space: nowrap;
+        margin: 0 !important;
+    }
+
+    .sp-admin-feedback-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .sp-admin-feedback-card {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 14px;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06);
+        padding: 1.05rem 1.15rem 1rem;
+        box-sizing: border-box;
+    }
+
+    .sp-admin-feedback-top {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem 1.1rem;
+        align-items: center;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .sp-admin-feedback-meta {
+        color: #607487 !important;
+        -webkit-text-fill-color: #607487 !important;
+        font-size: 0.78rem !important;
+        font-weight: 500 !important;
+        margin: 0 !important;
+    }
+
+    .sp-admin-feedback-field {
+        margin: 0 0 0.7rem 0;
+    }
+
+    .sp-admin-feedback-field:last-child {
+        margin-bottom: 0;
+    }
+
+    .sp-admin-feedback-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.78rem !important;
+        font-weight: 750 !important;
+        line-height: 1.3 !important;
+        margin: 0 0 0.22rem 0 !important;
+    }
+
+    .sp-admin-feedback-body {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+        white-space: pre-wrap;
+    }
+
+    .sp-admin-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin: 0.15rem 0 0 0;
+    }
+
+    .sp-admin-pill {
+        display: inline-block;
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+        border-radius: 999px;
+        padding: 0.22rem 0.6rem;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.78rem !important;
+        font-weight: 650 !important;
+        line-height: 1.3 !important;
+    }
+
+    .sp-admin-empty {
+        background: #F7FBFD;
+        border: 1px solid #B9E5F5;
+        border-radius: 12px;
+        padding: 0.8rem 0.95rem;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    .sp-admin-footer-note {
+        color: #607487 !important;
+        -webkit-text-fill-color: #607487 !important;
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 1rem 0 0.25rem 0 !important;
+    }
+
+    .sp-college-saved-toast {
+        background: #EEF9F1 !important;
+        border: 1px solid #9FD7AE !important;
+        border-radius: 11px !important;
+        box-shadow: none !important;
+        padding: 0.48rem 0.75rem !important;
+        margin: 0.35rem 0 0.15rem 0 !important;
+        color: #174C2C !important;
+        -webkit-text-fill-color: #174C2C !important;
+        font-size: 0.88rem !important;
+        font-weight: 650 !important;
+        line-height: 1.35 !important;
+        text-align: left !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-college-saved-toast {
+        background: #EEF9F1 !important;
+        border: 1px solid #9FD7AE !important;
+        border-radius: 11px !important;
+        box-shadow: none !important;
+        color: #174C2C !important;
+        -webkit-text-fill-color: #174C2C !important;
+    }
+
+    @media (max-width: 980px) {
+        .sp-admin-metric-grid,
+        .sp-admin-analytics-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+
+        .sp-admin-dist-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .sp-admin-metric-grid,
+        .sp-admin-metric-grid.sp-admin-metric-grid-2,
+        .sp-admin-metric-grid.sp-admin-metric-grid-3,
+        .sp-admin-analytics-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .sp-admin-stat-value {
+            font-size: 1.7rem !important;
+        }
     }
 
     html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"]::before,
@@ -23663,8 +24115,10 @@ elif page == "College Suggestions":
                             college["name"]
                         ):
 
-                            st.success(
-                                "College saved to My Favorite Colleges."
+                            st.html(
+                                '<div class="sp-college-saved-toast" role="status">'
+                                '✓ College saved to My Favorite Colleges.'
+                                '</div>'
                             )
 
                 with favorite_action2:
@@ -26787,17 +27241,20 @@ elif page == "Admin Dashboard":
     render_page_header(
         "Admin Dashboard",
         (
-            "Review platform activity, user feedback, and early usage trends "
-            "for STEM Pathways NYC."
+            "Review platform activity, student engagement, feedback, "
+            "and early usage trends for STEM Pathways NYC."
         )
     )
 
-    st.warning(
-        "This dashboard contains user-submitted information. "
-        "Use it only to improve the platform and avoid sharing personally identifiable data publicly."
+    st.html(
+        '<div class="sp-admin-page">'
+        '<div class="sp-admin-privacy" role="note">'
+        '<div class="sp-admin-privacy-icon" aria-hidden="true">ℹ</div>'
+        '<p>This dashboard contains user-submitted information. '
+        'Use it only to improve the platform and avoid sharing personally identifiable data publicly.</p>'
+        '</div>'
+        '</div>'
     )
-
-    st.divider()
 
     admin_data = load_admin_metrics()
 
@@ -26820,10 +27277,6 @@ elif page == "Admin Dashboard":
     # --------------------------------------------------------
     # PLATFORM OVERVIEW
     # --------------------------------------------------------
-
-    st.header(
-        "Platform Overview"
-    )
 
     review_count = len(
         feedback_rows
@@ -26886,84 +27339,183 @@ elif page == "Admin Dashboard":
         else 0
     )
 
-    metric1, metric2, metric3, metric4 = (
-        st.columns(4)
+    profile_count = len(
+        profiles
     )
 
-    with metric1:
+    saved_count = len(
+        saved_rows
+    )
 
-        st.metric(
+    favorite_count = len(
+        favorite_rows
+    )
+
+    avg_rating_display = (
+        f"{avg_rating:.1f} / 5"
+        if review_count
+        else "No data"
+    )
+
+    recommend_display = (
+        f"{recommend_rate}%"
+        if review_count
+        else "No data"
+    )
+
+    def admin_stars_html(
+        score
+    ):
+
+        try:
+
+            filled = int(
+                round(
+                    float(
+                        score
+                    )
+                )
+            )
+
+        except Exception:
+
+            filled = 0
+
+        filled = max(
+            0,
+            min(
+                5,
+                filled
+            )
+        )
+
+        stars = []
+
+        for index in range(
+            1,
+            6
+        ):
+
+            cls = (
+                "sp-admin-star-on"
+                if index <= filled
+                else "sp-admin-star-off"
+            )
+
+            stars.append(
+                f'<span class="{cls}">★</span>'
+            )
+
+        return (
+            '<div class="sp-admin-stars" aria-hidden="true">'
+            + "".join(
+                stars
+            )
+            + "</div>"
+        )
+
+    def admin_stat_card(
+        label,
+        value,
+        note=""
+    ):
+
+        note_html = ""
+
+        if note:
+
+            note_html = (
+                f'<div class="sp-admin-stat-note">'
+                f'{html_module.escape(str(note))}'
+                f'</div>'
+            )
+
+        return (
+            '<div class="sp-admin-stat">'
+            f'<div class="sp-admin-stat-label">'
+            f'{html_module.escape(str(label))}'
+            f'</div>'
+            f'<div class="sp-admin-stat-value">'
+            f'{html_module.escape(str(value))}'
+            f'</div>'
+            f'{note_html}'
+            f'</div>'
+        )
+
+    overview_html = (
+        '<div class="sp-admin-section">'
+        '<div class="sp-admin-section-title">Platform Overview</div>'
+        '<p class="sp-admin-section-sub">'
+        'A quick snapshot of registered students, feedback volume, and early platform usage.'
+        '</p>'
+        '<div class="sp-admin-metric-grid">'
+        + admin_stat_card(
             "Student Profiles",
-            len(
-                profiles
-            )
+            profile_count,
+            "Registered profiles"
         )
-
-    with metric2:
-
-        st.metric(
+        + admin_stat_card(
             "Feedback Responses",
-            review_count
+            review_count,
+            "Submitted responses"
         )
-
-    with metric3:
-
-        st.metric(
+        + admin_stat_card(
             "Average Rating",
+            avg_rating_display,
             (
-                f"{avg_rating:.1f} / 5"
+                "Across all feedback"
                 if review_count
-                else "No data"
+                else "Waiting for feedback"
             )
         )
-
-    with metric4:
-
-        st.metric(
+        + admin_stat_card(
             "Would Recommend",
+            recommend_display,
             (
-                f"{recommend_rate}%"
+                f"{recommend_yes} yes response(s)"
                 if review_count
-                else "No data"
+                else "Waiting for feedback"
             )
         )
-
-    metric5, metric6 = (
-        st.columns(2)
+        + '</div>'
+        '<div class="sp-admin-metric-grid sp-admin-metric-grid-2">'
+        + admin_stat_card(
+            "Saved Opportunities",
+            saved_count,
+            "Across all users"
+        )
+        + admin_stat_card(
+            "Favorite Colleges",
+            favorite_count,
+            "Across all users"
+        )
+        + '</div>'
+        '</div>'
     )
 
-    with metric5:
-
-        st.metric(
-            "Saved Opportunities",
-            len(
-                saved_rows
-            )
-        )
-
-    with metric6:
-
-        st.metric(
-            "Favorite Colleges",
-            len(
-                favorite_rows
-            )
-        )
-
-    st.divider()
+    st.html(
+        overview_html
+    )
 
     # --------------------------------------------------------
     # FEEDBACK ANALYTICS
     # --------------------------------------------------------
 
-    st.header(
-        "Feedback Analytics"
+    st.html(
+        '<div class="sp-admin-section" style="margin-bottom:0.35rem;">'
+        '<div class="sp-admin-section-title">Feedback Analytics</div>'
+        '<p class="sp-admin-section-sub">'
+        'Ratings, ease of use, recommendations, and the features students find most useful.'
+        '</p>'
+        '</div>'
     )
 
     if not feedback_rows:
 
-        st.info(
-            "No feedback has been submitted yet."
+        st.html(
+            '<p class="sp-admin-empty">'
+            'No feedback has been submitted yet.'
+            '</p>'
         )
 
     else:
@@ -27020,83 +27572,142 @@ elif page == "Admin Dashboard":
 
                 pass
 
-        feedback_col1, feedback_col2 = (
-            st.columns(2)
+        recommend_counts = {
+            "Yes": 0,
+            "Maybe": 0,
+            "No": 0
+        }
+
+        for row in feedback_rows:
+
+            answer = str(
+                row.get(
+                    "would_recommend",
+                    ""
+                )
+            ).strip()
+
+            if answer in recommend_counts:
+
+                recommend_counts[
+                    answer
+                ] += 1
+
+        avg_ease_display = (
+            f"{avg_ease:.1f} / 5"
+            if ease_scores
+            else "No data"
         )
 
-        with feedback_col1:
-
-            st.metric(
+        analytics_cards = (
+            '<div class="sp-admin-analytics-grid">'
+            + admin_stat_card(
                 "Average Ease of Use",
-                f"{avg_ease:.1f} / 5"
+                avg_ease_display,
+                (
+                    "Self-reported ease score"
+                    if ease_scores
+                    else "No ease ratings yet"
+                )
             )
-
-            st.markdown(
-                "#### Rating Distribution"
-            )
-
-            for rating in range(
-                5,
-                0,
-                -1
-            ):
-
-                stars = (
-                    "★"
-                    * rating
-                    +
-                    "☆"
-                    * (
-                        5 - rating
+            + (
+                '<div class="sp-admin-stat">'
+                '<div class="sp-admin-stat-label">Average Rating</div>'
+                f'<div class="sp-admin-stat-value">'
+                f'{html_module.escape(avg_rating_display)}'
+                f'</div>'
+                + (
+                    admin_stars_html(
+                        avg_rating
                     )
+                    if review_count
+                    else ""
                 )
+                + '</div>'
+            )
+            + admin_stat_card(
+                "Would Recommend",
+                recommend_display,
+                f"Yes · {recommend_yes} response(s)"
+            )
+            + '</div>'
+        )
 
-                st.write(
-                    f"**{stars}** — "
-                    f"{rating_counts[rating]} response(s)"
+        rating_bars = []
+
+        for rating in range(
+            5,
+            0,
+            -1
+        ):
+
+            count = rating_counts[
+                rating
+            ]
+
+            pct = (
+                (
+                    count
+                    /
+                    review_count
                 )
-
-        with feedback_col2:
-
-            st.markdown(
-                "#### Recommendation"
+                * 100
+                if review_count
+                else 0
             )
 
-            recommend_counts = {
-                "Yes": 0,
-                "Maybe": 0,
-                "No": 0
-            }
+            rating_bars.append(
+                '<div class="sp-admin-bar-row">'
+                f'<div class="sp-admin-bar-label">{rating} ★</div>'
+                '<div class="sp-admin-bar-track">'
+                f'<div class="sp-admin-bar-fill" style="width:{pct:.1f}%;"></div>'
+                '</div>'
+                f'<div class="sp-admin-bar-count">{count}</div>'
+                '</div>'
+            )
 
-            for row in feedback_rows:
+        recommend_bars = []
 
-                answer = str(
-                    row.get(
-                        "would_recommend",
-                        ""
-                    )
-                ).strip()
+        for answer, count in recommend_counts.items():
 
-                if answer in recommend_counts:
-
-                    recommend_counts[
-                        answer
-                    ] += 1
-
-            for answer, count in recommend_counts.items():
-
-                st.write(
-                    f"**{answer}:** {count}"
+            pct = (
+                (
+                    count
+                    /
+                    review_count
                 )
+                * 100
+                if review_count
+                else 0
+            )
 
-        st.divider()
+            recommend_bars.append(
+                '<div class="sp-admin-bar-row">'
+                f'<div class="sp-admin-bar-label">'
+                f'{html_module.escape(answer)}'
+                f'</div>'
+                '<div class="sp-admin-bar-track">'
+                f'<div class="sp-admin-bar-fill" style="width:{pct:.1f}%;"></div>'
+                '</div>'
+                f'<div class="sp-admin-bar-count">{count}</div>'
+                '</div>'
+            )
 
-        # ----------------------------------------------------
-        # POPULAR FEATURES
-        # ----------------------------------------------------
-
-        st.header(
-            "Most Useful Features"
+        distribution_html = (
+            '<div class="sp-admin-dist-grid">'
+            '<div class="sp-admin-panel">'
+            '<div class="sp-admin-panel-title">Rating Distribution</div>'
+            + "".join(
+                rating_bars
+            )
+            + '</div>'
+            '<div class="sp-admin-panel">'
+            '<div class="sp-admin-panel-title">Recommendation Breakdown</div>'
+            + "".join(
+                recommend_bars
+            )
+            + '</div>'
+            '</div>'
         )
 
         feature_counts = {}
@@ -27130,6 +27741,8 @@ elif page == "Admin Dashboard":
                 reverse=True
             )
 
+            feature_rows_html = []
+
             for rank, (
                 feature,
                 count
@@ -27138,140 +27751,45 @@ elif page == "Admin Dashboard":
                 start=1
             ):
 
-                st.write(
-                    f"**#{rank} {feature}** — "
-                    f"{count} vote(s)"
+                feature_rows_html.append(
+                    '<div class="sp-admin-feature-row">'
+                    f'<p class="sp-admin-feature-name">'
+                    f'#{rank} {html_module.escape(str(feature))}'
+                    f'</p>'
+                    f'<p class="sp-admin-feature-count">'
+                    f'{count} vote(s)'
+                    f'</p>'
+                    '</div>'
                 )
+
+            features_html = (
+                '<div class="sp-admin-panel">'
+                '<div class="sp-admin-panel-title">Most Useful Features</div>'
+                '<div class="sp-admin-feature-list">'
+                + "".join(
+                    feature_rows_html
+                )
+                + '</div>'
+                '</div>'
+            )
 
         else:
 
-            st.info(
-                "Users have not selected favorite features yet."
+            features_html = (
+                '<p class="sp-admin-empty">'
+                'Users have not selected favorite features yet.'
+                '</p>'
             )
 
-        st.divider()
-
-        # ----------------------------------------------------
-        # WRITTEN FEEDBACK
-        # ----------------------------------------------------
-
-        st.header(
-            "Recent Written Feedback"
+        st.html(
+            analytics_cards
+            + distribution_html
+            + features_html
         )
 
-        sorted_feedback = sorted(
-            feedback_rows,
-            key=lambda row:
-                str(
-                    row.get(
-                        "updated_at",
-                        row.get(
-                            "created_at",
-                            ""
-                        )
-                    )
-                ),
-            reverse=True
-        )
-
-        for row in sorted_feedback[:20]:
-
-            rating = int(
-                row.get(
-                    "rating",
-                    0
-                )
-                or 0
-            )
-
-            stars = (
-                "★"
-                * rating
-                +
-                "☆"
-                * (
-                    5 - rating
-                )
-            )
-
-            with st.container(
-                border=True
-            ):
-
-                feedback_top1, feedback_top2 = (
-                    st.columns(2)
-                )
-
-                with feedback_top1:
-
-                    st.write(
-                        f"**Rating:** {stars}"
-                    )
-
-                with feedback_top2:
-
-                    st.write(
-                        f"**Recommend:** "
-                        f"{row.get('would_recommend', 'Not answered')}"
-                    )
-
-                improvement_text = str(
-                    row.get(
-                        "improvements",
-                        ""
-                    )
-                    or
-                    ""
-                ).strip()
-
-                comments_text = str(
-                    row.get(
-                        "additional_comments",
-                        ""
-                    )
-                    or
-                    ""
-                ).strip()
-
-                if improvement_text:
-
-                    st.markdown(
-                        "**What should improve**"
-                    )
-
-                    st.write(
-                        improvement_text
-                    )
-
-                if comments_text:
-
-                    st.markdown(
-                        "**Additional comments**"
-                    )
-
-                    st.write(
-                        comments_text
-                    )
-
-                if (
-                    not improvement_text
-                    and
-                    not comments_text
-                ):
-
-                    st.caption(
-                        "No written comments submitted."
-                    )
-
-    st.divider()
-
     # --------------------------------------------------------
-    # APPLICATION / COLLEGE ACTIVITY
+    # PLATFORM ENGAGEMENT
     # --------------------------------------------------------
-
-    st.header(
-        "Student Activity"
-    )
 
     application_status_counts = {}
 
@@ -27294,11 +27812,33 @@ elif page == "Admin Dashboard":
             + 1
         )
 
+    engagement_cards = (
+        '<div class="sp-admin-section">'
+        '<div class="sp-admin-section-title">Platform Engagement</div>'
+        '<p class="sp-admin-section-sub">'
+        'How students are saving opportunities and tracking college applications.'
+        '</p>'
+        '<div class="sp-admin-metric-grid sp-admin-metric-grid-2">'
+        + admin_stat_card(
+            "Saved Opportunities",
+            saved_count,
+            "Across all users"
+        )
+        + admin_stat_card(
+            "Favorite Colleges",
+            favorite_count,
+            "Across all users"
+        )
+        + '</div>'
+    )
+
     if application_status_counts:
 
-        st.markdown(
-            "#### Application Tracker Status"
+        total_status = sum(
+            application_status_counts.values()
         )
+
+        status_bars = []
 
         for status, count in sorted(
             application_status_counts.items(),
@@ -27307,17 +27847,312 @@ elif page == "Admin Dashboard":
             reverse=True
         ):
 
-            st.write(
-                f"**{status}:** {count}"
+            pct = (
+                (
+                    count
+                    /
+                    total_status
+                )
+                * 100
+                if total_status
+                else 0
             )
+
+            status_bars.append(
+                '<div class="sp-admin-bar-row">'
+                f'<div class="sp-admin-bar-label">'
+                f'{html_module.escape(status)}'
+                f'</div>'
+                '<div class="sp-admin-bar-track">'
+                f'<div class="sp-admin-bar-fill" style="width:{pct:.1f}%;"></div>'
+                '</div>'
+                f'<div class="sp-admin-bar-count">{count}</div>'
+                '</div>'
+            )
+
+        engagement_cards += (
+            '<div class="sp-admin-panel" style="margin-top:0.85rem;">'
+            '<div class="sp-admin-panel-title">Application Tracker Status</div>'
+            + "".join(
+                status_bars
+            )
+            + '</div>'
+        )
 
     else:
 
-        st.info(
-            "No saved application activity yet."
+        engagement_cards += (
+            '<p class="sp-admin-empty" style="margin-top:0.85rem;">'
+            'No saved application activity yet.'
+            '</p>'
         )
 
-    st.divider()
+    engagement_cards += '</div>'
+
+    st.html(
+        engagement_cards
+    )
+
+    # --------------------------------------------------------
+    # RECENT FEEDBACK
+    # --------------------------------------------------------
+
+    st.html(
+        '<div class="sp-admin-section" style="margin-bottom:0.35rem;">'
+        '<div class="sp-admin-section-title">Recent Feedback</div>'
+        '<p class="sp-admin-section-sub">'
+        'The most recent written responses from students, shown without emphasizing personal identifiers.'
+        '</p>'
+        '</div>'
+    )
+
+    if not feedback_rows:
+
+        st.html(
+            '<p class="sp-admin-empty">'
+            'No feedback has been submitted yet.'
+            '</p>'
+        )
+
+    else:
+
+        sorted_feedback = sorted(
+            feedback_rows,
+            key=lambda row:
+                str(
+                    row.get(
+                        "updated_at",
+                        row.get(
+                            "created_at",
+                            ""
+                        )
+                    )
+                ),
+            reverse=True
+        )
+
+        feedback_cards = [
+            '<div class="sp-admin-feedback-stack">'
+        ]
+
+        for row in sorted_feedback[:20]:
+
+            rating = int(
+                row.get(
+                    "rating",
+                    0
+                )
+                or 0
+            )
+
+            ease_value = row.get(
+                "ease_of_use"
+            )
+
+            ease_text = (
+                f"{int(ease_value)} / 5"
+                if ease_value
+                is not None
+                and
+                str(
+                    ease_value
+                ).strip()
+                !=
+                ""
+                else "Not answered"
+            )
+
+            recommend_text = str(
+                row.get(
+                    "would_recommend",
+                    "Not answered"
+                )
+                or
+                "Not answered"
+            ).strip()
+
+            overall_feeling = str(
+                row.get(
+                    "overall_feeling",
+                    ""
+                )
+                or
+                ""
+            ).strip()
+
+            improvement_text = str(
+                row.get(
+                    "improvements",
+                    ""
+                )
+                or
+                ""
+            ).strip()
+
+            comments_text = str(
+                row.get(
+                    "additional_comments",
+                    ""
+                )
+                or
+                ""
+            ).strip()
+
+            features = text_to_list(
+                row.get(
+                    "favorite_features"
+                )
+            )
+
+            date_raw = str(
+                row.get(
+                    "updated_at",
+                    row.get(
+                        "created_at",
+                        ""
+                    )
+                )
+                or
+                ""
+            ).strip()
+
+            date_display = (
+                date_raw[:10]
+                if len(
+                    date_raw
+                )
+                >=
+                10
+                else (
+                    date_raw
+                    or
+                    "Date unavailable"
+                )
+            )
+
+            feature_pills = ""
+
+            if features:
+
+                feature_pills = (
+                    '<div class="sp-admin-pills">'
+                    + "".join(
+                        [
+                            '<span class="sp-admin-pill">'
+                            + html_module.escape(
+                                str(
+                                    feature
+                                )
+                            )
+                            + '</span>'
+                            for feature in features
+                        ]
+                    )
+                    + '</div>'
+                )
+
+            fields_html = []
+
+            fields_html.append(
+                '<div class="sp-admin-feedback-field">'
+                '<div class="sp-admin-feedback-label">Ease of use</div>'
+                f'<p class="sp-admin-feedback-body">'
+                f'{html_module.escape(ease_text)}'
+                f'</p>'
+                '</div>'
+            )
+
+            if overall_feeling:
+
+                fields_html.append(
+                    '<div class="sp-admin-feedback-field">'
+                    '<div class="sp-admin-feedback-label">Overall feeling</div>'
+                    f'<p class="sp-admin-feedback-body">'
+                    f'{html_module.escape(overall_feeling)}'
+                    f'</p>'
+                    '</div>'
+                )
+
+            if features:
+
+                fields_html.append(
+                    '<div class="sp-admin-feedback-field">'
+                    '<div class="sp-admin-feedback-label">Favorite features</div>'
+                    f'{feature_pills}'
+                    '</div>'
+                )
+
+            if improvement_text:
+
+                fields_html.append(
+                    '<div class="sp-admin-feedback-field">'
+                    '<div class="sp-admin-feedback-label">What should improve</div>'
+                    f'<p class="sp-admin-feedback-body">'
+                    f'{html_module.escape(improvement_text)}'
+                    f'</p>'
+                    '</div>'
+                )
+
+            if comments_text:
+
+                fields_html.append(
+                    '<div class="sp-admin-feedback-field">'
+                    '<div class="sp-admin-feedback-label">Additional comments</div>'
+                    f'<p class="sp-admin-feedback-body">'
+                    f'{html_module.escape(comments_text)}'
+                    f'</p>'
+                    '</div>'
+                )
+
+            if (
+                not improvement_text
+                and
+                not comments_text
+                and
+                not features
+                and
+                not overall_feeling
+            ):
+
+                fields_html.append(
+                    '<div class="sp-admin-feedback-field">'
+                    '<p class="sp-admin-feedback-meta">'
+                    'No written comments submitted.'
+                    '</p>'
+                    '</div>'
+                )
+
+            feedback_cards.append(
+                '<div class="sp-admin-feedback-card">'
+                '<div class="sp-admin-feedback-top">'
+                + admin_stars_html(
+                    rating
+                )
+                + f'<span class="sp-admin-feedback-meta">'
+                f'Rating · {rating} / 5'
+                f'</span>'
+                + f'<span class="sp-admin-feedback-meta">'
+                f'Recommend · {html_module.escape(recommend_text)}'
+                f'</span>'
+                + f'<span class="sp-admin-feedback-meta">'
+                f'{html_module.escape(date_display)}'
+                f'</span>'
+                + '</div>'
+                + "".join(
+                    fields_html
+                )
+                + '</div>'
+            )
+
+        feedback_cards.append(
+            '</div>'
+        )
+
+        st.html(
+            "".join(
+                feedback_cards
+            )
+        )
 
     # --------------------------------------------------------
     # PRIVACY-SAFE EXPORT VIEW
@@ -27384,10 +28219,11 @@ elif page == "Admin Dashboard":
                 "No feedback data available."
             )
 
-    st.caption(
-        "Admin dashboard data is intended for product improvement and should be handled responsibly."
+    st.html(
+        '<p class="sp-admin-footer-note">'
+        'Admin dashboard data is intended for product improvement and should be handled responsibly.'
+        '</p>'
     )
-
 
 
 
