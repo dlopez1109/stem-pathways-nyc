@@ -6822,40 +6822,67 @@ st.markdown(
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="input"] > div,
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] > div,
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="input"] > div:hover,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] > div:hover {
-        background: #083C5D !important;
-        background-color: #083C5D !important;
-        border: 1px solid #0B4F71 !important;
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] > div:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stSelectbox"] > div > div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] > div > div {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
         border-radius: 11px !important;
         min-height: 38px !important;
         box-shadow: none !important;
+        color: #0B4568 !important;
+        -webkit-text-fill-color: #0B4568 !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] input,
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="input"] *,
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] > div > div,
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] span {
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stSelectbox"] input,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] input,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stTextInput"] input {
+        color: #0B4568 !important;
+        -webkit-text-fill-color: #0B4568 !important;
         font-size: 0.88rem !important;
+        background: transparent !important;
     }
 
-    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] input::placeholder {
-        color: rgba(255, 255, 255, 0.58) !important;
-        -webkit-text-fill-color: rgba(255, 255, 255, 0.58) !important;
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] input::placeholder,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] input::-webkit-input-placeholder,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] [data-baseweb="placeholder"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] [class*="placeholder"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] div[class*="Placeholder"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] span[class*="Placeholder"] {
+        color: #607487 !important;
+        -webkit-text-fill-color: #607487 !important;
         opacity: 1 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] svg path,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stSelectbox"] svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stSelectbox"] svg path,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] svg,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] svg path,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stIconMaterial"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [class*="material-symbols"] {
+        color: #0B4568 !important;
+        fill: #0B4568 !important;
+        -webkit-text-fill-color: #0B4568 !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="tag"] {
         background: #E7F6FC !important;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
+        color: #0B4568 !important;
+        -webkit-text-fill-color: #0B4568 !important;
         border-radius: 999px !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-baseweb="tag"] span {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
+        color: #0B4568 !important;
+        -webkit-text-fill-color: #0B4568 !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-deadline_calendar_snapshot"],
