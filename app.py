@@ -1570,7 +1570,6 @@ st.markdown(
         -webkit-text-fill-color: #FFFFFF !important;
     }
 
-
     .sp-deadline-card h3 {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
@@ -1601,7 +1600,7 @@ st.markdown(
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
         font-size: 0.82rem !important;
-        font-weight: 750 !important;
+        font-weight: 800 !important;
         line-height: 1.3 !important;
         margin: 0 0 0.28rem 0 !important;
     }
@@ -1613,819 +1612,8 @@ st.markdown(
         font-weight: 650 !important;
         line-height: 1.35 !important;
         margin: 0 !important;
-    }
-
-    .sp-deadline-time {
-        background: #FFFFFF;
-        border: 1px solid #D5DEE6;
-        border-radius: 12px;
-        padding: 0.65rem 0.75rem;
-        box-sizing: border-box;
-    }
-
-    .sp-deadline-time .sp-deadline-stat-value {
-        font-weight: 800 !important;
-        font-size: 1.05rem !important;
-    }
-
-    .sp-deadline-note {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.92rem !important;
-        font-weight: 500 !important;
-        line-height: 1.5 !important;
-        margin: 0 0 0.9rem 0 !important;
-    }
-
-    .sp-deadline-note strong {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-weight: 800 !important;
-        display: block;
-        margin-bottom: 0.2rem;
-    }
-
-    .sp-deadline-note-closed strong {
-        color: #991B1B !important;
-        -webkit-text-fill-color: #991B1B !important;
-    }
-
-    .sp-deadline-fields {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-        width: 100%;
-        margin: 0;
-    }
-
-    .sp-deadline-pill {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.3rem 0.62rem;
-        border-radius: 999px;
-        background: #E7F6FC;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        border: 1px solid #B9E5F5;
-        font-size: 0.78rem !important;
-        font-weight: 700 !important;
-        line-height: 1.3;
-        margin: 0;
-    }
-
-    [data-testid="stMain"] [class*="st-key-recommended_card_"],
-    [data-testid="stMain"] [class*="st-key-search_result_card_"] {
-        background: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 16px !important;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07) !important;
-        padding: 1.2rem 1.25rem 1.1rem !important;
-        margin: 0 0 1rem 0 !important;
-    }
-
-    /* Keep recommendations readable on wide screens and mirror the compact
-       reference-card layout instead of stretching across the whole page. */
-    [data-testid="stMain"] [class*="st-key-recommended_card_"] {
-        width: min(100%, 68rem) !important;
-        max-width: 68rem !important;
-        margin: 0 auto 1.35rem !important;
-        padding: 1.55rem 1.65rem 1.35rem !important;
-        box-sizing: border-box !important;
-    }
-
-    [data-testid="stMain"] [class*="st-key-recommended_card_"] .sp-deadline-card {
-        background: #FFFFFF !important;
-    }
-
-    [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stVerticalBlock"],
-    [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stVerticalBlock"] {
-        background: transparent !important;
-        gap: 0.7rem !important;
-    }
-
-    [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] {
-        background: #FFFFFF !important;
-        background-color: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 14px rgba(8, 60, 93, 0.05) !important;
-        padding: 0.72rem 0.9rem 0.62rem !important;
-        margin: 0 0 0.75rem 0 !important;
-        box-sizing: border-box !important;
-        height: auto !important;
-    }
-
-    [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stVerticalBlock"] {
-        background: transparent !important;
-        gap: 0.28rem !important;
-        height: auto !important;
-    }
-
-    [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) {
-        display: grid !important;
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        column-gap: 0.75rem !important;
-        row-gap: 0.65rem !important;
-        margin-bottom: 0 !important;
-        align-items: start !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"],
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"]:hover {
-        background: #FFFFFF !important;
-        background-color: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
-        border-width: 1px !important;
-        border-style: solid !important;
-        border-color: #D5DEE6 !important;
-        border-radius: 16px !important;
-        box-shadow: 0 10px 28px rgba(8, 60, 93, 0.09) !important;
-        padding: 1.75rem 1.65rem 1.45rem !important;
-        margin: 0 0 1.65rem 0 !important;
-        height: auto !important;
-        overflow: visible !important;
-        transform: none !important;
-        box-sizing: border-box !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stVerticalBlock"],
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stHorizontalBlock"] {
-        background: #FFFFFF !important;
-        background-color: #FFFFFF !important;
-        gap: 1.25rem !important;
-        height: auto !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"],
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"]:hover {
-        background: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
-        border-width: 1px !important;
-        border-style: solid !important;
-        border-color: #D5DEE6 !important;
-        border-radius: 12px !important;
-        box-shadow: none !important;
-        overflow: hidden;
-        transform: none !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"] summary,
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"] summary p,
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"] summary span {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-weight: 800 !important;
-        font-size: 0.95rem !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"],
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"]:hover {
-        background: #FFFFFF !important;
-        background-color: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 20px !important;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07) !important;
-        padding: 1.3rem 1.35rem 1.15rem !important;
-        margin: 0 0 1.15rem 0 !important;
-        height: auto !important;
-        overflow: visible !important;
-        transform: none !important;
-        box-sizing: border-box !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stVerticalBlock"] {
-        background: transparent !important;
-        gap: 0.85rem !important;
-        height: auto !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"],
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"]:hover {
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 14px !important;
-        background: #FFFFFF !important;
-        box-shadow: none !important;
-        overflow: hidden;
-        transform: none !important;
-        padding: 0.1rem !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"] summary,
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"] summary p,
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"] summary span {
-        color: #018FC7 !important;
-        -webkit-text-fill-color: #018FC7 !important;
-        font-weight: 750 !important;
-        font-size: 0.92rem !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpanderDetails"],
-    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpanderContent"] {
-        padding: 0.15rem 0.7rem 0.75rem 0.7rem !important;
-    }
-
-    .sp-college-card {
-        display: flex;
-        flex-direction: column;
-        gap: 1.45rem;
-        width: 100%;
-        background: #FFFFFF !important;
-        box-sizing: border-box;
-    }
-
-    .sp-college-card-head {
-        width: 100%;
-        margin: 0;
-    }
-
-    .sp-college-card-head h3 {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.65rem !important;
-        font-weight: 800 !important;
-        line-height: 1.2 !important;
-        margin: 0 0 0.7rem 0 !important;
-        letter-spacing: -0.02em;
-    }
-
-    .sp-college-meta {
-        color: #5A6A78 !important;
-        -webkit-text-fill-color: #5A6A78 !important;
-        font-size: 0.95rem !important;
-        font-weight: 500 !important;
-        line-height: 1.45 !important;
-        margin: 0 0 0.45rem 0 !important;
-    }
-
-    .sp-college-category {
-        display: block;
-        text-align: left;
-        font-size: 1.12rem !important;
-        font-weight: 800 !important;
-        line-height: 1.3 !important;
-        letter-spacing: 0.02em;
-        margin: 0.35rem 0 0 0 !important;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-family: Inter, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif !important;
-    }
-
-    .sp-college-stat-grid {
-        display: grid !important;
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        gap: 0.85rem !important;
-        width: 100% !important;
-        margin: 0 !important;
-        align-items: stretch !important;
-    }
-
-    .sp-college-stat {
-        background: #F5F7F9 !important;
-        background-color: #F5F7F9 !important;
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 10px !important;
-        box-shadow: 0 1px 2px rgba(8, 60, 93, 0.04) !important;
-        padding: 0.62rem 0.72rem 0.68rem !important;
-        margin: 0 !important;
-        min-height: 102px !important;
-        height: 100% !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 0.28rem !important;
-    }
-
-    .sp-college-stat-label {
-        font-size: 0.72rem !important;
-        font-weight: 800 !important;
-        letter-spacing: 0.01em;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        margin: 0 !important;
-        line-height: 1.3 !important;
-    }
-
-    .sp-college-stat-value {
-        font-size: 1.32rem !important;
-        font-weight: 800 !important;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        line-height: 1.2 !important;
-        margin: 0.1rem 0 0 0 !important;
-    }
-
-    .sp-college-stat-note {
-        font-size: 0.78rem !important;
-        font-weight: 500 !important;
-        color: #5A6A78 !important;
-        -webkit-text-fill-color: #5A6A78 !important;
-        margin: 0.15rem 0 0 0 !important;
-        line-height: 1.35 !important;
-    }
-
-    .sp-college-stat .sp-deadline-fields {
-        margin-top: 0.15rem;
-        gap: 0.32rem;
-    }
-
-    .sp-college-stat .sp-deadline-pill {
-        font-size: 0.7rem !important;
-        padding: 0.22rem 0.5rem;
-        background: #E7F6FC !important;
-        border: 1px solid #B9E5F5 !important;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-    }
-
-    .sp-college-match-value {
-        font-size: 1.55rem !important;
-        font-weight: 800 !important;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        line-height: 1.1 !important;
-        margin: 0.12rem 0 0.35rem 0 !important;
-    }
-
-    .sp-college-match-bar {
-        width: 100%;
-        height: 6px;
-        border-radius: 999px;
-        background: #E7F6FC;
-        overflow: hidden;
-        margin-top: auto;
-    }
-
-    .sp-college-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.38rem;
-        margin: 0.7rem 0 0 0;
-    }
-
-    .sp-college-chip {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.18rem 0.55rem;
-        border-radius: 999px;
-        background: #E7F6FC !important;
-        border: 1px solid #B9E5F5 !important;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 0.74rem !important;
-        font-weight: 750 !important;
-        line-height: 1.3;
-    }
-
-    .sp-college-why-preview {
-        background: #F7FBFD;
-        border: 1px solid #D7EEF7;
-        border-radius: 12px;
-        padding: 0.75rem 0.85rem 0.7rem;
-        margin: 0;
-    }
-
-    .sp-college-why-preview-label,
-    .sp-college-why-preview-text {
-        margin: 0 !important;
-    }
-
-    .sp-college-why-preview-label {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 0.78rem !important;
-        font-weight: 800 !important;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        margin: 0 0 0.28rem 0 !important;
-    }
-
-    .sp-college-why-preview-text {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.94rem !important;
-        font-weight: 500 !important;
-        line-height: 1.5 !important;
-    }
-
-    html body .stApp [data-testid="stMain"] .sp-college-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 26px rgba(8, 60, 93, 0.10);
-    }
-
-    .sp-stem-dir-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 1.15rem;
-        width: 100%;
-        margin: 0 0 1.6rem 0;
-        align-items: stretch;
-    }
-
-    .sp-stem-dir-card {
-        background: #FFFFFF;
-        border: 1px solid #D5DEE6;
-        border-radius: 20px;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
-        padding: 1.05rem 1rem 1rem;
-        min-height: 0;
-        height: 100%;
-        box-sizing: border-box;
-        transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .sp-stem-dir-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 14px 28px rgba(8, 60, 93, 0.12);
-    }
-
-    .sp-stem-dir-rank {
-        display: inline-flex;
-        align-items: center;
-        background: #E7F6FC;
-        border: 1px solid #B9E5F5;
-        color: #083C5D;
-        border-radius: 999px;
-        padding: 0.16rem 0.55rem;
-        font-size: 0.78rem;
-        font-weight: 800;
-        letter-spacing: 0.02em;
-        margin: 0 0 0.7rem 0;
-    }
-
-    .sp-stem-dir-top {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 0.7rem;
-        margin: 0 0 0.55rem 0;
-    }
-
-    .sp-stem-dir-title {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.18rem !important;
-        font-weight: 800 !important;
-        line-height: 1.25 !important;
-        margin: 0 !important;
-        letter-spacing: -0.02em;
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-
-    .sp-stem-dir-score {
-        background: #F7FBFD;
-        border: 1px solid #D7EEF7;
-        border-radius: 12px;
-        padding: 0.38rem 0.55rem 0.4rem;
-        min-width: 4.6rem;
-        text-align: right;
-        flex: 0 0 auto;
-    }
-
-    .sp-stem-dir-score-label {
-        color: #5A6A78 !important;
-        -webkit-text-fill-color: #5A6A78 !important;
-        font-size: 0.68rem !important;
-        font-weight: 700 !important;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        margin: 0 0 0.12rem 0 !important;
-    }
-
-    .sp-stem-dir-score-value {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.05rem !important;
-        font-weight: 800 !important;
-        line-height: 1.1 !important;
-        margin: 0 !important;
-    }
-
-    .sp-stem-dir-why {
-        color: #5A6A78 !important;
-        -webkit-text-fill-color: #5A6A78 !important;
-        font-size: 0.86rem !important;
-        font-weight: 500 !important;
-        line-height: 1.45 !important;
-        margin: 0 0 0.8rem 0 !important;
-    }
-
-    .sp-stem-dir-bar {
-        width: 100%;
-        height: 7px;
-        border-radius: 999px;
-        background: #E7F6FC;
-        overflow: hidden;
-    }
-
-    .sp-stem-dir-bar-fill {
-        height: 100%;
-        border-radius: 999px;
-        background: #63C7E8;
-    }
-
-
-    .sp-stem-dir-majors {
-        margin: 0.8rem 0 0 0;
-    }
-
-    .sp-stem-dir-majors-label {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 0.74rem !important;
-        font-weight: 800 !important;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        margin: 0 0 0.4rem 0 !important;
-    }
-
-    .sp-stem-dir-majors .sp-deadline-fields {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-    }
-
-    .sp-stem-path-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 0.9rem;
-        width: 100%;
-        margin: 0.35rem 0 0.85rem 0;
-    }
-
-    .sp-stem-path-grid .sp-stem-dir-card {
-        border-radius: 20px;
-        padding: 1.1rem 1.15rem 1.05rem;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
-    }
-
-    [data-testid="stMain"] [class*="st-key-college_match_category_tabs"] {
-        margin: 0 0 1.15rem 0 !important;
-    }
-
-    [data-testid="stMain"] [class*="st-key-college_match_category_tabs"] [data-testid="stHorizontalBlock"] {
-        gap: 0.85rem !important;
-    }
-
-    [data-testid="stMain"] [class*="st-key-college_match_category_tabs"] .stButton > button {
-        min-height: 3.3rem !important;
-        border-radius: 14px !important;
-        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
-        font-weight: 800 !important;
-    }
-
-    [data-testid="stMain"] [class*="st-key-college_match_category_tabs"] [data-testid="stCaptionContainer"] {
-        margin-top: 0.35rem !important;
-    }
-
-
-    .sp-college-match-bar-fill {
-        height: 100%;
-        border-radius: 999px;
-        background: #63C7E8;
-    }
-
-    .sp-college-fields-block {
-        width: 100%;
-        margin: 0;
-        padding: 0.15rem 0 0 0;
-    }
-
-    .sp-college-fields-label {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 0.82rem !important;
-        font-weight: 800 !important;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        margin: 0 0 0.55rem 0 !important;
-    }
-
-    .sp-college-fields-block .sp-deadline-fields {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.45rem;
-    }
-
-    .sp-college-why {
-        width: 100%;
-        background: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 14px !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    .sp-college-why > summary {
-        list-style: none;
-        cursor: pointer;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.02rem !important;
-        font-weight: 800 !important;
-        line-height: 1.35 !important;
-        padding: 0.9rem 1.05rem !important;
-        background: #FFFFFF !important;
-        border-radius: 14px;
-    }
-
-    .sp-college-why > summary::-webkit-details-marker {
-        display: none;
-    }
-
-    .sp-college-why[open] > summary {
-        border-bottom: 1px solid #E3EAF0;
-        border-radius: 14px 14px 0 0;
-    }
-
-    .sp-college-why-body {
-        padding: 0.95rem 1.05rem 1.05rem !important;
-        background: #FFFFFF !important;
-    }
-
-    .sp-college-best-fit {
-        background: #F7FBFD;
-        border: 1px solid #D7EEF7;
-        border-radius: 12px;
-        padding: 0.8rem 0.9rem 0.75rem;
-        margin: 0 0 1rem 0;
-    }
-
-    .sp-college-best-fit-label {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 0.8rem !important;
-        font-weight: 800 !important;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        margin: 0 0 0.35rem 0 !important;
-    }
-
-    .sp-college-best-fit-text {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.98rem !important;
-        font-weight: 550 !important;
-        line-height: 1.55 !important;
-        margin: 0 !important;
-    }
-
-    .sp-college-reason {
-        margin: 0 0 0.95rem 0;
-    }
-
-    .sp-college-reason:last-child {
-        margin-bottom: 0;
-    }
-
-    .sp-college-reason-title {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 0.98rem !important;
-        font-weight: 800 !important;
-        line-height: 1.35 !important;
-        margin: 0 0 0.32rem 0 !important;
-    }
-
-    .sp-college-reason-title::before {
-        content: "✓";
-        display: inline-block;
-        margin-right: 0.4rem;
-        color: #018FC7 !important;
-        -webkit-text-fill-color: #018FC7 !important;
-        font-weight: 800;
-    }
-
-    .sp-college-reason-body {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.96rem !important;
-        font-weight: 500 !important;
-        line-height: 1.6 !important;
-        margin: 0 !important;
-    }
-
-
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .stButton > button,
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .stLinkButton > a {
-        min-height: 44px !important;
-        height: 44px !important;
-        border-radius: 12px !important;
-        background: #FFFFFF !important;
-        border: 2px solid #63C7E8 !important;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-weight: 800 !important;
-        box-shadow: none !important;
-        transform: none !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .stButton > button:hover,
-    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .stLinkButton > a:hover {
-        background: #EAF7FC !important;
-        border-color: #4BB8DC !important;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        box-shadow: none !important;
-        transform: none !important;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"],
-    html body [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stExpander"] {
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 14px !important;
-        background: #FFFFFF !important;
-        box-shadow: none !important;
-        overflow: hidden;
-    }
-
-    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary,
-    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary p,
-    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary span,
-    html body [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stExpander"] summary,
-    html body [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stExpander"] summary p,
-    html body [data-testid="stMain"] [class*="st-key-search_result_card_"] [data-testid="stExpander"] summary span {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-weight: 750 !important;
-    }
-
-    .sp-rec-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-        width: 100%;
-        margin: 0 0 0.75rem 0;
-    }
-
-    .sp-rec-heading {
-        min-width: 0;
-        flex: 1 1 auto;
-    }
-
-    .sp-rec-heading h3 {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.45rem !important;
-        font-weight: 800 !important;
-        line-height: 1.25 !important;
-        margin: 0 0 0.3rem 0 !important;
-    }
-
-    .sp-rec-org {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 1rem !important;
-        font-weight: 500 !important;
-        line-height: 1.4 !important;
-        margin: 0 !important;
-    }
-
-    .sp-rec-match {
-        background: #FFFFFF;
-        border: 1px solid #D5DEE6;
-        border-radius: 12px;
-        padding: 0.8rem 1rem;
-        min-width: 8.25rem;
-        box-sizing: border-box;
-        flex: 0 0 auto;
-    }
-
-    .sp-rec-match-label {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 0.82rem !important;
-        font-weight: 750 !important;
-        margin: 0 0 0.2rem 0 !important;
-    }
-
-    .sp-rec-match-value {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.65rem !important;
-        font-weight: 800 !important;
-        line-height: 1.2 !important;
-        margin: 0 !important;
-    }
-
-    .sp-rec-desc {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 1rem !important;
-        font-weight: 500 !important;
-        line-height: 1.5 !important;
-        margin: 0 0 1rem 0 !important;
-    }
-
-    .sp-rec-stats {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        column-gap: 1.1rem;
-        row-gap: 1.15rem;
-        margin-bottom: 0.95rem;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .sp-rec-info-grid {
@@ -2435,6 +1623,13 @@ st.markdown(
         width: 100%;
         margin: 0 0 1.05rem 0;
         align-items: start;
+    }
+
+    .sp-rec-info-col {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+        min-width: 0;
     }
 
     .sp-rec-stat {
@@ -2579,6 +1774,818 @@ st.markdown(
         font-weight: 800 !important;
         letter-spacing: 0.04em;
         margin: 0 0 0.35rem 0;
+    }
+
+    .sp-deadline-time {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 12px;
+        padding: 0.65rem 0.75rem;
+        box-sizing: border-box;
+    }
+
+    .sp-deadline-time .sp-deadline-stat-value {
+        font-weight: 800 !important;
+        font-size: 1.05rem !important;
+    }
+
+    .sp-deadline-note {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.92rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+        margin: 0 0 0.9rem 0 !important;
+    }
+
+    .sp-deadline-note strong {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
+        display: block;
+        margin-bottom: 0.2rem;
+    }
+
+    .sp-deadline-note-closed strong {
+        color: #991B1B !important;
+        -webkit-text-fill-color: #991B1B !important;
+    }
+
+    .sp-deadline-fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        width: 100%;
+        margin: 0;
+    }
+
+    .sp-deadline-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.3rem 0.62rem;
+        border-radius: 999px;
+        background: #E7F6FC;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        border: 1px solid #B9E5F5;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3;
+        margin: 0;
+    }
+
+    [data-testid="stMain"] [class*="st-key-recommended_card_"] {
+        background: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 16px !important;
+        box-shadow: none !important;
+        padding: 1.2rem 1.25rem 1.1rem !important;
+        margin: 0 0 1rem 0 !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stVerticalBlock"] {
+        background: transparent !important;
+        gap: 0.7rem !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 14px rgba(8, 60, 93, 0.05) !important;
+        padding: 0.72rem 0.9rem 0.62rem !important;
+        margin: 0 0 0.75rem 0 !important;
+        box-sizing: border-box !important;
+        height: auto !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stVerticalBlock"] {
+        background: transparent !important;
+        gap: 0.28rem !important;
+        height: auto !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-deadline_calendar_filters"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        column-gap: 0.75rem !important;
+        row-gap: 0.65rem !important;
+        margin-bottom: 0 !important;
+        align-items: start !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] {
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 14px !important;
+        background: #FFFFFF !important;
+        box-shadow: none !important;
+        overflow: hidden;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary,
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary p,
+    html body [data-testid="stMain"] [class*="st-key-recommended_card_"] [data-testid="stExpander"] summary span {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 750 !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"],
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"]:hover {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: #D5DEE6 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 10px 28px rgba(8, 60, 93, 0.09) !important;
+        padding: 1.75rem 1.65rem 1.45rem !important;
+        margin: 0 0 1.65rem 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+        transform: none !important;
+        box-sizing: border-box !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stVerticalBlock"],
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stHorizontalBlock"] {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        gap: 1.25rem !important;
+        height: auto !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"],
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"]:hover {
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 14px !important;
+        background: #FFFFFF !important;
+        box-shadow: none !important;
+        overflow: hidden;
+        transform: none !important;
+        padding: 0.15rem 0.15rem 0.15rem 0.15rem !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"] summary,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"] summary p,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"] summary span {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
+        font-size: 0.95rem !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpanderDetails"],
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpanderContent"] {
+        padding: 0.15rem 0.7rem 0.75rem 0.75rem !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"],
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"]:hover {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 20px !important;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07) !important;
+        padding: 1.3rem 1.35rem 1.15rem !important;
+        margin: 0 0 1.15rem 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+        transform: none !important;
+        box-sizing: border-box !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stVerticalBlock"] {
+        background: transparent !important;
+        gap: 0.85rem !important;
+        height: auto !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"],
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"]:hover {
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 14px !important;
+        background: #FFFFFF !important;
+        box-shadow: none !important;
+        overflow: hidden;
+        transform: none !important;
+        padding: 0.1rem !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"] summary,
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"] summary p,
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"] summary span {
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-weight: 750 !important;
+        font-size: 0.92rem !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpanderDetails"],
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpanderContent"] {
+        padding: 0.15rem 0.7rem 0.75rem 0.7rem !important;
+    }
+
+    .sp-college-card {
+        display: flex;
+        flex-direction: column;
+        gap: 1.15rem;
+        width: 100%;
+        background: #FFFFFF !important;
+        box-sizing: border-box;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .sp-college-card-head {
+        width: 100%;
+        margin: 0;
+    }
+
+    .sp-college-card-head h3 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.65rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        margin: 0 0 0.7rem 0 !important;
+        letter-spacing: -0.02em;
+    }
+
+    .sp-college-meta {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 0 0.45rem 0 !important;
+    }
+
+    .sp-college-category {
+        display: block;
+        text-align: left;
+        font-size: 1.12rem !important;
+        font-weight: 800 !important;
+        line-height: 1.3 !important;
+        letter-spacing: 0.02em;
+        margin: 0.35rem 0 0 0 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-family: Inter, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif !important;
+    }
+
+    .sp-college-stat-grid,
+    html body [data-testid="stMain"] .sp-college-stat-grid,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 0.85rem !important;
+        width: 100% !important;
+        margin: 0 !important;
+        align-items: stretch !important;
+    }
+
+    html body [data-testid="stMain"] .sp-college-info-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 0.75rem !important;
+        width: 100% !important;
+        margin: 0 !important;
+        align-items: stretch !important;
+    }
+
+    .sp-college-stat,
+    html body [data-testid="stMain"] .sp-college-stat,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .college-plain-stat,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .college-plain-stat:hover {
+        background: #F5F7F9 !important;
+        background-color: #F5F7F9 !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 1px 2px rgba(8, 60, 93, 0.04) !important;
+        padding: 0.72rem 0.8rem 0.75rem !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        height: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.28rem !important;
+    }
+
+    .sp-college-stat-label,
+    html body [data-testid="stMain"] .sp-college-stat-label,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .college-plain-stat-label {
+        font-size: 0.75rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.01em;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        margin: 0 !important;
+        line-height: 1.3 !important;
+    }
+
+    .sp-college-stat-value,
+    html body [data-testid="stMain"] .sp-college-stat-value,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .college-plain-stat-value {
+        font-size: 1.42rem !important;
+        font-weight: 800 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        line-height: 1.2 !important;
+        margin: 0.1rem 0 0 0 !important;
+    }
+
+    .sp-college-stat-note,
+    html body [data-testid="stMain"] .sp-college-stat-note,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .college-plain-stat-caption {
+        font-size: 0.78rem !important;
+        font-weight: 500 !important;
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        margin: 0.15rem 0 0 0 !important;
+        line-height: 1.35 !important;
+    }
+
+    .sp-college-stat .sp-deadline-fields {
+        margin-top: 0.15rem;
+        gap: 0.32rem;
+    }
+
+    .sp-college-stat .sp-deadline-pill {
+        font-size: 0.7rem !important;
+        padding: 0.22rem 0.5rem;
+        background: #E7F6FC !important;
+        border: 1px solid #B9E5F5 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    .sp-college-match-value {
+        font-size: 1.7rem !important;
+        font-weight: 800 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        line-height: 1.1 !important;
+        margin: 0.12rem 0 0.35rem 0 !important;
+    }
+
+    .sp-college-match-bar {
+        width: 100%;
+        height: 6px;
+        border-radius: 999px;
+        background: #E7F6FC;
+        overflow: hidden;
+        margin-top: auto;
+    }
+
+    .sp-college-fields-block {
+        width: 100%;
+        margin: 0;
+        padding: 0.15rem 0 0 0;
+    }
+
+    .sp-college-fields-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.82rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin: 0 0 0.55rem 0 !important;
+    }
+
+    .sp-college-fields-block .sp-deadline-fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+    }
+
+    .sp-college-why {
+        width: 100%;
+        background: #FFFFFF !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 14px !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .sp-college-why > summary {
+        list-style: none;
+        cursor: pointer;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.02rem !important;
+        font-weight: 800 !important;
+        line-height: 1.35 !important;
+        padding: 0.9rem 1.05rem !important;
+        background: #FFFFFF !important;
+        border-radius: 14px;
+    }
+
+    .sp-college-why > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .sp-college-why[open] > summary {
+        border-bottom: 1px solid #E3EAF0;
+        border-radius: 14px 14px 0 0;
+    }
+
+    .sp-college-why-body {
+        padding: 0.95rem 1.05rem 1.05rem !important;
+        background: #FFFFFF !important;
+    }
+
+    .sp-college-best-fit {
+        background: #F7FBFD;
+        border: 1px solid #D7EEF7;
+        border-radius: 12px;
+        padding: 0.8rem 0.9rem 0.75rem;
+        margin: 0 0 1rem 0;
+    }
+
+    .sp-college-best-fit-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.8rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin: 0 0 0.35rem 0 !important;
+    }
+
+    .sp-college-best-fit-text {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.98rem !important;
+        font-weight: 550 !important;
+        line-height: 1.55 !important;
+        margin: 0 !important;
+    }
+
+    .sp-college-reason {
+        margin: 0 0 0.95rem 0;
+    }
+
+    .sp-college-reason:last-child {
+        margin-bottom: 0;
+    }
+
+    .sp-college-reason-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.98rem !important;
+        font-weight: 800 !important;
+        line-height: 1.35 !important;
+        margin: 0 0 0.32rem 0 !important;
+    }
+
+    .sp-college-reason-title::before {
+        content: "✓";
+        display: inline-block;
+        margin-right: 0.4rem;
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-weight: 800;
+    }
+
+    .sp-college-reason-body {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.96rem !important;
+        font-weight: 500 !important;
+        line-height: 1.6 !important;
+        margin: 0 !important;
+    }
+
+    .sp-college-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.38rem;
+        margin: 0.7rem 0 0 0;
+    }
+
+    .sp-college-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.18rem 0.55rem;
+        border-radius: 999px;
+        background: #E7F6FC !important;
+        border: 1px solid #B9E5F5 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.74rem !important;
+        font-weight: 750 !important;
+        line-height: 1.3;
+    }
+
+    .sp-college-why-preview {
+        background: #F7FBFD;
+        border: 1px solid #D7EEF7;
+        border-radius: 12px;
+        padding: 0.75rem 0.85rem 0.7rem;
+        margin: 0;
+    }
+
+    .sp-college-why-preview-label,
+    .sp-college-why-preview-text {
+        margin: 0 !important;
+    }
+
+    .sp-college-why-preview-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.78rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin: 0 0 0.28rem 0 !important;
+    }
+
+    .sp-college-why-preview-text {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.94rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-college-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 26px rgba(8, 60, 93, 0.10);
+    }
+
+    .sp-stem-dir-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.15rem;
+        width: 100%;
+        margin: 0 0 1.6rem 0;
+        align-items: stretch;
+    }
+
+    .sp-stem-dir-card {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 20px;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
+        padding: 1.05rem 1.1rem 1rem;
+        min-height: 0;
+        height: 100%;
+        box-sizing: border-box;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .sp-stem-dir-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 14px 28px rgba(8, 60, 93, 0.12);
+    }
+
+    .sp-stem-dir-rank {
+        display: inline-flex;
+        align-items: center;
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+        color: #083C5D;
+        border-radius: 999px;
+        padding: 0.16rem 0.55rem;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        margin: 0 0 0.7rem 0;
+    }
+
+    .sp-stem-dir-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.7rem;
+        margin: 0 0 0.55rem 0;
+    }
+
+    .sp-stem-dir-title {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.18rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin: 0 !important;
+        letter-spacing: -0.02em;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .sp-stem-dir-score {
+        background: #F7FBFD;
+        border: 1px solid #D7EEF7;
+        border-radius: 12px;
+        padding: 0.38rem 0.55rem 0.4rem;
+        min-width: 4.6rem;
+        text-align: right;
+        flex: 0 0 auto;
+    }
+
+    .sp-stem-dir-score-label {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.68rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin: 0 0 0.12rem 0 !important;
+    }
+
+    .sp-stem-dir-score-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.05rem !important;
+        font-weight: 800 !important;
+        line-height: 1.1 !important;
+        margin: 0 !important;
+    }
+
+    .sp-stem-dir-why {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.86rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 0 0.8rem 0 !important;
+    }
+
+    .sp-stem-dir-bar {
+        width: 100%;
+        height: 7px;
+        border-radius: 999px;
+        background: #E7F6FC;
+        overflow: hidden;
+    }
+
+    .sp-stem-dir-bar-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: #63C7E8;
+    }
+
+    .sp-stem-dir-majors {
+        margin: 0.8rem 0 0 0;
+    }
+
+    .sp-stem-dir-majors-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.74rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin: 0 0 0.4rem 0 !important;
+    }
+
+    .sp-stem-dir-majors .sp-deadline-fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+
+    .sp-stem-path-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        width: 100%;
+        margin: 0.35rem 0 0.85rem 0;
+    }
+
+    .sp-stem-path-grid .sp-stem-dir-card {
+        border-radius: 20px;
+        padding: 1.1rem 1.15rem 1.05rem;
+        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
+    }
+
+    [data-testid="stMain"] [class*="st-key-college_match_category_tabs"] {
+        margin: 0 0 1.15rem 0 !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-college_match_category_tabs"] [data-testid="stHorizontalBlock"] {
+        gap: 0.85rem !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-college_match_category_tabs"] .stButton > button {
+        min-height: 3.3rem !important;
+        border-radius: 14px !important;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
+        font-weight: 800 !important;
+    }
+
+    [data-testid="stMain"] [class*="st-key-college_match_category_tabs"] [data-testid="stCaptionContainer"] {
+        margin-top: 0.35rem !important;
+    }
+
+    .sp-college-match-bar-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: #63C7E8;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .stButton > button,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .stLinkButton > a {
+        min-height: 44px !important;
+        height: 44px !important;
+        border-radius: 12px !important;
+        background: #FFFFFF !important;
+        border: 2px solid #63C7E8 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
+        box-shadow: none !important;
+        transform: none !important;
+        transition: background-color 0.16s ease, border-color 0.16s ease !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .stButton > button:hover,
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] .stLinkButton > a:hover {
+        background: #EAF7FC !important;
+        border-color: #4BB8DC !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    .sp-rec-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .sp-rec-heading {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .sp-rec-heading h3 {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.22rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 0.3rem 0 !important;
+    }
+
+    .sp-rec-org {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+    }
+
+    .sp-rec-match {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 12px;
+        padding: 0.65rem 0.8rem;
+        min-width: 6.75rem;
+        box-sizing: border-box;
+        flex: 0 0 auto;
+    }
+
+    .sp-rec-match-label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.82rem !important;
+        font-weight: 750 !important;
+        margin: 0 0 0.2rem 0 !important;
+    }
+
+    .sp-rec-match-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.25rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+    }
+
+    .sp-rec-desc {
+        color: #4A5D6B !important;
+        -webkit-text-fill-color: #4A5D6B !important;
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+        margin: 0 0 1rem 0 !important;
+    }
+
+    .sp-rec-stats {
+        margin-bottom: 0.95rem;
     }
 
     .sp-rec-selectivity-note {
@@ -4800,6 +4807,8 @@ st.markdown(
         }
 
         .sp-college-stat-grid,
+        html body [data-testid="stMain"] .sp-college-stat-grid,
+        html body [data-testid="stMain"] .sp-college-info-grid,
         .sp-rec-info-grid,
         .sp-app-info-grid,
         html body .stApp [data-testid="stMain"] .sp-app-snapshot-grid,
@@ -4829,6 +4838,10 @@ st.markdown(
             border-radius: 14px;
         }
 
+        .sp-hero h1 {
+            font-size: 1.32rem !important;
+        }
+
         .sp-dash-metric-grid {
             grid-template-columns: 1fr;
         }
@@ -4851,10 +4864,6 @@ st.markdown(
 
         html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([class*="st-key-dash_continue_journey"]) + [data-testid="stElementContainer"]:has([data-testid="stDivider"]) {
             margin: 72px 0 56px 0 !important;
-        }
-
-        .sp-hero h1 {
-            font-size: 1.55rem !important;
         }
 
         .sp-page-header {
@@ -4962,15 +4971,18 @@ st.markdown(
             min-height: 0 !important;
         }
 
-        .sp-college-stat-grid {
+        .sp-college-stat-grid,
+        html body [data-testid="stMain"] .sp-college-stat-grid,
+        html body [data-testid="stMain"] .sp-college-info-grid {
             grid-template-columns: 1fr !important;
         }
 
         .sp-college-card-head h3 {
-            font-size: 1.42rem !important;
+            font-size: 1.38rem !important;
         }
 
-        .sp-college-stat {
+        .sp-college-stat,
+        html body [data-testid="stMain"] .sp-college-stat {
             min-height: 0 !important;
         }
 
@@ -5502,9 +5514,35 @@ st.markdown(
     html body [data-testid="stMain"] .sp-rec-heading h3,
     html body [data-testid="stMain"] .sp-rec-heading h3 *,
     html body [data-testid="stMain"] .sp-rec-match-label,
-    html body [data-testid="stMain"] .sp-rec-match-value {
+    html body [data-testid="stMain"] .sp-rec-match-value,
+    html body [data-testid="stMain"] .sp-college-why,
+    html body [data-testid="stMain"] .sp-college-why summary,
+    html body [data-testid="stMain"] .sp-college-fields-label,
+    html body [data-testid="stMain"] .sp-college-reason-title,
+    html body [data-testid="stMain"] .sp-college-best-fit-label,
+    html body [data-testid="stMain"] .sp-college-card-head h3,
+    html body [data-testid="stMain"] .sp-college-card-head h3 *,
+    html body [data-testid="stMain"] .sp-stem-dir-title,
+    html body [data-testid="stMain"] .sp-stem-dir-score-value,
+    html body [data-testid="stMain"] .sp-college-chip,
+    html body [data-testid="stMain"] .sp-college-category,
+    html body [data-testid="stMain"] .sp-college-category *,
+    html body [data-testid="stMain"] .sp-college-stat-label,
+    html body [data-testid="stMain"] .sp-college-stat-value,
+    html body [data-testid="stMain"] .sp-college-match-value {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"],
+    html body [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"]:hover,
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"],
+    html body [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"]:hover {
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 14px !important;
+        background: #FFFFFF !important;
+        box-shadow: none !important;
+        transform: none !important;
     }
 
     html body [data-testid="stMain"] .sp-rec-star-filled,
@@ -6409,7 +6447,9 @@ st.markdown(
     html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"][data-testid="stVerticalBlock"],
     html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"][data-testid="stVerticalBlock"]:hover,
     html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"][data-testid="stVerticalBlockBorderWrapper"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"][data-testid="stVerticalBlockBorderWrapper"]:hover {
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_match_card_"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_match_card_"]):hover {
         background: #FFFFFF !important;
         background-color: #FFFFFF !important;
         border: 1px solid #D5DEE6 !important;
@@ -6423,6 +6463,8 @@ st.markdown(
         height: auto !important;
         overflow: visible !important;
         transform: none !important;
+        filter: none !important;
+        cursor: default !important;
         box-sizing: border-box !important;
     }
 
@@ -6431,7 +6473,9 @@ st.markdown(
     html body .stApp [data-testid="stMain"] [class*="st-key-project_match_card_"][data-testid="stVerticalBlock"],
     html body .stApp [data-testid="stMain"] [class*="st-key-project_match_card_"][data-testid="stVerticalBlock"]:hover,
     html body .stApp [data-testid="stMain"] [class*="st-key-project_match_card_"][data-testid="stVerticalBlockBorderWrapper"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-project_match_card_"][data-testid="stVerticalBlockBorderWrapper"]:hover {
+    html body .stApp [data-testid="stMain"] [class*="st-key-project_match_card_"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-project_match_card_"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-project_match_card_"]):hover {
         background: #FFFFFF !important;
         background-color: #FFFFFF !important;
         border: 1px solid #D5DEE6 !important;
@@ -6445,6 +6489,8 @@ st.markdown(
         height: auto !important;
         overflow: visible !important;
         transform: none !important;
+        filter: none !important;
+        cursor: default !important;
         box-sizing: border-box !important;
     }
 
@@ -6508,36 +6554,159 @@ st.markdown(
         height: auto !important;
     }
 
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-card-head h3,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-card-head h3 * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.65rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-category,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-category * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.2rem !important;
+        font-weight: 800 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 0.85rem !important;
+        align-items: stretch !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-info-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 0.65rem !important;
+        align-items: stretch !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .college-plain-stat,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .college-plain-stat:hover {
+        background: #F5F7F9 !important;
+        background-color: #F5F7F9 !important;
+        border: 1px solid #D5DEE6 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 1px 2px rgba(8, 60, 93, 0.04) !important;
+        padding: 0.62rem 0.72rem 0.68rem !important;
+        min-height: 102px !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        transform: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat-label,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .college-plain-stat-label {
+        font-size: 0.72rem !important;
+        font-weight: 800 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat-value,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .college-plain-stat-value {
+        font-size: 1.32rem !important;
+        font-weight: 800 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-match-value {
+        font-size: 1.55rem !important;
+        font-weight: 800 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat .sp-deadline-pill,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat .sp-deadline-pill * {
+        background: #E7F6FC !important;
+        border: 1px solid #B9E5F5 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        border-radius: 999px !important;
+        font-weight: 700 !important;
+    }
+
     html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"],
     html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"]:hover,
-    html body .stApp [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-project_match_card_"] [data-testid="stExpander"]:hover {
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_match_card_"]) [data-testid="stExpander"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_match_card_"]) [data-testid="stExpander"]:hover {
         background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
         border: 1px solid #D5DEE6 !important;
         border-width: 1px !important;
+        border-style: solid !important;
         border-color: #D5DEE6 !important;
         border-radius: 12px !important;
         box-shadow: none !important;
         transform: none !important;
     }
 
-    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat,
-    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat:hover {
-        background: #F5F7F9 !important;
-        background-color: #F5F7F9 !important;
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 10px !important;
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"] summary,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"] summary p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] [data-testid="stExpander"] summary span {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .stLinkButton > a {
+        min-height: 44px !important;
+        background: #FFFFFF !important;
+        border: 2px solid #63C7E8 !important;
+        border-radius: 12px !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .stLinkButton > a p {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .stButton > button:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .stLinkButton > a:hover {
+        background: #EAF7FC !important;
+        border-color: #4BB8DC !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        transform: none !important;
     }
 
     @media (max-width: 1100px) {
-        html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat-grid {
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat-grid,
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-info-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         }
     }
 
     @media (max-width: 768px) {
-        html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat-grid {
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat-grid,
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-info-grid {
             grid-template-columns: 1fr !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-card-head h3,
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-card-head h3 * {
+            font-size: 1.42rem !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-college_match_card_"] .sp-college-stat {
+            min-height: 0 !important;
         }
     }
 
@@ -11569,6 +11738,21 @@ OPPORTUNITY_OPENS_DATES = {
     "Einstein Enrichment Program": ("Varies", "estimated"),
     "Einstein–Montefiore Summer High School Research Program": ("Varies", "estimated"),
     "PROMYS": ("January 2027", "estimated"),
+    "MIT PRIMES-USA": ("September 2026", "estimated"),
+    "ACS Project SEED": ("February", "estimated"),
+    "Urban Barcode Research Program (UBRP)": ("Spring", "estimated"),
+    "Urban Barcode Project (UBP)": ("Fall", "estimated"),
+    "New York Bioforce": ("Winter", "estimated"),
+    "Navy Science and Engineering Apprenticeship Program (SEAP)": ("August 1", "estimated"),
+    "AEOP High School Internships": ("Varies by position", "estimated"),
+    "Wave Hill Woodland Ecology Research Mentorship (WERM)": ("Winter", "estimated"),
+    "RISE Environmentor Internship": ("November", "estimated"),
+    "Genspace Biorocket Research Internship": ("November 1", "estimated"),
+    "BEYOND ALBERT High School Research Program": ("November 1", "confirmed"),
+    "Project TRUE (Teens Researching Urban Ecology)": ("January", "estimated"),
+    "Bronx River EELS Internship": ("January", "estimated"),
+    "Hudson River Park Science Leadership Program": ("March", "estimated"),
+    "Wave Hill Forest Project": ("Winter", "estimated"),
 }
 
 
@@ -11643,6 +11827,81 @@ extra_df = pd.DataFrame(
     extra_opportunities
 )
 
+
+def canonical_opportunity_name(
+    name
+):
+
+    text = str(
+        name
+    ).strip()
+
+    return NAME_ALIASES.get(
+        text,
+        text
+    )
+
+
+PLACEHOLDER_MERGE_VALUES = {
+    "",
+    "nan",
+    "none",
+    "check official eligibility",
+    "unknown / check official site",
+    "not publicly reported",
+    "check official site",
+    "not specified",
+    "unknown",
+    "no aid stated",
+    "not stated"
+}
+
+
+def merge_opportunity_fields(
+    base,
+    overlay
+):
+
+    for key, value in overlay.items():
+
+        if value is None:
+            continue
+
+        text = str(
+            value
+        ).strip()
+
+        if (
+            not text
+            or
+            text.lower() in PLACEHOLDER_MERGE_VALUES
+        ):
+            continue
+
+        current = base.get(
+            key
+        )
+
+        current_text = (
+            ""
+            if current is None
+            else str(
+                current
+            ).strip().lower()
+        )
+
+        if (
+            key not in base
+            or
+            current is None
+            or
+            current_text in PLACEHOLDER_MERGE_VALUES
+        ):
+            base[key] = value
+
+    return base
+
+
 if opportunities.empty:
     opportunities = extra_df.copy()
 else:
@@ -11676,65 +11935,107 @@ else:
         if column not in opportunities.columns:
             opportunities[column] = default_value
 
-    # Enrich matching CSV rows before removing curated duplicates.  The CSV is
-    # the primary record used by recommendation cards, so simply dropping a
-    # matching curated row would also drop its Opportunity 2.0 fields.
-    normalized_existing_names = (
-        opportunities["name"]
-        .astype(str)
-        .str.strip()
-        .str.lower()
-    )
-    normalized_existing_urls = (
-        opportunities["url"]
-        .fillna("")
-        .astype(str)
-        .str.strip()
-        .str.lower()
-        .str.rstrip("/")
-    )
-    matched_curated_rows = []
+    extra_by_name = {}
 
-    for curated_index, curated_record in extra_df.to_dict(
-        "index"
-    ).items():
-        curated_name = str(
-            curated_record.get("name", "")
-        ).strip().lower()
-        curated_url = str(
-            curated_record.get("url", "")
-        ).strip().lower().rstrip("/")
+    for extra_row in extra_opportunities:
 
-        matching_rows = normalized_existing_names == curated_name
-        if curated_url:
-            matching_rows = (
-                matching_rows
-                | (normalized_existing_urls == curated_url)
+        extra_name = str(
+            extra_row.get(
+                "name",
+                ""
+            )
+        ).strip()
+
+        extra_by_name[extra_name.lower()] = extra_row
+        extra_by_name[
+            canonical_opportunity_name(
+                extra_name
+            ).lower()
+        ] = extra_row
+
+    merged_rows = []
+    used_extra_names = set()
+
+    for csv_row in opportunities.to_dict(
+        "records"
+    ):
+
+        csv_name = str(
+            csv_row.get(
+                "name",
+                ""
+            )
+        ).strip()
+
+        extra_match = extra_by_name.get(
+            csv_name.lower()
+        ) or extra_by_name.get(
+            canonical_opportunity_name(
+                csv_name
+            ).lower()
+        )
+
+        if extra_match:
+
+            csv_row = merge_opportunity_fields(
+                csv_row,
+                extra_match
             )
 
-        if matching_rows.any():
-            matched_curated_rows.append(curated_index)
-            for field, value in curated_record.items():
-                if field == "name":
-                    continue
-                if field not in opportunities.columns:
-                    opportunities[field] = None
-                elif opportunities[field].dtype != object:
-                    opportunities[field] = opportunities[field].astype(
-                        object
+            used_extra_names.add(
+                str(
+                    extra_match.get(
+                        "name",
+                        ""
                     )
-                opportunities.loc[matching_rows, field] = value
+                ).strip().lower()
+            )
 
-    extra_df = extra_df.drop(
-        index=matched_curated_rows
-    )
+            used_extra_names.add(
+                canonical_opportunity_name(
+                    extra_match.get(
+                        "name",
+                        ""
+                    )
+                ).lower()
+            )
 
-    opportunities = pd.concat(
-        [
-            opportunities,
-            extra_df
-        ],
-        ignore_index=True
+        merged_rows.append(
+            csv_row
+        )
+
+    leftover_extra = []
+
+    for extra_row in extra_opportunities:
+
+        extra_name = str(
+            extra_row.get(
+                "name",
+                ""
+            )
+        ).strip().lower()
+
+        extra_canonical = canonical_opportunity_name(
+            extra_row.get(
+                "name",
+                ""
+            )
+        ).lower()
+
+        if (
+            extra_name in used_extra_names
+            or
+            extra_canonical in used_extra_names
+        ):
+            continue
+
+        leftover_extra.append(
+            extra_row
+        )
+
+    opportunities = pd.DataFrame(
+        merged_rows
+        + leftover_extra
     )
 
 opportunities = pd.DataFrame(
@@ -11815,7 +12116,6 @@ def opportunity_field(
                 "check official site",
                 "not specified",
                 "unknown",
-                "no aid stated",
                 "not stated",
                 "nan",
                 "none"
@@ -11834,11 +12134,8 @@ def opportunity_cost_display(
         opportunity,
         "cost",
         "cost_category",
-        fallback="Unknown / check official site"
+        fallback="Check official site"
     )
-
-    if cost.lower() == "free":
-        return "Free"
 
     tuition = opportunity_field(
         opportunity,
@@ -11846,104 +12143,65 @@ def opportunity_cost_display(
         fallback=""
     )
 
-    if (
-        tuition
-        and
-        tuition.lower() not in cost.lower()
-        and
-        cost.lower() in {
-            "tuition required",
-            "tuition-based",
-            "paid program"
-        }
-    ):
-        return f"{cost} — {tuition}"
+    if cost.lower() == "free":
+        return "Free"
+
+    if cost.lower() in {
+        "tuition required",
+        "tuition-based",
+        "paid program"
+    }:
+
+        if tuition:
+
+            if tuition.lower().startswith(
+                "tuition required"
+            ):
+                return tuition
+
+            return (
+                "Tuition required: "
+                + tuition
+            )
+
+        return "Paid program"
+
+    if cost.lower() in {
+        "unknown / check official site",
+        "unknown"
+    }:
+
+        if tuition:
+            return tuition
+
+        return "Check official site"
 
     return cost
-
-
-def opportunity_eligibility_display(
-    opportunity
-):
-
-    eligibility = opportunity_field(
-        opportunity,
-        "eligibility_summary",
-        "requirements",
-        "application_requirements",
-        fallback=""
-    )
-
-    if eligibility:
-        return eligibility
-
-    details = []
-
-    grades = opportunity_field(
-        opportunity,
-        "eligible_grades",
-        "grades",
-        fallback=""
-    )
-
-    if grades:
-        details.append(
-            f"Grades {grades.replace(';', ', ')}"
-        )
-
-    age = opportunity_field(
-        opportunity,
-        "age_requirements",
-        "age_range",
-        fallback=""
-    )
-
-    if age and age.lower() not in " ".join(details).lower():
-        details.append(age)
-
-    return " • ".join(details) or "Check official eligibility"
-
-
-def opportunity_financial_aid_display(
-    opportunity,
-    cost
-):
-
-    aid = opportunity_field(
-        opportunity,
-        "financial_aid_status",
-        "financial_aid",
-        "scholarship_availability",
-        fallback=""
-    )
-
-    if cost == "Free":
-        if not aid or aid.lower() in {
-            "not needed",
-            "not needed — program is free",
-            "not needed — program is completely free"
-        }:
-            return "Not needed — program is fully funded"
-
-    if aid:
-        return aid
-
-    raw_aid = opportunity_text(
-        opportunity.get(
-            "financial_aid"
-        ),
-        ""
-    )
-
-    if raw_aid:
-        return raw_aid
-
-    return "Unknown / check official site"
 
 
 def opportunity_acceptance_source_label(
     opportunity
 ):
+
+    confidence = opportunity_text(
+        opportunity.get(
+            "acceptance_rate_confidence"
+        ),
+        ""
+    )
+
+    if confidence.startswith(
+        "Estimated"
+    ):
+        return "Unofficial estimate"
+
+    mapped = CONFIDENCE_SOURCE_LABEL.get(
+        confidence,
+        ""
+    )
+
+    if mapped:
+        return mapped
 
     source = opportunity_field(
         opportunity,
@@ -11954,23 +12212,14 @@ def opportunity_acceptance_source_label(
     if source:
         return source
 
-    confidence = opportunity_text(
-        opportunity.get(
-            "acceptance_rate_confidence"
-        ),
-        "Not available"
-    )
-
-    return CONFIDENCE_SOURCE_LABEL.get(
-        confidence,
-        ""
-    )
+    return ""
 
 
 def opportunity_stat_html(
     label,
     value,
-    note=""
+    note="",
+    html_value=False
 ):
 
     note_html = ""
@@ -11987,6 +12236,17 @@ def opportunity_stat_html(
             + '</div>'
         )
 
+    if html_value:
+        value_html = str(
+            value
+        )
+    else:
+        value_html = html_module.escape(
+            str(
+                value
+            )
+        )
+
     return (
         '<div class="sp-deadline-stat">'
         '<div class="sp-deadline-stat-label">'
@@ -11997,14 +12257,1062 @@ def opportunity_stat_html(
         )
         + '</div>'
         '<div class="sp-deadline-stat-value">'
-        + html_module.escape(
-            str(
-                value
-            )
-        )
+        + value_html
         + note_html
         + '</div>'
         '</div>'
+    )
+
+
+def opportunity_transparency_stats_html(
+    opportunity
+):
+
+    eligibility = opportunity_field(
+        opportunity,
+        "eligibility_summary",
+        "requirements",
+        "application_requirements",
+        fallback="Check official eligibility"
+    )
+
+    cost = opportunity_cost_display(
+        opportunity
+    )
+
+    aid = opportunity_field(
+        opportunity,
+        "financial_aid_status",
+        "financial_aid",
+        fallback="Unknown / check official site"
+    )
+
+    if (
+        cost == "Free"
+        and
+        aid.lower() in {
+            "not needed",
+            "not needed — program is free",
+            "not needed — program is completely free"
+        }
+    ):
+        aid = "Not needed — program is fully funded"
+
+    stipend = opportunity_field(
+        opportunity,
+        "stipend_display",
+        "stipend",
+        "paid_status",
+        fallback="Check official site"
+    )
+
+    rate = opportunity_field(
+        opportunity,
+        "acceptance_rate",
+        fallback="Not publicly reported"
+    )
+
+    source_label = opportunity_acceptance_source_label(
+        opportunity
+    )
+
+    return (
+        opportunity_stat_html(
+            "Eligibility",
+            eligibility
+        )
+        + opportunity_stat_html(
+            "Cost",
+            cost
+        )
+        + opportunity_stat_html(
+            "Financial Aid",
+            aid
+        )
+        + opportunity_stat_html(
+            "Stipend",
+            stipend
+        )
+        + opportunity_stat_html(
+            "Acceptance Rate",
+            rate,
+            source_label
+        )
+    )
+
+
+def opportunity_window_status(
+    opportunity
+):
+
+    raw_status = opportunity_text(
+        opportunity.get(
+            "application_status",
+            ""
+        )
+    )
+
+    status_lower = raw_status.lower()
+
+    deadline_dt = parse_confirmed_deadline(
+        opportunity.get(
+            "deadline"
+        )
+    )
+
+    days_left = None
+
+    if deadline_dt is not None:
+
+        now_local = datetime.now(
+            timezone.utc
+        )
+
+        if deadline_dt.tzinfo is None:
+
+            compare_deadline = deadline_dt.replace(
+                tzinfo=timezone.utc
+            )
+
+        else:
+
+            compare_deadline = deadline_dt.astimezone(
+                timezone.utc
+            )
+
+        days_left = (
+            compare_deadline.date()
+            -
+            now_local.date()
+        ).days
+
+    if (
+        days_left is not None
+        and
+        days_left < 0
+    ):
+        return "CLOSED"
+
+    if "closed" in status_lower:
+        return "CLOSED"
+
+    if (
+        "open now" in status_lower
+        or
+        status_lower == "open"
+        or
+        status_lower.startswith("open ")
+    ):
+        return "OPEN NOW"
+
+    if (
+        "future cycle" in status_lower
+        or
+        "opens " in status_lower
+        or
+        "not yet" in status_lower
+        or
+        "upcoming" in status_lower
+        or
+        status_lower == "future"
+    ):
+        return "UPCOMING"
+
+    if (
+        days_left is not None
+        and
+        days_left >= 0
+    ):
+        return "OPEN NOW"
+
+    return "UPCOMING"
+
+
+def application_cycle_badge(
+    opportunity
+):
+
+    raw_status = opportunity_text(
+        opportunity.get(
+            "application_status",
+            ""
+        )
+        if opportunity is not None
+        else ""
+    )
+
+    status_lower = raw_status.lower()
+    window = "UPCOMING"
+
+    if opportunity is not None:
+
+        try:
+
+            window = opportunity_window_status(
+                opportunity
+            )
+
+        except Exception:
+
+            window = "UPCOMING"
+
+    if (
+        window == "CLOSED"
+        or
+        "closed" in status_lower
+    ):
+        return (
+            "CLOSED",
+            "sp-deadline-badge-closed"
+        )
+
+    if (
+        window == "OPEN NOW"
+        or
+        "open now" in status_lower
+        or
+        status_lower == "open"
+    ):
+        return (
+            "OPEN NOW",
+            "sp-deadline-badge-open"
+        )
+
+    if (
+        "future cycle" in status_lower
+        or
+        status_lower == "future"
+        or
+        "opens " in status_lower
+        or
+        "not yet" in status_lower
+    ):
+        return (
+            "FUTURE CYCLE",
+            "sp-deadline-badge-future"
+        )
+
+    if (
+        window == "UPCOMING"
+        or
+        "upcoming" in status_lower
+    ):
+        return (
+            "UPCOMING",
+            "sp-deadline-badge-upcoming"
+        )
+
+    return (
+        "FUTURE CYCLE",
+        "sp-deadline-badge-future"
+    )
+
+
+def application_saved_card_html(
+    name,
+    organization,
+    opp_type,
+    cost,
+    deadline,
+    cycle,
+    badge_label,
+    badge_class
+):
+
+    name_safe = html_module.escape(
+        name or "Saved Opportunity"
+    )
+    org_safe = html_module.escape(
+        organization or ""
+    )
+    type_safe = html_module.escape(
+        opp_type or "Not listed"
+    )
+    cost_safe = html_module.escape(
+        cost or "Not listed"
+    )
+    deadline_safe = html_module.escape(
+        deadline or "Not listed"
+    )
+    cycle_safe = html_module.escape(
+        cycle or "Not listed"
+    )
+    badge_safe = html_module.escape(
+        badge_label or "FUTURE CYCLE"
+    )
+    badge_class_safe = html_module.escape(
+        badge_class or "sp-deadline-badge-future"
+    )
+
+    org_html = (
+        f'<p class="sp-rec-org">{org_safe}</p>'
+        if org_safe
+        else ""
+    )
+
+    return (
+        '<div class="sp-deadline-card sp-app-card">'
+        f'<span class="sp-deadline-badge {badge_class_safe}">'
+        f'{badge_safe}'
+        '</span>'
+        f'<h3>{name_safe}</h3>'
+        f'{org_html}'
+        '<div class="sp-app-info-grid">'
+        '<div class="sp-app-stat">'
+        '<div class="sp-app-stat-label">Type</div>'
+        f'<div class="sp-app-stat-value">{type_safe}</div>'
+        '</div>'
+        '<div class="sp-app-stat">'
+        '<div class="sp-app-stat-label">Cost</div>'
+        f'<div class="sp-app-stat-value">{cost_safe}</div>'
+        '</div>'
+        '<div class="sp-app-stat">'
+        '<div class="sp-app-stat-label">Deadline</div>'
+        f'<div class="sp-app-stat-value sp-app-deadline-value">{deadline_safe}</div>'
+        '</div>'
+        '<div class="sp-app-stat">'
+        '<div class="sp-app-stat-label">Program Cycle</div>'
+        f'<div class="sp-app-stat-value">{cycle_safe}</div>'
+        '</div>'
+        '</div>'
+        '</div>'
+    )
+
+
+def opportunity_selectivity_stars_html(
+    opportunity
+):
+
+    raw_stars = pd.to_numeric(
+        opportunity.get(
+            "selectivity_stars",
+            0
+        ),
+        errors="coerce"
+    )
+
+    if (
+        pd.notna(
+            raw_stars
+        )
+        and
+        int(
+            raw_stars
+        )
+        > 0
+    ):
+
+        stars = max(
+            1,
+            min(
+                5,
+                int(
+                    raw_stars
+                )
+            )
+        )
+
+    else:
+
+        label = opportunity_text(
+            opportunity.get(
+                "selectivity",
+                ""
+            )
+        ).lower()
+
+        if "extremely competitive" in label:
+            stars = 5
+
+        elif "highly competitive" in label:
+            stars = 4
+
+        elif (
+            "moderately competitive" in label
+            or
+            "competitive" in label
+        ):
+            stars = 3
+
+        elif "eligibility based" in label:
+            stars = 2
+
+        elif (
+            "accessible" in label
+            or
+            "lottery" in label
+            or
+            "placement based" in label
+        ):
+            stars = 1
+
+        else:
+            stars = 3
+
+    stars_html = (
+        '<span class="sp-rec-star-filled">'
+        + ("★" * stars)
+        + '</span>'
+        + '<span class="sp-rec-star-empty">'
+        + ("★" * (5 - stars))
+        + '</span>'
+    )
+
+    selectivity_label = opportunity_text(
+        opportunity.get(
+            "selectivity",
+            ""
+        )
+    )
+
+    if selectivity_label:
+
+        stars_html += (
+            '<div class="sp-rec-selectivity-note">'
+            + html_module.escape(
+                selectivity_label
+            )
+            + '</div>'
+        )
+
+    return stars_html
+
+
+def opportunity_fields_pills_html(
+    opportunity
+):
+
+    raw = opportunity_text(
+        opportunity.get(
+            "fields",
+            ""
+        )
+    )
+
+    if not raw:
+        return ""
+
+    labels = []
+
+    for chunk in raw.replace(
+        ",",
+        ";"
+    ).split(";"):
+
+        label = chunk.strip()
+
+        if (
+            label
+            and
+            label not in labels
+        ):
+            labels.append(
+                label
+            )
+
+    if not labels:
+        return ""
+
+    return (
+        '<div class="sp-deadline-fields">'
+        + "".join(
+            [
+                '<span class="sp-deadline-pill">'
+                + html_module.escape(
+                    str(label)
+                )
+                + '</span>'
+                for label in labels
+            ]
+        )
+        + '</div>'
+    )
+
+
+def opportunity_dash_pill_html(
+    text,
+    tone="blue"
+):
+
+    return (
+        f'<span class="sp-rec-pill sp-rec-pill-{tone}">'
+        + html_module.escape(
+            str(
+                text
+            )
+        )
+        + '</span>'
+    )
+
+
+def opportunity_dash_stat_html(
+    label,
+    value_html,
+    featured=False,
+    muted=False,
+    extra_class="",
+    note=""
+):
+
+    classes = [
+        "sp-rec-stat"
+    ]
+
+    if featured:
+        classes.append(
+            "sp-rec-stat-featured"
+        )
+
+    if muted:
+        classes.append(
+            "sp-rec-stat-muted"
+        )
+
+    if extra_class:
+        classes.append(
+            extra_class
+        )
+
+    note_html = ""
+
+    if note:
+
+        note_html = (
+            '<div class="sp-rec-stat-note">'
+            + html_module.escape(
+                str(
+                    note
+                )
+            )
+            + '</div>'
+        )
+
+    return (
+        f'<div class="{" ".join(classes)}">'
+        '<div class="sp-rec-stat-label">'
+        + html_module.escape(
+            str(
+                label
+            )
+        )
+        + '</div>'
+        '<div class="sp-rec-stat-value">'
+        + str(
+            value_html
+        )
+        + '</div>'
+        + note_html
+        + '</div>'
+    )
+
+
+def opportunity_acceptance_note_short(
+    opportunity,
+    rate_unknown
+):
+
+    confidence = opportunity_text(
+        opportunity.get(
+            "acceptance_rate_confidence"
+        ),
+        ""
+    ).lower()
+
+    if confidence.startswith(
+        "estimated"
+    ):
+        return "Estimated"
+
+    if confidence.startswith(
+        "official"
+    ):
+        return "Official"
+
+    if confidence.startswith(
+        "calculated"
+    ):
+        return "Calculated"
+
+    if rate_unknown:
+        return "Not publicly reported"
+
+    source_label = opportunity_acceptance_source_label(
+        opportunity
+    ).lower()
+
+    if "estimate" in source_label:
+        return "Estimated"
+
+    if "calculated" in source_label:
+        return "Calculated"
+
+    if source_label.startswith(
+        "official"
+    ):
+        return "Official"
+
+    if "not publicly" in source_label:
+        return "Not publicly reported"
+
+    return opportunity_acceptance_source_label(
+        opportunity
+    )
+
+
+def opportunity_eligibility_card_html(
+    opportunity
+):
+
+    summary = opportunity_field(
+        opportunity,
+        "eligibility_summary",
+        "requirements",
+        "application_requirements",
+        fallback=""
+    )
+
+    placeholders = {
+        "check official eligibility",
+        "check official site",
+        "unknown / check official site",
+        "see official eligibility",
+        "unknown"
+    }
+
+    lines = []
+
+    if (
+        summary
+        and
+        summary.lower() not in placeholders
+    ):
+
+        for chunk in re.split(
+            r"[;]",
+            summary
+        ):
+
+            piece = chunk.strip()
+
+            if piece:
+                lines.append(
+                    piece
+                )
+
+        lines = lines[:2]
+
+    else:
+
+        age = opportunity_field(
+            opportunity,
+            "age_requirements",
+            "age_range",
+            fallback=""
+        )
+
+        if (
+            age
+            and
+            age.lower() not in placeholders
+            and
+            age.lower() != "not stated"
+        ):
+            lines.append(
+                age
+            )
+
+        grades_raw = opportunity_field(
+            opportunity,
+            "eligible_grades",
+            "grades",
+            fallback=""
+        )
+
+        if grades_raw:
+
+            parts = [
+                part.strip()
+                for part in grades_raw.replace(
+                    ",",
+                    ";"
+                ).split(";")
+                if part.strip()
+            ]
+
+            if (
+                parts
+                and
+                all(
+                    part.isdigit()
+                    for part in parts
+                )
+            ):
+
+                if len(parts) == 1:
+                    lines.append(
+                        f"Grade {parts[0]}"
+                    )
+                else:
+                    lines.append(
+                        f"Grades {parts[0]}–{parts[-1]}"
+                    )
+
+            elif grades_raw.lower().startswith(
+                "grade"
+            ):
+                lines.append(
+                    grades_raw
+                )
+            else:
+                lines.append(
+                    "Grades "
+                    + grades_raw.replace(
+                        ";",
+                        ", "
+                    )
+                )
+
+        nyc_res = opportunity_text(
+            opportunity.get(
+                "nyc_residency_required"
+            ),
+            ""
+        )
+
+        if nyc_res.lower().startswith(
+            "yes"
+        ):
+            lines.append(
+                "NYC resident required"
+            )
+
+    if not lines:
+        return html_module.escape(
+            "See official eligibility"
+        )
+
+    return " • ".join(
+        [
+            html_module.escape(
+                line
+            )
+            for line in lines[:2]
+        ]
+    )
+
+
+def opportunity_opens_display(opportunity):
+
+    kind = opportunity_text(
+        opportunity.get(
+            "opens_date_type"
+        ),
+        ""
+    ).lower()
+    raw = opportunity_field(
+        opportunity,
+        "application_opens",
+        "opens_date",
+        fallback=""
+    )
+    raw_lower = raw.lower()
+
+    unknown_markers = (
+        "not yet announced",
+        "not announced",
+        "future cycle",
+        "check official",
+        "tbd"
+    )
+
+    if kind == "confirmed" and raw:
+        return f"Opens: {raw}"
+
+    if kind == "estimated" and raw:
+        return f"Expected to open: {raw}"
+
+    if (
+        not raw
+        or
+        any(
+            marker in raw_lower
+            for marker in unknown_markers
+        )
+        or
+        "opened" in raw_lower
+    ):
+        return "Opening date: Not announced"
+
+    exact_date = re.fullmatch(
+        r"(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}",
+        raw
+    )
+
+    if exact_date:
+        return f"Opens: {raw}"
+
+    cleaned = raw
+
+    for prefix in (
+        "typically ",
+        "expected to open ",
+        "expected ",
+        "applications typically open in "
+    ):
+        if cleaned.lower().startswith(prefix):
+            cleaned = cleaned[len(prefix):].strip()
+            break
+
+    return f"Expected to open: {cleaned or raw}"
+
+
+def opportunity_info_grid_html(
+    opportunity
+):
+
+    eligibility_html = opportunity_eligibility_card_html(
+        opportunity
+    )
+
+    cost = opportunity_cost_display(
+        opportunity
+    )
+
+    if cost == "Unknown / check official site":
+        cost = "Check official site"
+
+    aid = opportunity_field(
+        opportunity,
+        "financial_aid_status",
+        "financial_aid",
+        fallback="Check official site"
+    )
+
+    if aid == "Unknown / check official site":
+        aid = "Check official site"
+
+    if (
+        cost == "Free"
+        and
+        aid.lower() in {
+            "not needed",
+            "not needed — program is free",
+            "not needed — program is completely free"
+        }
+    ):
+        aid = "Not needed — program is fully funded"
+
+    stipend = opportunity_field(
+        opportunity,
+        "stipend_display",
+        "stipend",
+        "paid_status",
+        fallback="Check official site"
+    )
+
+    rate = opportunity_field(
+        opportunity,
+        "acceptance_rate",
+        fallback="Not publicly reported"
+    )
+
+    type_value = opportunity_field(
+        opportunity,
+        "opportunity_type",
+        fallback="Not listed"
+    )
+
+    deadline = opportunity_field(
+        opportunity,
+        "deadline",
+        fallback="Check official site"
+    )
+
+    internship = opportunity_field(
+        opportunity,
+        "internship_potential",
+        fallback="Not specified"
+    )
+
+    rate_lower = rate.lower()
+    rate_unknown = (
+        "not publicly" in rate_lower
+        or
+        rate_lower in {
+            "check official site",
+            "unknown",
+            "not available",
+            "n/a"
+        }
+    )
+
+    rate_note = ""
+
+    if not rate_unknown:
+        rate_note = opportunity_acceptance_note_short(
+            opportunity,
+            rate_unknown
+        )
+
+    stars_html = opportunity_selectivity_stars_html(
+        opportunity
+    )
+    stars_only = re.sub(
+        r'<div class="sp-rec-selectivity-note">.*?</div>',
+        "",
+        stars_html,
+        flags=re.S
+    )
+    selectivity_label = opportunity_text(
+        opportunity.get(
+            "selectivity",
+            ""
+        )
+    )
+    selectivity_value = (
+        '<div class="sp-rec-stat-stars">'
+        + stars_only
+        + '</div>'
+    )
+
+    if selectivity_label:
+        selectivity_value += html_module.escape(
+            selectivity_label
+        )
+
+    return (
+        '<div class="sp-rec-info-grid">'
+        + opportunity_dash_stat_html(
+            "Eligibility",
+            eligibility_html
+        )
+        + opportunity_dash_stat_html(
+            "Cost",
+            html_module.escape(
+                cost
+            )
+        )
+        + opportunity_dash_stat_html(
+            "Financial Aid",
+            html_module.escape(
+                aid
+            )
+        )
+        + opportunity_dash_stat_html(
+            "Stipend",
+            html_module.escape(
+                stipend
+            )
+        )
+        + opportunity_dash_stat_html(
+            "Acceptance Rate",
+            html_module.escape(
+                rate
+            ),
+            note=rate_note
+        )
+        + opportunity_dash_stat_html(
+            "Type",
+            html_module.escape(
+                type_value
+            )
+        )
+        + opportunity_dash_stat_html(
+            "Selectivity",
+            selectivity_value
+        )
+        + opportunity_dash_stat_html(
+            "Deadline",
+            html_module.escape(
+                deadline
+            ),
+            note=opportunity_opens_display(
+                opportunity
+            )
+        )
+        + opportunity_dash_stat_html(
+            "Internship Potential",
+            html_module.escape(
+                internship
+            )
+        )
+        + '</div>'
+    )
+
+
+def opportunity_recommendation_card_html(
+    opportunity,
+    match_score
+):
+
+    window_status = opportunity_window_status(
+        opportunity
+    )
+
+    if window_status == "OPEN NOW":
+        badge_class = "sp-deadline-badge-open"
+    elif window_status == "CLOSED":
+        badge_class = "sp-deadline-badge-closed"
+    else:
+        badge_class = "sp-deadline-badge-upcoming"
+
+    name_safe = html_module.escape(
+        opportunity_text(
+            opportunity.get(
+                "name",
+                "Opportunity"
+            ),
+            "Opportunity"
+        )
+    )
+
+    org_safe = html_module.escape(
+        opportunity_text(
+            opportunity.get(
+                "organization",
+                ""
+            )
+        )
+    )
+
+    desc_safe = html_module.escape(
+        opportunity_text(
+            opportunity.get(
+                "description",
+                ""
+            )
+        )
+    )
+
+    match_safe = html_module.escape(
+        str(
+            match_score
+        )
+    )
+
+    return (
+        '<div class="sp-deadline-card">'
+        f'<span class="sp-deadline-badge {badge_class}">'
+        f'{window_status}'
+        '</span>'
+        '<div class="sp-rec-header">'
+        '<div class="sp-rec-heading">'
+        f'<h3>{name_safe}</h3>'
+        f'<p class="sp-rec-org">{org_safe}</p>'
+        '</div>'
+        '<div class="sp-rec-match">'
+        '<div class="sp-rec-match-label">Your Match</div>'
+        f'<div class="sp-rec-match-value">{match_safe}%</div>'
+        '</div>'
+        '</div>'
+        f'<p class="sp-rec-desc">{desc_safe}</p>'
+        + opportunity_info_grid_html(
+            opportunity
+        )
+        + opportunity_fields_pills_html(
+            opportunity
+        )
+        + '</div>'
     )
 
 
@@ -13765,1178 +15073,6 @@ def favorite_college_card_html(
     )
 
 
-def opportunity_transparency_stats_html(
-    opportunity
-):
-
-    eligibility = opportunity_eligibility_display(
-        opportunity,
-    )
-
-    cost = opportunity_cost_display(
-        opportunity
-    )
-
-    aid = opportunity_financial_aid_display(
-        opportunity,
-        cost
-    )
-
-    stipend = opportunity_field(
-        opportunity,
-        "stipend_display",
-        "stipend",
-        "paid_status",
-        fallback="Check official site"
-    )
-
-    rate = opportunity_field(
-        opportunity,
-        "acceptance_rate",
-        fallback="Not publicly reported"
-    )
-
-    source_label = opportunity_acceptance_source_label(
-        opportunity
-    )
-
-    return (
-        opportunity_stat_html(
-            "Eligibility",
-            eligibility
-        )
-        + opportunity_stat_html(
-            "Cost",
-            cost
-        )
-        + opportunity_stat_html(
-            "Financial Aid",
-            aid
-        )
-        + opportunity_stat_html(
-            "Stipend",
-            stipend
-        )
-        + opportunity_stat_html(
-            "Acceptance Rate",
-            rate,
-            source_label
-        )
-    )
-
-
-def opportunity_window_status(
-    opportunity
-):
-
-    raw_status = opportunity_text(
-        opportunity.get(
-            "application_status",
-            ""
-        )
-    )
-
-    status_lower = raw_status.lower()
-
-    deadline_dt = parse_confirmed_deadline(
-        opportunity.get(
-            "deadline"
-        )
-    )
-
-    days_left = None
-
-    if deadline_dt is not None:
-
-        now_local = datetime.now(
-            timezone.utc
-        )
-
-        if deadline_dt.tzinfo is None:
-
-            compare_deadline = deadline_dt.replace(
-                tzinfo=timezone.utc
-            )
-
-        else:
-
-            compare_deadline = deadline_dt.astimezone(
-                timezone.utc
-            )
-
-        days_left = (
-            compare_deadline.date()
-            -
-            now_local.date()
-        ).days
-
-    if (
-        days_left is not None
-        and
-        days_left < 0
-    ):
-        return "CLOSED"
-
-    if "closed" in status_lower:
-        return "CLOSED"
-
-    if (
-        "open now" in status_lower
-        or
-        status_lower == "open"
-        or
-        status_lower.startswith("open ")
-    ):
-        return "OPEN NOW"
-
-    if (
-        "future cycle" in status_lower
-        or
-        "opens " in status_lower
-        or
-        "not yet" in status_lower
-        or
-        "upcoming" in status_lower
-        or
-        status_lower == "future"
-    ):
-        return "UPCOMING"
-
-    if (
-        days_left is not None
-        and
-        days_left >= 0
-    ):
-        return "OPEN NOW"
-
-    return "UPCOMING"
-
-
-def application_cycle_badge(
-    opportunity
-):
-
-    raw_status = opportunity_text(
-        opportunity.get(
-            "application_status",
-            ""
-        )
-        if opportunity is not None
-        else ""
-    )
-
-    status_lower = raw_status.lower()
-    window = "UPCOMING"
-
-    if opportunity is not None:
-
-        try:
-
-            window = opportunity_window_status(
-                opportunity
-            )
-
-        except Exception:
-
-            window = "UPCOMING"
-
-    if (
-        window == "CLOSED"
-        or
-        "closed" in status_lower
-    ):
-        return (
-            "CLOSED",
-            "sp-deadline-badge-closed"
-        )
-
-    if (
-        window == "OPEN NOW"
-        or
-        "open now" in status_lower
-        or
-        status_lower == "open"
-    ):
-        return (
-            "OPEN NOW",
-            "sp-deadline-badge-open"
-        )
-
-    if (
-        "future cycle" in status_lower
-        or
-        status_lower == "future"
-        or
-        "opens " in status_lower
-        or
-        "not yet" in status_lower
-    ):
-        return (
-            "FUTURE CYCLE",
-            "sp-deadline-badge-future"
-        )
-
-    if (
-        window == "UPCOMING"
-        or
-        "upcoming" in status_lower
-    ):
-        return (
-            "UPCOMING",
-            "sp-deadline-badge-upcoming"
-        )
-
-    return (
-        "FUTURE CYCLE",
-        "sp-deadline-badge-future"
-    )
-
-
-def application_saved_card_html(
-    name,
-    organization,
-    opp_type,
-    cost,
-    deadline,
-    cycle,
-    badge_label,
-    badge_class
-):
-
-    name_safe = html_module.escape(
-        name or "Saved Opportunity"
-    )
-    org_safe = html_module.escape(
-        organization or ""
-    )
-    type_safe = html_module.escape(
-        opp_type or "Not listed"
-    )
-    cost_safe = html_module.escape(
-        cost or "Not listed"
-    )
-    deadline_safe = html_module.escape(
-        deadline or "Not listed"
-    )
-    cycle_safe = html_module.escape(
-        cycle or "Not listed"
-    )
-    badge_safe = html_module.escape(
-        badge_label or "FUTURE CYCLE"
-    )
-    badge_class_safe = html_module.escape(
-        badge_class or "sp-deadline-badge-future"
-    )
-
-    org_html = (
-        f'<p class="sp-rec-org">{org_safe}</p>'
-        if org_safe
-        else ""
-    )
-
-    return (
-        '<div class="sp-deadline-card sp-app-card">'
-        f'<span class="sp-deadline-badge {badge_class_safe}">'
-        f'{badge_safe}'
-        '</span>'
-        f'<h3>{name_safe}</h3>'
-        f'{org_html}'
-        '<div class="sp-app-info-grid">'
-        '<div class="sp-app-stat">'
-        '<div class="sp-app-stat-label">Type</div>'
-        f'<div class="sp-app-stat-value">{type_safe}</div>'
-        '</div>'
-        '<div class="sp-app-stat">'
-        '<div class="sp-app-stat-label">Cost</div>'
-        f'<div class="sp-app-stat-value">{cost_safe}</div>'
-        '</div>'
-        '<div class="sp-app-stat">'
-        '<div class="sp-app-stat-label">Deadline</div>'
-        f'<div class="sp-app-stat-value sp-app-deadline-value">{deadline_safe}</div>'
-        '</div>'
-        '<div class="sp-app-stat">'
-        '<div class="sp-app-stat-label">Program Cycle</div>'
-        f'<div class="sp-app-stat-value">{cycle_safe}</div>'
-        '</div>'
-        '</div>'
-        '</div>'
-    )
-
-
-def opportunity_selectivity_stars_html(
-    opportunity
-):
-
-    raw_stars = pd.to_numeric(
-        opportunity.get(
-            "selectivity_stars",
-            0
-        ),
-        errors="coerce"
-    )
-
-    if (
-        pd.notna(
-            raw_stars
-        )
-        and
-        int(
-            raw_stars
-        )
-        > 0
-    ):
-
-        stars = max(
-            1,
-            min(
-                5,
-                int(
-                    raw_stars
-                )
-            )
-        )
-
-    else:
-
-        label = opportunity_text(
-            opportunity.get(
-                "selectivity",
-                ""
-            )
-        ).lower()
-
-        if "extremely competitive" in label:
-            stars = 5
-
-        elif "highly competitive" in label:
-            stars = 4
-
-        elif (
-            "moderately competitive" in label
-            or
-            "competitive" in label
-        ):
-            stars = 3
-
-        elif "eligibility based" in label:
-            stars = 2
-
-        elif (
-            "accessible" in label
-            or
-            "lottery" in label
-            or
-            "placement based" in label
-        ):
-            stars = 1
-
-        else:
-            stars = 3
-
-    stars_html = (
-        '<span class="sp-rec-star-filled">'
-        + ("★" * stars)
-        + '</span>'
-        + '<span class="sp-rec-star-empty">'
-        + ("★" * (5 - stars))
-        + '</span>'
-    )
-
-    selectivity_label = opportunity_text(
-        opportunity.get(
-            "selectivity",
-            ""
-        )
-    )
-
-    if selectivity_label:
-
-        stars_html += (
-            '<div class="sp-rec-selectivity-note">'
-            + html_module.escape(
-                selectivity_label
-            )
-            + '</div>'
-        )
-
-    return stars_html
-
-
-def opportunity_dash_pill_html(
-    text,
-    tone="blue"
-):
-
-    return (
-        f'<span class="sp-rec-pill sp-rec-pill-{tone}">'
-        + html_module.escape(
-            str(
-                text
-            )
-        )
-        + '</span>'
-    )
-
-
-def opportunity_dash_stat_html(
-    label,
-    value_html,
-    featured=False,
-    muted=False,
-    extra_class="",
-    note=""
-):
-
-    classes = [
-        "sp-rec-stat"
-    ]
-
-    if featured:
-        classes.append(
-            "sp-rec-stat-featured"
-        )
-
-    if muted:
-        classes.append(
-            "sp-rec-stat-muted"
-        )
-
-    if extra_class:
-        classes.append(
-            extra_class
-        )
-
-    note_html = ""
-
-    if note:
-
-        note_html = (
-            '<div class="sp-rec-stat-note">'
-            + html_module.escape(
-                str(
-                    note
-                )
-            )
-            + '</div>'
-        )
-
-    return (
-        f'<div class="{" ".join(classes)}">'
-        '<div class="sp-rec-stat-label">'
-        + html_module.escape(
-            str(
-                label
-            )
-        )
-        + '</div>'
-        '<div class="sp-rec-stat-value">'
-        + str(
-            value_html
-        )
-        + '</div>'
-        + note_html
-        + '</div>'
-    )
-
-
-def opportunity_acceptance_note_short(
-    opportunity,
-    rate_unknown
-):
-
-    confidence = opportunity_text(
-        opportunity.get(
-            "acceptance_rate_confidence"
-        ),
-        ""
-    ).lower()
-
-    if confidence.startswith(
-        "estimated"
-    ):
-        return "Estimated"
-
-    if confidence.startswith(
-        "official"
-    ):
-        return "Official"
-
-    if confidence.startswith(
-        "calculated"
-    ):
-        return "Calculated"
-
-    if rate_unknown:
-        return "Not publicly reported"
-
-    source_label = opportunity_acceptance_source_label(
-        opportunity
-    ).lower()
-
-    if "estimate" in source_label:
-        return "Estimated"
-
-    if "calculated" in source_label:
-        return "Calculated"
-
-    if source_label.startswith(
-        "official"
-    ):
-        return "Official"
-
-    if "not publicly" in source_label:
-        return "Not publicly reported"
-
-    return opportunity_acceptance_source_label(
-        opportunity
-    )
-
-
-def opportunity_eligibility_card_html(
-    opportunity
-):
-
-    summary = opportunity_field(
-        opportunity,
-        "eligibility_summary",
-        "requirements",
-        "application_requirements",
-        fallback=""
-    )
-
-    placeholders = {
-        "check official eligibility",
-        "check official site",
-        "unknown / check official site",
-        "see official eligibility",
-        "unknown"
-    }
-
-    lines = []
-
-    if (
-        summary
-        and
-        summary.lower() not in placeholders
-    ):
-
-        for chunk in re.split(
-            r"[;]",
-            summary
-        ):
-
-            piece = chunk.strip()
-
-            if piece:
-                lines.append(
-                    piece
-                )
-
-        lines = lines[:2]
-
-    else:
-
-        age = opportunity_field(
-            opportunity,
-            "age_requirements",
-            "age_range",
-            fallback=""
-        )
-
-        if (
-            age
-            and
-            age.lower() not in placeholders
-            and
-            age.lower() != "not stated"
-        ):
-            lines.append(
-                age
-            )
-
-        grades_raw = opportunity_field(
-            opportunity,
-            "eligible_grades",
-            "grades",
-            fallback=""
-        )
-
-        if grades_raw:
-
-            parts = [
-                part.strip()
-                for part in grades_raw.replace(
-                    ",",
-                    ";"
-                ).split(";")
-                if part.strip()
-            ]
-
-            if (
-                parts
-                and
-                all(
-                    part.isdigit()
-                    for part in parts
-                )
-            ):
-
-                if len(parts) == 1:
-                    lines.append(
-                        f"Grade {parts[0]}"
-                    )
-                else:
-                    lines.append(
-                        f"Grades {parts[0]}–{parts[-1]}"
-                    )
-
-            elif grades_raw.lower().startswith(
-                "grade"
-            ):
-                lines.append(
-                    grades_raw
-                )
-            else:
-                lines.append(
-                    "Grades "
-                    + grades_raw.replace(
-                        ";",
-                        ", "
-                    )
-                )
-
-        nyc_res = opportunity_text(
-            opportunity.get(
-                "nyc_residency_required"
-            ),
-            ""
-        )
-
-        if nyc_res.lower().startswith(
-            "yes"
-        ):
-            lines.append(
-                "NYC resident required"
-            )
-
-    if not lines:
-        return html_module.escape(
-            "See official eligibility"
-        )
-
-    return " • ".join(
-        [
-            html_module.escape(
-                line
-            )
-            for line in lines[:2]
-        ]
-    )
-
-
-def opportunity_opens_display(opportunity):
-
-    kind = opportunity_text(
-        opportunity.get(
-            "opens_date_type"
-        ),
-        ""
-    ).lower()
-    raw = opportunity_field(
-        opportunity,
-        "application_opens",
-        "opens_date",
-        fallback=""
-    )
-    raw_lower = raw.lower()
-
-    unknown_markers = (
-        "not yet announced",
-        "not announced",
-        "future cycle",
-        "check official",
-        "tbd"
-    )
-
-    if kind == "confirmed" and raw:
-        return f"Opens: {raw}"
-
-    if kind == "estimated" and raw:
-        return f"Expected to open: {raw}"
-
-    if (
-        not raw
-        or
-        any(
-            marker in raw_lower
-            for marker in unknown_markers
-        )
-        or
-        "opened" in raw_lower
-    ):
-        return "Opening date: Not announced"
-
-    exact_date = re.fullmatch(
-        r"(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}",
-        raw
-    )
-
-    if exact_date:
-        return f"Opens: {raw}"
-
-    cleaned = raw
-
-    for prefix in (
-        "typically ",
-        "expected to open ",
-        "expected ",
-        "applications typically open in "
-    ):
-        if cleaned.lower().startswith(prefix):
-            cleaned = cleaned[len(prefix):].strip()
-            break
-
-    return f"Expected to open: {cleaned or raw}"
-
-
-def opportunity_info_grid_html(
-    opportunity
-):
-
-    eligibility_html = opportunity_eligibility_card_html(
-        opportunity
-    )
-    eligibility_muted = (
-        "See official eligibility"
-        in eligibility_html
-        and
-        "<br>" not in eligibility_html
-    )
-
-    cost = opportunity_cost_display(
-        opportunity
-    )
-
-    if cost == "Unknown / check official site":
-        cost = "Check official site"
-
-    aid = opportunity_field(
-        opportunity,
-        "financial_aid_status",
-        "financial_aid",
-        fallback="Check official site"
-    )
-
-    if aid == "Unknown / check official site":
-        aid = "Check official site"
-
-    if (
-        cost == "Free"
-        and
-        aid.lower() in {
-            "not needed",
-            "not needed — program is free",
-            "not needed — program is completely free"
-        }
-    ):
-        aid = "Not needed — program is fully funded"
-
-    stipend = opportunity_field(
-        opportunity,
-        "stipend_display",
-        "stipend",
-        "paid_status",
-        fallback="Check official site"
-    )
-
-    rate = opportunity_field(
-        opportunity,
-        "acceptance_rate",
-        fallback="Not publicly reported"
-    )
-
-    type_value = opportunity_field(
-        opportunity,
-        "opportunity_type",
-        fallback="Not listed"
-    )
-
-    deadline = opportunity_field(
-        opportunity,
-        "deadline",
-        fallback="Check official site"
-    )
-
-    internship = opportunity_field(
-        opportunity,
-        "internship_potential",
-        fallback="Not specified"
-    )
-
-    rate_lower = rate.lower()
-    rate_unknown = (
-        "not publicly" in rate_lower
-        or
-        rate_lower in {
-            "check official site",
-            "unknown",
-            "not available",
-            "n/a"
-        }
-    )
-
-    rate_note = opportunity_acceptance_note_short(
-        opportunity,
-        rate_unknown
-    )
-
-    if rate_unknown:
-        rate_card = opportunity_dash_stat_html(
-            "Acceptance Rate",
-            html_module.escape(
-                rate
-            ),
-            featured=True,
-            muted=True
-        )
-    else:
-        rate_card = opportunity_dash_stat_html(
-            "Acceptance Rate",
-            html_module.escape(
-                rate
-            ),
-            featured=True,
-            extra_class="sp-rec-stat-rate",
-            note=rate_note
-        )
-
-    stars_html = opportunity_selectivity_stars_html(
-        opportunity
-    )
-    stars_only = re.sub(
-        r'<div class="sp-rec-selectivity-note">.*?</div>',
-        "",
-        stars_html,
-        flags=re.S
-    )
-    selectivity_label = opportunity_text(
-        opportunity.get(
-            "selectivity",
-            ""
-        )
-    )
-    selectivity_value = (
-        '<div class="sp-rec-stat-stars">'
-        + stars_only
-        + '</div>'
-    )
-
-    if selectivity_label:
-        selectivity_value += html_module.escape(
-            selectivity_label
-        )
-
-    cost_lower = cost.lower()
-    cost_muted = False
-
-    if cost_lower == "free":
-        cost_html = opportunity_dash_pill_html(
-            "Free",
-            "green"
-        )
-    elif "tuition" in cost_lower:
-        cost_html = opportunity_dash_pill_html(
-            cost,
-            "amber"
-        )
-    elif cost_lower in {
-        "paid",
-        "paid program"
-    }:
-        cost_html = opportunity_dash_pill_html(
-            "Paid",
-            "amber"
-        )
-    elif (
-        "unknown" in cost_lower
-        or
-        "check official" in cost_lower
-    ):
-        cost_html = html_module.escape(
-            "Unknown"
-        )
-        cost_muted = True
-    else:
-        cost_html = html_module.escape(
-            cost
-        )
-
-    aid_lower = aid.lower()
-    aid_muted = False
-    aid_html = html_module.escape(
-        aid
-    )
-
-    if (
-        "check official" in aid_lower
-        or
-        "unknown" in aid_lower
-    ):
-        aid_html = html_module.escape(
-            "Check official site"
-        )
-        aid_muted = True
-    elif "not stated" in aid_lower:
-        aid_html = html_module.escape(
-            "Not stated"
-        )
-        aid_muted = True
-    elif (
-        "not needed" in aid_lower
-        or
-        "fully funded" in aid_lower
-        or
-        "program is free" in aid_lower
-    ):
-        aid_html = opportunity_dash_pill_html(
-            aid,
-            "green"
-        )
-    elif (
-        aid_lower == "available"
-        or
-        aid_lower.startswith("yes")
-        or
-        "waiver" in aid_lower
-        or
-        "scholarship" in aid_lower
-        or
-        "aid" in aid_lower
-    ):
-        if (
-            aid_lower == "available"
-            or
-            aid_lower == "yes"
-        ):
-            aid_html = opportunity_dash_pill_html(
-                "Available",
-                "green"
-            )
-        else:
-            aid_html = (
-                opportunity_dash_pill_html(
-                    "Available",
-                    "green"
-                )
-                + '<div class="sp-rec-stat-note" style="margin-top:0.35rem;">'
-                + html_module.escape(
-                    aid
-                )
-                + '</div>'
-            )
-
-    stipend_lower = stipend.lower()
-    stipend_muted = False
-    stipend_featured = False
-    stipend_html = html_module.escape(
-        stipend
-    )
-    stipend_note = ""
-
-    if (
-        "check official" in stipend_lower
-        or
-        stipend_lower in {
-            "unknown",
-            "not specified"
-        }
-    ):
-        stipend_muted = True
-    elif stipend.strip().startswith(
-        "$"
-    ):
-        stipend_featured = True
-        pieces = stipend.replace(
-            "—",
-            " "
-        ).split()
-        stipend_html = html_module.escape(
-            pieces[0]
-        )
-        rest = " ".join(
-            pieces[1:]
-        ).strip(
-            " -"
-        )
-        if rest:
-            stipend_note = rest
-    elif (
-        "paid" in stipend_lower
-        or
-        "provided" in stipend_lower
-    ) and not any(
-        token in stipend_lower
-        for token in (
-            "not paid",
-            "unpaid",
-            "none"
-        )
-    ):
-        stipend_featured = True
-        stipend_html = html_module.escape(
-            "Provided"
-        )
-        if stipend_lower not in {
-            "provided",
-            "paid"
-        }:
-            stipend_note = stipend
-
-    internship_lower = internship.lower().strip()
-    internship_note = ""
-
-    if internship_lower.startswith(
-        "yes"
-    ):
-        internship_html = html_module.escape(
-            "Yes"
-        )
-        internship_note = internship[3:].lstrip(
-            " —–-:"
-        )
-    elif internship_lower.startswith(
-        "no"
-    ):
-        internship_html = html_module.escape(
-            "No"
-        )
-        internship_note = internship[2:].lstrip(
-            " —–-:"
-        )
-    elif internship_lower.startswith(
-        "possible"
-    ):
-        internship_html = html_module.escape(
-            "Possible"
-        )
-        internship_note = internship[8:].lstrip(
-            " —–-:"
-        )
-    elif internship_lower in {
-        "not specified",
-        "unknown",
-        "check official site",
-        ""
-    }:
-        internship_html = html_module.escape(
-            "Not specified"
-        )
-    else:
-        internship_html = html_module.escape(
-            internship
-        )
-
-    window_status = opportunity_window_status(
-        opportunity
-    )
-
-    if window_status == "OPEN NOW":
-        deadline_badge = (
-            '<span class="sp-rec-pill sp-rec-pill-open">'
-            "OPEN NOW"
-            "</span>"
-        )
-    elif window_status == "CLOSED":
-        deadline_badge = (
-            '<span class="sp-rec-pill sp-rec-pill-closed">'
-            "CLOSED"
-            "</span>"
-        )
-    else:
-        deadline_badge = (
-            '<span class="sp-rec-pill sp-rec-pill-upcoming">'
-            "UPCOMING"
-            "</span>"
-        )
-
-    deadline_html = (
-        deadline_badge
-        + '<div>'
-        + html_module.escape(
-            deadline
-        )
-        + '</div>'
-    )
-
-    type_html = opportunity_dash_pill_html(
-        type_value,
-        "blue"
-    )
-
-    return (
-        '<div class="sp-rec-info-grid">'
-        + opportunity_dash_stat_html(
-            "Eligibility",
-            eligibility_html
-        )
-        + opportunity_dash_stat_html(
-            "Cost",
-            html_module.escape(
-                cost
-            )
-        )
-        + opportunity_dash_stat_html(
-            "Financial Aid",
-            html_module.escape(
-                aid
-            )
-        )
-        + opportunity_dash_stat_html(
-            "Stipend",
-            html_module.escape(
-                stipend
-            )
-        )
-        + opportunity_dash_stat_html(
-            "Acceptance Rate",
-            html_module.escape(
-                rate
-            ),
-            note=(
-                ""
-                if rate_unknown
-                else rate_note
-            )
-        )
-        + opportunity_dash_stat_html(
-            "Type",
-            html_module.escape(
-                type_value
-            )
-        )
-        + opportunity_dash_stat_html(
-            "Selectivity",
-            selectivity_value
-        )
-        + opportunity_dash_stat_html(
-            "Deadline",
-            html_module.escape(
-                deadline
-            ),
-            note=opportunity_opens_display(
-                opportunity
-            )
-        )
-        + opportunity_dash_stat_html(
-            "Internship Potential",
-            html_module.escape(
-                internship
-            )
-        )
-        + '</div>'
-    )
-
-
 def format_salary(value):
 
     if pd.isna(value):
@@ -15022,6 +15158,886 @@ def valid_choice_defaults(saved_values, options):
         for item in saved_values
         if item in allowed
     ]
+
+
+STEM_FIELD_GROUPS = [
+    (
+        "Engineering",
+        [
+            "Electrical Engineering",
+            "Computer Engineering",
+            "Mechanical Engineering",
+            "Civil Engineering",
+            "Chemical Engineering",
+            "Biomedical Engineering",
+            "Environmental Engineering",
+            "Aerospace Engineering",
+            "Industrial Engineering",
+            "General Engineering / Undecided Engineering",
+            "Engineering",
+            "Materials Science / Engineering",
+            "Bioengineering",
+            "Robotics"
+        ]
+    ),
+    (
+        "Computing & Data",
+        [
+            "Computer Science",
+            "Data Science",
+            "Artificial Intelligence",
+            "Cybersecurity",
+            "Information Technology / Information Science",
+            "Software Engineering",
+            "Web Development"
+        ]
+    ),
+    (
+        "Physical Sciences",
+        [
+            "Physics",
+            "Applied Physics",
+            "Chemistry",
+            "Materials Science",
+            "Astronomy / Astrophysics",
+            "Earth Science",
+            "Climate Science",
+            "Space Science"
+        ]
+    ),
+    (
+        "Life & Health Sciences",
+        [
+            "Biology",
+            "Biochemistry",
+            "Biomedical Science",
+            "Neuroscience",
+            "Public Health",
+            "Health Science",
+            "Environmental Science",
+            "Biotechnology",
+            "Bioinformatics / Computational Biology",
+            "Medicine / Health Science",
+            "Cancer Research"
+        ]
+    ),
+    (
+        "Mathematics",
+        [
+            "Mathematics",
+            "Applied Mathematics",
+            "Statistics"
+        ]
+    ),
+    (
+        "Interdisciplinary / General STEM",
+        [
+            "Environmental Studies / Sustainability",
+            "Cognitive Science",
+            "Computational Science",
+            "STEM / General Science",
+            "Undecided STEM",
+            "Quantitative Finance / Financial Engineering"
+        ]
+    )
+]
+
+
+LEGACY_STEM_FIELDS = [
+    "Medicine / Health",
+    "Earth / Climate Science",
+    "Earth Science / Geoscience",
+    "Astrophysics / Astronomy",
+    "General / Interdisciplinary STEM",
+    "General STEM / Interdisciplinary"
+]
+
+
+# Saved or older labels that should display as the current broad major names.
+STEM_FIELD_DISPLAY_MAP = {
+    "Astrophysics / Astronomy": "Astronomy / Astrophysics",
+    "Earth Science / Geoscience": "Earth Science",
+    "Earth / Climate Science": "Earth Science",
+    "Medicine / Health": "Medicine / Health Science",
+    "General / Interdisciplinary STEM": "STEM / General Science",
+    "General STEM / Interdisciplinary": "STEM / General Science"
+}
+
+
+ENGINEERING_MAJORS = [
+    "Electrical Engineering",
+    "Computer Engineering",
+    "Mechanical Engineering",
+    "Civil Engineering",
+    "Chemical Engineering",
+    "Biomedical Engineering",
+    "Environmental Engineering",
+    "Aerospace Engineering",
+    "Industrial Engineering",
+    "Materials Science / Engineering",
+    "Bioengineering"
+]
+
+
+# Balanced anchors for undecided / general STEM matching.
+# Intentionally not every engineering major, so general STEM is not engineering-heavy.
+BROAD_STEM_ANCHORS = [
+    "Computer Science",
+    "Mathematics",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "Environmental Science",
+    "Engineering",
+    "Data Science",
+    "Public Health",
+    "Statistics"
+]
+
+
+STEM_FIELD_ALIASES = {
+    "ai": "Artificial Intelligence",
+    "a.i.": "Artificial Intelligence",
+    "artificial intelligence": "Artificial Intelligence",
+    "machine learning": "Artificial Intelligence",
+    "astronomy": "Astronomy / Astrophysics",
+    "astrophysics": "Astronomy / Astrophysics",
+    "astronomy / astrophysics": "Astronomy / Astrophysics",
+    "astrophysics / astronomy": "Astronomy / Astrophysics",
+    "space science": "Space Science",
+    "aerospace": "Aerospace Engineering",
+    "earth science": "Earth Science",
+    "geoscience": "Earth Science",
+    "geology": "Earth Science",
+    "earth science / geoscience": "Earth Science",
+    "earth / climate science": "Earth / Climate Science",
+    "climate science": "Climate Science",
+    "medicine": "Medicine / Health Science",
+    "health science": "Health Science",
+    "healthcare": "Health Science",
+    "medicine / health science": "Medicine / Health Science",
+    "medicine / health": "Medicine / Health",
+    "materials science": "Materials Science",
+    "materials engineering": "Materials Science / Engineering",
+    "materials science / engineering": "Materials Science / Engineering",
+    "applied physics": "Applied Physics",
+    "engineering physics": "Applied Physics",
+    "applied math": "Applied Mathematics",
+    "applied mathematics": "Applied Mathematics",
+    "operations research": "Applied Mathematics",
+    "computational biology": "Bioinformatics / Computational Biology",
+    "bioinformatics": "Bioinformatics / Computational Biology",
+    "bioinformatics / computational biology": "Bioinformatics / Computational Biology",
+    "financial engineering": "Quantitative Finance / Financial Engineering",
+    "quantitative finance": "Quantitative Finance / Financial Engineering",
+    "quantitative finance / financial engineering": "Quantitative Finance / Financial Engineering",
+    "general engineering": "General Engineering / Undecided Engineering",
+    "undecided engineering": "General Engineering / Undecided Engineering",
+    "engineering / undecided": "General Engineering / Undecided Engineering",
+    "general engineering / undecided engineering": "General Engineering / Undecided Engineering",
+    "information technology": "Information Technology / Information Science",
+    "information science": "Information Technology / Information Science",
+    "information systems": "Information Technology / Information Science",
+    "information technology / information science": "Information Technology / Information Science",
+    "biochemistry": "Biochemistry",
+    "cognitive science": "Cognitive Science",
+    "computational science": "Computational Science",
+    "environmental studies": "Environmental Studies / Sustainability",
+    "sustainability": "Environmental Studies / Sustainability",
+    "environmental studies / sustainability": "Environmental Studies / Sustainability",
+    "stem / general science": "STEM / General Science",
+    "general science": "STEM / General Science",
+    "undecided stem": "Undecided STEM",
+    "undecided": "Undecided STEM",
+    "general stem": "STEM / General Science",
+    "interdisciplinary stem": "STEM / General Science",
+    "general / interdisciplinary stem": "STEM / General Science",
+    "general stem / interdisciplinary": "STEM / General Science",
+    "stem": "STEM / General Science",
+    "science": "STEM / General Science",
+    "data analysis": "Data Science",
+    "statistics": "Statistics",
+    "biostatistics": "Statistics",
+    "public health": "Public Health",
+    "neurology": "Neuroscience",
+    "biotech": "Biotechnology"
+}
+
+
+RELATED_STEM_FIELDS = {
+    "Engineering": ENGINEERING_MAJORS + [
+        "General Engineering / Undecided Engineering"
+    ],
+    "General Engineering / Undecided Engineering": [
+        "Engineering"
+    ] + ENGINEERING_MAJORS,
+    "Physics": [
+        "Applied Physics",
+        "Astronomy / Astrophysics",
+        "Astrophysics / Astronomy",
+        "Materials Science"
+    ],
+    "Applied Physics": [
+        "Physics",
+        "Materials Science",
+        "Materials Science / Engineering",
+        "Astronomy / Astrophysics",
+        "Chemistry"
+    ],
+    "Astronomy / Astrophysics": [
+        "Physics",
+        "Applied Physics",
+        "Space Science",
+        "Astrophysics / Astronomy"
+    ],
+    "Astrophysics / Astronomy": [
+        "Astronomy / Astrophysics",
+        "Physics",
+        "Space Science",
+        "Applied Physics"
+    ],
+    "Mathematics": ["Applied Mathematics", "Statistics"],
+    "Applied Mathematics": [
+        "Mathematics",
+        "Statistics",
+        "Data Science",
+        "Computational Science"
+    ],
+    "Statistics": [
+        "Mathematics",
+        "Applied Mathematics",
+        "Data Science"
+    ],
+    "Biology": [
+        "Biomedical Science",
+        "Biotechnology",
+        "Biochemistry"
+    ],
+    "Biochemistry": [
+        "Biology",
+        "Chemistry",
+        "Biomedical Science"
+    ],
+    "Biomedical Science": [
+        "Biology",
+        "Biotechnology",
+        "Biochemistry",
+        "Medicine / Health Science",
+        "Health Science",
+        "Biomedical Engineering",
+        "Neuroscience"
+    ],
+    "Biotechnology": ["Biology", "Biomedical Science", "Bioengineering"],
+    "Bioengineering": [
+        "Biomedical Engineering",
+        "Biotechnology",
+        "Biomedical Science"
+    ],
+    "Biomedical Engineering": [
+        "Bioengineering",
+        "Biomedical Science",
+        "Biotechnology"
+    ],
+    "Chemistry": [
+        "Chemical Engineering",
+        "Materials Science",
+        "Materials Science / Engineering",
+        "Biochemistry"
+    ],
+    "Materials Science": [
+        "Materials Science / Engineering",
+        "Physics",
+        "Applied Physics",
+        "Chemistry"
+    ],
+    "Materials Science / Engineering": [
+        "Materials Science",
+        "Chemical Engineering",
+        "Physics",
+        "Applied Physics"
+    ],
+    "Environmental Science": [
+        "Earth Science",
+        "Earth Science / Geoscience",
+        "Climate Science",
+        "Environmental Engineering",
+        "Environmental Studies / Sustainability",
+        "Earth / Climate Science"
+    ],
+    "Earth Science": [
+        "Earth Science / Geoscience",
+        "Environmental Science",
+        "Climate Science",
+        "Earth / Climate Science"
+    ],
+    "Earth Science / Geoscience": [
+        "Earth Science",
+        "Environmental Science",
+        "Climate Science",
+        "Earth / Climate Science"
+    ],
+    "Climate Science": [
+        "Earth Science",
+        "Earth Science / Geoscience",
+        "Environmental Science",
+        "Earth / Climate Science"
+    ],
+    "Earth / Climate Science": [
+        "Earth Science",
+        "Earth Science / Geoscience",
+        "Climate Science",
+        "Environmental Science"
+    ],
+    "Environmental Studies / Sustainability": [
+        "Environmental Science",
+        "Climate Science",
+        "Environmental Engineering"
+    ],
+    "Computer Science": [
+        "Artificial Intelligence",
+        "Data Science",
+        "Cybersecurity",
+        "Information Technology / Information Science",
+        "Computational Science"
+    ],
+    "Artificial Intelligence": ["Computer Science", "Data Science"],
+    "Data Science": [
+        "Statistics",
+        "Computer Science",
+        "Applied Mathematics",
+        "Bioinformatics / Computational Biology"
+    ],
+    "Information Technology / Information Science": [
+        "Computer Science",
+        "Cybersecurity",
+        "Data Science"
+    ],
+    "Medicine / Health Science": [
+        "Public Health",
+        "Biomedical Science",
+        "Health Science",
+        "Medicine / Health"
+    ],
+    "Health Science": [
+        "Medicine / Health Science",
+        "Public Health",
+        "Biomedical Science",
+        "Medicine / Health"
+    ],
+    "Medicine / Health": [
+        "Medicine / Health Science",
+        "Health Science",
+        "Public Health",
+        "Biomedical Science"
+    ],
+    "Public Health": [
+        "Medicine / Health Science",
+        "Health Science",
+        "Medicine / Health"
+    ],
+    "Robotics": [
+        "Mechanical Engineering",
+        "Electrical Engineering",
+        "Computer Engineering"
+    ],
+    "Space Science": [
+        "Astronomy / Astrophysics",
+        "Astrophysics / Astronomy",
+        "Aerospace Engineering",
+        "Physics"
+    ],
+    "Cancer Research": [
+        "Biology",
+        "Biomedical Science",
+        "Medicine / Health Science"
+    ],
+    "Software Engineering": ["Computer Science"],
+    "Web Development": ["Computer Science"],
+    "Cybersecurity": [
+        "Computer Science",
+        "Information Technology / Information Science"
+    ],
+    "Quantitative Finance / Financial Engineering": [
+        "Mathematics",
+        "Applied Mathematics",
+        "Statistics",
+        "Data Science"
+    ],
+    "Bioinformatics / Computational Biology": [
+        "Biology",
+        "Data Science",
+        "Computer Science"
+    ],
+    "Neuroscience": [
+        "Biology",
+        "Biomedical Science",
+        "Medicine / Health Science",
+        "Cognitive Science"
+    ],
+    "Cognitive Science": [
+        "Neuroscience",
+        "Computer Science",
+        "Biology",
+        "Artificial Intelligence"
+    ],
+    "Computational Science": [
+        "Computer Science",
+        "Applied Mathematics",
+        "Data Science",
+        "Physics"
+    ],
+    "STEM / General Science": BROAD_STEM_ANCHORS + [
+        "Undecided STEM",
+        "General / Interdisciplinary STEM",
+        "General STEM / Interdisciplinary"
+    ],
+    "Undecided STEM": BROAD_STEM_ANCHORS + [
+        "STEM / General Science",
+        "General / Interdisciplinary STEM",
+        "General STEM / Interdisciplinary"
+    ],
+    "General / Interdisciplinary STEM": BROAD_STEM_ANCHORS + [
+        "STEM / General Science",
+        "Undecided STEM",
+        "General STEM / Interdisciplinary"
+    ],
+    "General STEM / Interdisciplinary": [
+        "STEM / General Science",
+        "Undecided STEM",
+        "General / Interdisciplinary STEM"
+    ]
+}
+
+
+STEM_FIELD_PARENTS = {
+    "Electrical Engineering": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Computer Engineering": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Mechanical Engineering": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Civil Engineering": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Chemical Engineering": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Biomedical Engineering": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Aerospace Engineering": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Industrial Engineering": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Materials Science / Engineering": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Bioengineering": [
+        "Engineering",
+        "Biomedical Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Robotics": [
+        "Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "General Engineering / Undecided Engineering": ["Engineering"],
+    "Applied Mathematics": ["Mathematics"],
+    "Statistics": ["Mathematics"],
+    "Applied Physics": ["Physics"],
+    "Astronomy / Astrophysics": ["Physics"],
+    "Astrophysics / Astronomy": ["Physics"],
+    "Materials Science": ["Physics", "Chemistry"],
+    "Biomedical Science": ["Biology"],
+    "Biochemistry": ["Biology", "Chemistry"],
+    "Biotechnology": ["Biology"],
+    "Software Engineering": ["Computer Science"],
+    "Web Development": ["Computer Science"],
+    "Cybersecurity": ["Computer Science"],
+    "Artificial Intelligence": ["Computer Science"],
+    "Data Science": ["Computer Science"],
+    "Information Technology / Information Science": ["Computer Science"],
+    "Computational Science": ["Computer Science", "Applied Mathematics"],
+    "Cognitive Science": ["Neuroscience"],
+    "Climate Science": ["Environmental Science"],
+    "Earth Science": ["Environmental Science"],
+    "Earth Science / Geoscience": ["Environmental Science"],
+    "Environmental Engineering": ["Environmental Science", "Engineering"],
+    "Environmental Studies / Sustainability": ["Environmental Science"],
+    "Medicine / Health Science": ["Biology"],
+    "Health Science": ["Medicine / Health Science"],
+    "Public Health": ["Medicine / Health Science"],
+    "Undecided STEM": ["STEM / General Science"],
+    "General STEM / Interdisciplinary": ["STEM / General Science"],
+    "General / Interdisciplinary STEM": ["STEM / General Science"]
+}
+
+
+def all_stem_field_options():
+
+    options = []
+
+    for _, fields in STEM_FIELD_GROUPS:
+        for field in fields:
+            if field not in options:
+                options.append(field)
+
+    for field in LEGACY_STEM_FIELDS:
+        if field not in options:
+            options.append(field)
+
+    return options
+
+
+def canonicalize_stem_field(value):
+
+    text = str(value or "").strip()
+
+    if not text:
+        return ""
+
+    text = STEM_FIELD_DISPLAY_MAP.get(text, text)
+
+    known_map = {
+        item.lower(): item
+        for item in all_stem_field_options()
+    }
+
+    if text.lower() in known_map:
+        mapped = known_map[text.lower()]
+        return STEM_FIELD_DISPLAY_MAP.get(mapped, mapped)
+
+    aliased = STEM_FIELD_ALIASES.get(
+        text.lower(),
+        text
+    )
+
+    if aliased.lower() in known_map:
+        mapped = known_map[aliased.lower()]
+        return STEM_FIELD_DISPLAY_MAP.get(mapped, mapped)
+
+    return STEM_FIELD_DISPLAY_MAP.get(aliased, aliased)
+
+
+def remap_saved_stem_fields(values):
+
+    remapped = []
+
+    if isinstance(values, str):
+        values = values.split(";")
+
+    for value in values or []:
+        text = str(value or "").strip()
+        if not text:
+            continue
+        canonical = canonicalize_stem_field(text)
+        item = canonical or text
+        if item not in remapped:
+            remapped.append(item)
+
+    return remapped
+
+
+def canonicalize_stem_field_list(values):
+
+    result = []
+
+    if isinstance(values, str):
+        values = values.split(";")
+
+    for value in values or []:
+        canonical = canonicalize_stem_field(value)
+        if canonical and canonical not in result:
+            result.append(canonical)
+
+    return result
+
+
+def expand_stem_fields(values):
+
+    expanded = set()
+
+    skip = {
+        "not sure yet",
+        "i'm not sure yet",
+        "i am not sure yet"
+    }
+
+    for value in values or []:
+        text = str(value or "").strip()
+
+        if not text or text.lower() in skip:
+            continue
+
+        canonical = canonicalize_stem_field(text)
+        expanded.add(text)
+        expanded.add(canonical)
+        expanded.update(
+            RELATED_STEM_FIELDS.get(text, [])
+        )
+        expanded.update(
+            RELATED_STEM_FIELDS.get(canonical, [])
+        )
+        expanded.update(
+            STEM_FIELD_PARENTS.get(text, [])
+        )
+        expanded.update(
+            STEM_FIELD_PARENTS.get(canonical, [])
+        )
+
+    expanded.discard("")
+    return expanded
+
+
+def research_areas_from_fields(fields_value):
+
+    tokens = [
+        item.strip().lower()
+        for item in str(fields_value or "").split(";")
+        if item.strip()
+    ]
+
+    areas = set()
+
+    for token in tokens:
+        canonical = canonicalize_stem_field(token)
+        if canonical:
+            areas.add(canonical)
+
+    def token_matches(*needles):
+        for token in tokens:
+            for needle in needles:
+                if token == needle or needle in token:
+                    return True
+        return False
+
+    if token_matches("artificial intelligence", "machine learning") or "ai" in tokens:
+        areas.add("Artificial Intelligence")
+    if token_matches("computer science"):
+        areas.add("Computer Science")
+    if token_matches("engineering"):
+        areas.add("Engineering")
+        areas.add("General Engineering / Undecided Engineering")
+    if token_matches("biomedical", "bioengineering"):
+        areas.add("Biomedical Science")
+        areas.add("Biomedical Engineering")
+        areas.add("Bioengineering")
+    if token_matches("biology"):
+        areas.add("Biology")
+    if token_matches("neuroscience", "neurology"):
+        areas.add("Neuroscience")
+    if token_matches("cancer"):
+        areas.add("Cancer Research")
+    if token_matches("data science", "data analysis"):
+        areas.add("Data Science")
+    if token_matches("statistics", "biostatistics"):
+        areas.add("Statistics")
+        areas.add("Data Science")
+    if token_matches("mathematics") or "math" in tokens:
+        areas.add("Mathematics")
+    if token_matches("applied math", "applied mathematics"):
+        areas.add("Applied Mathematics")
+    if token_matches("physics"):
+        areas.add("Physics")
+    if token_matches("applied physics", "engineering physics"):
+        areas.add("Applied Physics")
+        areas.add("Physics")
+    if token_matches("quantum"):
+        areas.add("Physics")
+        areas.add("Applied Physics")
+    if token_matches("nuclear science", "particle physics"):
+        areas.add("Physics")
+    if token_matches("astronomy", "astrophysics"):
+        areas.add("Astronomy / Astrophysics")
+        areas.add("Astrophysics / Astronomy")
+        areas.add("Space Science")
+    if token_matches("water treatment", "renewable energy"):
+        areas.add("Environmental Engineering")
+        areas.add("Environmental Science")
+    if token_matches("chemistry"):
+        areas.add("Chemistry")
+    if token_matches("biochemistry"):
+        areas.add("Biochemistry")
+        areas.add("Biology")
+        areas.add("Chemistry")
+    if token_matches("environmental studies", "sustainability"):
+        areas.add("Environmental Studies / Sustainability")
+        areas.add("Environmental Science")
+    if token_matches("environmental", "ecology"):
+        areas.add("Environmental Science")
+    if token_matches("earth science", "geoscience", "geology"):
+        areas.add("Earth Science")
+        areas.add("Earth Science / Geoscience")
+        areas.add("Earth / Climate Science")
+    if token_matches("climate"):
+        areas.add("Climate Science")
+        areas.add("Earth / Climate Science")
+    if token_matches("bioinformatics", "computational biology"):
+        areas.add("Bioinformatics / Computational Biology")
+    if token_matches("cognitive science"):
+        areas.add("Cognitive Science")
+        areas.add("Neuroscience")
+    if token_matches("computational science"):
+        areas.add("Computational Science")
+        areas.add("Computer Science")
+        areas.add("Applied Mathematics")
+    if token_matches("operations research"):
+        areas.add("Applied Mathematics")
+        areas.add("Statistics")
+        areas.add("Data Science")
+    if token_matches("information technology", "information science", "information systems"):
+        areas.add("Information Technology / Information Science")
+        areas.add("Computer Science")
+    if token_matches("medicine", "health", "immunology", "genetics", "genomics", "stem cell"):
+        areas.add("Medicine / Health Science")
+        areas.add("Health Science")
+        areas.add("Biomedical Science")
+        areas.add("Medicine / Health")
+    if token_matches("public health"):
+        areas.add("Public Health")
+        areas.add("Health Science")
+    if token_matches("robotics"):
+        areas.add("Robotics")
+    if token_matches("space", "aerospace"):
+        areas.add("Space Science")
+        areas.add("Aerospace Engineering")
+    if token_matches("cybersecurity"):
+        areas.add("Cybersecurity")
+    if token_matches("civil engineering"):
+        areas.add("Civil Engineering")
+    if token_matches("chemical engineering"):
+        areas.add("Chemical Engineering")
+    if token_matches("mechanical engineering"):
+        areas.add("Mechanical Engineering")
+    if token_matches("electrical engineering"):
+        areas.add("Electrical Engineering")
+    if token_matches("computer engineering"):
+        areas.add("Computer Engineering")
+    if token_matches("industrial engineering"):
+        areas.add("Industrial Engineering")
+    if token_matches("general engineering"):
+        areas.add("General Engineering / Undecided Engineering")
+        areas.add("Engineering")
+    if token_matches("materials"):
+        areas.add("Materials Science")
+        areas.add("Materials Science / Engineering")
+    if token_matches("biotechnology", "biotech"):
+        areas.add("Biotechnology")
+    if token_matches("software"):
+        areas.add("Software Engineering")
+        areas.add("Computer Science")
+
+    general_tokens = {
+        "stem",
+        "science",
+        "research",
+        "technology",
+        "innovation",
+        "design thinking",
+        "laboratory research",
+        "career exploration",
+        "natural sciences",
+        "nuclear science",
+        "social science",
+        "education",
+        "science communication",
+        "experimental design"
+    }
+
+    if any(token in general_tokens for token in tokens):
+        areas.add("STEM / General Science")
+        areas.add("Undecided STEM")
+        areas.add("General / Interdisciplinary STEM")
+        areas.add("General STEM / Interdisciplinary")
+
+    return areas
+
+
+def collect_grouped_stem_fields(
+    saved_values,
+    key_prefix,
+    include_unsure=False,
+    unsure_label="Not sure yet",
+    include_legacy_filters=False
+):
+
+    selected = []
+    saved_values = remap_saved_stem_fields(saved_values or [])
+
+    for group_name, options in STEM_FIELD_GROUPS:
+        extra_options = list(options)
+
+        if include_legacy_filters:
+            if group_name == "Life & Health Sciences":
+                extra_options.append("Medicine / Health")
+            elif group_name == "Physical Sciences":
+                extra_options.append("Earth / Climate Science")
+            elif group_name == "Interdisciplinary / General STEM":
+                extra_options.append("General STEM / Interdisciplinary")
+                extra_options.append("General / Interdisciplinary STEM")
+
+        widget_key = f"{key_prefix}_{group_name}"
+        widget_kwargs = {
+            "key": widget_key
+        }
+
+        if widget_key not in st.session_state:
+            widget_kwargs["default"] = valid_choice_defaults(
+                saved_values,
+                extra_options
+            )
+
+        picks = st.multiselect(
+            group_name,
+            extra_options,
+            **widget_kwargs
+        )
+        selected.extend(picks)
+
+    known = set(all_stem_field_options())
+    known.update(LEGACY_STEM_FIELDS)
+    known.add(unsure_label)
+    known.add("I'm not sure yet")
+
+    if include_unsure:
+        unsure_key = f"{key_prefix}_unsure"
+        unsure_kwargs = {
+            "key": unsure_key
+        }
+
+        if unsure_key not in st.session_state:
+            unsure_kwargs["value"] = (
+                unsure_label in saved_values
+                or
+                "I'm not sure yet" in saved_values
+            )
+
+        unsure = st.checkbox(
+            unsure_label,
+            **unsure_kwargs
+        )
+        if unsure:
+            selected.append(unsure_label)
+
+    for item in saved_values:
+        if item not in known and item not in selected:
+            selected.append(item)
+
+    return list(dict.fromkeys(selected))
 
 
 def safe_int(value, default, minimum=None, maximum=None):
@@ -17145,33 +18161,18 @@ if not st.session_state.profile_completed:
         "2. Your STEM Interests"
     )
 
-    interest_options = [
-        "Engineering",
-        "Electrical Engineering",
-        "Mechanical Engineering",
-        "Computer Engineering",
-        "Computer Science",
-        "Artificial Intelligence",
-        "Data Science",
-        "Biomedical Engineering",
-        "Biology",
-        "Physics",
-        "Mathematics",
-        "Environmental Science",
-        "Robotics",
-        "Not sure yet"
-    ]
+    st.caption(
+        "Choose any STEM areas that interest you. You can select from more than one group."
+    )
 
-    interests = st.multiselect(
-        "Which STEM fields currently interest you?",
-        interest_options,
-        default=valid_choice_defaults(
-            existing_profile.get(
-                "interests",
-                []
-            ),
-            interest_options
-        )
+    interests = collect_grouped_stem_fields(
+        existing_profile.get(
+            "interests",
+            []
+        ),
+        "profile_interests",
+        include_unsure=True,
+        unsure_label="Not sure yet"
     )
 
     experience_options = [
@@ -18373,6 +19374,7 @@ elif page == "My STEM Pathway":
         "Engineering": {
 
             "majors": [
+                "General Engineering",
                 "Engineering",
                 "Industrial Engineering",
                 "Civil Engineering",
@@ -18612,6 +19614,291 @@ elif page == "My STEM Pathway":
                 "Embedded Systems Engineer",
                 "Computer Vision Engineer"
             ]
+        },
+
+        "Civil Engineering": {
+            "majors": ["Civil Engineering", "Structural Engineering", "Environmental Engineering"],
+            "careers": ["Civil Engineer", "Structural Engineer", "Transportation Engineer", "Geotechnical Engineer"]
+        },
+        "Chemical Engineering": {
+            "majors": ["Chemical Engineering", "Chemistry", "Materials Science / Engineering"],
+            "careers": ["Chemical Engineer", "Process Engineer", "Materials Engineer", "Petroleum Engineer"]
+        },
+        "Environmental Engineering": {
+            "majors": ["Environmental Engineering", "Environmental Science", "Civil Engineering"],
+            "careers": ["Environmental Engineer", "Water Resources Engineer", "Sustainability Engineer"]
+        },
+        "Aerospace Engineering": {
+            "majors": ["Aerospace Engineering", "Mechanical Engineering", "Physics"],
+            "careers": ["Aerospace Engineer", "Flight Systems Engineer", "Avionics Engineer"]
+        },
+        "Industrial Engineering": {
+            "majors": ["Industrial Engineering", "Operations Research", "Systems Engineering"],
+            "careers": ["Industrial Engineer", "Operations Research Analyst", "Supply Chain Engineer"]
+        },
+        "Materials Science / Engineering": {
+            "majors": ["Materials Science / Engineering", "Chemical Engineering", "Physics"],
+            "careers": ["Materials Engineer", "Metallurgist", "Polymer Scientist"]
+        },
+        "Bioengineering": {
+            "majors": ["Bioengineering", "Biomedical Engineering", "Biotechnology"],
+            "careers": ["Bioengineer", "Biomedical Engineer", "Tissue Engineer"]
+        },
+        "Cybersecurity": {
+            "majors": ["Cybersecurity", "Computer Science", "Computer Engineering"],
+            "careers": ["Cybersecurity Analyst", "Security Engineer", "Network Defender"]
+        },
+        "Software Engineering": {
+            "majors": ["Software Engineering", "Computer Science"],
+            "careers": ["Software Engineer", "Full-Stack Developer", "Application Developer"]
+        },
+        "Web Development": {
+            "majors": ["Computer Science", "Software Engineering", "Web Development"],
+            "careers": ["Web Developer", "Frontend Developer", "Full-Stack Developer"]
+        },
+        "Applied Mathematics": {
+            "majors": ["Applied Mathematics", "Mathematics", "Statistics"],
+            "careers": ["Applied Mathematician", "Quantitative Analyst", "Operations Research Analyst"]
+        },
+        "Statistics": {
+            "majors": ["Statistics", "Data Science", "Applied Mathematics"],
+            "careers": ["Statistician", "Biostatistician", "Data Analyst"]
+        },
+        "Astrophysics / Astronomy": {
+            "majors": ["Astronomy", "Astrophysics", "Physics"],
+            "careers": ["Astronomer", "Astrophysicist", "Observatory Technician"]
+        },
+        "Chemistry": {
+            "majors": ["Chemistry", "Biochemistry", "Chemical Engineering"],
+            "careers": ["Chemist", "Analytical Chemist", "Pharmaceutical Scientist"]
+        },
+        "Biomedical Science": {
+            "majors": ["Biomedical Sciences", "Biology", "Biotechnology"],
+            "careers": ["Biomedical Scientist", "Lab Researcher", "Clinical Research Coordinator"]
+        },
+        "Neuroscience": {
+            "majors": ["Neuroscience", "Biology", "Psychology"],
+            "careers": ["Neuroscientist", "Research Technician", "Neurology Researcher"]
+        },
+        "Biotechnology": {
+            "majors": ["Biotechnology", "Biology", "Bioengineering"],
+            "careers": ["Biotechnologist", "Lab Technician", "Bioprocess Technician"]
+        },
+        "Bioinformatics / Computational Biology": {
+            "majors": ["Bioinformatics", "Computational Biology", "Computer Science"],
+            "careers": ["Bioinformatician", "Computational Biologist", "Genomics Analyst"]
+        },
+        "Medicine / Health Science": {
+            "majors": ["Biology", "Public Health", "Biomedical Sciences"],
+            "careers": ["Physician pathway", "Clinical researcher", "Health scientist"]
+        },
+        "Medicine / Health": {
+            "majors": ["Biology", "Public Health", "Biomedical Sciences"],
+            "careers": ["Physician pathway", "Clinical researcher", "Health scientist"]
+        },
+        "Public Health": {
+            "majors": ["Public Health", "Epidemiology", "Health Science"],
+            "careers": ["Epidemiologist", "Public Health Analyst", "Community Health Worker"]
+        },
+        "Cancer Research": {
+            "majors": ["Biology", "Biomedical Sciences", "Oncology research"],
+            "careers": ["Cancer researcher", "Lab technician", "Clinical research coordinator"]
+        },
+        "Earth Science / Geoscience": {
+            "majors": ["Geology", "Earth Science", "Environmental Science"],
+            "careers": ["Geoscientist", "Hydrologist", "Environmental geologist"]
+        },
+        "Climate Science": {
+            "majors": ["Climate Science", "Environmental Science", "Atmospheric Science"],
+            "careers": ["Climate scientist", "Climate data analyst", "Sustainability specialist"]
+        },
+        "Earth / Climate Science": {
+            "majors": ["Earth Science", "Climate Science", "Environmental Science"],
+            "careers": ["Climate scientist", "Geoscientist", "Environmental scientist"]
+        },
+        "Space Science": {
+            "majors": ["Astronomy", "Aerospace Engineering", "Physics"],
+            "careers": ["Space scientist", "Mission analyst", "Aerospace technician"]
+        },
+        "Quantitative Finance / Financial Engineering": {
+            "majors": ["Financial Engineering", "Applied Mathematics", "Statistics"],
+            "careers": ["Quantitative analyst", "Risk analyst", "Financial engineer"]
+        },
+        "General / Interdisciplinary STEM": {
+            "majors": ["General STEM", "Liberal Arts and Sciences", "Undeclared STEM"],
+            "careers": ["STEM explorer", "Research assistant", "Technical analyst"]
+        },
+        "General STEM / Interdisciplinary": {
+            "majors": ["General STEM", "Liberal Arts and Sciences", "Undeclared STEM"],
+            "careers": ["STEM explorer", "Research assistant", "Technical analyst"]
+        },
+        "General Engineering / Undecided Engineering": {
+            "majors": [
+                "General Engineering",
+                "Undecided Engineering",
+                "Engineering"
+            ],
+            "careers": [
+                "Engineer",
+                "Project engineer",
+                "Systems engineer",
+                "Engineering technician"
+            ]
+        },
+        "Information Technology / Information Science": {
+            "majors": [
+                "Information Technology",
+                "Information Science",
+                "Computer Science"
+            ],
+            "careers": [
+                "IT specialist",
+                "Systems analyst",
+                "Network administrator",
+                "Information architect"
+            ]
+        },
+        "Applied Physics": {
+            "majors": [
+                "Applied Physics",
+                "Physics",
+                "Engineering Physics"
+            ],
+            "careers": [
+                "Applied physicist",
+                "Research scientist",
+                "Optical engineer",
+                "Materials scientist"
+            ]
+        },
+        "Materials Science": {
+            "majors": [
+                "Materials Science",
+                "Materials Science and Engineering",
+                "Chemistry"
+            ],
+            "careers": [
+                "Materials scientist",
+                "Metallurgist",
+                "Polymer scientist",
+                "Nanomaterials researcher"
+            ]
+        },
+        "Astronomy / Astrophysics": {
+            "majors": [
+                "Astronomy",
+                "Astrophysics",
+                "Physics"
+            ],
+            "careers": [
+                "Astronomer",
+                "Astrophysicist",
+                "Observatory technician",
+                "Space scientist"
+            ]
+        },
+        "Earth Science": {
+            "majors": [
+                "Earth Science",
+                "Geology",
+                "Environmental Science"
+            ],
+            "careers": [
+                "Geoscientist",
+                "Hydrologist",
+                "Environmental geologist",
+                "Earth science researcher"
+            ]
+        },
+        "Biochemistry": {
+            "majors": [
+                "Biochemistry",
+                "Biology",
+                "Chemistry"
+            ],
+            "careers": [
+                "Biochemist",
+                "Lab researcher",
+                "Pharmaceutical scientist",
+                "Molecular biologist"
+            ]
+        },
+        "Health Science": {
+            "majors": [
+                "Health Science",
+                "Public Health",
+                "Biology"
+            ],
+            "careers": [
+                "Health scientist",
+                "Clinical research coordinator",
+                "Public health analyst",
+                "Healthcare administrator"
+            ]
+        },
+        "Environmental Studies / Sustainability": {
+            "majors": [
+                "Environmental Studies",
+                "Sustainability",
+                "Environmental Science"
+            ],
+            "careers": [
+                "Sustainability specialist",
+                "Environmental planner",
+                "Conservation analyst",
+                "Climate policy assistant"
+            ]
+        },
+        "Cognitive Science": {
+            "majors": [
+                "Cognitive Science",
+                "Neuroscience",
+                "Computer Science"
+            ],
+            "careers": [
+                "Cognitive scientist",
+                "UX researcher",
+                "Computational neuroscientist",
+                "Research assistant"
+            ]
+        },
+        "Computational Science": {
+            "majors": [
+                "Computational Science",
+                "Applied Mathematics",
+                "Computer Science"
+            ],
+            "careers": [
+                "Computational scientist",
+                "Simulation analyst",
+                "Scientific programmer",
+                "Data scientist"
+            ]
+        },
+        "STEM / General Science": {
+            "majors": [
+                "General Science",
+                "Liberal Arts and Sciences",
+                "Undeclared STEM"
+            ],
+            "careers": [
+                "STEM explorer",
+                "Research assistant",
+                "Science communicator",
+                "Laboratory technician"
+            ]
+        },
+        "Undecided STEM": {
+            "majors": [
+                "Undeclared STEM",
+                "General Science",
+                "Exploratory STEM"
+            ],
+            "careers": [
+                "STEM explorer",
+                "Research assistant",
+                "Technical analyst"
+            ]
         }
     }
 
@@ -18620,26 +19907,17 @@ elif page == "My STEM Pathway":
     # ========================================================
 
     scores = {
-
-        "Engineering": 0,
-        "Electrical Engineering": 0,
-        "Mechanical Engineering": 0,
-        "Computer Engineering": 0,
-        "Computer Science": 0,
-        "Artificial Intelligence": 0,
-        "Data Science": 0,
-        "Biomedical Engineering": 0,
-        "Biology": 0,
-        "Physics": 0,
-        "Mathematics": 0,
-        "Environmental Science": 0,
-        "Robotics": 0
+        field: 0
+        for field in all_stem_field_options()
     }
 
     for interest in profile["interests"]:
 
-        if interest in scores:
-            scores[interest] += 20
+        canonical = canonicalize_stem_field(interest)
+        target = canonical if canonical in scores else interest
+
+        if target in scores:
+            scores[target] += 20
 
     scores["Computer Science"] += (
         programming_score * 2
@@ -18655,6 +19933,14 @@ elif page == "My STEM Pathway":
 
     scores["Data Science"] += (
         programming_score * 1.5
+    )
+
+    scores["Computational Science"] += (
+        programming_score * 1.5
+    )
+
+    scores["Information Technology / Information Science"] += (
+        programming_score
     )
 
     scores["Robotics"] += (
@@ -18681,12 +19967,32 @@ elif page == "My STEM Pathway":
         hands_on_score
     )
 
+    scores["General Engineering / Undecided Engineering"] += (
+        hands_on_score
+    )
+
     scores["Mathematics"] += (
         math_score * 2
     )
 
+    scores["Applied Mathematics"] += (
+        math_score * 2
+    )
+
+    scores["Statistics"] += (
+        math_score * 1.5
+    )
+
     scores["Physics"] += (
         math_score * 1.5
+    )
+
+    scores["Applied Physics"] += (
+        math_score
+    )
+
+    scores["Computational Science"] += (
+        math_score
     )
 
     scores["Data Science"] += (
@@ -18721,6 +20027,22 @@ elif page == "My STEM Pathway":
         science_score * 2
     )
 
+    scores["Chemistry"] += (
+        science_score * 1.5
+    )
+
+    scores["Biochemistry"] += (
+        science_score * 1.5
+    )
+
+    scores["Biomedical Science"] += (
+        science_score * 1.5
+    )
+
+    scores["Neuroscience"] += (
+        science_score
+    )
+
     scores["Biomedical Engineering"] += (
         science_score * 1.5
     )
@@ -18729,8 +20051,32 @@ elif page == "My STEM Pathway":
         science_score * 1.5
     )
 
+    scores["Applied Physics"] += (
+        science_score * 1.5
+    )
+
+    scores["Astronomy / Astrophysics"] += (
+        science_score
+    )
+
+    scores["Earth Science"] += (
+        science_score
+    )
+
     scores["Environmental Science"] += (
         science_score * 1.5
+    )
+
+    scores["Environmental Studies / Sustainability"] += (
+        science_score
+    )
+
+    scores["Health Science"] += (
+        science_score
+    )
+
+    scores["Cognitive Science"] += (
+        science_score
     )
 
     scores["Data Science"] += (
@@ -18747,6 +20093,18 @@ elif page == "My STEM Pathway":
 
     scores["Mathematics"] += (
         data_score
+    )
+
+    scores["Statistics"] += (
+        data_score * 1.5
+    )
+
+    scores["Applied Mathematics"] += (
+        data_score
+    )
+
+    scores["Computational Science"] += (
+        data_score * 1.5
     )
 
     work_mapping = {
@@ -18956,15 +20314,17 @@ elif page == "My STEM Pathway":
                 + "</div>"
             )
 
-
         top_field = (
             top_three[0][0]
         )
 
         top_info = (
-            career_database[
-                top_field
-            ]
+            career_database.get(top_field)
+            or career_database.get(canonicalize_stem_field(top_field))
+            or {
+                "majors": [top_field],
+                "careers": ["STEM explorer", "Research assistant"]
+            }
         )
 
         st.divider()
@@ -19236,29 +20596,17 @@ elif page == "Opportunities":
                 key="opportunity_filter_types"
             )
 
-            research_area_filter = st.multiselect(
-                "Research Area",
-                [
-                    "Artificial Intelligence",
-                    "Computer Science",
-                    "Engineering",
-                    "Biomedical Science",
-                    "Biology",
-                    "Neuroscience",
-                    "Cancer Research",
-                    "Data Science",
-                    "Mathematics",
-                    "Physics",
-                    "Chemistry",
-                    "Environmental Science",
-                    "Earth / Climate Science",
-                    "Bioinformatics / Computational Biology",
-                    "Medicine / Health",
-                    "Robotics",
-                    "Space Science",
-                    "General STEM / Interdisciplinary"
-                ],
-                key="opportunity_filter_research_areas"
+            st.caption(
+                "Filter by STEM area. Choose from any group; programs can match more than one field."
+            )
+
+            research_area_filter = collect_grouped_stem_fields(
+                st.session_state.get(
+                    "opportunity_search_research_areas",
+                    []
+                ),
+                "opportunity_filter_research",
+                include_legacy_filters=True
             )
 
             selectivity_filter = st.multiselect(
@@ -19540,209 +20888,6 @@ elif page == "Opportunities":
 
             return True
 
-        def research_areas_from_fields(
-            fields_value
-        ):
-
-            tokens = [
-                item.strip().lower()
-                for item in str(
-                    fields_value or ""
-                ).split(";")
-                if item.strip()
-            ]
-
-            areas = set()
-
-            def token_matches(
-                *needles
-            ):
-
-                for token in tokens:
-
-                    for needle in needles:
-
-                        if (
-                            token == needle
-                            or
-                            needle in token
-                        ):
-                            return True
-
-                return False
-
-            if (
-                token_matches(
-                    "artificial intelligence",
-                    "machine learning"
-                )
-                or
-                "ai" in tokens
-            ):
-                areas.add(
-                    "Artificial Intelligence"
-                )
-
-            if token_matches(
-                "computer science"
-            ):
-                areas.add(
-                    "Computer Science"
-                )
-
-            if token_matches(
-                "engineering"
-            ):
-                areas.add(
-                    "Engineering"
-                )
-
-            if token_matches(
-                "biomedical",
-                "bioengineering"
-            ):
-                areas.add(
-                    "Biomedical Science"
-                )
-
-            if token_matches(
-                "biology"
-            ):
-                areas.add(
-                    "Biology"
-                )
-
-            if token_matches(
-                "neuroscience",
-                "neurology"
-            ):
-                areas.add(
-                    "Neuroscience"
-                )
-
-            if token_matches(
-                "cancer"
-            ):
-                areas.add(
-                    "Cancer Research"
-                )
-
-            if token_matches(
-                "data science",
-                "data analysis",
-                "statistics",
-                "biostatistics"
-            ):
-                areas.add(
-                    "Data Science"
-                )
-
-            if (
-                token_matches(
-                    "mathematics"
-                )
-                or
-                "math" in tokens
-            ):
-                areas.add(
-                    "Mathematics"
-                )
-
-            if token_matches(
-                "physics"
-            ):
-                areas.add(
-                    "Physics"
-                )
-
-            if token_matches(
-                "chemistry"
-            ):
-                areas.add(
-                    "Chemistry"
-                )
-
-            if token_matches(
-                "environmental",
-                "ecology"
-            ):
-                areas.add(
-                    "Environmental Science"
-                )
-
-            if token_matches(
-                "earth science",
-                "climate",
-                "remote sensing"
-            ):
-                areas.add(
-                    "Earth / Climate Science"
-                )
-
-            if token_matches(
-                "bioinformatics",
-                "computational biology"
-            ):
-                areas.add(
-                    "Bioinformatics / Computational Biology"
-                )
-
-            if token_matches(
-                "medicine",
-                "health",
-                "immunology",
-                "genetics",
-                "genomics",
-                "stem cell"
-            ):
-                areas.add(
-                    "Medicine / Health"
-                )
-
-            if token_matches(
-                "robotics"
-            ):
-                areas.add(
-                    "Robotics"
-                )
-
-            if token_matches(
-                "space",
-                "aerospace",
-                "astronomy"
-            ):
-                areas.add(
-                    "Space Science"
-                )
-
-            general_tokens = {
-                "stem",
-                "science",
-                "research",
-                "technology",
-                "innovation",
-                "design thinking",
-                "laboratory research",
-                "career exploration",
-                "natural sciences",
-                "nuclear science",
-                "materials science",
-                "social science",
-                "education",
-                "science communication",
-                "experimental design"
-            }
-
-            if any(
-                token in general_tokens
-                for token in tokens
-            ):
-                areas.add(
-                    "General STEM / Interdisciplinary"
-                )
-
-            return areas
-
         def is_eligible(
             opportunity
         ):
@@ -19797,11 +20942,36 @@ elif page == "Opportunities":
 
             max_score += 40
 
-            if any(
-                interest in fields
-                for interest in profile[
-                    "interests"
-                ]
+            expanded_interests = expand_stem_fields(
+                profile.get(
+                    "interests",
+                    []
+                )
+            )
+
+            opportunity_fields = set(
+                fields
+            )
+            opportunity_fields.update(
+                canonicalize_stem_field_list(
+                    fields
+                )
+            )
+            opportunity_fields.update(
+                research_areas_from_fields(
+                    opportunity.get(
+                        "fields",
+                        ""
+                    )
+                )
+            )
+
+            if (
+                expanded_interests
+                and
+                expanded_interests.intersection(
+                    opportunity_fields
+                )
             ):
 
                 score += 40
@@ -19888,151 +21058,6 @@ elif page == "Opportunities":
             )
 
 
-        def search_card_clean_text(
-            value,
-            fallback=""
-        ):
-
-            if value is None:
-                return fallback
-
-            try:
-
-                if pd.isna(
-                    value
-                ):
-                    return fallback
-
-            except Exception:
-                pass
-
-            text = str(
-                value
-            ).strip()
-
-            if (
-                not text
-                or
-                text.lower() == "nan"
-            ):
-                return fallback
-
-            return text
-
-
-        def search_card_window_status(
-            opportunity
-        ):
-
-            raw_status = search_card_clean_text(
-                opportunity.get(
-                    "application_status",
-                    ""
-                )
-            )
-
-            status_lower = raw_status.lower()
-
-            deadline_dt = parse_confirmed_deadline(
-                opportunity.get(
-                    "deadline"
-                )
-            )
-
-            if deadline_dt is not None:
-
-                if deadline_dt.tzinfo is None:
-                    compare_deadline = deadline_dt.replace(
-                        tzinfo=timezone.utc
-                    )
-                else:
-                    compare_deadline = deadline_dt.astimezone(
-                        timezone.utc
-                    )
-
-                if compare_deadline.date() < datetime.now(
-                    timezone.utc
-                ).date():
-                    return "CLOSED"
-
-            if "closed" in status_lower:
-                return "CLOSED"
-
-            if (
-                "open now" in status_lower
-                or
-                status_lower == "open"
-                or
-                status_lower.startswith(
-                    "open "
-                )
-            ):
-                return "OPEN NOW"
-
-            return "UPCOMING"
-
-
-        def search_card_pills_html(
-            fields_value
-        ):
-
-            raw = search_card_clean_text(
-                fields_value
-            )
-
-            if not raw:
-                return ""
-
-            labels = []
-
-            for chunk in raw.replace(
-                ",",
-                ";"
-            ).split(";"):
-
-                label = chunk.strip()
-
-                if label and label not in labels:
-                    labels.append(
-                        label
-                    )
-
-            if not labels:
-                return ""
-
-            return (
-                '<div class="sp-deadline-fields">'
-                + "".join(
-                    '<span class="sp-deadline-pill">'
-                    + html_module.escape(
-                        label
-                    )
-                    + '</span>'
-                    for label in labels
-                )
-                + '</div>'
-            )
-
-
-        def search_card_stat_html(
-            label,
-            value_html
-        ):
-
-            return (
-                '<div class="sp-deadline-stat">'
-                '<div class="sp-deadline-stat-label">'
-                + html_module.escape(
-                    label
-                )
-                + '</div>'
-                '<div class="sp-deadline-stat-value">'
-                + value_html
-                + '</div>'
-                '</div>'
-            )
-
-
         # ----------------------------------------------------
         # SEARCH RESULTS
         # ----------------------------------------------------
@@ -20090,7 +21115,7 @@ elif page == "Opportunities":
                 if (
                     active_research_areas
                     and
-                    not set(
+                    not expand_stem_fields(
                         active_research_areas
                     ).intersection(
                         research_areas_from_fields(
@@ -20176,6 +21201,15 @@ elif page == "Opportunities":
                         "opportunity_search_selectivity",
                         "opportunity_search_age",
                         "opportunity_search_research_areas"
+                    ] + [
+                        f"opportunity_filter_research_{group_name}"
+                        for group_name, _
+                        in STEM_FIELD_GROUPS
+                    ] + [
+                        "opportunity_filter_research_Computing & Technology",
+                        "opportunity_filter_research_Math & Physical Sciences",
+                        "opportunity_filter_research_Earth & Environmental Sciences",
+                        "opportunity_filter_research_Interdisciplinary STEM"
                     ]:
 
                         st.session_state.pop(
@@ -20206,165 +21240,18 @@ elif page == "Opportunities":
             ) in enumerate(search_results):
 
                 with st.container(
-                    key=f"search_result_card_{result_index}"
+                    key=f"recommended_card_search_{result_index}"
                 ):
 
-                    window_status = search_card_window_status(
-                        opportunity
-                    )
-
-                    if window_status == "OPEN NOW":
-                        badge_class = "sp-deadline-badge-open"
-                    elif window_status == "CLOSED":
-                        badge_class = "sp-deadline-badge-closed"
-                    else:
-                        badge_class = "sp-deadline-badge-upcoming"
-
-                    star_display = selectivity_to_stars(
-                        opportunity
-                    )
-
-                    filled_stars = star_display.count(
-                        "★"
-                    )
-
-                    empty_stars = star_display.count(
-                        "☆"
-                    )
-
-                    stars_html = (
-                        '<span class="sp-rec-star-filled">'
-                        + ("★" * filled_stars)
-                        + '</span>'
-                        '<span class="sp-rec-star-empty">'
-                        + ("☆" * empty_stars)
-                        + '</span>'
-                    )
-
-                    selectivity_label = search_card_clean_text(
-                        opportunity.get(
-                            "selectivity",
-                            ""
-                        )
-                    )
-
-                    if selectivity_label:
-                        stars_html += (
-                            '<div class="sp-rec-selectivity-note">'
-                            + html_module.escape(
-                                selectivity_label
-                            )
-                            + '</div>'
-                        )
-
-                    name_safe = html_module.escape(
-                        search_card_clean_text(
-                            opportunity.get(
-                                "name"
-                            ),
-                            "Opportunity"
-                        )
-                    )
-
-                    org_safe = html_module.escape(
-                        search_card_clean_text(
-                            opportunity.get(
-                                "organization"
-                            )
-                        )
-                    )
-
-                    desc_safe = html_module.escape(
-                        search_card_clean_text(
-                            opportunity.get(
-                                "description"
-                            )
-                        )
-                    )
-
-                    type_safe = html_module.escape(
-                        search_card_clean_text(
-                            opportunity.get(
-                                "opportunity_type"
-                            ),
-                            "Not listed"
-                        )
-                    )
-
-                    deadline_safe = html_module.escape(
-                        search_card_clean_text(
-                            opportunity.get(
-                                "deadline"
-                            ),
-                            "Check official site"
-                        )
-                    )
-
-                    internship_safe = html_module.escape(
-                        search_card_clean_text(
-                            opportunity.get(
-                                "internship_potential"
-                            ),
-                            "Not specified"
-                        )
-                    )
-
-                    match_safe = html_module.escape(
-                        str(
+                    st.html(
+                        opportunity_recommendation_card_html(
+                            opportunity,
                             score
                         )
                     )
 
-                    fields_html = search_card_pills_html(
-                        opportunity.get(
-                            "fields",
-                            ""
-                        )
-                    )
-
-                    st.html(
-                        '<div class="sp-deadline-card">'
-                        f'<span class="sp-deadline-badge {badge_class}">'
-                        f'{window_status}'
-                        '</span>'
-                        '<div class="sp-rec-header">'
-                        '<div class="sp-rec-heading">'
-                        f'<h3>{name_safe}</h3>'
-                        f'<p class="sp-rec-org">{org_safe}</p>'
-                        '</div>'
-                        '<div class="sp-rec-match">'
-                        '<div class="sp-rec-match-label">Your Match</div>'
-                        f'<div class="sp-rec-match-value">{match_safe}%</div>'
-                        '</div>'
-                        '</div>'
-                        f'<p class="sp-rec-desc">{desc_safe}</p>'
-                        '<div class="sp-deadline-stats sp-rec-stats">'
-                        + opportunity_transparency_stats_html(
-                            opportunity
-                        )
-                        + search_card_stat_html(
-                            "Type",
-                            type_safe
-                        )
-                        + search_card_stat_html(
-                            "Selectivity",
-                            stars_html
-                        )
-                        + search_card_stat_html(
-                            "Deadline",
-                            deadline_safe
-                        )
-                        + search_card_stat_html(
-                            "Internship Potential",
-                            internship_safe
-                        )
-                        + '</div>'
-                        + fields_html
-                        + '</div>'
-                    )
-
                     with st.expander(
-                        "Why this may match you"
+                        "Why this is recommended"
                     ):
 
                         if reasons:
@@ -20389,11 +21276,6 @@ elif page == "Opportunities":
                         st.write(
                             f"**Format:** "
                             f"{opportunity.get('format', 'Check official site')}"
-                        )
-
-                        st.write(
-                            f"**Internship Potential:** "
-                            f"{opportunity.get('internship_potential', 'Not specified')}"
                         )
 
                     calendar_url = google_calendar_deadline_url(
@@ -20425,20 +21307,14 @@ elif page == "Opportunities":
                         )
                     )
 
-                    if calendar_url:
-
-                        action1, action2, action3 = st.columns(3)
-
-                    else:
-
-                        action1, action2 = st.columns(2)
+                    action1, action2 = st.columns(2)
 
                     with action1:
 
                         if st.button(
                             "Save Opportunity",
                             key=f"search_save_{result_index}_{opportunity['name']}",
-                            use_container_width=True
+                            width="stretch"
                         ):
 
                             if save_opportunity(
@@ -20454,37 +21330,23 @@ elif page == "Opportunities":
                                     "Saved to My Applications."
                                 )
 
-                    if calendar_url:
+                    with action2:
 
-                        with action2:
+                        if official_url:
 
                             st.link_button(
-                                "Add to Google Calendar",
-                                calendar_url,
-                                use_container_width=True
+                                "View Official Opportunity",
+                                official_url,
+                                width="stretch"
                             )
 
-                        with action3:
+                    if calendar_url:
 
-                            if official_url:
-
-                                st.link_button(
-                                    "View Official Opportunity",
-                                    official_url,
-                                    use_container_width=True
-                                )
-
-                    else:
-
-                        with action2:
-
-                            if official_url:
-
-                                st.link_button(
-                                    "View Official Opportunity",
-                                    official_url,
-                                    use_container_width=True
-                                )
+                        st.link_button(
+                            "Add to Google Calendar",
+                            calendar_url,
+                            width="stretch"
+                        )
 
             st.divider()
 
@@ -20605,529 +21467,16 @@ elif page == "Opportunities":
             )
         ) in enumerate(recommended_results[:4]):
 
-            def rec_clean_text(
-                value,
-                fallback=""
-            ):
-
-                if value is None:
-                    return fallback
-
-                try:
-
-                    if pd.isna(
-                        value
-                    ):
-                        return fallback
-
-                except Exception:
-                    pass
-
-                text = str(
-                    value
-                ).strip()
-
-                if (
-                    not text
-                    or
-                    text.lower() == "nan"
-                ):
-                    return fallback
-
-                return text
-
-            def rec_window_status(
-                opportunity
-            ):
-
-                raw_status = rec_clean_text(
-                    opportunity.get(
-                        "application_status",
-                        ""
-                    )
-                )
-
-                status_lower = raw_status.lower()
-
-                deadline_dt = parse_confirmed_deadline(
-                    opportunity.get(
-                        "deadline"
-                    )
-                )
-
-                days_left = None
-
-                if deadline_dt is not None:
-
-                    now_local = datetime.now(
-                        timezone.utc
-                    )
-
-                    if deadline_dt.tzinfo is None:
-
-                        compare_deadline = deadline_dt.replace(
-                            tzinfo=timezone.utc
-                        )
-
-                    else:
-
-                        compare_deadline = deadline_dt.astimezone(
-                            timezone.utc
-                        )
-
-                    days_left = (
-                        compare_deadline.date()
-                        -
-                        now_local.date()
-                    ).days
-
-                if (
-                    days_left is not None
-                    and
-                    days_left < 0
-                ):
-                    return "CLOSED"
-
-                if "closed" in status_lower:
-                    return "CLOSED"
-
-                if (
-                    "open now" in status_lower
-                    or
-                    status_lower == "open"
-                    or
-                    status_lower.startswith("open ")
-                ):
-                    return "OPEN NOW"
-
-                if (
-                    "future cycle" in status_lower
-                    or
-                    "opens " in status_lower
-                    or
-                    "not yet" in status_lower
-                    or
-                    "upcoming" in status_lower
-                    or
-                    status_lower == "future"
-                ):
-                    return "UPCOMING"
-
-                if (
-                    days_left is not None
-                    and
-                    days_left >= 0
-                ):
-                    return "OPEN NOW"
-
-                return "UPCOMING"
-
-            def rec_paid_display(
-                opportunity
-            ):
-
-                raw = rec_clean_text(
-                    opportunity.get(
-                        "paid_status",
-                        ""
-                    )
-                )
-
-                if not raw:
-                    return (
-                        "Check official site",
-                        "unknown"
-                    )
-
-                lower = raw.lower()
-
-                if (
-                    "check official" in lower
-                    or
-                    "not specified" in lower
-                ):
-                    return (
-                        "Check official site",
-                        "unknown"
-                    )
-
-                if (
-                    "unpaid" in lower
-                    or
-                    "not paid" in lower
-                    or
-                    "free program" in lower
-                    or
-                    lower == "free"
-                ):
-                    return (
-                        "Free",
-                        "free"
-                    )
-
-                if (
-                    "paid" in lower
-                    or
-                    "stipend" in lower
-                    or
-                    "$" in raw
-                ):
-                    return (
-                        raw,
-                        "paid"
-                    )
-
-                return (
-                    raw,
-                    "other"
-                )
-
-            def rec_pills_html(
-                labels
-            ):
-
-                return "".join(
-                    [
-                        '<span class="sp-deadline-pill">'
-                        + html_module.escape(
-                            str(label)
-                        )
-                        + '</span>'
-                        for label in labels
-                    ]
-                )
-
-            def rec_grade_pills(
-                grades_value
-            ):
-
-                raw = rec_clean_text(
-                    grades_value
-                )
-
-                if not raw:
-                    return []
-
-                lower = raw.lower()
-
-                if (
-                    "check" in lower
-                    or
-                    "official" in lower
-                    or
-                    "eligib" in lower
-                ):
-                    return []
-
-                range_match = re.search(
-                    r"\b(9|10|11|12)\s*[–-]\s*(9|10|11|12)\b",
-                    raw
-                )
-
-                if range_match:
-
-                    start = int(
-                        range_match.group(1)
-                    )
-
-                    end = int(
-                        range_match.group(2)
-                    )
-
-                    if start <= end:
-
-                        return [
-                            f"Grade {number}"
-                            for number in range(
-                                start,
-                                end + 1
-                            )
-                        ]
-
-                found = re.findall(
-                    r"\b(9|10|11|12)\b",
-                    raw
-                )
-
-                unique_grades = []
-
-                for number in found:
-
-                    label = f"Grade {number}"
-
-                    if label not in unique_grades:
-                        unique_grades.append(
-                            label
-                        )
-
-                return unique_grades
-
-            def rec_field_pills(
-                fields_value
-            ):
-
-                raw = rec_clean_text(
-                    fields_value
-                )
-
-                if not raw:
-                    return []
-
-                labels = []
-
-                for chunk in raw.replace(
-                    ",",
-                    ";"
-                ).split(";"):
-
-                    label = chunk.strip()
-
-                    if (
-                        label
-                        and
-                        label not in labels
-                    ):
-                        labels.append(
-                            label
-                        )
-
-                return labels
-
-            def rec_stat_html(
-                label,
-                value_html
-            ):
-
-                return (
-                    '<div class="sp-deadline-stat">'
-                    '<div class="sp-deadline-stat-label">'
-                    f'{label}'
-                    '</div>'
-                    '<div class="sp-deadline-stat-value">'
-                    f'{value_html}'
-                    '</div>'
-                    '</div>'
-                )
-
-            window_status = rec_window_status(
-                recommended_opportunity
-            )
-
-            if window_status == "OPEN NOW":
-                badge_class = "sp-deadline-badge-open"
-            elif window_status == "CLOSED":
-                badge_class = "sp-deadline-badge-closed"
-            else:
-                badge_class = "sp-deadline-badge-upcoming"
-
-            star_display = selectivity_to_stars(
-                recommended_opportunity
-            )
-
-            filled_stars = star_display.count(
-                "★"
-            )
-
-            empty_stars = star_display.count(
-                "☆"
-            )
-
-            stars_html = (
-                '<span class="sp-rec-star-filled">'
-                + ("★" * filled_stars)
-                + '</span>'
-                + '<span class="sp-rec-star-empty">'
-                + ("☆" * empty_stars)
-                + '</span>'
-            )
-
-            selectivity_label = rec_clean_text(
-                recommended_opportunity.get(
-                    "selectivity",
-                    ""
-                )
-            )
-
-            if selectivity_label:
-
-                stars_html += (
-                    '<div class="sp-rec-selectivity-note">'
-                    + html_module.escape(
-                        selectivity_label
-                    )
-                    + '</div>'
-                )
-
-            paid_text, paid_kind = rec_paid_display(
-                recommended_opportunity
-            )
-
-            if paid_kind == "paid":
-                paid_html = (
-                    '<span class="sp-rec-paid">'
-                    + html_module.escape(
-                        paid_text
-                    )
-                    + '</span>'
-                )
-            else:
-                paid_html = html_module.escape(
-                    paid_text
-                )
-
-            grade_labels = rec_grade_pills(
-                recommended_opportunity.get(
-                    "grades",
-                    ""
-                )
-            )
-
-            if grade_labels:
-                grades_html = (
-                    '<div class="sp-deadline-fields">'
-                    + rec_pills_html(
-                        grade_labels
-                    )
-                    + '</div>'
-                )
-            else:
-                grades_html = html_module.escape(
-                    rec_clean_text(
-                        recommended_opportunity.get(
-                            "grades",
-                            ""
-                        ),
-                        "Check eligibility"
-                    )
-                )
-
-            field_labels = rec_field_pills(
-                recommended_opportunity.get(
-                    "fields",
-                    ""
-                )
-            )
-
-            fields_html = ""
-
-            if field_labels:
-                fields_html = (
-                    '<div class="sp-deadline-fields">'
-                    + rec_pills_html(
-                        field_labels
-                    )
-                    + '</div>'
-                )
-
-            name_safe = html_module.escape(
-                rec_clean_text(
-                    recommended_opportunity.get(
-                        "name",
-                        "Opportunity"
-                    ),
-                    "Opportunity"
-                )
-            )
-
-            org_safe = html_module.escape(
-                rec_clean_text(
-                    recommended_opportunity.get(
-                        "organization",
-                        ""
-                    )
-                )
-            )
-
-            desc_safe = html_module.escape(
-                rec_clean_text(
-                    recommended_opportunity.get(
-                        "description",
-                        ""
-                    )
-                )
-            )
-
-            type_safe = html_module.escape(
-                rec_clean_text(
-                    recommended_opportunity.get(
-                        "opportunity_type",
-                        ""
-                    ),
-                    "Not listed"
-                )
-            )
-
-            acceptance_safe = html_module.escape(
-                rec_clean_text(
-                    recommended_opportunity.get(
-                        "acceptance_rate",
-                        ""
-                    ),
-                    "Not publicly reported"
-                )
-            )
-
-            deadline_safe = html_module.escape(
-                rec_clean_text(
-                    recommended_opportunity.get(
-                        "deadline",
-                        ""
-                    ),
-                    "Check official site"
-                )
-            )
-
-            ages_safe = html_module.escape(
-                rec_clean_text(
-                    recommended_opportunity.get(
-                        "age_range",
-                        ""
-                    ),
-                    "Check official eligibility"
-                )
-            )
-
-            internship_safe = html_module.escape(
-                rec_clean_text(
-                    recommended_opportunity.get(
-                        "internship_potential",
-                        ""
-                    ),
-                    "Not specified"
-                )
-            )
-
-            match_safe = html_module.escape(
-                str(
-                    recommended_score
-                )
-            )
 
             with st.container(
                 key=f"recommended_card_{rec_index}"
             ):
 
                 st.html(
-                    '<div class="sp-deadline-card">'
-                    f'<span class="sp-deadline-badge {badge_class}">'
-                    f'{window_status}'
-                    '</span>'
-                    '<div class="sp-rec-header">'
-                    '<div class="sp-rec-heading">'
-                    f'<h3>{name_safe}</h3>'
-                    f'<p class="sp-rec-org">{org_safe}</p>'
-                    '</div>'
-                    '<div class="sp-rec-match">'
-                    '<div class="sp-rec-match-label">Your Match</div>'
-                    f'<div class="sp-rec-match-value">{match_safe}%</div>'
-                    '</div>'
-                    '</div>'
-                    f'<p class="sp-rec-desc">{desc_safe}</p>'
-                    + opportunity_info_grid_html(
-                        recommended_opportunity
+                    opportunity_recommendation_card_html(
+                        recommended_opportunity,
+                        recommended_score
                     )
-                    + fields_html
-                    + '</div>'
                 )
 
                 with st.expander(
@@ -21182,20 +21531,14 @@ elif page == "Opportunities":
                     )
                 )
 
-                if recommended_calendar_url:
-
-                    rec_action1, rec_action2, rec_action3 = st.columns(3)
-
-                else:
-
-                    rec_action1, rec_action2 = st.columns(2)
+                rec_action1, rec_action2 = st.columns(2)
 
                 with rec_action1:
 
                     if st.button(
                         "Save Opportunity",
                         key=f"recommended_save_{rec_index}_{recommended_opportunity['name']}",
-                        use_container_width=True
+                        width="stretch"
                     ):
 
                         if save_opportunity(
@@ -21211,37 +21554,23 @@ elif page == "Opportunities":
                                 "Saved to My Applications."
                             )
 
-                if recommended_calendar_url:
+                with rec_action2:
 
-                    with rec_action2:
+                    if recommended_official_url:
 
                         st.link_button(
-                            "Add to Google Calendar",
-                            recommended_calendar_url,
-                            use_container_width=True
+                            "View Official Opportunity",
+                            recommended_official_url,
+                            width="stretch"
                         )
 
-                    with rec_action3:
+                if recommended_calendar_url:
 
-                        if recommended_official_url:
-
-                            st.link_button(
-                                "View Official Opportunity",
-                                recommended_official_url,
-                                use_container_width=True
-                            )
-
-                else:
-
-                    with rec_action2:
-
-                        if recommended_official_url:
-
-                            st.link_button(
-                                "View Official Opportunity",
-                                recommended_official_url,
-                                use_container_width=True
-                            )
+                    st.link_button(
+                        "Add to Google Calendar",
+                        recommended_calendar_url,
+                        width="stretch"
+                    )
 
 
 # ============================================================
@@ -22245,23 +22574,12 @@ elif page == "College Suggestions":
             )
 
     # --------------------------------------------------------
-    # FIELD DISCOVERY SCORING
+    # FIELçD DISCOVERY SCORING
     # --------------------------------------------------------
 
     field_scores = {
-        "Engineering": 0,
-        "Electrical Engineering": 0,
-        "Mechanical Engineering": 0,
-        "Computer Engineering": 0,
-        "Computer Science": 0,
-        "Artificial Intelligence": 0,
-        "Data Science": 0,
-        "Biomedical Engineering": 0,
-        "Biology": 0,
-        "Physics": 0,
-        "Mathematics": 0,
-        "Environmental Science": 0,
-        "Robotics": 0
+        field: 0
+        for field in all_stem_field_options()
     }
 
     def add_points(fields, points):
@@ -22273,54 +22591,54 @@ elif page == "College Suggestions":
         if answer == "Building or fixing things":
             add_points(["Mechanical Engineering", "Engineering", "Robotics"], 5)
         elif answer == "Computers and technology":
-            add_points(["Computer Science", "Computer Engineering", "Artificial Intelligence"], 5)
+            add_points(["Computer Science", "Computer Engineering", "Artificial Intelligence", "Information Technology / Information Science"], 5)
         elif answer == "Coding or making apps":
-            add_points(["Computer Science", "Artificial Intelligence", "Data Science"], 6)
+            add_points(["Computer Science", "Artificial Intelligence", "Data Science", "Software Engineering", "Information Technology / Information Science"], 6)
         elif answer == "Robots and electronics":
             add_points(["Robotics", "Electrical Engineering", "Computer Engineering"], 6)
         elif answer == "Math and solving puzzles":
-            add_points(["Mathematics", "Physics", "Data Science", "Engineering"], 5)
+            add_points(["Mathematics", "Applied Mathematics", "Statistics", "Physics", "Data Science", "Computational Science"], 5)
         elif answer == "Science and experiments":
-            add_points(["Biology", "Physics", "Biomedical Engineering", "Environmental Science"], 5)
+            add_points(["Biology", "Chemistry", "Physics", "Applied Physics", "Biochemistry", "Biomedical Science", "Environmental Science", "Neuroscience"], 5)
         elif answer == "Medicine and the human body":
-            add_points(["Biomedical Engineering", "Biology"], 6)
+            add_points(["Biology", "Biomedical Science", "Neuroscience", "Medicine / Health Science", "Health Science", "Public Health", "Biochemistry", "Biomedical Engineering"], 6)
         elif answer == "Nature, climate, and the environment":
-            add_points(["Environmental Science", "Biology"], 6)
+            add_points(["Environmental Science", "Biology", "Climate Science", "Earth Science", "Environmental Studies / Sustainability", "Environmental Engineering"], 6)
         elif answer == "Working with data and patterns":
-            add_points(["Data Science", "Artificial Intelligence", "Mathematics"], 6)
+            add_points(["Data Science", "Artificial Intelligence", "Mathematics", "Statistics", "Applied Mathematics", "Computational Science"], 6)
         elif answer == "Designing or creating new things":
             add_points(["Engineering", "Mechanical Engineering", "Robotics"], 5)
 
     subject_map = {
-        "Math": ["Mathematics", "Data Science", "Engineering", "Physics"],
-        "Science": ["Biology", "Physics", "Environmental Science", "Biomedical Engineering"],
-        "Computer Science / Technology": ["Computer Science", "Computer Engineering", "Artificial Intelligence", "Robotics"],
-        "Biology": ["Biology", "Biomedical Engineering", "Environmental Science"],
-        "Physics": ["Physics", "Electrical Engineering", "Mechanical Engineering", "Engineering"],
-        "A mix of math and science": ["Engineering", "Biomedical Engineering", "Physics", "Data Science"]
+        "Math": ["Mathematics", "Applied Mathematics", "Statistics", "Data Science", "Computational Science", "Physics"],
+        "Science": ["Biology", "Chemistry", "Physics", "Applied Physics", "Environmental Science", "Biochemistry", "Neuroscience", "Biomedical Science"],
+        "Computer Science / Technology": ["Computer Science", "Computer Engineering", "Artificial Intelligence", "Robotics", "Cybersecurity", "Data Science", "Information Technology / Information Science"],
+        "Biology": ["Biology", "Biomedical Science", "Biotechnology", "Biochemistry", "Environmental Science", "Biomedical Engineering"],
+        "Physics": ["Physics", "Applied Physics", "Astronomy / Astrophysics", "Electrical Engineering", "Mechanical Engineering", "Engineering"],
+        "A mix of math and science": ["Physics", "Chemistry", "Mathematics", "Applied Mathematics", "Data Science", "Biology", "Engineering"]
     }
 
     add_points(subject_map.get(q2, []), 4)
 
     work_map = {
         "Building something with my hands": ["Mechanical Engineering", "Robotics", "Engineering"],
-        "Working on a computer": ["Computer Science", "Artificial Intelligence", "Data Science", "Computer Engineering"],
-        "Solving difficult problems": ["Mathematics", "Physics", "Engineering", "Computer Science"],
+        "Working on a computer": ["Computer Science", "Artificial Intelligence", "Data Science", "Computer Engineering", "Information Technology / Information Science"],
+        "Solving difficult problems": ["Mathematics", "Physics", "Applied Mathematics", "Computer Science", "Engineering"],
         "Designing new products or systems": ["Mechanical Engineering", "Electrical Engineering", "Computer Engineering", "Engineering"],
-        "Running experiments or doing research": ["Biology", "Physics", "Biomedical Engineering", "Environmental Science"],
-        "Helping people through science or technology": ["Biomedical Engineering", "Biology", "Engineering"],
-        "Analyzing information and finding patterns": ["Data Science", "Artificial Intelligence", "Mathematics"]
+        "Running experiments or doing research": ["Biology", "Physics", "Chemistry", "Applied Physics", "Biochemistry", "Biomedical Science", "Environmental Science", "Neuroscience"],
+        "Helping people through science or technology": ["Biology", "Medicine / Health Science", "Health Science", "Public Health", "Biomedical Science", "Biomedical Engineering"],
+        "Analyzing information and finding patterns": ["Data Science", "Artificial Intelligence", "Mathematics", "Statistics", "Applied Mathematics", "Computational Science"]
     }
 
     add_points(work_map.get(q3, []), 4)
 
     environment_map = {
         "Hardware, machines, or physical objects": ["Mechanical Engineering", "Electrical Engineering", "Robotics"],
-        "Software and computers": ["Computer Science", "Artificial Intelligence", "Data Science"],
-        "People and healthcare": ["Biomedical Engineering", "Biology"],
-        "Numbers and data": ["Data Science", "Mathematics", "Artificial Intelligence"],
-        "Science and research": ["Physics", "Biology", "Environmental Science"],
-        "The environment": ["Environmental Science", "Biology"],
+        "Software and computers": ["Computer Science", "Artificial Intelligence", "Data Science", "Information Technology / Information Science"],
+        "People and healthcare": ["Biology", "Medicine / Health Science", "Health Science", "Public Health", "Biomedical Science", "Biomedical Engineering"],
+        "Numbers and data": ["Data Science", "Mathematics", "Statistics", "Applied Mathematics", "Artificial Intelligence", "Computational Science"],
+        "Science and research": ["Physics", "Biology", "Chemistry", "Applied Physics", "Biochemistry", "Environmental Science", "Neuroscience", "Biomedical Science"],
+        "The environment": ["Environmental Science", "Biology", "Climate Science", "Earth Science", "Environmental Studies / Sustainability"],
         "A mix of hardware and software": ["Computer Engineering", "Robotics", "Electrical Engineering"]
     }
 
@@ -22336,16 +22654,21 @@ elif page == "College Suggestions":
 
     add_points(
         [
-            "Engineering",
-            "Electrical Engineering",
-            "Mechanical Engineering",
-            "Computer Engineering",
             "Computer Science",
             "Artificial Intelligence",
             "Data Science",
             "Physics",
+            "Applied Physics",
             "Mathematics",
-            "Robotics"
+            "Applied Mathematics",
+            "Statistics",
+            "Computational Science",
+            "Engineering",
+            "Electrical Engineering",
+            "Mechanical Engineering",
+            "Computer Engineering",
+            "Robotics",
+            "Quantitative Finance / Financial Engineering"
         ],
         math_points
     )
@@ -22792,7 +23115,7 @@ elif page == "College Suggestions":
             "research": True
         },
         {
-            "name": "University of Pittsburgh at Johnstown",
+            "name":             "University of Pittsburgh at Johnstown",
             "location": "Johnstown, PA",
             "region": "Northeast",
             "setting": "Traditional college campus",
@@ -22808,6 +23131,203 @@ elif page == "College Suggestions":
             "research": True
         }
     ]
+
+    college_field_extras = {
+        "MIT": [
+            "Chemistry", "Biology", "Chemical Engineering", "Aerospace Engineering",
+            "Civil Engineering", "Materials Science / Engineering", "Bioengineering",
+            "Biotechnology", "Neuroscience", "Astrophysics / Astronomy",
+            "Applied Mathematics", "Statistics", "Cybersecurity",
+            "Environmental Engineering", "Climate Science"
+        ],
+        "Stanford University": [
+            "Chemistry", "Biomedical Science", "Neuroscience", "Chemical Engineering",
+            "Civil Engineering", "Materials Science / Engineering", "Bioengineering",
+            "Biotechnology", "Public Health", "Earth Science / Geoscience",
+            "Climate Science", "Applied Mathematics", "Statistics", "Cybersecurity"
+        ],
+        "Carnegie Mellon University": [
+            "Statistics", "Applied Mathematics", "Cybersecurity",
+            "Materials Science / Engineering", "Chemical Engineering",
+            "Civil Engineering", "Quantitative Finance / Financial Engineering",
+            "Biology", "Chemistry", "Public Health"
+        ],
+        "UC Berkeley": [
+            "Chemistry", "Statistics", "Applied Mathematics", "Civil Engineering",
+            "Chemical Engineering", "Materials Science / Engineering",
+            "Earth Science / Geoscience", "Climate Science", "Public Health",
+            "Neuroscience", "Bioengineering", "Cybersecurity"
+        ],
+        "Georgia Tech": [
+            "Aerospace Engineering", "Civil Engineering", "Chemical Engineering",
+            "Industrial Engineering", "Materials Science / Engineering",
+            "Environmental Engineering", "Cybersecurity", "Applied Mathematics",
+            "Statistics", "Chemistry", "Biology"
+        ],
+        "University of Michigan": [
+            "Chemistry", "Biology", "Neuroscience", "Public Health",
+            "Civil Engineering", "Chemical Engineering", "Aerospace Engineering",
+            "Industrial Engineering", "Materials Science / Engineering",
+            "Climate Science", "Earth Science / Geoscience", "Statistics"
+        ],
+        "Purdue University": [
+            "Aerospace Engineering", "Civil Engineering", "Chemical Engineering",
+            "Industrial Engineering", "Materials Science / Engineering",
+            "Environmental Engineering", "Agriculture-adjacent biology",
+            "Chemistry", "Statistics", "Cybersecurity"
+        ],
+        "Cornell University": [
+            "Chemistry", "Biology", "Agriculture and life sciences",
+            "Civil Engineering", "Chemical Engineering", "Materials Science / Engineering",
+            "Earth Science / Geoscience", "Public Health", "Statistics",
+            "Applied Mathematics", "Neuroscience"
+        ],
+        "Columbia University": [
+            "Chemistry", "Biology", "Neuroscience", "Public Health",
+            "Earth Science / Geoscience", "Climate Science", "Applied Mathematics",
+            "Statistics", "Chemical Engineering", "Civil Engineering",
+            "Biomedical Science", "Medicine / Health Science"
+        ],
+        "Princeton University": [
+            "Chemistry", "Biology", "Neuroscience", "Astrophysics / Astronomy",
+            "Applied Mathematics", "Statistics", "Chemical Engineering",
+            "Civil Engineering", "Public Health", "Climate Science"
+        ],
+        "Harvard University": [
+            "Chemistry", "Biology", "Neuroscience", "Public Health",
+            "Medicine / Health Science", "Biomedical Science", "Statistics",
+            "Applied Mathematics", "Earth Science / Geoscience", "Climate Science",
+            "Astrophysics / Astronomy"
+        ],
+        "Duke University": [
+            "Chemistry", "Biology", "Neuroscience", "Public Health",
+            "Biomedical Science", "Medicine / Health Science", "Statistics",
+            "Civil Engineering", "Environmental Engineering", "Climate Science"
+        ],
+        "Johns Hopkins University": [
+            "Medicine / Health Science", "Public Health", "Biomedical Science",
+            "Neuroscience", "Biology", "Chemistry", "Bioengineering",
+            "Biotechnology", "Statistics", "Applied Mathematics"
+        ],
+        "Caltech": [
+            "Chemistry", "Biology", "Astrophysics / Astronomy",
+            "Applied Mathematics", "Chemical Engineering",
+            "Materials Science / Engineering", "Earth Science / Geoscience",
+            "Climate Science", "Aerospace Engineering"
+        ],
+        "The Cooper Union": [
+            "Civil Engineering", "Chemical Engineering",
+            "Art and architecture-adjacent engineering"
+        ],
+        "NYU Tandon": [
+            "Civil Engineering", "Chemical Engineering", "Cybersecurity",
+            "Biotechnology", "Bioengineering", "Applied Mathematics",
+            "Urban Science / Environmental Engineering"
+        ],
+        "Stevens Institute of Technology": [
+            "Civil Engineering", "Chemical Engineering", "Cybersecurity",
+            "Quantitative Finance / Financial Engineering", "Applied Mathematics"
+        ],
+        "CCNY": [
+            "Chemistry", "Biology", "Civil Engineering", "Chemical Engineering",
+            "Earth Science / Geoscience", "Public Health", "Biomedical Science"
+        ],
+        "Stony Brook University": [
+            "Chemistry", "Biology", "Neuroscience", "Medicine / Health Science",
+            "Earth Science / Geoscience", "Climate Science", "Astrophysics / Astronomy",
+            "Applied Mathematics", "Statistics", "Materials Science / Engineering"
+        ],
+        "CUNY City Tech": [
+            "Civil Engineering", "Cybersecurity", "Biology", "Chemistry"
+        ],
+        "UMass Lowell": [
+            "Chemistry", "Biology", "Civil Engineering", "Chemical Engineering",
+            "Public Health", "Cybersecurity"
+        ],
+        "Western New England University": [
+            "Biology", "Chemistry", "Civil Engineering", "Pharmacy-adjacent health science"
+        ],
+        "UMass Boston": [
+            "Biology", "Chemistry", "Environmental Science", "Public Health",
+            "Statistics", "Applied Mathematics"
+        ],
+        "Wentworth Institute of Technology": [
+            "Civil Engineering", "Industrial Engineering", "Cybersecurity",
+            "Applied Mathematics"
+        ],
+        "University of New Hampshire": [
+            "Biology", "Chemistry", "Earth Science / Geoscience",
+            "Climate Science", "Civil Engineering", "Public Health"
+        ],
+        "UMass Dartmouth": [
+            "Biology", "Chemistry", "Civil Engineering", "Public Health",
+            "Cybersecurity"
+        ],
+        "Wilkes University": [
+            "Biology", "Chemistry", "Earth Science / Geoscience",
+            "Pharmacy-adjacent health science"
+        ],
+        "University of Pittsburgh at Johnstown": [
+            "Biology", "Chemistry", "Civil Engineering", "Environmental Science"
+        ]
+    }
+
+    for college in college_catalog:
+        extras = college_field_extras.get(college["name"], [])
+        known_fields = set(all_stem_field_options())
+        merged_fields = list(
+            dict.fromkeys(
+                college["fields"] + [
+                    field
+                    for field in extras
+                    if field in known_fields
+                ]
+            )
+        )
+
+        college_field_synonyms = {
+            "Astrophysics / Astronomy": ["Astronomy / Astrophysics"],
+            "Astronomy / Astrophysics": ["Astrophysics / Astronomy"],
+            "Earth Science / Geoscience": ["Earth Science"],
+            "Earth Science": ["Earth Science / Geoscience"],
+            "Materials Science / Engineering": ["Materials Science"],
+            "Materials Science": ["Materials Science / Engineering"],
+            "Medicine / Health Science": ["Health Science"],
+            "Public Health": ["Health Science"],
+            "Physics": ["Applied Physics"],
+            "Biology": ["Biochemistry"],
+            "Chemistry": ["Biochemistry"],
+            "Computer Science": [
+                "Information Technology / Information Science",
+                "Computational Science"
+            ],
+            "Neuroscience": ["Cognitive Science"],
+            "Environmental Science": ["Environmental Studies / Sustainability"],
+            "Engineering": ["General Engineering / Undecided Engineering"],
+            "Mathematics": ["Applied Mathematics"],
+            "General / Interdisciplinary STEM": [
+                "STEM / General Science",
+                "Undecided STEM"
+            ]
+        }
+
+        synonym_fields = []
+        for field in merged_fields:
+            canonical = canonicalize_stem_field(field)
+            if canonical in known_fields:
+                synonym_fields.append(canonical)
+            for extra in college_field_synonyms.get(field, []):
+                if extra in known_fields:
+                    synonym_fields.append(extra)
+            for extra in college_field_synonyms.get(canonical, []):
+                if extra in known_fields:
+                    synonym_fields.append(extra)
+
+        college["fields"] = list(
+            dict.fromkeys(
+                merged_fields + synonym_fields
+            )
+        )
 
     # --------------------------------------------------------
     # COMPETITIVENESS
@@ -22848,7 +23368,9 @@ elif page == "College Suggestions":
         field_points = 0
 
         for rank, (field, field_score) in enumerate(top_fields, start=1):
-            if field in college["fields"]:
+            college_fields = set(college["fields"])
+            expanded_field = expand_stem_fields([field])
+            if field in college_fields or expanded_field.intersection(college_fields):
                 bonus = max(22 - ((rank - 1) * 5), 7)
                 field_points += bonus
 
@@ -23016,9 +23538,11 @@ elif page == "College Suggestions":
         )
 
         def college_has_intended_field(result):
-            college_fields = result["college"].get("fields", [])
+            college_fields = set(result["college"].get("fields", []))
             return any(
                 field in college_fields
+                or
+                expand_stem_fields([field]).intersection(college_fields)
                 for field, _
                 in discovery_results
             )
@@ -23045,6 +23569,7 @@ elif page == "College Suggestions":
                 for field, _
                 in discovery_results
                 if field in college["fields"]
+                or expand_stem_fields([field]).intersection(college["fields"])
             ][:4]
 
             best_fit_because, why_reasons = (
@@ -24623,7 +25148,7 @@ elif page == "Projects":
         },
         {
             "title": "Air Quality Data Dashboard",
-            "fields": ["Environmental Science", "Data Science", "Computer Science"],
+            "fields": ["Environmental Science", "Data Science", "Computer Science", "Climate Science"],
             "create": ["Something with data", "Something that helps my community", "A website or app"],
             "level": "Intermediate",
             "time": "2–4 weeks",
@@ -24646,7 +25171,7 @@ elif page == "Projects":
         },
         {
             "title": "Plant Growth Experiment",
-            "fields": ["Biology", "Environmental Science"],
+            "fields": ["Biology", "Environmental Science", "Climate Science"],
             "create": ["A research project", "Something involving biology", "Something I can build cheaply"],
             "level": "Beginner",
             "time": "2–4 weeks",
@@ -24692,7 +25217,7 @@ elif page == "Projects":
         },
         {
             "title": "Heart-Rate Data Investigation",
-            "fields": ["Biomedical Engineering", "Biology", "Data Science"],
+            "fields": ["Biomedical Engineering", "Biology", "Data Science", "Medicine / Health Science", "Statistics"],
             "create": ["Something related to health or the human body", "Something with data", "A research project"],
             "level": "Beginner",
             "time": "Weekend",
@@ -24761,7 +25286,7 @@ elif page == "Projects":
         },
         {
             "title": "Interactive Physics Simulator",
-            "fields": ["Physics", "Computer Science", "Mathematics"],
+            "fields": ["Physics", "Computer Science", "Mathematics", "Applied Mathematics"],
             "create": ["A website or app", "Something useful for school or my future", "A simulation"],
             "level": "Intermediate",
             "time": "2–4 weeks",
@@ -24784,7 +25309,7 @@ elif page == "Projects":
         },
         {
             "title": "Budget Optimization Tool",
-            "fields": ["Industrial Engineering", "Data Science", "Mathematics", "Computer Science"],
+            "fields": ["Industrial Engineering", "Data Science", "Mathematics", "Computer Science", "Statistics"],
             "create": ["A website or app", "Something with data", "Something that solves an optimization problem"],
             "level": "Advanced",
             "time": "2–4 weeks",
@@ -24807,7 +25332,7 @@ elif page == "Projects":
         },
         {
             "title": "Emergency Response Location Model",
-            "fields": ["Industrial Engineering", "Data Science", "Mathematics"],
+            "fields": ["Industrial Engineering", "Data Science", "Mathematics", "Statistics"],
             "create": ["Something with data", "Something that helps my community", "Something that solves an optimization problem"],
             "level": "Advanced",
             "time": "1–2 months",
@@ -24865,31 +25390,15 @@ elif page == "Projects":
         key="project_create_choices"
     )
 
-    project_field = st.multiselect(
-        "Are there any STEM areas you want to explore?",
-        [
-            "I'm not sure yet",
-            "Engineering",
-            "Electrical Engineering",
-            "Mechanical Engineering",
-            "Computer Engineering",
-            "Civil Engineering",
-            "Industrial Engineering",
-            "Biomedical Engineering",
-            "Robotics",
-            "Computer Science",
-            "Software Engineering",
-            "Web Development",
-            "Artificial Intelligence",
-            "Data Science",
-            "Cybersecurity",
-            "Biology",
-            "Environmental Science",
-            "Physics",
-            "Mathematics",
-            "Chemistry"
-        ],
-        key="project_field_choices"
+    st.write(
+        "Are there any STEM areas you want to explore?"
+    )
+
+    project_field = collect_grouped_stem_fields(
+        [],
+        "project_field",
+        include_unsure=True,
+        unsure_label="I'm not sure yet"
     )
 
     project_style = st.multiselect(
@@ -25008,14 +25517,24 @@ elif page == "Projects":
         selected_fields = [
             item
             for item in project_field
-            if item != "I'm not sure yet"
+            if item not in {
+                "I'm not sure yet",
+                "Not sure yet"
+            }
         ]
 
         if selected_fields:
             overlap = len(
-                set(selected_fields)
+                expand_stem_fields(
+                    selected_fields
+                )
                 &
-                set(project["fields"])
+                set(
+                    canonicalize_stem_field_list(
+                        project["fields"]
+                    )
+                    + project["fields"]
+                )
             )
 
             score += min(
@@ -26863,7 +27382,6 @@ elif page == "Feedback":
     existing_feedback = load_user_feedback(
         user_sub
     ) or {}
-
 
     with st.container(key="feedback_page"):
 
