@@ -14968,6 +14968,15 @@ def college_match_card_html(
     else:
         admit_rate_value = html_module.escape("See source")
 
+    rate_label = str(
+        college.get("rate_label") or ""
+    ).strip()
+    rate_context = (
+        " · " + html_module.escape(rate_label)
+        if rate_label
+        else ""
+    )
+
     if stars is not None:
         competition_html = (
             '<span class="sp-rec-star-filled">'
@@ -14988,12 +14997,14 @@ def college_match_card_html(
             + html_module.escape(competition_note)
             + " · "
             + admit_rate_value
+            + rate_context
             + "</div>"
         )
     else:
         selectivity_note_html = (
             '<div class="sp-college-stat-note">'
             + admit_rate_value
+            + rate_context
             + "</div>"
         )
 
@@ -23217,9 +23228,9 @@ elif page == "College Suggestions":
                 "Biomedical Engineering", "Biology", "Physics", "Mathematics",
                 "Environmental Science"
             ],
-            "admit_rate": 11.0,
-            "rate_label": "2026 first-year overall",
-            "source_url": "https://admissions.berkeley.edu/apply-to-berkeley/student-profile/",
+            "admit_rate": 10.3,
+            "rate_label": "Fall 2025 domestic out-of-state",
+            "source_url": "https://www.universityofcalifornia.edu/about-us/information-center/undergraduate-admissions-summary",
             "research": True
         },
         {
@@ -23233,9 +23244,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Artificial Intelligence",
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
             ],
-            "admit_rate": 13.3,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://irp.gatech.edu/files/CDS/CDS_2025-2026_FINAL_R4_03JUN2026.pdf",
+            "admit_rate": 9.0,
+            "rate_label": "Fall 2025 out-of-state / nonresident",
+            "source_url": "https://admission.gatech.edu/images/pdf/2025/FY-admitted-profile-full-2025.pdf",
             "research": True
         },
         {
@@ -23250,8 +23261,8 @@ elif page == "College Suggestions":
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
                 "Environmental Science", "Robotics"
             ],
-            "admit_rate": 16.4,
-            "rate_label": "Fall 2025 overall",
+            "admit_rate": 13.0,
+            "rate_label": "Fall 2025 out-of-state",
             "source_url": "https://obp.umich.edu/wp-content/uploads/pubdata/factsfigures/firstyearsprofile_umaa_2025.pdf",
             "research": True
         },
@@ -23266,9 +23277,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Artificial Intelligence",
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
             ],
-            "admit_rate": 49.9,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2025/06/CDS_2024-2025.pdf",
+            "admit_rate": 43.6,
+            "rate_label": "Fall 2025 out-of-state",
+            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2026/01/CDS_2025-2026.pdf",
             "research": True
         },
         {
@@ -23494,8 +23505,8 @@ elif page == "College Suggestions":
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
                 "Robotics"
             ],
-            "admit_rate": 83.0,
-            "rate_label": "Fall 2024 overall",
+            "admit_rate": 82.5,
+            "rate_label": "Fall 2024 out-of-state",
             "source_url": "https://www.uml.edu/docs/CDS_2024-2025%20Final_tcm18-403507.pdf",
             "research": True
         },
@@ -23525,7 +23536,7 @@ elif page == "College Suggestions":
                 "Computer Science", "Data Science", "Mathematics", "Physics"
             ],
             "admit_rate": 85.5,
-            "rate_label": "Fall 2025 overall",
+            "rate_label": "Fall 2025 overall (out-of-state rate not published)",
             "source_url": "https://www.umb.edu/media/umassboston/editor-uploads/institutional-research-assessment-planning/TABLE7-Undergraduate--Admissions.pdf",
             "research": True
         },
@@ -23556,9 +23567,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Data Science",
                 "Biomedical Engineering", "Physics", "Mathematics", "Environmental Science"
             ],
-            "admit_rate": 88.2,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-07/CDS-2024-2025_7.18.25.pdf",
+            "admit_rate": 88.8,
+            "rate_label": "Fall 2024 out-of-state",
+            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-03/cds-2024-2025-3.17.25.pdf",
             "research": True
         },
         {
@@ -23572,9 +23583,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Data Science",
                 "Biomedical Engineering", "Physics", "Mathematics"
             ],
-            "admit_rate": 90.6,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/Data_Book_Fall24_Final-v2_6.26.25.pdf",
+            "admit_rate": 91.1,
+            "rate_label": "Fall 2023 out-of-state (latest residency breakdown published)",
+            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/CDS_2023-2024-FINAL-v2.pdf",
             "research": True
         },
         {
@@ -23605,7 +23616,7 @@ elif page == "College Suggestions":
                 "Mathematics", "Physics"
             ],
             "admit_rate": 94.8,
-            "rate_label": "Fall 2024 overall",
+            "rate_label": "Fall 2024 overall (out-of-state rate not published)",
             "source_url": "https://ir.pitt.edu/sites/default/files/assets/2024-2025_CDS_Johnstown.pdf",
             "research": True
         }
@@ -24016,6 +24027,14 @@ elif page == "College Suggestions":
             "Within each group, schools are ranked by your personalized **match score**."
         )
 
+        st.caption(
+            "Acceptance-rate policy for New York students: public colleges outside "
+            "New York use the latest published out-of-state rate; New York colleges "
+            "and private colleges use their published overall rate. If a public "
+            "college does not publish a residency breakdown, that limitation is "
+            "shown beside the rate."
+        )
+
         def college_has_intended_field(result):
             college_fields = set(result["college"].get("fields", []))
             return any(
@@ -24326,7 +24345,9 @@ elif page == "My Favorite Colleges":
     st.info(
         "Your favorite order is based on your personal preferences. "
         "The competitiveness rating and admission data are informational "
-        "and do not predict your individual chance of admission."
+        "and do not predict your individual chance of admission. Public colleges "
+        "outside New York show out-of-state rates when the school publishes them; "
+        "New York and private colleges show overall rates."
     )
 
     st.divider()
@@ -24356,27 +24377,27 @@ elif page == "My Favorite Colleges":
         },
         "UC Berkeley": {
             "location": "Berkeley, CA",
-            "admit_rate": 11.0,
-            "rate_label": "2026 first-year overall",
-            "source_url": "https://admissions.berkeley.edu/apply-to-berkeley/student-profile/"
+            "admit_rate": 10.3,
+            "rate_label": "Fall 2025 domestic out-of-state",
+            "source_url": "https://www.universityofcalifornia.edu/about-us/information-center/undergraduate-admissions-summary"
         },
         "Georgia Tech": {
             "location": "Atlanta, GA",
-            "admit_rate": 13.3,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://irp.gatech.edu/files/CDS/CDS_2025-2026_FINAL_R4_03JUN2026.pdf"
+            "admit_rate": 9.0,
+            "rate_label": "Fall 2025 out-of-state / nonresident",
+            "source_url": "https://admission.gatech.edu/images/pdf/2025/FY-admitted-profile-full-2025.pdf"
         },
         "University of Michigan": {
             "location": "Ann Arbor, MI",
-            "admit_rate": 16.4,
-            "rate_label": "Fall 2025 overall",
+            "admit_rate": 13.0,
+            "rate_label": "Fall 2025 out-of-state",
             "source_url": "https://obp.umich.edu/wp-content/uploads/pubdata/factsfigures/firstyearsprofile_umaa_2025.pdf"
         },
         "Purdue University": {
             "location": "West Lafayette, IN",
-            "admit_rate": 49.9,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2025/06/CDS_2024-2025.pdf"
+            "admit_rate": 43.6,
+            "rate_label": "Fall 2025 out-of-state",
+            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2026/01/CDS_2025-2026.pdf"
         },
         "Cornell University": {
             "location": "Ithaca, NY",
@@ -24458,8 +24479,8 @@ elif page == "My Favorite Colleges":
         },
         "UMass Lowell": {
             "location": "Lowell, MA",
-            "admit_rate": 83.0,
-            "rate_label": "Fall 2024 overall",
+            "admit_rate": 82.5,
+            "rate_label": "Fall 2024 out-of-state",
             "source_url": "https://www.uml.edu/docs/CDS_2024-2025%20Final_tcm18-403507.pdf"
         },
         "Western New England University": {
@@ -24471,7 +24492,7 @@ elif page == "My Favorite Colleges":
         "UMass Boston": {
             "location": "Boston, MA",
             "admit_rate": 85.5,
-            "rate_label": "Fall 2025 overall",
+            "rate_label": "Fall 2025 overall (out-of-state rate not published)",
             "source_url": "https://www.umb.edu/media/umassboston/editor-uploads/institutional-research-assessment-planning/TABLE7-Undergraduate--Admissions.pdf"
         },
         "Wentworth Institute of Technology": {
@@ -24482,15 +24503,15 @@ elif page == "My Favorite Colleges":
         },
         "University of New Hampshire": {
             "location": "Durham, NH",
-            "admit_rate": 88.2,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-07/CDS-2024-2025_7.18.25.pdf"
+            "admit_rate": 88.8,
+            "rate_label": "Fall 2024 out-of-state",
+            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-03/cds-2024-2025-3.17.25.pdf"
         },
         "UMass Dartmouth": {
             "location": "Dartmouth, MA",
-            "admit_rate": 90.6,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/Data_Book_Fall24_Final-v2_6.26.25.pdf"
+            "admit_rate": 91.1,
+            "rate_label": "Fall 2023 out-of-state (latest residency breakdown published)",
+            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/CDS_2023-2024-FINAL-v2.pdf"
         },
         "Wilkes University": {
             "location": "Wilkes-Barre, PA",
@@ -24501,7 +24522,7 @@ elif page == "My Favorite Colleges":
         "University of Pittsburgh at Johnstown": {
             "location": "Johnstown, PA",
             "admit_rate": 94.8,
-            "rate_label": "Fall 2024 overall",
+            "rate_label": "Fall 2024 overall (out-of-state rate not published)",
             "source_url": "https://ir.pitt.edu/sites/default/files/assets/2024-2025_CDS_Johnstown.pdf"
         }
     }
