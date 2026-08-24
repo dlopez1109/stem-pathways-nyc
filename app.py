@@ -885,6 +885,76 @@ st.markdown(
         padding: 0 !important;
     }
 
+    .sp-my-profile-page {
+        width: 100%;
+    }
+
+    .sp-profile-saved-toast {
+        background: #EEF9F1 !important;
+        border: 1px solid #9FD7AE !important;
+        border-radius: 11px !important;
+        box-shadow: none !important;
+        padding: 0.48rem 0.75rem !important;
+        margin: 0 0 1.1rem 0 !important;
+        color: #174C2C !important;
+        -webkit-text-fill-color: #174C2C !important;
+        font-size: 0.88rem !important;
+        font-weight: 650 !important;
+        line-height: 1.35 !important;
+        text-align: left !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-profile-saved-toast {
+        background: #EEF9F1 !important;
+        border: 1px solid #9FD7AE !important;
+        border-radius: 11px !important;
+        box-shadow: none !important;
+        color: #174C2C !important;
+        -webkit-text-fill-color: #174C2C !important;
+    }
+
+    .sp-profile-metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
+        width: 100%;
+        margin: 0 0 1.55rem 0;
+    }
+
+    .sp-profile-metric {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE6;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(8, 60, 93, 0.05);
+        padding: 0.78rem 0.9rem 0.82rem;
+        box-sizing: border-box;
+        min-width: 0;
+        height: 100%;
+    }
+
+    .sp-profile-metric-label {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.74rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        letter-spacing: 0.01em;
+        margin: 0 0 0.32rem 0 !important;
+    }
+
+    .sp-profile-metric-value {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.55rem !important;
+        font-weight: 800 !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.02em;
+        margin: 0 !important;
+        overflow-wrap: anywhere;
+    }
+
     .sp-profile-summary {
         width: 100%;
         margin: 0;
@@ -893,25 +963,25 @@ st.markdown(
     .sp-profile-summary > h2 {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.45rem !important;
-        font-weight: 750 !important;
+        font-size: 1.32rem !important;
+        font-weight: 800 !important;
         line-height: 1.2 !important;
-        margin: 0 0 0.3rem 0 !important;
+        margin: 0 0 0.28rem 0 !important;
     }
 
     .sp-profile-summary-subtitle {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.92rem !important;
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.9rem !important;
         font-weight: 500 !important;
         line-height: 1.4 !important;
-        margin: 0 0 1rem 0 !important;
+        margin: 0 0 1.15rem 0 !important;
     }
 
     .sp-profile-summary-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1rem;
+        gap: 0.9rem;
         width: 100%;
         margin: 0;
         align-items: stretch;
@@ -920,10 +990,10 @@ st.markdown(
     .sp-profile-summary-card {
         background: #FFFFFF;
         border: 1px solid #D5DEE6;
-        border-radius: 16px;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.07);
-        padding: 1.15rem 1.2rem 1.2rem 1.3rem;
-        min-height: 172px;
+        border-radius: 14px;
+        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.055);
+        padding: 1.05rem 1.1rem 1.05rem 1.15rem;
+        min-height: 150px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -938,8 +1008,12 @@ st.markdown(
         left: 0;
         top: 0;
         bottom: 0;
-        width: 4px;
-        background: linear-gradient(180deg, #083C5D, #018FC7);
+        width: 3px;
+        background: linear-gradient(180deg, #018FC7, #72D2F2);
+    }
+
+    .sp-profile-summary-card.sp-profile-stage-card {
+        background: #FFFFFF;
     }
 
     .sp-profile-summary-head {
@@ -950,31 +1024,31 @@ st.markdown(
     .sp-profile-summary-card h3 {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.05rem !important;
+        font-size: 1rem !important;
         font-weight: 750 !important;
         line-height: 1.25 !important;
-        margin: 0 0 0.85rem 0 !important;
+        margin: 0 0 0.75rem 0 !important;
         min-height: 0 !important;
     }
 
     .sp-profile-chips {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.4rem;
+        gap: 0.35rem;
         width: 100%;
     }
 
     .sp-profile-chip {
         display: inline-flex;
         align-items: center;
-        padding: 0.36rem 0.7rem;
+        padding: 0.28rem 0.58rem;
         border-radius: 999px;
-        background: #E7F6FC;
-        color: #00658F !important;
-        -webkit-text-fill-color: #00658F !important;
-        border: 1px solid #B9E5F5;
-        font-size: 0.82rem !important;
-        font-weight: 700 !important;
+        background: #EAF7FC;
+        color: #0B4568 !important;
+        -webkit-text-fill-color: #0B4568 !important;
+        border: 1px solid #C5E8F4;
+        font-size: 0.78rem !important;
+        font-weight: 650 !important;
         line-height: 1.3;
         margin: 0;
     }
@@ -982,48 +1056,84 @@ st.markdown(
     .sp-profile-stage {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.02rem !important;
-        font-weight: 750 !important;
-        line-height: 1.4 !important;
-        margin: 0 0 0.75rem 0 !important;
-        background: #F7FBFE;
-        border: 1px solid #D7E5EC;
-        border-radius: 12px;
-        padding: 0.7rem 0.8rem;
+        font-size: 0.98rem !important;
+        font-weight: 650 !important;
+        line-height: 1.45 !important;
+        margin: 0 0 0.85rem 0 !important;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0;
         width: 100%;
         box-sizing: border-box;
+    }
+
+    .sp-profile-goal-block {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+        width: 100%;
+        margin-top: auto;
+    }
+
+    .sp-profile-goal-label {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.74rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        margin: 0 !important;
+        letter-spacing: 0.01em;
     }
 
     .sp-profile-goal-pill {
         display: inline-flex;
         align-items: center;
-        padding: 0.4rem 0.75rem;
+        padding: 0.32rem 0.68rem;
         border-radius: 999px;
         background: #E7F6FC;
-        color: #00658F !important;
-        -webkit-text-fill-color: #00658F !important;
+        color: #0B4568 !important;
+        -webkit-text-fill-color: #0B4568 !important;
         border: 1px solid #B9E5F5;
-        font-size: 0.84rem !important;
-        font-weight: 750 !important;
+        font-size: 0.8rem !important;
+        font-weight: 700 !important;
         line-height: 1.3;
     }
 
     .sp-profile-note {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.86rem !important;
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        font-size: 0.82rem !important;
         font-weight: 500 !important;
         line-height: 1.45 !important;
-        margin: 0.75rem 0 0 0 !important;
+        margin: 0.7rem 0 0 0 !important;
     }
 
     .sp-profile-empty {
         color: #5A6A78 !important;
         -webkit-text-fill-color: #5A6A78 !important;
-        font-size: 0.9rem !important;
+        font-size: 0.88rem !important;
         font-weight: 500 !important;
         line-height: 1.45 !important;
         margin: 0 !important;
+    }
+
+    @media (max-width: 900px) {
+        .sp-profile-metric-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .sp-profile-metric-grid,
+        .sp-profile-summary-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .sp-profile-metric-value {
+            font-size: 1.38rem !important;
+        }
     }
 
     [data-testid="stMain"] [class*="st-key-deadline_card_"] {
@@ -5413,16 +5523,16 @@ st.markdown(
     html body [data-testid="stMain"] .sp-profile-summary > h2 * {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.45rem !important;
-        font-weight: 750 !important;
+        font-size: 1.32rem !important;
+        font-weight: 800 !important;
         margin-top: 0 !important;
-        margin-bottom: 0.3rem !important;
+        margin-bottom: 0.28rem !important;
     }
 
     html body [data-testid="stMain"] .sp-profile-summary-subtitle,
     html body [data-testid="stMain"] .sp-profile-summary-subtitle * {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
         font-weight: 500 !important;
     }
 
@@ -5431,13 +5541,28 @@ st.markdown(
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
         margin-top: 0 !important;
-        margin-bottom: 0.85rem !important;
+        margin-bottom: 0.75rem !important;
     }
 
     html body [data-testid="stMain"] .sp-profile-stage,
     html body [data-testid="stMain"] .sp-profile-stage * {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
+        background: transparent !important;
+        border: none !important;
+    }
+
+    html body [data-testid="stMain"] .sp-profile-metric-label,
+    html body [data-testid="stMain"] .sp-profile-metric-label * {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-profile-metric-value,
+    html body [data-testid="stMain"] .sp-profile-metric-value * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 800 !important;
     }
 
     html body [data-testid="stMain"] .sp-deadline-badge-open,
@@ -5801,12 +5926,19 @@ st.markdown(
 
     html body [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-info-card):hover,
     html body [data-testid="stMain"] .st-key-profile_cards [data-testid="stVerticalBlockBorderWrapper"]:hover {
-        background: #FFFFFF !important;
-        border-color: #083C5D !important;
-        box-shadow: 0 8px 22px rgba(8, 60, 93, 0.08) !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
         transform: none !important;
         filter: none !important;
         cursor: default !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-my-profile-page) [data-testid="stAlert"],
+    html body [data-testid="stMain"]:has(.sp-my-profile-page) [data-testid="stAlert"]:hover {
+        border: 1px solid #9FD7AE !important;
+        background: #EEF9F1 !important;
+        box-shadow: none !important;
     }
 
     html body [data-testid="stMain"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) [data-testid="stVerticalBlockBorderWrapper"]:hover {
@@ -9709,10 +9841,10 @@ extra_opportunities = [
         "deadline": "February 27, 2026 at 5 PM",
         "selectivity": "Highly Competitive",
         "selectivity_stars": 4,
-        "acceptance_rate": "~4–8% estimated",
+        "acceptance_rate": "Estimated 5–10%",
         "acceptance_rate_confidence": "Estimated — Moderate confidence",
-        "acceptance_rate_source": "NYU does not publish an official acceptance rate. Unofficial estimate based on the reported 2026 cohort of about 75 students and secondary applicant reporting.",
-        "eligibility_summary": "Rising juniors and seniors; must be a full-time NYC resident and attend an NYC school",
+        "acceptance_rate_source": "Not officially reported; highly competitive research program. Unofficial estimate based on the reported ~75-student cohort and secondary applicant reporting.",
+        "eligibility_summary": "NYC high school students; rising juniors/seniors; full-time NYC residents; STEM interest required",
         "stipend": "$2,000 upon successful completion",
         "stipend_display": "$2,000 upon successful completion",
         "internship_potential": "Yes — approximately 150 hours of mentored NYU lab research",
@@ -9720,7 +9852,9 @@ extra_opportunities = [
         "paid_status": "$2,000 stipend upon successful completion",
         "requirements": "Rising junior or senior; full-time NYC resident; must attend an NYC school; at least one year of high school science and one year of high school math; full 10-week commitment.",
         "url": "https://k12stem.engineering.nyu.edu/programs/arise",
-        "last_verified": "2026-08-21",
+        "last_verified": "2026-08-23",
+        "financial_aid": "Free program; provides support for accepted students (verify details)",
+        "financial_aid_status": "Free program; provides support for accepted students (verify details)",
         "eligible_grades": "10;11",
         "age_requirements": "Rising juniors and seniors",
         "nyc_residency_required": "Yes — must be a full-time NYC resident",
@@ -12743,6 +12877,142 @@ def opportunity_stat_html(
     )
 
 
+def opportunity_acceptance_display(
+    opportunity
+):
+
+    rate = opportunity_field(
+        opportunity,
+        "acceptance_rate",
+        fallback=""
+    )
+
+    confidence = opportunity_text(
+        opportunity.get(
+            "acceptance_rate_confidence"
+        ),
+        ""
+    )
+
+    if not rate:
+        rate = "Estimated — see program details"
+
+    rate_lower = rate.lower()
+    is_estimated = (
+        confidence.startswith(
+            "Estimated"
+        )
+        or
+        "estimated" in rate_lower
+        or
+        "unofficial" in rate_lower
+    )
+
+    if (
+        is_estimated
+        and
+        "(estimated)" not in rate_lower
+        and
+        "estimated" not in rate_lower
+    ):
+        rate = f"{rate} (estimated)"
+
+    return rate
+
+
+def opportunity_financial_aid_display(
+    opportunity
+):
+
+    aid = opportunity_field(
+        opportunity,
+        "financial_aid_status",
+        "financial_aid",
+        fallback=""
+    )
+
+    cost = opportunity_cost_display(
+        opportunity
+    )
+
+    cost_category = opportunity_text(
+        opportunity.get(
+            "cost_category"
+        ),
+        ""
+    ).lower()
+
+    if not aid:
+        if cost == "Free" or cost_category == "free":
+            return "Free"
+        if "stipend" in cost_category or "paid" in cost_category:
+            return "Paid"
+        return "Unknown"
+
+    aid_lower = aid.lower()
+
+    if (
+        cost == "Free"
+        and
+        aid_lower in {
+            "not needed",
+            "not needed — program is free",
+            "not needed — program is completely free",
+            "not needed — fully funded",
+            "not needed — program is fully funded",
+            "not needed — program is fully funded / full scholarship",
+            "not needed — fully funded / full scholarship",
+        }
+    ):
+        return (
+            "Free program; provides support for accepted students "
+            "(verify details)"
+            if "arise" in opportunity_text(
+                opportunity.get(
+                    "name"
+                ),
+                ""
+            ).lower()
+            else "Free"
+        )
+
+    if aid_lower.startswith(
+        "unknown"
+    ) or aid_lower in {
+        "check official site",
+        "check official cycle details",
+        "check official 2027 cycle details",
+        "no aid stated",
+        "not stated",
+    }:
+        if cost == "Free" or cost_category == "free":
+            return "Free"
+        if "financial aid" in aid_lower or "waiver" in aid_lower:
+            return "Partial aid"
+        return "Unknown"
+
+    if (
+        "full" in aid_lower
+        and
+        (
+            "aid" in aid_lower
+            or
+            "scholarship" in aid_lower
+            or
+            "waiver" in aid_lower
+            or
+            "funded" in aid_lower
+        )
+        and
+        "partial" not in aid_lower
+    ):
+        if cost == "Free":
+            return "Free"
+        return aid
+
+    return aid
+
+
 def opportunity_transparency_stats_html(
     opportunity
 ):
@@ -12759,23 +13029,9 @@ def opportunity_transparency_stats_html(
         opportunity
     )
 
-    aid = opportunity_field(
-        opportunity,
-        "financial_aid_status",
-        "financial_aid",
-        fallback="Unknown / check official site"
+    aid = opportunity_financial_aid_display(
+        opportunity
     )
-
-    if (
-        cost == "Free"
-        and
-        aid.lower() in {
-            "not needed",
-            "not needed — program is free",
-            "not needed — program is completely free"
-        }
-    ):
-        aid = "Not needed — program is fully funded"
 
     stipend = opportunity_field(
         opportunity,
@@ -12785,15 +13041,25 @@ def opportunity_transparency_stats_html(
         fallback="Check official site"
     )
 
-    rate = opportunity_field(
-        opportunity,
-        "acceptance_rate",
-        fallback="Not publicly reported"
+    rate = opportunity_acceptance_display(
+        opportunity
     )
 
     source_label = opportunity_acceptance_source_label(
         opportunity
     )
+
+    if (
+        source_label.lower()
+        in {
+            "not publicly reported",
+            "not available",
+            ""
+        }
+        and
+        "(estimated)" in rate.lower()
+    ):
+        source_label = "Unofficial estimate"
 
     return (
         opportunity_stat_html(
@@ -14968,15 +15234,6 @@ def college_match_card_html(
     else:
         admit_rate_value = html_module.escape("See source")
 
-    rate_label = str(
-        college.get("rate_label") or ""
-    ).strip()
-    rate_context = (
-        " · " + html_module.escape(rate_label)
-        if rate_label
-        else ""
-    )
-
     if stars is not None:
         competition_html = (
             '<span class="sp-rec-star-filled">'
@@ -14997,14 +15254,12 @@ def college_match_card_html(
             + html_module.escape(competition_note)
             + " · "
             + admit_rate_value
-            + rate_context
             + "</div>"
         )
     else:
         selectivity_note_html = (
             '<div class="sp-college-stat-note">'
             + admit_rate_value
-            + rate_context
             + "</div>"
         )
 
@@ -23228,9 +23483,9 @@ elif page == "College Suggestions":
                 "Biomedical Engineering", "Biology", "Physics", "Mathematics",
                 "Environmental Science"
             ],
-            "admit_rate": 10.3,
-            "rate_label": "Fall 2025 domestic out-of-state",
-            "source_url": "https://www.universityofcalifornia.edu/about-us/information-center/undergraduate-admissions-summary",
+            "admit_rate": 11.0,
+            "rate_label": "2026 first-year overall",
+            "source_url": "https://admissions.berkeley.edu/apply-to-berkeley/student-profile/",
             "research": True
         },
         {
@@ -23244,9 +23499,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Artificial Intelligence",
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
             ],
-            "admit_rate": 9.0,
-            "rate_label": "Fall 2025 out-of-state / nonresident",
-            "source_url": "https://admission.gatech.edu/images/pdf/2025/FY-admitted-profile-full-2025.pdf",
+            "admit_rate": 13.3,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://irp.gatech.edu/files/CDS/CDS_2025-2026_FINAL_R4_03JUN2026.pdf",
             "research": True
         },
         {
@@ -23261,8 +23516,8 @@ elif page == "College Suggestions":
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
                 "Environmental Science", "Robotics"
             ],
-            "admit_rate": 13.0,
-            "rate_label": "Fall 2025 out-of-state",
+            "admit_rate": 16.4,
+            "rate_label": "Fall 2025 overall",
             "source_url": "https://obp.umich.edu/wp-content/uploads/pubdata/factsfigures/firstyearsprofile_umaa_2025.pdf",
             "research": True
         },
@@ -23277,9 +23532,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Artificial Intelligence",
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
             ],
-            "admit_rate": 43.6,
-            "rate_label": "Fall 2025 out-of-state",
-            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2026/01/CDS_2025-2026.pdf",
+            "admit_rate": 49.9,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2025/06/CDS_2024-2025.pdf",
             "research": True
         },
         {
@@ -23505,8 +23760,8 @@ elif page == "College Suggestions":
                 "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
                 "Robotics"
             ],
-            "admit_rate": 82.5,
-            "rate_label": "Fall 2024 out-of-state",
+            "admit_rate": 83.0,
+            "rate_label": "Fall 2024 overall",
             "source_url": "https://www.uml.edu/docs/CDS_2024-2025%20Final_tcm18-403507.pdf",
             "research": True
         },
@@ -23536,7 +23791,7 @@ elif page == "College Suggestions":
                 "Computer Science", "Data Science", "Mathematics", "Physics"
             ],
             "admit_rate": 85.5,
-            "rate_label": "Fall 2025 overall (out-of-state rate not published)",
+            "rate_label": "Fall 2025 overall",
             "source_url": "https://www.umb.edu/media/umassboston/editor-uploads/institutional-research-assessment-planning/TABLE7-Undergraduate--Admissions.pdf",
             "research": True
         },
@@ -23567,9 +23822,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Data Science",
                 "Biomedical Engineering", "Physics", "Mathematics", "Environmental Science"
             ],
-            "admit_rate": 88.8,
-            "rate_label": "Fall 2024 out-of-state",
-            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-03/cds-2024-2025-3.17.25.pdf",
+            "admit_rate": 88.2,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-07/CDS-2024-2025_7.18.25.pdf",
             "research": True
         },
         {
@@ -23583,9 +23838,9 @@ elif page == "College Suggestions":
                 "Computer Engineering", "Computer Science", "Data Science",
                 "Biomedical Engineering", "Physics", "Mathematics"
             ],
-            "admit_rate": 91.1,
-            "rate_label": "Fall 2023 out-of-state (latest residency breakdown published)",
-            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/CDS_2023-2024-FINAL-v2.pdf",
+            "admit_rate": 90.6,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/Data_Book_Fall24_Final-v2_6.26.25.pdf",
             "research": True
         },
         {
@@ -23616,7 +23871,7 @@ elif page == "College Suggestions":
                 "Mathematics", "Physics"
             ],
             "admit_rate": 94.8,
-            "rate_label": "Fall 2024 overall (out-of-state rate not published)",
+            "rate_label": "Fall 2024 overall",
             "source_url": "https://ir.pitt.edu/sites/default/files/assets/2024-2025_CDS_Johnstown.pdf",
             "research": True
         }
@@ -24027,14 +24282,6 @@ elif page == "College Suggestions":
             "Within each group, schools are ranked by your personalized **match score**."
         )
 
-        st.caption(
-            "Acceptance-rate policy for New York students: public colleges outside "
-            "New York use the latest published out-of-state rate; New York colleges "
-            "and private colleges use their published overall rate. If a public "
-            "college does not publish a residency breakdown, that limitation is "
-            "shown beside the rate."
-        )
-
         def college_has_intended_field(result):
             college_fields = set(result["college"].get("fields", []))
             return any(
@@ -24345,9 +24592,7 @@ elif page == "My Favorite Colleges":
     st.info(
         "Your favorite order is based on your personal preferences. "
         "The competitiveness rating and admission data are informational "
-        "and do not predict your individual chance of admission. Public colleges "
-        "outside New York show out-of-state rates when the school publishes them; "
-        "New York and private colleges show overall rates."
+        "and do not predict your individual chance of admission."
     )
 
     st.divider()
@@ -24377,27 +24622,27 @@ elif page == "My Favorite Colleges":
         },
         "UC Berkeley": {
             "location": "Berkeley, CA",
-            "admit_rate": 10.3,
-            "rate_label": "Fall 2025 domestic out-of-state",
-            "source_url": "https://www.universityofcalifornia.edu/about-us/information-center/undergraduate-admissions-summary"
+            "admit_rate": 11.0,
+            "rate_label": "2026 first-year overall",
+            "source_url": "https://admissions.berkeley.edu/apply-to-berkeley/student-profile/"
         },
         "Georgia Tech": {
             "location": "Atlanta, GA",
-            "admit_rate": 9.0,
-            "rate_label": "Fall 2025 out-of-state / nonresident",
-            "source_url": "https://admission.gatech.edu/images/pdf/2025/FY-admitted-profile-full-2025.pdf"
+            "admit_rate": 13.3,
+            "rate_label": "Fall 2025 overall",
+            "source_url": "https://irp.gatech.edu/files/CDS/CDS_2025-2026_FINAL_R4_03JUN2026.pdf"
         },
         "University of Michigan": {
             "location": "Ann Arbor, MI",
-            "admit_rate": 13.0,
-            "rate_label": "Fall 2025 out-of-state",
+            "admit_rate": 16.4,
+            "rate_label": "Fall 2025 overall",
             "source_url": "https://obp.umich.edu/wp-content/uploads/pubdata/factsfigures/firstyearsprofile_umaa_2025.pdf"
         },
         "Purdue University": {
             "location": "West Lafayette, IN",
-            "admit_rate": 43.6,
-            "rate_label": "Fall 2025 out-of-state",
-            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2026/01/CDS_2025-2026.pdf"
+            "admit_rate": 49.9,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2025/06/CDS_2024-2025.pdf"
         },
         "Cornell University": {
             "location": "Ithaca, NY",
@@ -24479,8 +24724,8 @@ elif page == "My Favorite Colleges":
         },
         "UMass Lowell": {
             "location": "Lowell, MA",
-            "admit_rate": 82.5,
-            "rate_label": "Fall 2024 out-of-state",
+            "admit_rate": 83.0,
+            "rate_label": "Fall 2024 overall",
             "source_url": "https://www.uml.edu/docs/CDS_2024-2025%20Final_tcm18-403507.pdf"
         },
         "Western New England University": {
@@ -24492,7 +24737,7 @@ elif page == "My Favorite Colleges":
         "UMass Boston": {
             "location": "Boston, MA",
             "admit_rate": 85.5,
-            "rate_label": "Fall 2025 overall (out-of-state rate not published)",
+            "rate_label": "Fall 2025 overall",
             "source_url": "https://www.umb.edu/media/umassboston/editor-uploads/institutional-research-assessment-planning/TABLE7-Undergraduate--Admissions.pdf"
         },
         "Wentworth Institute of Technology": {
@@ -24503,15 +24748,15 @@ elif page == "My Favorite Colleges":
         },
         "University of New Hampshire": {
             "location": "Durham, NH",
-            "admit_rate": 88.8,
-            "rate_label": "Fall 2024 out-of-state",
-            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-03/cds-2024-2025-3.17.25.pdf"
+            "admit_rate": 88.2,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-07/CDS-2024-2025_7.18.25.pdf"
         },
         "UMass Dartmouth": {
             "location": "Dartmouth, MA",
-            "admit_rate": 91.1,
-            "rate_label": "Fall 2023 out-of-state (latest residency breakdown published)",
-            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/CDS_2023-2024-FINAL-v2.pdf"
+            "admit_rate": 90.6,
+            "rate_label": "Fall 2024 overall",
+            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/Data_Book_Fall24_Final-v2_6.26.25.pdf"
         },
         "Wilkes University": {
             "location": "Wilkes-Barre, PA",
@@ -24522,7 +24767,7 @@ elif page == "My Favorite Colleges":
         "University of Pittsburgh at Johnstown": {
             "location": "Johnstown, PA",
             "admit_rate": 94.8,
-            "rate_label": "Fall 2024 overall (out-of-state rate not published)",
+            "rate_label": "Fall 2024 overall",
             "source_url": "https://ir.pitt.edu/sites/default/files/assets/2024-2025_CDS_Johnstown.pdf"
         }
     }
@@ -28606,45 +28851,44 @@ elif page == "My Profile":
         kicker="STEM Explorer Profile"
     )
 
-    st.success(
-        "Your profile is saved to your account."
+    age_safe = html_module.escape(
+        str(profile.get("age") or "")
+    )
+    grade_safe = html_module.escape(
+        str(profile.get("grade") or "")
+    )
+    borough_safe = html_module.escape(
+        str(profile.get("borough") or "")
+    )
+    confidence_safe = html_module.escape(
+        f"{profile.get('confidence', '')}/10"
     )
 
-    st.divider()
-
-    col1, col2, col3, col4 = (
-        st.columns(4)
+    st.html(
+        '<div class="sp-my-profile-page">'
+        '<div class="sp-profile-saved-toast" role="status">'
+        '✓ Your profile is saved to your account.'
+        '</div>'
+        '<div class="sp-profile-metric-grid">'
+        '<div class="sp-profile-metric">'
+        '<div class="sp-profile-metric-label">Age</div>'
+        f'<div class="sp-profile-metric-value">{age_safe}</div>'
+        '</div>'
+        '<div class="sp-profile-metric">'
+        '<div class="sp-profile-metric-label">Grade</div>'
+        f'<div class="sp-profile-metric-value">{grade_safe}</div>'
+        '</div>'
+        '<div class="sp-profile-metric">'
+        '<div class="sp-profile-metric-label">Borough</div>'
+        f'<div class="sp-profile-metric-value">{borough_safe}</div>'
+        '</div>'
+        '<div class="sp-profile-metric">'
+        '<div class="sp-profile-metric-label">Confidence</div>'
+        f'<div class="sp-profile-metric-value">{confidence_safe}</div>'
+        '</div>'
+        '</div>'
+        '</div>'
     )
-
-    with col1:
-
-        st.metric(
-            "Age",
-            profile["age"]
-        )
-
-    with col2:
-
-        st.metric(
-            "Grade",
-            profile["grade"]
-        )
-
-    with col3:
-
-        st.metric(
-            "Borough",
-            profile["borough"]
-        )
-
-    with col4:
-
-        st.metric(
-            "Confidence",
-            f"{profile['confidence']}/10"
-        )
-
-    st.divider()
 
     def profile_chip_html(
         values
@@ -28751,12 +28995,15 @@ elif page == "My Profile":
             '<h3>Previous Experience</h3>'
             f'{experience_body}'
             '</div>'
-            '<div class="sp-profile-summary-card">'
+            '<div class="sp-profile-summary-card sp-profile-stage-card">'
             '<h3>Current Exploration Stage</h3>'
             f'<p class="sp-profile-stage">{stage_text}</p>'
+            '<div class="sp-profile-goal-block">'
+            '<div class="sp-profile-goal-label">Weekly STEM Goal</div>'
             '<span class="sp-profile-goal-pill">'
-            f'Weekly STEM goal: {weekly_time}'
+            f'{weekly_time}'
             '</span>'
+            '</div>'
             f'{stage_extra}'
             '</div>'
             '</div>'
