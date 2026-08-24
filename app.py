@@ -7657,6 +7657,9 @@ st.markdown(
         }
     }
 
+    /* ============================================================
+       STEM Interest Questionnaire (scoped to st-key-stemq_* only)
+       ============================================================ */
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"],
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"]:hover,
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"][data-testid="stVerticalBlockBorderWrapper"],
@@ -7676,14 +7679,14 @@ st.markdown(
 
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] > [data-testid="stVerticalBlock"],
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"][data-testid="stVerticalBlock"] {
-        gap: 24px !important;
+        gap: 1.15rem !important;
         background: transparent !important;
         border: none !important;
         padding: 0 !important;
     }
 
     .sp-stemq-title-block {
-        margin: 0;
+        margin: 0 0 0.15rem 0;
     }
 
     .sp-stemq-page-title {
@@ -7705,30 +7708,17 @@ st.markdown(
         margin: 0 !important;
     }
 
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"]:hover,
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"][data-testid="stVerticalBlockBorderWrapper"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"][data-testid="stVerticalBlockBorderWrapper"]:hover,
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_interests"]),
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_interests"]):hover,
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"]:hover,
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"][data-testid="stVerticalBlockBorderWrapper"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"][data-testid="stVerticalBlockBorderWrapper"]:hover,
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_ratings"]),
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_ratings"]):hover,
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"]:hover,
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"][data-testid="stVerticalBlockBorderWrapper"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"][data-testid="stVerticalBlockBorderWrapper"]:hover,
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_environment"]),
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_environment"]):hover {
+    /* Outer section cards (1–6) */
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_major"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_major"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_major"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_major"][data-testid="stVerticalBlockBorderWrapper"]:hover {
         background: #FFFFFF !important;
         background-color: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 18px !important;
+        border: 1px solid #AAB4BE !important;
+        border-radius: 16px !important;
         box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06) !important;
-        padding: 32px !important;
+        padding: 1.35rem 1.4rem 1.25rem !important;
         margin: 0 !important;
         min-height: 0 !important;
         transform: none !important;
@@ -7736,10 +7726,8 @@ st.markdown(
         cursor: default !important;
     }
 
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"] > [data-testid="stVerticalBlock"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"] > [data-testid="stVerticalBlock"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"] > [data-testid="stVerticalBlock"] {
-        gap: 20px !important;
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_major"] > [data-testid="stVerticalBlock"] {
+        gap: 0.95rem !important;
         background: transparent !important;
         border: none !important;
         padding: 0 !important;
@@ -7749,30 +7737,42 @@ st.markdown(
     .sp-stemq-card-title {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.12rem !important;
+        font-size: 1.2rem !important;
         font-weight: 800 !important;
-        line-height: 1.25 !important;
-        margin: 0 !important;
+        line-height: 1.28 !important;
+        letter-spacing: -0.015em;
+        margin: 0 0 0.55rem 0 !important;
     }
 
+    .sp-stemq-card-hint {
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+        font-size: 0.86rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 0 0.15rem 0 !important;
+    }
+
+    /* Question / select labels inside questionnaire only */
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stWidgetLabel"],
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stWidgetLabel"] p,
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stWidgetLabel"] label {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
-        font-size: 0.92rem !important;
-        font-weight: 650 !important;
-        margin-bottom: 8px !important;
+        font-size: 0.94rem !important;
+        font-weight: 700 !important;
+        line-height: 1.4 !important;
+        margin-bottom: 0.55rem !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-baseweb="select"] > div,
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stSelectbox"] > div > div {
         background: #FFFFFF !important;
         background-color: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
+        border: 1px solid #C5D0D9 !important;
         border-radius: 12px !important;
         box-shadow: none !important;
-        min-height: 2.6rem !important;
+        min-height: 2.55rem !important;
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
     }
@@ -7787,7 +7787,7 @@ st.markdown(
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-testid="stSelectbox"] > div > div:focus-within {
         background: #FFFFFF !important;
         border-color: #018FC7 !important;
-        box-shadow: 0 0 0 3px rgba(1, 143, 199, 0.16) !important;
+        box-shadow: 0 0 0 3px rgba(1, 143, 199, 0.14) !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_form"] [data-baseweb="select"] span,
@@ -7804,6 +7804,7 @@ st.markdown(
         fill: #083C5D !important;
     }
 
+    /* 2-column question grid — last odd card stays single-column */
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"],
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"]:hover,
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"][data-testid="stVerticalBlockBorderWrapper"] {
@@ -7818,45 +7819,67 @@ st.markdown(
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"][data-testid="stVerticalBlock"] {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 16px 20px !important;
+        gap: 0.85rem 1rem !important;
+        align-items: stretch !important;
         background: transparent !important;
         border: none !important;
         padding: 0 !important;
         margin: 0 !important;
     }
 
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"] > [data-testid="stVerticalBlock"] > *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"][data-testid="stVerticalBlock"] > * {
+        grid-column: auto !important;
+        min-width: 0 !important;
+        height: 100% !important;
+    }
+
+    /* Inner question cards — lighter nested elements */
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"],
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"]:hover,
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"][data-testid="stVerticalBlockBorderWrapper"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"][data-testid="stVerticalBlockBorderWrapper"]:hover,
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_s_"]),
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_s_"]):hover {
-        background: #F4FAFD !important;
-        background-color: #F4FAFD !important;
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 14px !important;
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"][data-testid="stVerticalBlockBorderWrapper"]:hover {
+        background: #F5F9FC !important;
+        background-color: #F5F9FC !important;
+        border: 1px solid #C9D4DE !important;
+        border-radius: 12px !important;
         box-shadow: none !important;
-        padding: 16px 18px 12px !important;
+        padding: 0.9rem 1rem 0.72rem !important;
         margin: 0 !important;
         min-height: 0 !important;
-        height: auto !important;
+        height: 100% !important;
+        box-sizing: border-box !important;
         transform: none !important;
         filter: none !important;
         cursor: default !important;
+        /* Override Streamlit default primary (often red) inside these cards only */
+        --primary-color: #018FC7 !important;
     }
 
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] > [data-testid="stVerticalBlock"],
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stVerticalBlock"]:not([class*="st-key-stemq_s_"]) {
-        gap: 6px !important;
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] > [data-testid="stVerticalBlock"] {
+        gap: 0.35rem !important;
         background: transparent !important;
         border: none !important;
         padding: 0 !important;
         box-shadow: none !important;
+        height: 100% !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stWidgetLabel"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stWidgetLabel"] label {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.93rem !important;
+        font-weight: 700 !important;
+        line-height: 1.38 !important;
+        margin-bottom: 0.65rem !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSlider"] {
         max-width: 100% !important;
-        padding: 0.15rem 0.55rem 0.15rem !important;
+        padding: 0.35rem 0.35rem 0.1rem !important;
+        margin: 0 !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSlider"] * {
@@ -7873,13 +7896,20 @@ st.markdown(
         display: none !important;
     }
 
+    /* Value bubble: STEM blue, readable white text */
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] span {
+        background-image: none !important;
+    }
+
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] {
         background: #018FC7 !important;
         background-color: #018FC7 !important;
-        background-image: none !important;
         border: 1px solid #018FC7 !important;
         border-radius: 8px !important;
-        box-shadow: 0 2px 6px rgba(8, 60, 93, 0.12) !important;
+        box-shadow: 0 2px 6px rgba(8, 60, 93, 0.14) !important;
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
         font-size: 0.76rem !important;
@@ -7894,18 +7924,37 @@ st.markdown(
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] span,
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] [data-testid="stMarkdownContainer"] {
         background: transparent !important;
+        background-color: transparent !important;
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
         margin: 0 !important;
         padding: 0 !important;
     }
 
+    /* Track: muted inactive + STEM blue active (no red theme bleed) */
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-baseweb="slider"] {
+        padding-top: 0.15rem !important;
+        padding-bottom: 0.1rem !important;
+    }
+
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-baseweb="slider"] > div:not([role="slider"]) {
-        height: 4px !important;
-        background-color: #018FC7 !important;
-        background-blend-mode: hue !important;
+        height: 5px !important;
+        background: #D5DEE6 !important;
+        background-color: #D5DEE6 !important;
+        background-image: none !important;
+        background-blend-mode: normal !important;
         border: none !important;
         box-shadow: none !important;
+        border-radius: 999px !important;
+    }
+
+    /* Active fill segment only (direct child of the track) */
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-baseweb="slider"] > div:not([role="slider"]) > div {
+        background: #018FC7 !important;
+        background-color: #018FC7 !important;
+        background-image: none !important;
+        background-blend-mode: normal !important;
+        border: none !important;
         border-radius: 999px !important;
     }
 
@@ -7918,28 +7967,41 @@ st.markdown(
         box-shadow: 0 2px 6px rgba(8, 60, 93, 0.22) !important;
         width: 16px !important;
         height: 16px !important;
+        outline: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSlider"] [role="slider"]:focus,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSlider"] [role="slider"]:focus-visible {
+        box-shadow: 0 0 0 3px rgba(1, 143, 199, 0.28), 0 2px 6px rgba(8, 60, 93, 0.18) !important;
     }
 
     .sp-stemq-slider-ends {
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
         gap: 12px;
-        padding: 0 0.55rem;
-        color: #5A6A78;
-        font-size: 0.74rem;
-        font-weight: 550;
-        line-height: 1.3;
+        padding: 0.15rem 0.35rem 0;
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+        font-size: 0.72rem !important;
+        font-weight: 550 !important;
+        line-height: 1.3 !important;
+    }
+
+    .sp-stemq-slider-ends span {
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] {
-        margin-top: 8px !important;
+        margin-top: 0.35rem !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton {
         display: flex !important;
         justify-content: center !important;
         max-width: 380px !important;
-        margin: 8px auto 0 auto !important;
+        margin: 0.35rem auto 0 auto !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button,
@@ -8012,26 +8074,28 @@ st.markdown(
     }
 
     @media (max-width: 768px) {
-        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_interests"],
-        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_ratings"],
-        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_environment"],
-        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_interests"]),
-        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_ratings"]),
-        html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-stemq_environment"]) {
-            padding: 24px 20px !important;
+        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_major"],
+        html body .stApp [data-testid="stMain"] [class*="st-key-stemq_major"][data-testid="stVerticalBlockBorderWrapper"] {
+            padding: 1.1rem 1rem 1rem !important;
+            border-radius: 14px !important;
         }
 
         html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"] > [data-testid="stVerticalBlock"],
         html body .stApp [data-testid="stMain"] [class*="st-key-stemq_slider_grid"][data-testid="stVerticalBlock"] {
             grid-template-columns: 1fr !important;
+            gap: 0.75rem !important;
         }
 
         .sp-stemq-page-title {
             font-size: 1.18rem !important;
         }
 
+        .sp-stemq-card-title {
+            font-size: 1.08rem !important;
+        }
+
         .sp-stemq-slider-ends {
-            font-size: 0.68rem;
+            font-size: 0.68rem !important;
             gap: 8px;
         }
     }
@@ -9719,10 +9783,14 @@ extra_opportunities = [
         "description": (
             "A year-round NYC program combining academic support, college "
             "preparation, career exploration, work-readiness training, "
-            "leadership activities, and a paid summer internship."
+            "leadership activities, and a paid six-week summer internship. "
+            "Internship placements vary by provider and employer and may include "
+            "business, administrative, or finance-adjacent workplaces, but are not "
+            "guaranteed to be finance-specific."
         ),
         "opportunity_type": "Internship",
-        "fields": "Engineering;Computer Science;Healthcare;Business;Career Exploration",
+        "fields": "Business;Finance;Career Exploration;Professional Services;Economics;Engineering;Computer Science;Healthcare",
+        "eligible_interest_scope": "Business-related",
         "grades": "11;12",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
         "bronx_priority": "yes",
@@ -9736,36 +9804,39 @@ extra_opportunities = [
         "internship_potential": "Yes — paid six-week summer internship",
         "format": "NYC / In person",
         "paid_status": "Paid internship component",
-        "requirements": "NYC junior/senior; age and income/eligibility requirements apply",
-        "url": "https://www.nyc.gov/site/dycd/services/jobs-internships/learn-and-earn.page"
+        "requirements": "NYC junior/senior; age 16–21 typical; income and other eligibility criteria apply",
+        "url": "https://www.nyc.gov/site/dycd/services/jobs-internships/learn-and-earn.page",
+        "last_verified": "2026-08-23"
     },
     {
         "name": "Work, Learn & Grow",
-        "age_range": "16–21",
+        "age_range": "16–20 (pathway-dependent)",
         "organization": "NYC Department of Youth & Community Development",
         "description": (
-            "A paid NYC work-based learning program that can include "
-            "college coursework, career exploration, academic support, "
-            "and internships during the school year."
+            "A paid ~22-week NYC school-year work-based learning pathway for eligible "
+            "former SYEP participants. Includes career readiness, academic support, "
+            "possible CUNY coursework, and paid work experience. Placements vary and may "
+            "include business/professional settings; they are not guaranteed finance roles."
         ),
-        "opportunity_type": "Internship",
-        "fields": "Engineering;Computer Science;Architecture;Healthcare;Career Exploration",
+        "opportunity_type": "Academic-Year Program",
+        "fields": "Business;Finance;Career Exploration;Professional Services;Healthcare;Architecture;Computer Science;Engineering",
+        "eligible_interest_scope": "Business-related",
         "grades": "10;11;12",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
         "bronx_priority": "yes",
         "cost": "Free",
         "financial_aid": "Not needed",
         "application_status": "Eligibility Based",
-        "deadline": "SYEP/Work, Learn & Grow applications typically open in the spring; confirm the next cycle on the NYC DYCD site",
+        "deadline": "Typically after SYEP; confirm current CareerReady / Special Initiatives WLG cycle on DYCD",
         "selectivity": "Eligibility Based",
         "selectivity_stars": 2,
         "acceptance_rate": "Not publicly reported",
         "internship_potential": "Yes — paid work experience / internships",
         "format": "NYC / In person",
         "paid_status": "Paid",
-        "requirements": "NYC youth; age, school, and prior-program eligibility can apply",
+        "requirements": "Prior SYEP participation in the qualifying pathway; NYC residency; work authorization; age/school rules per CareerReady or Special Initiatives WLG",
         "url": "https://www.nyc.gov/site/dycd/services/jobs-internships/work-learn-grow-employment-program.page",
-        "last_verified": "2026-08-21"
+        "last_verified": "2026-08-23"
     },
     {
         "name": "NYC Summer Youth Employment Program (SYEP)",
@@ -9774,26 +9845,29 @@ extra_opportunities = [
         "description": (
             "NYC's large youth employment program connecting young people "
             "with paid summer work experience and career exploration across "
-            "many industries, including technology and STEM-related fields."
+            "many industries. Placements depend on provider and employer and can "
+            "include business, nonprofit, government, or other settings; they are not "
+            "guaranteed to be finance- or STEM-specific."
         ),
         "opportunity_type": "Internship",
-        "fields": "Computer Science;Engineering;Healthcare;Business;Career Exploration",
+        "fields": "Business;Finance;Career Exploration;Professional Services;Computer Science;Engineering;Healthcare",
+        "eligible_interest_scope": "Any major",
         "grades": "9;10;11;12",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
         "bronx_priority": "yes",
         "cost": "Free",
         "financial_aid": "Not needed",
         "application_status": "Seasonal",
-        "deadline": "SYEP applications typically open in the spring; confirm the next cycle on the NYC DYCD site",
+        "deadline": "SYEP applications typically open in the spring; confirm the next cycle on application.nycsyep.com",
         "selectivity": "Accessible / Lottery or Placement Based",
         "selectivity_stars": 1,
         "acceptance_rate": "Not publicly reported",
         "internship_potential": "Yes — paid summer work experience",
         "format": "NYC",
         "paid_status": "Paid",
-        "requirements": "NYC youth; program-specific age and work eligibility requirements",
+        "requirements": "NYC resident ages 14–24; legally allowed to work; document checklist on official application site",
         "url": "https://www.nyc.gov/site/dycd/services/jobs-internships/summer-youth-employment-program-faqs.page",
-        "last_verified": "2026-08-21"
+        "last_verified": "2026-08-23"
     },
     {
         "name": "STEM Matters NYC",
@@ -10341,7 +10415,7 @@ extra_opportunities = [
         "organization": "Cold Spring Harbor Laboratory",
         "description": "Academic-year biomedical research program where nominated Long Island high school seniors work directly in Cold Spring Harbor Laboratory research groups.",
         "opportunity_type": "Research",
-        "fields": "Biology;Genetics;Genomics;Neuroscience;Cancer Research;Biomedical Science;Research",
+        "fields": "Biology;Genetics;Genomics;Neuroscience;Cancer Research;Biomedical Science;Research;Genetics / Genomics",
         "grades": "11;12",
         "age_range": "Students entering senior year",
         "boroughs_served": "",
@@ -11543,7 +11617,7 @@ extra_opportunities = [
         "organization": "Cold Spring Harbor Laboratory DNA Learning Center",
         "description": "Pinkerton-supported NYC high school research mentorship. Students complete biodiversity and DNA-barcoding lab training at DNALC NYC in Brooklyn, then work with scientist mentors on student-driven DNA barcoding projects during the academic year and present at a spring symposium.",
         "opportunity_type": "Research",
-        "fields": "Biology;Ecology;Environmental Science;Genetics;Conservation Biology;Research",
+        "fields": "Biology;Ecology;Environmental Science;Genetics;Conservation Biology;Research;Genetics / Genomics",
         "grades": "9;10;11;12",
         "age_range": "At least 13 years old; NYC high school students",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
@@ -11586,7 +11660,7 @@ extra_opportunities = [
         "organization": "Cold Spring Harbor Laboratory DNA Learning Center",
         "description": "Free DNA-barcoding research program for high school teams in the New York metropolitan area. Teams of 2–4 students, sponsored by a trained teacher or qualified mentor, design a biodiversity or food-authentication project and receive equipment, reagents, and sequencing for up to 30 samples.",
         "opportunity_type": "Research",
-        "fields": "Biology;Ecology;Environmental Science;Genetics;Conservation Biology;Research",
+        "fields": "Biology;Ecology;Environmental Science;Genetics;Conservation Biology;Research;Genetics / Genomics",
         "grades": "9;10;11;12",
         "age_range": "Grades 9–12",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
@@ -11630,7 +11704,7 @@ extra_opportunities = [
         "organization": "Cold Spring Harbor Laboratory DNA Learning Center",
         "description": "Free student DNA-barcoding research program documenting biodiversity on and around Long Island. Brooklyn and Queens high school teams can participate when sponsored by a trained science teacher. The program provides training, equipment, materials, and sequencing support.",
         "opportunity_type": "Research",
-        "fields": "Biology;Ecology;Environmental Science;Genetics;Marine Biology;Research",
+        "fields": "Biology;Ecology;Environmental Science;Genetics;Marine Biology;Research;Genetics / Genomics;Marine Science",
         "grades": "9;10;11;12",
         "age_range": "Grades 9–12",
         "boroughs_served": "Brooklyn;Queens",
@@ -11718,7 +11792,7 @@ extra_opportunities = [
         "organization": "The Jackson Laboratory",
         "description": "Paid 10-week residential genetics and genomics research fellowship at The Jackson Laboratory in Bar Harbor, Maine, or The Jackson Laboratory for Genomic Medicine in Farmington, Connecticut. Graduating high school seniors and undergraduates join a lab, complete a mentored project, and present their work.",
         "opportunity_type": "Research",
-        "fields": "Genetics;Genomics;Biology;Computational Biology;Research",
+        "fields": "Genetics;Genomics;Biology;Computational Biology;Research;Genetics / Genomics",
         "grades": "12",
         "age_range": "Graduating high school seniors and undergraduates",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
@@ -11980,7 +12054,7 @@ extra_opportunities = [
         "organization": "Rockaway Initiative for Sustainability and Equity",
         "description": "Paid environmental research mentorship for NYC high school students who live or attend school in or near the Rockaway peninsula. Students complete spring/summer training and six weeks of mentored field research on Jamaica Bay and the Rockaway shoreline.",
         "opportunity_type": "Research",
-        "fields": "Environmental Science;Marine Biology;Ecology;Conservation Biology;Research",
+        "fields": "Environmental Science;Marine Biology;Ecology;Conservation Biology;Research;Marine Science",
         "grades": "9;10;11",
         "age_range": "Ninth- to eleventh-grade students on the current official page",
         "boroughs_served": "Queens;Brooklyn",
@@ -12024,7 +12098,7 @@ extra_opportunities = [
         "organization": "Genspace",
         "description": "Paid six-month biology and genetic-engineering research internship for NYC public and charter high school students age 16 and older. Students learn lab techniques, design a summer research project with scientist mentors, and receive science-communication training.",
         "opportunity_type": "Research",
-        "fields": "Biology;Genetics;Biotechnology;Research",
+        "fields": "Biology;Genetics;Biotechnology;Research;Genetics / Genomics",
         "grades": "10;11;12",
         "age_range": "16 or older by orientation",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
@@ -12155,7 +12229,7 @@ extra_opportunities = [
         "organization": "Bronx River Alliance",
         "description": "Paid 14-month environmental science internship. NYC public high school students complete Bronx River fieldwork, a Lehman College environmental science class, academic-year mentorship, and a full scientific research project.",
         "opportunity_type": "Research",
-        "fields": "Ecology;Environmental Science;Marine Biology;Research",
+        "fields": "Ecology;Environmental Science;Marine Biology;Research;Marine Science",
         "grades": "11;12",
         "age_range": "Entering 11th or 12th grade",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
@@ -12199,7 +12273,7 @@ extra_opportunities = [
         "organization": "Hudson River Park Trust",
         "description": "Paid summer marine and geoscience research internship at Hudson River Park. The program uses near-peer mentoring and is designed for high school students from underrepresented communities in STEM, with pathway partnerships including The Young Women’s Leadership School and Intrepid GOALS for Girls.",
         "opportunity_type": "Research",
-        "fields": "Marine Biology;Environmental Science;Ecology;Geoscience;Research",
+        "fields": "Marine Biology;Environmental Science;Ecology;Geoscience;Research;Marine Science",
         "grades": "11;12",
         "age_range": "High school students; new applicants are recommended to be rising juniors",
         "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
@@ -12322,6 +12396,550 @@ extra_opportunities = [
         "last_verified": "2026-08-22",
         "tuition_cost": "None — official page describes the program as free",
         "scholarship_availability": "Not needed — program is free"
+    }
+
+,
+    {
+        "name": "NYU SPS Career Edge — Finance NYC: An Insider's View",
+        "organization": "NYU School of Professional Studies High School Academy",
+        "description": (
+            "One-week Career Edge summer course introducing Wall Street foundations, "
+            "investment management concepts, risk and return, and NYC finance careers. "
+            "Taught as a non-credit SPS High School Academy experience with industry-focused content."
+        ),
+        "opportunity_type": "Summer Program",
+        "fields": "Finance;Business;Investing;Economics;Financial Literacy;Career Exploration",
+        "eligible_interest_scope": "Finance-specific",
+        "grades": "9;10;11",
+        "age_range": "High school students who completed grades 9, 10, or 11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Paid — 2026 Career Edge tuition $2,579 + $50 application fee (housing optional)",
+        "tuition_cost": "$2,579 tuition + $50 non-refundable application fee (Summer 2026 Career Edge)",
+        "financial_aid": "None stated for Career Edge on the official NYU High School Academy Career Edge page",
+        "financial_aid_status": "None stated for Career Edge",
+        "application_status": "Seasonal",
+        "deadline": "Summer 2026: International Mar 14; Residential U.S. May 8; Commuter U.S. Jun 12 (confirm on NYU page)",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "High school students who have completed grades 9, 10, or 11; interested in exploring finance careers",
+        "internship_potential": "No — intensive one-week career exploration course",
+        "format": "In person — NYU SPS / NYC (Career Edge sessions)",
+        "paid_status": "Not paid / tuition program",
+        "requirements": "Completed grades 9–11; application and tuition payment; confirm housing option separately",
+        "url": "https://www.sps.nyu.edu/courses/HIGH1-CE9044-finance-nyc-an-insider-s-view.html",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "NYU SPS Career Edge — Investment Banking Fundamentals",
+        "organization": "NYU School of Professional Studies High School Academy",
+        "description": (
+            "One-week Career Edge course covering investment banking products and services, "
+            "relationship management, trading/IPO concepts, fixed income, and M&A synergies "
+            "for students exploring pre-college finance pathways."
+        ),
+        "opportunity_type": "Summer Program",
+        "fields": "Finance;Investment Banking;Business;Corporate Finance;Career Exploration",
+        "eligible_interest_scope": "Finance-specific",
+        "grades": "9;10;11",
+        "age_range": "High school students who completed grades 9, 10, or 11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Paid — 2026 Career Edge tuition $2,579 + $50 application fee (housing optional)",
+        "tuition_cost": "$2,579 tuition + $50 non-refundable application fee (Summer 2026 Career Edge)",
+        "financial_aid": "None stated for Career Edge on the official NYU High School Academy Career Edge page",
+        "financial_aid_status": "None stated for Career Edge",
+        "application_status": "Seasonal",
+        "deadline": "Summer 2026 Career Edge deadlines on NYU High School Academy page (confirm current cycle)",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Completed grades 9–11; interest in investment banking / finance careers",
+        "internship_potential": "No — one-week academic/career course",
+        "format": "In person — NYU SPS / NYC",
+        "paid_status": "Not paid / tuition program",
+        "requirements": "Completed grades 9–11; Career Edge application; tuition",
+        "url": "https://www.sps.nyu.edu/courses/HIGH1-CE9054-investment-banking-fundamentals.html",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "NYU SPS Career Edge — Introduction to Financial Technology",
+        "organization": "NYU School of Professional Studies High School Academy",
+        "description": (
+            "One-week Career Edge course connecting finance fundamentals with FinTech themes "
+            "such as AI/ML in markets, blockchain concepts, market infrastructure, and finance-tech careers."
+        ),
+        "opportunity_type": "Summer Program",
+        "fields": "Finance;FinTech;Technology;Business;Data Science;Career Exploration",
+        "eligible_interest_scope": "Finance-specific",
+        "grades": "9;10;11",
+        "age_range": "High school students who completed grades 9, 10, or 11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Paid — 2026 Career Edge tuition $2,579 + $50 application fee (housing optional)",
+        "tuition_cost": "$2,579 tuition + $50 non-refundable application fee (Summer 2026 Career Edge)",
+        "financial_aid": "None stated for Career Edge on the official NYU High School Academy Career Edge page",
+        "financial_aid_status": "None stated for Career Edge",
+        "application_status": "Seasonal",
+        "deadline": "Summer 2026 Career Edge deadlines on NYU High School Academy page (confirm current cycle)",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Completed grades 9–11; interest in finance or finance-related technology",
+        "internship_potential": "No — one-week academic/career course",
+        "format": "In person — NYU SPS / NYC",
+        "paid_status": "Not paid / tuition program",
+        "requirements": "Completed grades 9–11; Career Edge application; tuition",
+        "url": "https://www.sps.nyu.edu/courses/HIGH1-CE9135-introduction-to-financial-technology.html",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "Wharton Global Youth — Essentials of Finance",
+        "organization": "The Wharton School, University of Pennsylvania",
+        "description": (
+            "Selective two-week on-campus summer program introducing personal and corporate finance, "
+            "accounting concepts, equities, risk/return, and investing beyond the stock market."
+        ),
+        "opportunity_type": "Summer Program",
+        "fields": "Finance;Accounting;Economics;Investing;Business;Financial Literacy",
+        "eligible_interest_scope": "Finance-specific",
+        "grades": "9;10;11",
+        "age_range": "Current high school grades 9–11 (rising sophomores–seniors depending on cycle)",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Paid — 2026 on-campus fee $8,299 (includes instruction, housing, most meals)",
+        "tuition_cost": "$8,299 (2026 on-campus) + $100 application fee",
+        "financial_aid": "Need-based scholarships available for eligible applicants (limited)",
+        "financial_aid_status": "Need-based scholarships available — limited",
+        "application_status": "Seasonal",
+        "deadline": "Summer 2026: Priority Jan 28; Final Mar 18 (confirm next cycle)",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Current grades 9–11; academic excellence and genuine finance interest; economics/business preferred but not required",
+        "internship_potential": "No — intensive residential academic program",
+        "format": "Residential — University of Pennsylvania, Philadelphia",
+        "paid_status": "Not paid / tuition program",
+        "requirements": "Online application; application fee (waivers may apply); selective admission",
+        "url": "https://globalyouth.wharton.upenn.edu/programs-courses/essentials-of-finance/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "Wharton Global Youth — Financial Decision Making",
+        "organization": "The Wharton School, University of Pennsylvania",
+        "description": (
+            "Selective two-week online summer program on personal and corporate finance decision-making, "
+            "markets, investing basics, and Excel practice for high school students."
+        ),
+        "opportunity_type": "Summer Program",
+        "fields": "Finance;Economics;Financial Literacy;Business;Investing",
+        "eligible_interest_scope": "Finance-specific",
+        "grades": "9;10;11;12",
+        "age_range": "Current high school grades 9–12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Paid — 2026 online fee $4,099",
+        "tuition_cost": "$4,099 (2026 online) + $100 application fee",
+        "financial_aid": "Online program need-based scholarships typically $500–$4,000 when awarded",
+        "financial_aid_status": "Need-based scholarships available — limited / partial",
+        "application_status": "Seasonal",
+        "deadline": "Summer 2026 online priority around late January; then rolling while space remains (confirm official page)",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Current grades 9–12 with demonstrated interest in economics/finance; prior finance coursework not required",
+        "internship_potential": "No — online academic summer program",
+        "format": "Online",
+        "paid_status": "Not paid / tuition program",
+        "requirements": "Application; selective admission; confirm session dates on Wharton Global Youth site",
+        "url": "https://globalyouth.wharton.upenn.edu/programs-courses/financial-decision-making/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "Wharton Global Youth — Understanding Your Money",
+        "organization": "The Wharton School, University of Pennsylvania",
+        "description": (
+            "Self-paced online personal finance and investing introduction for high school students "
+            "(approximately 13–15 hours)."
+        ),
+        "opportunity_type": "Course",
+        "fields": "Finance;Financial Literacy;Investing;Economics;Business",
+        "eligible_interest_scope": "Finance-specific",
+        "grades": "9;10;11;12",
+        "age_range": "Grades 9–12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Paid — 2026 listed fee $329",
+        "tuition_cost": "$329 (2026 listed online fee)",
+        "financial_aid": "Confirm current aid options on Wharton Global Youth Costs & Aid page",
+        "financial_aid_status": "Confirm on official Costs & Aid page",
+        "application_status": "Rolling",
+        "deadline": "Rolling enrollment — confirm on official page",
+        "selectivity": "Accessible / Open Enrollment Style",
+        "selectivity_stars": 1,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "High school students in grades 9–12 interested in personal finance and investing",
+        "internship_potential": "No — self-paced online course",
+        "format": "Online / self-paced",
+        "paid_status": "Not paid / tuition course",
+        "requirements": "Enroll through Wharton Global Youth; confirm current fee and access",
+        "url": "https://globalyouth.wharton.upenn.edu/online-programs/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "NYC Ladders for Leaders",
+        "organization": "NYC Department of Youth & Community Development",
+        "description": (
+            "Competitive paid professional summer internship pathway within SYEP connecting NYC high school "
+            "and college students with corporations, nonprofits, and government agencies after pre-employment training. "
+            "Placements vary by employer; corporate/business sites may include finance-related roles, but not every "
+            "placement is finance-specific."
+        ),
+        "opportunity_type": "Internship",
+        "fields": "Finance;Business;Professional Services;Career Exploration;Economics;General Career",
+        "eligible_interest_scope": "Business-related",
+        "grades": "11;12",
+        "age_range": "16–24",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed — paid internship",
+        "financial_aid_status": "Not needed — paid internship",
+        "application_status": "Seasonal",
+        "deadline": "Typically through the SYEP / Ladders cycle in spring — confirm on DYCD / application.nycsyep.com",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "NYC resident; ages 16–24; enrolled in high school or college; prior paid or volunteer experience; legally allowed to work in the U.S.",
+        "internship_potential": "Yes — paid professional summer internship (placement industry varies)",
+        "format": "In person — NYC employers",
+        "paid_status": "Paid",
+        "requirements": "Competitive application; prior work/volunteer experience; work authorization; NYC residency",
+        "url": "https://www.nyc.gov/site/dycd/services/jobs-internships/about-nyc-ladders-for-leaders.page",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "Wharton Global High School Investment Competition",
+        "organization": "The Wharton School, University of Pennsylvania",
+        "description": (
+            "Free team-based investing competition for high school students using a stock-market simulator "
+            "plus written strategy deliverables (Investment Policy Statement and final report). "
+            "Focuses on strategy, risk, diversification, and analysis rather than short-term trading."
+        ),
+        "opportunity_type": "Competition",
+        "fields": "Finance;Investing;Economics;Business;Financial Literacy;Analytics",
+        "eligible_interest_scope": "Finance-specific",
+        "grades": "9;10;11;12",
+        "age_range": "High school students (typically ~14–18); team leader must be 16+ at competition start",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed — free competition",
+        "financial_aid_status": "Not needed",
+        "application_status": "Seasonal",
+        "deadline": "School advisor registration typically opens early fall (confirm annual Wharton cycle)",
+        "selectivity": "Accessible / Open with school team requirements",
+        "selectivity_stars": 2,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Current high school students on a school team of about 4–6 with a teacher advisor; team leader age rules apply",
+        "internship_potential": "No — competition / simulation experience",
+        "format": "Online team competition; optional finale logistics per official rules",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Advisor-led team registration; same-school team rules; deliverables per competition guide",
+        "url": "https://globalyouth.wharton.upenn.edu/competitions/investment-competition/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "National Economics Challenge",
+        "organization": "Council for Economic Education",
+        "description": (
+            "National high school economics competition testing microeconomics, macroeconomics, and "
+            "international economics knowledge through school/state qualification toward national rounds."
+        ),
+        "opportunity_type": "Competition",
+        "fields": "Economics;Finance;Business;Financial Literacy",
+        "eligible_interest_scope": "Business-related",
+        "grades": "9;10;11;12",
+        "age_range": "Enrolled high school students",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free / school-coordinated (confirm local affiliate fees if any)",
+        "financial_aid": "Not needed for typical participation",
+        "financial_aid_status": "Not needed for typical participation",
+        "application_status": "Seasonal",
+        "deadline": "State/affiliate timelines vary — confirm through Council for Economic Education",
+        "selectivity": "Competitive (state/national advancement)",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "High school students on a school/organization team with a coach; division rules depend on prior economics coursework",
+        "internship_potential": "No — academic competition",
+        "format": "School/state/national competition format",
+        "paid_status": "Not paid",
+        "requirements": "Team coach; enrollment in qualifying high school course/program; division eligibility rules",
+        "url": "https://www.councilforeconed.org/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "National Personal Finance Challenge",
+        "organization": "Council for Economic Education",
+        "description": (
+            "National team competition focused on personal finance knowledge and decision-making for "
+            "high school students, run alongside CEE's economics competition pathway."
+        ),
+        "opportunity_type": "Competition",
+        "fields": "Financial Literacy;Finance;Economics;Business",
+        "eligible_interest_scope": "Business-related",
+        "grades": "9;10;11;12",
+        "age_range": "Enrolled high school students",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free / school-coordinated (confirm local affiliate details)",
+        "financial_aid": "Not needed for typical participation",
+        "financial_aid_status": "Not needed for typical participation",
+        "application_status": "Seasonal",
+        "deadline": "State/affiliate timelines vary — confirm through Council for Economic Education",
+        "selectivity": "Competitive (state/national advancement)",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "High school teams with a coach; confirm current rules via CEE",
+        "internship_potential": "No — academic competition",
+        "format": "School/state/national competition format",
+        "paid_status": "Not paid",
+        "requirements": "School/organization team registration through CEE pathway",
+        "url": "https://www.councilforeconed.org/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "Invest in Girls",
+        "organization": "Council for Economic Education",
+        "description": (
+            "Financial literacy, mentoring, and finance career-exposure program focused on high school girls, "
+            "with emphasis on girls of color and students from low-income communities. Programming can include "
+            "courses, industry exposure, and related enrichment (offerings vary by site/partner)."
+        ),
+        "opportunity_type": "Mentorship",
+        "fields": "Finance;Financial Literacy;Economics;Business;Career Exploration",
+        "eligible_interest_scope": "Finance-specific",
+        "grades": "9;10;11;12",
+        "age_range": "High school girls (program-focused; confirm local cohort rules)",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free (program described as free personal finance courses/mentoring opportunities)",
+        "financial_aid": "Not needed — program supports free access",
+        "financial_aid_status": "Not needed",
+        "application_status": "Seasonal",
+        "deadline": "Partner/site cohorts vary — confirm via investingirls.org / CEE",
+        "selectivity": "Eligibility / cohort based",
+        "selectivity_stars": 2,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "High school girls; priority emphasis on girls of color and low-income communities; confirm local partner eligibility",
+        "internship_potential": "Sometimes — career exposure/internship pathways may be available through partners",
+        "format": "Varies by partner site (NYC programming exists historically)",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Apply through Invest in Girls / local partner; confirm current NYC offerings",
+        "url": "https://www.investingirls.org/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "SEO Scholars (New York City)",
+        "organization": "Sponsors for Educational Opportunity (SEO)",
+        "description": (
+            "Free multi-year academic and college-success program for eligible public high school students, "
+            "including after-school/Saturday instruction and summer academy support. SEO's broader pathway "
+            "historically connects scholars toward competitive college and career pipelines, including finance-related "
+            "undergraduate opportunities later — high school programming itself is academic/college prep rather than a Wall Street internship."
+        ),
+        "opportunity_type": "Academic-Year Program",
+        "fields": "Business;Finance;Career Exploration;General Academic Enrichment;College Prep",
+        "eligible_interest_scope": "Business-related",
+        "grades": "9;10",
+        "age_range": "Typically entering 9th graders (confirm current NYC admissions grades)",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed — free program",
+        "financial_aid_status": "Not needed",
+        "application_status": "Seasonal",
+        "deadline": "NYC admissions typically fall/winter — confirm on SEO Scholars site",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Income-eligible NYC public high school students; confirm current grade/entry requirements on SEO site",
+        "internship_potential": "No for high school core program — later SEO Career pathways are primarily undergraduate",
+        "format": "NYC — after-school, Saturday, and summer components",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "NYC public school eligibility; income criteria; application materials per SEO",
+        "url": "https://www.seo-usa.org/scholars/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "Coca-Cola Scholars Program",
+        "organization": "Coca-Cola Scholars Foundation",
+        "description": (
+            "National achievement-based $20,000 college scholarship for high school seniors recognizing "
+            "leadership, service, and community impact. Open across intended majors (not finance-specific)."
+        ),
+        "opportunity_type": "Scholarship",
+        "fields": "General High School;Leadership;Community Service;Any Major;Business;Finance;STEM",
+        "eligible_interest_scope": "Any major",
+        "grades": "12",
+        "age_range": "Current high school seniors graduating in the award year",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free to apply",
+        "financial_aid": "Scholarship award — $20,000",
+        "financial_aid_status": "Award provides scholarship funding",
+        "application_status": "Seasonal",
+        "deadline": "Typically late September (e.g., Sep 30 cycle) — confirm on Coca-Cola Scholars Foundation site",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported as a single percentage; ~150 scholars selected nationally each year",
+        "acceptance_rate_confidence": "Secondary/program-size context only",
+        "eligibility_summary": "U.S. high school senior (eligible residency statuses); min ~3.0 GPA; plan to attend accredited U.S. postsecondary institution; employee-relative exclusions apply",
+        "internship_potential": "No — scholarship",
+        "format": "National online application",
+        "paid_status": "Scholarship (not an internship wage)",
+        "requirements": "Online application; eligibility quiz; citizenship/residency and GPA criteria",
+        "url": "https://www.coca-colascholarsfoundation.org/apply/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "Equitable Excellence Scholarship",
+        "organization": "Equitable Foundation",
+        "description": (
+            "National scholarship program for high school seniors recognizing academic achievement, "
+            "leadership, and community involvement. Open to students across intended majors, including "
+            "business and finance pathways."
+        ),
+        "opportunity_type": "Scholarship",
+        "fields": "General High School;Any Major;Business;Finance;Leadership;Community Service",
+        "eligible_interest_scope": "Any major",
+        "grades": "12",
+        "age_range": "High school seniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free to apply",
+        "financial_aid": "Scholarship awards available (confirm current award amounts on official page)",
+        "financial_aid_status": "Scholarship awards available",
+        "application_status": "Seasonal",
+        "deadline": "Confirm current cycle deadline on Equitable Foundation scholarship page",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "U.S. high school seniors meeting Equitable Excellence criteria; confirm GPA/citizenship details on official site",
+        "internship_potential": "No — scholarship",
+        "format": "National online application",
+        "paid_status": "Scholarship (not an internship wage)",
+        "requirements": "Online application; confirm official eligibility each cycle",
+        "url": "https://equitable.com/foundation",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "Jack Kent Cooke Foundation College Scholarship",
+        "organization": "Jack Kent Cooke Foundation",
+        "description": (
+            "Highly selective undergraduate scholarship for high-achieving high school seniors with financial need. "
+            "Open across majors (not limited to STEM or finance)."
+        ),
+        "opportunity_type": "Scholarship",
+        "fields": "General High School;Any Major;STEM;Business;Finance;Arts",
+        "eligible_interest_scope": "Any major",
+        "grades": "12",
+        "age_range": "High school seniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free to apply",
+        "financial_aid": "Last-dollar scholarship support toward undergraduate costs (confirm current terms)",
+        "financial_aid_status": "Major need-based undergraduate scholarship",
+        "application_status": "Seasonal",
+        "deadline": "Confirm annual deadline on Jack Kent Cooke Foundation site",
+        "selectivity": "Extremely Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "High-achieving seniors with significant unmet financial need; confirm GPA/test-optional and income criteria annually",
+        "internship_potential": "No — scholarship",
+        "format": "National online application",
+        "paid_status": "Scholarship (not an internship wage)",
+        "requirements": "Application, recommendations, financial information, academic record",
+        "url": "https://www.jkcf.org/our-scholarships/college-scholarship/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "FBLA Competitive Events",
+        "organization": "Future Business Leaders of America",
+        "description": (
+            "Business and finance competitive events for FBLA members, spanning topics such as accounting, "
+            "banking/finance, entrepreneurship, economics, and business procedures through chapter, state, and national contests."
+        ),
+        "opportunity_type": "Competition",
+        "fields": "Business;Finance;Accounting;Economics;Entrepreneurship;Financial Literacy",
+        "eligible_interest_scope": "Business-related",
+        "grades": "9;10;11;12",
+        "age_range": "High school FBLA members",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Chapter membership / conference fees vary by chapter and event",
+        "financial_aid": "Chapter/school support may be available — ask your adviser",
+        "financial_aid_status": "Varies by chapter",
+        "application_status": "Seasonal",
+        "deadline": "Chapter/state deadlines vary",
+        "selectivity": "Competitive (advancement-based)",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Join an FBLA chapter; compete in events matching your topic interest",
+        "internship_potential": "No — competition; chapters may also offer career activities",
+        "format": "Chapter/state/national conferences and testing events",
+        "paid_status": "Not paid",
+        "requirements": "FBLA membership; adviser registration; event-specific rules",
+        "url": "https://www.fbla.org/",
+        "last_verified": "2026-08-23"
+    },
+    {
+        "name": "DECA Competitive Events",
+        "organization": "DECA Inc.",
+        "description": (
+            "Marketing, finance, hospitality, and management competitive events for DECA members, "
+            "including finance and business administration pathways through district/state/international conferences."
+        ),
+        "opportunity_type": "Competition",
+        "fields": "Business;Finance;Marketing;Entrepreneurship;Economics;Career Exploration",
+        "eligible_interest_scope": "Business-related",
+        "grades": "9;10;11;12",
+        "age_range": "High school DECA members",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Chapter membership / conference fees vary",
+        "financial_aid": "Chapter/school support may be available — ask your adviser",
+        "financial_aid_status": "Varies by chapter",
+        "application_status": "Seasonal",
+        "deadline": "Chapter/district/state deadlines vary",
+        "selectivity": "Competitive (advancement-based)",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Join a DECA chapter; select finance/business events with adviser guidance",
+        "internship_potential": "No — competition; some chapters connect to internships separately",
+        "format": "Chapter/district/state/international conferences",
+        "paid_status": "Not paid",
+        "requirements": "DECA membership; adviser registration; event guidelines",
+        "url": "https://www.deca.org/",
+        "last_verified": "2026-08-23"
     }
 ]
 
@@ -14143,11 +14761,16 @@ def college_explorer_explanations(
         if field in [
             "Computer Science",
             "Artificial Intelligence",
+            "Machine Learning",
             "Data Science",
             "Computer Engineering",
             "Cybersecurity",
             "Information Technology / Information Science",
-            "Computational Science"
+            "Computational Science",
+            "Software Engineering",
+            "Game Development",
+            "Human-Computer Interaction",
+            "Web Development"
         ]
     ]
     health_fields = [
@@ -14158,10 +14781,15 @@ def college_explorer_explanations(
             "Biomedical Science",
             "Biomedical Engineering",
             "Medicine / Health Science",
+            "Medicine / Pre-Med",
             "Health Science",
             "Public Health",
             "Neuroscience",
-            "Biotechnology"
+            "Biotechnology",
+            "Genetics / Genomics",
+            "Pharmacy / Pharmaceutical Science",
+            "Psychology / Cognitive Science",
+            "Cognitive Science"
         ]
     ]
     environment_fields = [
@@ -14173,7 +14801,11 @@ def college_explorer_explanations(
             "Earth Science",
             "Earth Science / Geoscience",
             "Environmental Studies / Sustainability",
-            "Environmental Engineering"
+            "Sustainability",
+            "Environmental Engineering",
+            "Ecology",
+            "Geology",
+            "Marine Science"
         ]
     ]
 
@@ -14228,10 +14860,58 @@ def college_explorer_explanations(
         lead_field = matched[0]
         overlap = matched[:4]
 
-        if any("engineering" in field.lower() or field == "Robotics" for field in overlap):
+        lead_lower = lead_field.lower()
+        if (
+            "engineering" in lead_lower
+            or lead_field in {"Robotics", "Mechatronics"}
+        ):
             title = "Engineering Alignment"
             focus = "engineering"
             program_list = engineering_fields[:4] or overlap
+        elif any(field in computing_fields for field in [lead_field]) or lead_field in computing_fields:
+            title = "Computer Science Alignment"
+            focus = "computing and technology"
+            program_list = computing_fields[:4] or overlap
+        elif (
+            lead_field in QUANTITATIVE_STEM_ADJACENT_FIELDS
+            or lead_field in QUANTITATIVE_STEM_MAJORS
+            or "finance" in lead_lower
+            or "econom" in lead_lower
+            or "actuarial" in lead_lower
+        ):
+            title = "Quantitative & Finance Alignment"
+            focus = "quantitative and finance pathways"
+            program_list = [
+                field for field in overlap
+                if field in QUANTITATIVE_STEM_ADJACENT_FIELDS
+                or field in QUANTITATIVE_STEM_MAJORS
+                or "finance" in field.lower()
+                or "econom" in field.lower()
+                or "actuarial" in field.lower()
+            ][:4] or overlap
+        elif (
+            "architect" in lead_lower
+            or "urban planning" in lead_lower
+            or "construction" in lead_lower
+            or "structural" in lead_lower
+        ):
+            title = "Architecture & Built Environment Alignment"
+            focus = "architecture and the built environment"
+            program_list = [
+                field for field in overlap
+                if "architect" in field.lower()
+                or "urban" in field.lower()
+                or "construction" in field.lower()
+                or "structural" in field.lower()
+            ][:4] or overlap
+        elif any(field in health_fields for field in [lead_field]) or lead_field in health_fields:
+            title = "Health and Life Science Alignment"
+            focus = "health and life sciences"
+            program_list = health_fields[:4] or overlap
+        elif any(field in environment_fields for field in [lead_field]) or lead_field in environment_fields:
+            title = "Environmental Science Alignment"
+            focus = "environmental and earth science"
+            program_list = environment_fields[:4] or overlap
         elif any(field in computing_fields for field in overlap):
             title = "Computer Science Alignment"
             focus = "computing and technology"
@@ -14996,13 +15676,35 @@ def stem_pathway_direction_explanation(
     preferred_work="",
     favorite_activity="",
     programming_score=5,
-    hands_on_score=5,
+    physical_design_score=5,
     math_score=5,
     electronics_score=5,
-    science_score=5,
+    biology_score=5,
+    chemistry_score=5,
     data_score=5,
-    preferred_environment=""
+    environment_score=5,
+    finance_score=5,
+    cybersecurity_score=5,
+    robotics_score=5,
+    health_tech_score=5,
+    optimization_score=5,
+    preferred_environment="",
+    supporting_signals=None,
+    # Back-compat aliases from older Career Explorer calls
+    hands_on_score=None,
+    science_score=None,
 ):
+
+    if hands_on_score is not None and physical_design_score == 5:
+        physical_design_score = hands_on_score
+    if science_score is not None and biology_score == 5:
+        biology_score = science_score
+
+    # Safe defaults when older saved snapshots omit newer slider fields
+    cybersecurity_score = 5 if cybersecurity_score is None else cybersecurity_score
+    robotics_score = 5 if robotics_score is None else robotics_score
+    health_tech_score = 5 if health_tech_score is None else health_tech_score
+    optimization_score = 5 if optimization_score is None else optimization_score
 
     field_lower = str(field or "").lower()
     reasons = []
@@ -15050,21 +15752,12 @@ def stem_pathway_direction_explanation(
     }
 
     related_work = {
-        "engineering": [
-            "building physical machines and products",
-            "designing electronics and circuits",
-            "building robots and automated systems"
-        ],
-        "electrical": [
-            "designing electronics and circuits"
-        ],
-        "mechanical": [
-            "building physical machines and products",
-            "building robots and automated systems"
-        ],
         "computer science": [
             "programming software",
             "working with data and AI"
+        ],
+        "software": [
+            "programming software"
         ],
         "artificial": [
             "working with data and AI",
@@ -15073,8 +15766,28 @@ def stem_pathway_direction_explanation(
         "data": [
             "working with data and AI"
         ],
+        "electrical": [
+            "designing electronics and circuits"
+        ],
+        "computer engineering": [
+            "designing electronics and circuits",
+            "programming software",
+            "building robots and automated systems"
+        ],
+        "mechanical": [
+            "building physical machines and products",
+            "building robots and automated systems"
+        ],
+        "civil": [
+            "improving the environment",
+            "building physical machines and products"
+        ],
         "biomedical": [
-            "solving healthcare problems"
+            "solving healthcare problems",
+            "building physical machines and products"
+        ],
+        "chemical": [
+            "conducting scientific research"
         ],
         "biology": [
             "conducting scientific research",
@@ -15090,7 +15803,16 @@ def stem_pathway_direction_explanation(
         "environment": [
             "improving the environment"
         ],
+        "chemistry": [
+            "conducting scientific research"
+        ],
         "robot": [
+            "building robots and automated systems",
+            "building physical machines and products"
+        ],
+        "engineering": [
+            "building physical machines and products",
+            "designing electronics and circuits",
             "building robots and automated systems"
         ]
     }
@@ -15101,61 +15823,223 @@ def stem_pathway_direction_explanation(
             if token in field_lower and work_reason in options:
                 reasons.append(work_reason)
                 break
-        if not reasons:
-            reasons.append(work_reason)
 
     activity_reason = activity_labels.get(favorite_activity)
     if activity_reason and activity_reason not in reasons:
-        reasons.append(activity_reason)
+        # Only keep activity when it supports this field family.
+        activity_field_map = {
+            "CAD design": ["mechanical", "civil", "biomedical", "engineering", "robot"],
+            "building circuits": ["electrical", "computer engineering", "robot"],
+            "writing programs": ["computer", "software", "data", "artificial"],
+            "analyzing data": ["data", "artificial", "math", "statistics"],
+            "running experiments": ["biology", "physics", "chemistry", "environment", "research"],
+            "building robots": ["robot", "mechanical", "computer engineering", "electrical"],
+            "solving math problems": ["math", "physics", "data", "engineering"],
+            "designing healthcare devices": ["biomedical", "biology", "health"],
+            "studying the environment": ["environment", "civil", "climate", "earth"]
+        }
+        tokens = activity_field_map.get(activity_reason, [])
+        if any(token in field_lower for token in tokens):
+            reasons.append(activity_reason)
 
-    if (
-        hands_on_score >= 7
-        and
-        any(token in field_lower for token in ["engineering", "mechanical", "robot"])
-    ):
-        reasons.append("enjoy building physical things")
+    signal_phrases = {
+        "programming": "rated programming and software highly",
+        "electronics": "rated electronics and computer hardware highly",
+        "physical_design": "rated designing and building physical devices highly",
+        "math": "rated mathematics and abstract problem-solving highly",
+        "biology": "rated biology and medicine highly",
+        "chemistry": "rated chemistry and materials highly",
+        "data_ai": "rated data, statistics, and AI highly",
+        "environment": "rated environment, climate, and infrastructure highly",
+        "finance": "rated finance, economics, and markets highly",
+        "cybersecurity": "rated cybersecurity and protecting digital systems highly",
+        "robotics": "rated robotics, automation, and sensing machines highly",
+        "health_tech": "rated healthcare technology and medical devices highly",
+        "optimization": "rated using math and data to optimize systems highly",
+        "preferred_work": None,
+        "favorite_activity": None,
+        "environment_choice": None,
+    }
 
-    if (
-        programming_score >= 7
-        and
-        any(token in field_lower for token in ["computer", "data", "artificial", "robot"])
-    ):
-        reasons.append("enjoy programming")
+    slider_checks = [
+        (
+            programming_score >= 7
+            and any(
+                token in field_lower
+                for token in ["computer science", "software", "data", "artificial", "computer engineering"]
+            ),
+            "rated programming and software highly"
+        ),
+        (
+            electronics_score >= 7
+            and any(
+                token in field_lower
+                for token in ["electrical", "computer engineering", "robot", "mechatronic"]
+            ),
+            "rated electronics and computer hardware highly"
+        ),
+        (
+            physical_design_score >= 7
+            and any(
+                token in field_lower
+                for token in [
+                    "mechanical",
+                    "civil",
+                    "biomedical",
+                    "robot",
+                    "engineering",
+                    "aerospace",
+                    "industrial"
+                ]
+            ),
+            "rated designing and building physical devices highly"
+        ),
+        (
+            math_score >= 7
+            and any(
+                token in field_lower
+                for token in ["math", "physics", "data", "engineering", "statistics", "artificial"]
+            ),
+            "rated mathematics highly"
+        ),
+        (
+            biology_score >= 7
+            and any(
+                token in field_lower
+                for token in ["biology", "biomedical", "biotech", "medicine", "health", "neuro"]
+            ),
+            "rated biology and medicine highly"
+        ),
+        (
+            chemistry_score >= 7
+            and any(
+                token in field_lower
+                for token in ["chemistry", "chemical", "materials", "biochem"]
+            ),
+            "rated chemistry and materials highly"
+        ),
+        (
+            data_score >= 7
+            and any(
+                token in field_lower
+                for token in ["data", "artificial", "machine learning", "statistics", "computer science"]
+            ),
+            "rated data, statistics, and AI highly"
+        ),
+        (
+            environment_score >= 7
+            and any(
+                token in field_lower
+                for token in [
+                    "environment",
+                    "civil",
+                    "climate",
+                    "earth",
+                    "urban",
+                    "sustainability"
+                ]
+            ),
+            "rated environment and infrastructure highly"
+        ),
+        (
+            finance_score >= 7
+            and any(
+                token in field_lower
+                for token in [
+                    "finance",
+                    "econom",
+                    "actuar",
+                    "business analytics",
+                    "operations research",
+                    "statistic",
+                    "data science",
+                    "applied mathematics",
+                    "quantitative"
+                ]
+            ),
+            "rated finance, economics, and markets highly"
+        ),
+        (
+            cybersecurity_score >= 7
+            and any(
+                token in field_lower
+                for token in [
+                    "cyber",
+                    "computer science",
+                    "computer engineering",
+                    "information technology",
+                    "information science",
+                    "software"
+                ]
+            ),
+            "rated cybersecurity and protecting digital systems highly"
+        ),
+        (
+            robotics_score >= 7
+            and any(
+                token in field_lower
+                for token in [
+                    "robot",
+                    "mechatronic",
+                    "mechanical",
+                    "electrical",
+                    "computer engineering"
+                ]
+            ),
+            "rated robotics, automation, and sensing machines highly"
+        ),
+        (
+            health_tech_score >= 7
+            and any(
+                token in field_lower
+                for token in [
+                    "biomedical",
+                    "bioengineering",
+                    "biotech",
+                    "health",
+                    "medicine"
+                ]
+            ),
+            "rated healthcare technology and medical devices highly"
+        ),
+        (
+            optimization_score >= 7
+            and any(
+                token in field_lower
+                for token in [
+                    "industrial",
+                    "operations research",
+                    "data science",
+                    "applied mathematics",
+                    "business analytics",
+                    "statistic"
+                ]
+            ),
+            "rated using math and data to optimize systems highly"
+        ),
+    ]
 
-    if (
-        electronics_score >= 7
-        and
-        any(token in field_lower for token in ["electrical", "computer engineering", "robot"])
-    ):
-        reasons.append("are interested in electronics")
+    for matches, phrase in slider_checks:
+        if matches and phrase not in reasons:
+            reasons.append(phrase)
 
-    if (
-        data_score >= 7
-        and
-        any(token in field_lower for token in ["data", "artificial", "computer", "math"])
-    ):
-        reasons.append("are interested in data and AI")
+    if supporting_signals:
+        for signal in supporting_signals:
+            phrase = signal_phrases.get(signal)
+            if phrase and phrase not in reasons:
+                reasons.append(phrase)
 
-    if (
-        science_score >= 7
-        and
-        any(token in field_lower for token in ["biology", "physics", "environment", "biomedical"])
-    ):
-        reasons.append("are interested in science and research")
-
-    if (
-        math_score >= 7
-        and
-        any(token in field_lower for token in ["math", "physics", "data", "engineering"])
-    ):
-        reasons.append("enjoy mathematics")
+    unsure_environments = {
+        "I am not sure yet",
+        "Not sure yet / still exploring",
+    }
 
     if (
         preferred_environment
         and
-        preferred_environment != "I am not sure yet"
+        preferred_environment not in unsure_environments
         and
-        len(reasons) < 3
+        len(reasons) < 4
     ):
         reasons.append(
             "want a "
@@ -15167,18 +16051,18 @@ def stem_pathway_direction_explanation(
     for item in reasons:
         if item not in unique:
             unique.append(item)
-        if len(unique) == 3:
+        if len(unique) == 4:
             break
 
     if unique:
         return (
-            "Recommended because you selected "
+            "Strong match because you "
             + _join_english(unique)
             + "."
         )
 
     return (
-        "Recommended based on your current STEM exploration answers."
+        "Recommended based on multiple Career Explorer answers pointing in this direction."
     )
 
 
@@ -15286,36 +16170,122 @@ def college_match_card_html(
         for field in college.get("fields", [])
         if str(field).strip()
     ]
-    engineering_matches = [
-        field
+
+    def _field_bucket(field_name):
+        lower = str(field_name or "").lower()
+        if (
+            "engineering" in lower
+            or field_name in {"Robotics", "Mechatronics"}
+        ):
+            return "Engineering"
+        if field_name in QUANTITATIVE_STEM_ADJACENT_FIELDS or any(
+            token in lower
+            for token in [
+                "finance",
+                "fintech",
+                "econom",
+                "accounting",
+                "actuarial",
+                "business analytics"
+            ]
+        ):
+            return "Quantitative"
+        if any(
+            token in lower
+            for token in [
+                "computer",
+                "software",
+                "data science",
+                "artificial intelligence",
+                "machine learning",
+                "cyber",
+                "game development",
+                "human-computer"
+            ]
+        ):
+            return "Computing"
+        if any(
+            token in lower
+            for token in [
+                "biology",
+                "biomedical",
+                "medicine",
+                "health",
+                "neuro",
+                "genetic",
+                "pharma",
+                "psychology"
+            ]
+        ):
+            return "Life Science"
+        if any(
+            token in lower
+            for token in [
+                "environment",
+                "ecology",
+                "climate",
+                "earth",
+                "geology",
+                "marine",
+                "sustainability"
+            ]
+        ):
+            return "Environmental"
+        if any(
+            token in lower
+            for token in ["architect", "urban planning", "construction", "structural"]
+        ):
+            return "Architecture"
+        if any(
+            token in lower
+            for token in ["math", "stat", "physics", "chem", "astronomy", "nuclear"]
+        ):
+            return "Math & Physical Science"
+        return "STEM"
+
+    match_buckets = [
+        _field_bucket(field)
         for field in field_labels
-        if "engineering" in field.lower()
-        or
-        field == "Robotics"
+        if field != "General STEM option"
     ]
+    lead_bucket = match_buckets[0] if match_buckets else "STEM"
+    bucket_count = match_buckets.count(lead_bucket) if match_buckets else 0
+
+    strength_labels = {
+        "Engineering": "Engineering Strength",
+        "Computing": "Computing Strength",
+        "Life Science": "Life Science Strength",
+        "Environmental": "Environmental Strength",
+        "Quantitative": "Quantitative Strength",
+        "Architecture": "Architecture Strength",
+        "Math & Physical Science": "Science Strength",
+        "STEM": "STEM Strength"
+    }
+    strength_label = strength_labels.get(lead_bucket, "STEM Strength")
+
+    if bucket_count >= 2 or len(field_labels) >= 3:
+        strength_value = "Very Strong"
+    elif bucket_count == 1 or len(field_labels) == 2:
+        strength_value = "Strong"
+    else:
+        strength_value = "Good"
+
     college_has_engineering = any(
         "engineering" in field.lower() or field == "Robotics"
         for field in college_fields
     )
-
-    if len(engineering_matches) >= 2:
-        strength_label = "Engineering Strength"
-        strength_value = "Very Strong"
-    elif engineering_matches:
-        strength_label = "Engineering Strength"
-        strength_value = "Strong"
-    elif len(field_labels) >= 3:
-        strength_label = "STEM Strength"
-        strength_value = "Very Strong"
-    elif len(field_labels) == 2:
-        strength_label = "STEM Strength"
-        strength_value = "Strong"
-    elif college_has_engineering:
-        strength_label = "Engineering Strength"
-        strength_value = "Available"
-    else:
-        strength_label = "STEM Strength"
-        strength_value = "Good"
+    college_has_life = any(
+        _field_bucket(field) == "Life Science"
+        for field in college_fields
+    )
+    college_has_quant = any(
+        _field_bucket(field) == "Quantitative"
+        for field in college_fields
+    )
+    college_has_computing = any(
+        _field_bucket(field) == "Computing"
+        for field in college_fields
+    )
 
     public_colleges = {
         "UC Berkeley",
@@ -15334,8 +16304,24 @@ def college_match_card_html(
 
     badges = []
 
-    if college_has_engineering:
+    # Badge from the student's matched field focus, not a default Engineering label.
+    if lead_bucket == "Engineering" and college_has_engineering:
         badges.append("Engineering")
+    elif lead_bucket == "Computing" and college_has_computing:
+        badges.append("Computing")
+    elif lead_bucket == "Life Science" and college_has_life:
+        badges.append("Life Sciences")
+    elif lead_bucket == "Quantitative" and college_has_quant:
+        badges.append("Quantitative")
+    elif lead_bucket == "Architecture":
+        badges.append("Architecture")
+    elif lead_bucket == "Environmental":
+        badges.append("Environmental")
+    elif field_labels and field_labels[0] != "General STEM option":
+        badges.append("STEM Match")
+    elif college_has_engineering or college_has_computing or college_has_life:
+        badges.append("STEM")
+
     if college.get("research"):
         badges.append("Research")
     if college.get("setting") == "City / urban":
@@ -15907,34 +16893,65 @@ def valid_choice_defaults(saved_values, options):
 
 STEM_FIELD_GROUPS = [
     (
-        "Engineering",
+        "Engineering & Technology",
         [
             "Electrical Engineering",
             "Computer Engineering",
             "Mechanical Engineering",
             "Civil Engineering",
-            "Chemical Engineering",
             "Biomedical Engineering",
-            "Environmental Engineering",
+            "Chemical Engineering",
             "Aerospace Engineering",
+            "Environmental Engineering",
             "Industrial Engineering",
-            "General Engineering / Undecided Engineering",
-            "Engineering",
+            "Robotics",
+            "Mechatronics",
             "Materials Science / Engineering",
+            "Nuclear Engineering",
+            "Systems Engineering",
+            "Engineering Physics",
             "Bioengineering",
-            "Robotics"
+            "General Engineering / Undecided Engineering",
+            "Engineering"
         ]
     ),
     (
-        "Computing & Data",
+        "Computer Science & AI",
         [
             "Computer Science",
-            "Data Science",
-            "Artificial Intelligence",
-            "Cybersecurity",
-            "Information Technology / Information Science",
             "Software Engineering",
-            "Web Development"
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Cybersecurity",
+            "Data Science",
+            "Information Technology / Information Science",
+            "Information Systems",
+            "Management Information Systems",
+            "Game Development",
+            "Human-Computer Interaction",
+            "Web Development",
+            "Computational Science"
+        ]
+    ),
+    (
+        "Life & Health Sciences",
+        [
+            "Biology",
+            "Molecular Biology",
+            "Biomedical Science",
+            "Neuroscience",
+            "Medicine / Pre-Med",
+            "Medicine / Health Science",
+            "Public Health",
+            "Genetics / Genomics",
+            "Biotechnology",
+            "Bioinformatics / Computational Biology",
+            "Psychology / Cognitive Science",
+            "Cognitive Science",
+            "Pharmacy / Pharmaceutical Science",
+            "Biochemistry",
+            "Health Science",
+            "Cancer Research"
         ]
     ),
     (
@@ -15943,46 +16960,73 @@ STEM_FIELD_GROUPS = [
             "Physics",
             "Applied Physics",
             "Chemistry",
-            "Materials Science",
             "Astronomy / Astrophysics",
-            "Earth Science",
-            "Climate Science",
-            "Space Science"
+            "Materials Science",
+            "Nuclear Science",
+            "Space Science",
+            "Meteorology / Atmospheric Science",
+            "Oceanography"
         ]
     ),
     (
-        "Life & Health Sciences",
+        "Environmental & Earth Sciences",
         [
-            "Biology",
-            "Biochemistry",
-            "Biomedical Science",
-            "Neuroscience",
-            "Public Health",
-            "Health Science",
             "Environmental Science",
-            "Biotechnology",
-            "Bioinformatics / Computational Biology",
-            "Medicine / Health Science",
-            "Cancer Research"
+            "Climate Science",
+            "Ecology",
+            "Earth Science",
+            "Geology",
+            "Sustainability",
+            "Environmental Studies / Sustainability",
+            "Marine Science",
+            "Agricultural Science",
+            "Food Science"
         ]
     ),
     (
-        "Mathematics",
+        "Mathematics & Statistics",
         [
             "Mathematics",
             "Applied Mathematics",
-            "Statistics"
+            "Statistics",
+            "Actuarial Science",
+            "Operations Research"
+        ]
+    ),
+    (
+        "Finance & Quantitative Business",
+        [
+            "Financial Engineering",
+            "Quantitative Finance",
+            "FinTech",
+            "Business Analytics",
+            "Quantitative Economics",
+            "Actuarial Science",
+            "Finance",
+            "Business",
+            "Economics",
+            "Accounting",
+            "Supply Chain Management",
+            "Operations Management"
+        ]
+    ),
+    (
+        "Architecture & Built Environment",
+        [
+            "Architecture",
+            "Architectural Engineering",
+            "Urban Planning",
+            "Construction Engineering",
+            "Construction Management",
+            "Structural Engineering",
+            "Industrial Design"
         ]
     ),
     (
         "Interdisciplinary / General STEM",
         [
-            "Environmental Studies / Sustainability",
-            "Cognitive Science",
-            "Computational Science",
             "STEM / General Science",
-            "Undecided STEM",
-            "Quantitative Finance / Financial Engineering"
+            "Undecided STEM"
         ]
     )
 ]
@@ -15994,7 +17038,8 @@ LEGACY_STEM_FIELDS = [
     "Earth Science / Geoscience",
     "Astrophysics / Astronomy",
     "General / Interdisciplinary STEM",
-    "General STEM / Interdisciplinary"
+    "General STEM / Interdisciplinary",
+    "Quantitative Finance / Financial Engineering"
 ]
 
 
@@ -16005,7 +17050,33 @@ STEM_FIELD_DISPLAY_MAP = {
     "Earth / Climate Science": "Earth Science",
     "Medicine / Health": "Medicine / Health Science",
     "General / Interdisciplinary STEM": "STEM / General Science",
-    "General STEM / Interdisciplinary": "STEM / General Science"
+    "General STEM / Interdisciplinary": "STEM / General Science",
+    "Quantitative Finance / Financial Engineering": "Financial Engineering"
+}
+
+
+# Fields that are quantitative / business-adjacent rather than traditional STEM.
+# Keep Finance / Economics / Accounting distinct from STEM-quant majors.
+QUANTITATIVE_STEM_ADJACENT_FIELDS = {
+    "Finance",
+    "Economics",
+    "Accounting",
+    "Business",
+    "Supply Chain Management",
+    "Operations Management",
+    "Management Information Systems",
+    "Information Systems",
+}
+
+# Highly quantitative majors that sit between STEM and finance/business.
+QUANTITATIVE_STEM_MAJORS = {
+    "Financial Engineering",
+    "Quantitative Finance",
+    "Actuarial Science",
+    "Business Analytics",
+    "Quantitative Economics",
+    "FinTech",
+    "Operations Research",
 }
 
 
@@ -16020,12 +17091,15 @@ ENGINEERING_MAJORS = [
     "Aerospace Engineering",
     "Industrial Engineering",
     "Materials Science / Engineering",
-    "Bioengineering"
+    "Bioengineering",
+    "Mechatronics",
+    "Construction Engineering",
+    "Structural Engineering"
 ]
 
 
 # Balanced anchors for undecided / general STEM matching.
-# Intentionally not every engineering major, so general STEM is not engineering-heavy.
+# Intentionally not engineering-heavy.
 BROAD_STEM_ANCHORS = [
     "Computer Science",
     "Mathematics",
@@ -16033,10 +17107,10 @@ BROAD_STEM_ANCHORS = [
     "Chemistry",
     "Biology",
     "Environmental Science",
-    "Engineering",
     "Data Science",
     "Public Health",
-    "Statistics"
+    "Statistics",
+    "Economics"
 ]
 
 
@@ -16044,7 +17118,8 @@ STEM_FIELD_ALIASES = {
     "ai": "Artificial Intelligence",
     "a.i.": "Artificial Intelligence",
     "artificial intelligence": "Artificial Intelligence",
-    "machine learning": "Artificial Intelligence",
+    "machine learning": "Machine Learning",
+    "ml": "Machine Learning",
     "astronomy": "Astronomy / Astrophysics",
     "astrophysics": "Astronomy / Astrophysics",
     "astronomy / astrophysics": "Astronomy / Astrophysics",
@@ -16053,11 +17128,17 @@ STEM_FIELD_ALIASES = {
     "aerospace": "Aerospace Engineering",
     "earth science": "Earth Science",
     "geoscience": "Earth Science",
-    "geology": "Earth Science",
+    "geology": "Geology",
     "earth science / geoscience": "Earth Science",
-    "earth / climate science": "Earth / Climate Science",
+    "earth / climate science": "Earth Science",
     "climate science": "Climate Science",
+    "ecology": "Ecology",
+    "marine science": "Marine Science",
+    "marine biology": "Marine Science",
     "medicine": "Medicine / Health Science",
+    "pre-med": "Medicine / Pre-Med",
+    "premed": "Medicine / Pre-Med",
+    "medicine / pre-med": "Medicine / Pre-Med",
     "health science": "Health Science",
     "healthcare": "Health Science",
     "medicine / health science": "Medicine / Health Science",
@@ -16066,16 +17147,74 @@ STEM_FIELD_ALIASES = {
     "materials engineering": "Materials Science / Engineering",
     "materials science / engineering": "Materials Science / Engineering",
     "applied physics": "Applied Physics",
-    "engineering physics": "Applied Physics",
+    "engineering physics": "Engineering Physics",
+    "nuclear science": "Nuclear Science",
+    "nuclear engineering": "Nuclear Engineering",
+    "systems engineering": "Systems Engineering",
+    "information systems": "Information Systems",
+    "management information systems": "Management Information Systems",
+    "mis": "Management Information Systems",
+    "molecular biology": "Molecular Biology",
+    "meteorology": "Meteorology / Atmospheric Science",
+    "atmospheric science": "Meteorology / Atmospheric Science",
+    "meteorology / atmospheric science": "Meteorology / Atmospheric Science",
+    "oceanography": "Oceanography",
+    "agricultural science": "Agricultural Science",
+    "agriculture": "Agricultural Science",
+    "food science": "Food Science",
+    "architectural engineering": "Architectural Engineering",
+    "construction management": "Construction Management",
+    "industrial design": "Industrial Design",
+    "supply chain": "Supply Chain Management",
+    "supply chain management": "Supply Chain Management",
+    "operations management": "Operations Management",
     "applied math": "Applied Mathematics",
     "applied mathematics": "Applied Mathematics",
-    "operations research": "Applied Mathematics",
+    "operations research": "Operations Research",
+    "actuarial science": "Actuarial Science",
+    "actuarial": "Actuarial Science",
     "computational biology": "Bioinformatics / Computational Biology",
     "bioinformatics": "Bioinformatics / Computational Biology",
     "bioinformatics / computational biology": "Bioinformatics / Computational Biology",
-    "financial engineering": "Quantitative Finance / Financial Engineering",
-    "quantitative finance": "Quantitative Finance / Financial Engineering",
-    "quantitative finance / financial engineering": "Quantitative Finance / Financial Engineering",
+    "genetics": "Genetics / Genomics",
+    "genomics": "Genetics / Genomics",
+    "genetics / genomics": "Genetics / Genomics",
+    "pharmacy": "Pharmacy / Pharmaceutical Science",
+    "pharmaceutical science": "Pharmacy / Pharmaceutical Science",
+    "pharmaceutical": "Pharmacy / Pharmaceutical Science",
+    "psychology": "Psychology / Cognitive Science",
+    "cognitive science": "Psychology / Cognitive Science",
+    "psychology / cognitive science": "Psychology / Cognitive Science",
+    "financial engineering": "Financial Engineering",
+    "quantitative finance": "Quantitative Finance",
+    "quantitative finance / financial engineering": "Financial Engineering",
+    "fintech": "FinTech",
+    "fin tech": "FinTech",
+    "business analytics": "Business Analytics",
+    "finance": "Finance",
+    "economics": "Economics",
+    "accounting": "Accounting",
+    "business": "Business",
+    "business administration": "Business",
+    "investment banking": "Investment Banking",
+    "investing": "Investing",
+    "entrepreneurship": "Entrepreneurship",
+    "financial literacy": "Financial Literacy",
+    "corporate finance": "Corporate Finance",
+    "asset management": "Asset Management",
+    "quantitative economics": "Quantitative Economics",
+    "architecture": "Architecture",
+    "urban planning": "Urban Planning",
+    "construction engineering": "Construction Engineering",
+    "structural engineering": "Structural Engineering",
+    "game development": "Game Development",
+    "game design": "Game Development",
+    "human-computer interaction": "Human-Computer Interaction",
+    "hci": "Human-Computer Interaction",
+    "mechatronics": "Mechatronics",
+    "sustainability": "Sustainability",
+    "environmental studies": "Sustainability",
+    "environmental studies / sustainability": "Sustainability",
     "general engineering": "General Engineering / Undecided Engineering",
     "undecided engineering": "General Engineering / Undecided Engineering",
     "engineering / undecided": "General Engineering / Undecided Engineering",
@@ -16085,11 +17224,7 @@ STEM_FIELD_ALIASES = {
     "information systems": "Information Technology / Information Science",
     "information technology / information science": "Information Technology / Information Science",
     "biochemistry": "Biochemistry",
-    "cognitive science": "Cognitive Science",
     "computational science": "Computational Science",
-    "environmental studies": "Environmental Studies / Sustainability",
-    "sustainability": "Environmental Studies / Sustainability",
-    "environmental studies / sustainability": "Environmental Studies / Sustainability",
     "stem / general science": "STEM / General Science",
     "general science": "STEM / General Science",
     "undecided stem": "Undecided STEM",
@@ -16110,8 +17245,11 @@ STEM_FIELD_ALIASES = {
 
 
 RELATED_STEM_FIELDS = {
-    "Engineering": ENGINEERING_MAJORS + [
-        "General Engineering / Undecided Engineering"
+    "Engineering": [
+        "General Engineering / Undecided Engineering",
+        "Mechanical Engineering",
+        "Electrical Engineering",
+        "Civil Engineering"
     ],
     "General Engineering / Undecided Engineering": [
         "Engineering"
@@ -16120,14 +17258,16 @@ RELATED_STEM_FIELDS = {
         "Applied Physics",
         "Astronomy / Astrophysics",
         "Astrophysics / Astronomy",
-        "Materials Science"
+        "Materials Science",
+        "Nuclear Science"
     ],
     "Applied Physics": [
         "Physics",
         "Materials Science",
         "Materials Science / Engineering",
         "Astronomy / Astrophysics",
-        "Chemistry"
+        "Chemistry",
+        "Nuclear Science"
     ],
     "Astronomy / Astrophysics": [
         "Physics",
@@ -16141,38 +17281,63 @@ RELATED_STEM_FIELDS = {
         "Space Science",
         "Applied Physics"
     ],
-    "Mathematics": ["Applied Mathematics", "Statistics"],
+    "Nuclear Science": [
+        "Physics",
+        "Applied Physics",
+        "Chemistry"
+    ],
+    "Mathematics": ["Applied Mathematics", "Statistics", "Actuarial Science", "Operations Research"],
     "Applied Mathematics": [
         "Mathematics",
         "Statistics",
         "Data Science",
-        "Computational Science"
+        "Computational Science",
+        "Operations Research"
     ],
     "Statistics": [
         "Mathematics",
         "Applied Mathematics",
+        "Data Science",
+        "Actuarial Science"
+    ],
+    "Actuarial Science": [
+        "Statistics",
+        "Mathematics",
+        "Applied Mathematics",
+        "Finance"
+    ],
+    "Operations Research": [
+        "Applied Mathematics",
+        "Mathematics",
+        "Statistics",
+        "Industrial Engineering",
         "Data Science"
     ],
     "Biology": [
         "Biomedical Science",
         "Biotechnology",
-        "Biochemistry"
+        "Biochemistry",
+        "Genetics / Genomics",
+        "Ecology"
     ],
     "Biochemistry": [
         "Biology",
         "Chemistry",
-        "Biomedical Science"
+        "Biomedical Science",
+        "Pharmacy / Pharmaceutical Science"
     ],
     "Biomedical Science": [
         "Biology",
         "Biotechnology",
         "Biochemistry",
         "Medicine / Health Science",
+        "Medicine / Pre-Med",
         "Health Science",
         "Biomedical Engineering",
-        "Neuroscience"
+        "Neuroscience",
+        "Genetics / Genomics"
     ],
-    "Biotechnology": ["Biology", "Biomedical Science", "Bioengineering"],
+    "Biotechnology": ["Biology", "Biomedical Science", "Bioengineering", "Genetics / Genomics"],
     "Bioengineering": [
         "Biomedical Engineering",
         "Biotechnology",
@@ -16183,11 +17348,36 @@ RELATED_STEM_FIELDS = {
         "Biomedical Science",
         "Biotechnology"
     ],
+    "Genetics / Genomics": [
+        "Biology",
+        "Biotechnology",
+        "Bioinformatics / Computational Biology",
+        "Biomedical Science"
+    ],
+    "Pharmacy / Pharmaceutical Science": [
+        "Chemistry",
+        "Biochemistry",
+        "Biology",
+        "Medicine / Health Science"
+    ],
+    "Medicine / Pre-Med": [
+        "Medicine / Health Science",
+        "Biology",
+        "Biomedical Science",
+        "Health Science"
+    ],
+    "Psychology / Cognitive Science": [
+        "Cognitive Science",
+        "Neuroscience",
+        "Biology",
+        "Human-Computer Interaction"
+    ],
     "Chemistry": [
         "Chemical Engineering",
         "Materials Science",
         "Materials Science / Engineering",
-        "Biochemistry"
+        "Biochemistry",
+        "Pharmacy / Pharmaceutical Science"
     ],
     "Materials Science": [
         "Materials Science / Engineering",
@@ -16203,53 +17393,94 @@ RELATED_STEM_FIELDS = {
     ],
     "Environmental Science": [
         "Earth Science",
-        "Earth Science / Geoscience",
         "Climate Science",
+        "Ecology",
         "Environmental Engineering",
+        "Sustainability",
         "Environmental Studies / Sustainability",
-        "Earth / Climate Science"
+        "Marine Science",
+        "Geology"
+    ],
+    "Ecology": [
+        "Environmental Science",
+        "Biology",
+        "Marine Science",
+        "Climate Science"
+    ],
+    "Geology": [
+        "Earth Science",
+        "Earth Science / Geoscience",
+        "Environmental Science"
+    ],
+    "Marine Science": [
+        "Environmental Science",
+        "Biology",
+        "Ecology",
+        "Earth Science"
+    ],
+    "Sustainability": [
+        "Environmental Science",
+        "Climate Science",
+        "Environmental Studies / Sustainability",
+        "Environmental Engineering"
     ],
     "Earth Science": [
         "Earth Science / Geoscience",
         "Environmental Science",
         "Climate Science",
+        "Geology",
         "Earth / Climate Science"
     ],
     "Earth Science / Geoscience": [
         "Earth Science",
         "Environmental Science",
         "Climate Science",
+        "Geology",
         "Earth / Climate Science"
     ],
     "Climate Science": [
         "Earth Science",
-        "Earth Science / Geoscience",
         "Environmental Science",
+        "Sustainability",
         "Earth / Climate Science"
     ],
     "Earth / Climate Science": [
         "Earth Science",
-        "Earth Science / Geoscience",
         "Climate Science",
         "Environmental Science"
     ],
     "Environmental Studies / Sustainability": [
+        "Sustainability",
         "Environmental Science",
         "Climate Science",
         "Environmental Engineering"
     ],
     "Computer Science": [
+        "Software Engineering",
         "Artificial Intelligence",
+        "Machine Learning",
         "Data Science",
         "Cybersecurity",
         "Information Technology / Information Science",
+        "Game Development",
+        "Human-Computer Interaction",
         "Computational Science"
     ],
-    "Artificial Intelligence": ["Computer Science", "Data Science"],
+    "Artificial Intelligence": [
+        "Computer Science",
+        "Machine Learning",
+        "Data Science"
+    ],
+    "Machine Learning": [
+        "Artificial Intelligence",
+        "Computer Science",
+        "Data Science"
+    ],
     "Data Science": [
         "Statistics",
         "Computer Science",
         "Applied Mathematics",
+        "Business Analytics",
         "Bioinformatics / Computational Biology"
     ],
     "Information Technology / Information Science": [
@@ -16257,11 +17488,22 @@ RELATED_STEM_FIELDS = {
         "Cybersecurity",
         "Data Science"
     ],
+    "Game Development": [
+        "Computer Science",
+        "Software Engineering",
+        "Human-Computer Interaction"
+    ],
+    "Human-Computer Interaction": [
+        "Computer Science",
+        "Psychology / Cognitive Science",
+        "Software Engineering"
+    ],
     "Medicine / Health Science": [
         "Public Health",
         "Biomedical Science",
         "Health Science",
-        "Medicine / Health"
+        "Medicine / Health",
+        "Medicine / Pre-Med"
     ],
     "Health Science": [
         "Medicine / Health Science",
@@ -16278,9 +17520,17 @@ RELATED_STEM_FIELDS = {
     "Public Health": [
         "Medicine / Health Science",
         "Health Science",
-        "Medicine / Health"
+        "Medicine / Health",
+        "Biology"
     ],
     "Robotics": [
+        "Mechanical Engineering",
+        "Electrical Engineering",
+        "Computer Engineering",
+        "Mechatronics"
+    ],
+    "Mechatronics": [
+        "Robotics",
         "Mechanical Engineering",
         "Electrical Engineering",
         "Computer Engineering"
@@ -16294,32 +17544,189 @@ RELATED_STEM_FIELDS = {
     "Cancer Research": [
         "Biology",
         "Biomedical Science",
-        "Medicine / Health Science"
+        "Medicine / Health Science",
+        "Genetics / Genomics"
     ],
-    "Software Engineering": ["Computer Science"],
-    "Web Development": ["Computer Science"],
+    "Software Engineering": ["Computer Science", "Web Development"],
+    "Web Development": ["Computer Science", "Software Engineering"],
     "Cybersecurity": [
         "Computer Science",
         "Information Technology / Information Science"
     ],
+    "Financial Engineering": [
+        "Quantitative Finance",
+        "Mathematics",
+        "Applied Mathematics",
+        "Statistics",
+        "Data Science",
+        "Finance"
+    ],
+    "Quantitative Finance": [
+        "Financial Engineering",
+        "Mathematics",
+        "Statistics",
+        "Data Science",
+        "Finance"
+    ],
     "Quantitative Finance / Financial Engineering": [
+        "Financial Engineering",
+        "Quantitative Finance",
         "Mathematics",
         "Applied Mathematics",
         "Statistics",
         "Data Science"
     ],
+    "FinTech": [
+        "Computer Science",
+        "Finance",
+        "Data Science",
+        "Software Engineering",
+        "Quantitative Finance"
+    ],
+    "Finance": [
+        "Economics",
+        "Business Analytics",
+        "Financial Engineering",
+        "Quantitative Finance",
+        "FinTech",
+        "Accounting",
+        "Business",
+        "Investment Banking",
+        "Entrepreneurship",
+        "Financial Literacy",
+        "Corporate Finance",
+        "Asset Management"
+    ],
+    "Business": [
+        "Finance",
+        "Economics",
+        "Accounting",
+        "Entrepreneurship",
+        "Business Analytics",
+        "Financial Literacy",
+        "Marketing"
+    ],
+    "Investment Banking": [
+        "Finance",
+        "Business",
+        "Corporate Finance",
+        "Economics"
+    ],
+    "Entrepreneurship": [
+        "Business",
+        "Finance",
+        "Economics"
+    ],
+    "Financial Literacy": [
+        "Finance",
+        "Economics",
+        "Business"
+    ],
+    "Corporate Finance": [
+        "Finance",
+        "Accounting",
+        "Business",
+        "Investment Banking"
+    ],
+    "Asset Management": [
+        "Finance",
+        "Investing",
+        "Economics"
+    ],
+    "Investing": [
+        "Finance",
+        "Financial Literacy",
+        "Economics"
+    ],
+    "Economics": [
+        "Finance",
+        "Quantitative Economics",
+        "Business Analytics",
+        "Business",
+        "Statistics",
+        "Financial Literacy"
+    ],
+    "Quantitative Economics": [
+        "Economics",
+        "Statistics",
+        "Applied Mathematics",
+        "Data Science",
+        "Finance"
+    ],
+    "Accounting": [
+        "Finance",
+        "Business Analytics",
+        "Economics",
+        "Business"
+    ],
+    "Business Analytics": [
+        "Data Science",
+        "Statistics",
+        "Finance",
+        "Economics",
+        "Business"
+    ],
+    "Computer Engineering": [
+        "Electrical Engineering",
+        "Computer Science",
+        "Robotics",
+        "Mechatronics",
+        "Software Engineering"
+    ],
+    "Electrical Engineering": [
+        "Computer Engineering",
+        "Robotics",
+        "Mechatronics",
+        "Physics"
+    ],
+    "Biomedical Engineering": [
+        "Bioengineering",
+        "Biomedical Science",
+        "Biotechnology",
+        "Biology",
+        "Medicine / Health Science",
+        "Health Science",
+        "Engineering"
+    ],
+    "Architecture": [
+        "Urban Planning",
+        "Structural Engineering",
+        "Civil Engineering",
+        "Construction Engineering"
+    ],
+    "Urban Planning": [
+        "Architecture",
+        "Civil Engineering",
+        "Environmental Science",
+        "Sustainability"
+    ],
+    "Construction Engineering": [
+        "Civil Engineering",
+        "Structural Engineering",
+        "Architecture",
+        "Engineering"
+    ],
+    "Structural Engineering": [
+        "Civil Engineering",
+        "Architecture",
+        "Construction Engineering",
+        "Engineering"
+    ],
     "Bioinformatics / Computational Biology": [
         "Biology",
         "Data Science",
-        "Computer Science"
+        "Computer Science",
+        "Genetics / Genomics"
     ],
     "Neuroscience": [
         "Biology",
         "Biomedical Science",
         "Medicine / Health Science",
+        "Psychology / Cognitive Science",
         "Cognitive Science"
     ],
     "Cognitive Science": [
+        "Psychology / Cognitive Science",
         "Neuroscience",
         "Computer Science",
         "Biology",
@@ -16400,36 +17807,74 @@ STEM_FIELD_PARENTS = {
         "Engineering",
         "General Engineering / Undecided Engineering"
     ],
+    "Mechatronics": [
+        "Engineering",
+        "Robotics",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Construction Engineering": [
+        "Engineering",
+        "Civil Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
+    "Structural Engineering": [
+        "Engineering",
+        "Civil Engineering",
+        "General Engineering / Undecided Engineering"
+    ],
     "General Engineering / Undecided Engineering": ["Engineering"],
     "Applied Mathematics": ["Mathematics"],
     "Statistics": ["Mathematics"],
+    "Actuarial Science": ["Mathematics", "Statistics"],
+    "Operations Research": ["Mathematics", "Applied Mathematics"],
     "Applied Physics": ["Physics"],
     "Astronomy / Astrophysics": ["Physics"],
     "Astrophysics / Astronomy": ["Physics"],
+    "Nuclear Science": ["Physics"],
     "Materials Science": ["Physics", "Chemistry"],
     "Biomedical Science": ["Biology"],
     "Biochemistry": ["Biology", "Chemistry"],
     "Biotechnology": ["Biology"],
+    "Genetics / Genomics": ["Biology"],
+    "Pharmacy / Pharmaceutical Science": ["Chemistry", "Biology"],
+    "Medicine / Pre-Med": ["Medicine / Health Science", "Biology"],
     "Software Engineering": ["Computer Science"],
     "Web Development": ["Computer Science"],
     "Cybersecurity": ["Computer Science"],
     "Artificial Intelligence": ["Computer Science"],
+    "Machine Learning": ["Computer Science", "Artificial Intelligence"],
     "Data Science": ["Computer Science"],
     "Information Technology / Information Science": ["Computer Science"],
+    "Game Development": ["Computer Science"],
+    "Human-Computer Interaction": ["Computer Science"],
     "Computational Science": ["Computer Science", "Applied Mathematics"],
-    "Cognitive Science": ["Neuroscience"],
+    "Cognitive Science": ["Psychology / Cognitive Science", "Neuroscience"],
+    "Psychology / Cognitive Science": ["Neuroscience"],
     "Climate Science": ["Environmental Science"],
     "Earth Science": ["Environmental Science"],
     "Earth Science / Geoscience": ["Environmental Science"],
+    "Geology": ["Earth Science", "Environmental Science"],
+    "Ecology": ["Environmental Science", "Biology"],
+    "Marine Science": ["Environmental Science", "Biology"],
+    "Sustainability": ["Environmental Science"],
     "Environmental Engineering": ["Environmental Science", "Engineering"],
-    "Environmental Studies / Sustainability": ["Environmental Science"],
+    "Environmental Studies / Sustainability": ["Environmental Science", "Sustainability"],
     "Medicine / Health Science": ["Biology"],
     "Health Science": ["Medicine / Health Science"],
     "Public Health": ["Medicine / Health Science"],
+    "Financial Engineering": ["Mathematics", "Finance"],
+    "Quantitative Finance": ["Mathematics", "Finance"],
+    "FinTech": ["Finance", "Computer Science"],
+    "Business Analytics": ["Data Science", "Finance"],
+    "Quantitative Economics": ["Economics", "Mathematics"],
+    "Accounting": ["Finance"],
+    "Architecture": [],
+    "Urban Planning": ["Architecture"],
     "Undecided STEM": ["STEM / General Science"],
     "General STEM / Interdisciplinary": ["STEM / General Science"],
     "General / Interdisciplinary STEM": ["STEM / General Science"]
 }
+
 
 
 def all_stem_field_options():
@@ -16512,6 +17957,102 @@ def canonicalize_stem_field_list(values):
     return result
 
 
+BUSINESS_RELATED_INTERESTS = {
+    "Finance",
+    "Economics",
+    "Accounting",
+    "Business",
+    "Business Analytics",
+    "FinTech",
+    "Financial Engineering",
+    "Quantitative Finance",
+    "Quantitative Economics",
+    "Actuarial Science",
+    "Investment Banking",
+    "Entrepreneurship",
+    "Financial Literacy",
+    "Corporate Finance",
+    "Asset Management",
+    "Investing",
+    "Quantitative Finance / Financial Engineering"
+}
+
+
+def opportunity_scope_matches_interests(opportunity, expanded_interests):
+    """Match scholarships/general programs by eligible_interest_scope."""
+
+    scope = str(
+        opportunity.get("eligible_interest_scope")
+        or ""
+    ).strip().lower()
+
+    if not scope or not expanded_interests:
+        return False
+
+    interests_lower = {
+        str(item).strip().lower()
+        for item in expanded_interests
+        if str(item).strip()
+    }
+
+    if scope in {
+        "any major",
+        "general high school student",
+        "general"
+    }:
+        return True
+
+    if scope in {"business-related", "business related"}:
+        return bool(
+            expanded_interests.intersection(BUSINESS_RELATED_INTERESTS)
+        ) or any(
+            token in interest
+            for interest in interests_lower
+            for token in [
+                "finance",
+                "econom",
+                "account",
+                "business",
+                "fintech",
+                "invest"
+            ]
+        )
+
+    if scope in {"finance-specific", "finance specific"}:
+        return bool(
+            expanded_interests.intersection(BUSINESS_RELATED_INTERESTS)
+        ) or any(
+            token in interest
+            for interest in interests_lower
+            for token in [
+                "finance",
+                "fintech",
+                "econom",
+                "account",
+                "invest"
+            ]
+        )
+
+    if scope in {"stem-specific", "stem specific"}:
+        return any(
+            interest
+            and
+            not any(
+                token in interest
+                for token in [
+                    "finance",
+                    "econom",
+                    "account",
+                    "business",
+                    "entrepreneur"
+                ]
+            )
+            for interest in interests_lower
+        )
+
+    return False
+
+
 def expand_stem_fields(values):
 
     expanded = set()
@@ -16572,11 +18113,24 @@ def research_areas_from_fields(fields_value):
 
     if token_matches("artificial intelligence", "machine learning") or "ai" in tokens:
         areas.add("Artificial Intelligence")
+        areas.add("Machine Learning")
     if token_matches("computer science"):
         areas.add("Computer Science")
-    if token_matches("engineering"):
-        areas.add("Engineering")
-        areas.add("General Engineering / Undecided Engineering")
+    if token_matches("engineering") and not any(
+        "financial engineering" in token or token in {"fintech", "architecture"}
+        for token in tokens
+    ):
+        # Avoid treating financial engineering / architecture tags as general Engineering.
+        if any(
+            token == "engineering"
+            or (
+                "engineering" in token
+                and "financial" not in token
+            )
+            for token in tokens
+        ):
+            areas.add("Engineering")
+            areas.add("General Engineering / Undecided Engineering")
     if token_matches("biomedical", "bioengineering"):
         areas.add("Biomedical Science")
         areas.add("Biomedical Engineering")
@@ -16605,7 +18159,9 @@ def research_areas_from_fields(fields_value):
         areas.add("Physics")
         areas.add("Applied Physics")
     if token_matches("nuclear science", "particle physics"):
+        areas.add("Nuclear Science")
         areas.add("Physics")
+        areas.add("Applied Physics")
     if token_matches("astronomy", "astrophysics"):
         areas.add("Astronomy / Astrophysics")
         areas.add("Astrophysics / Astronomy")
@@ -16624,10 +18180,17 @@ def research_areas_from_fields(fields_value):
         areas.add("Environmental Science")
     if token_matches("environmental", "ecology"):
         areas.add("Environmental Science")
+        areas.add("Ecology")
     if token_matches("earth science", "geoscience", "geology"):
         areas.add("Earth Science")
         areas.add("Earth Science / Geoscience")
+        areas.add("Geology")
         areas.add("Earth / Climate Science")
+    if token_matches("operations research"):
+        areas.add("Operations Research")
+        areas.add("Applied Mathematics")
+        areas.add("Statistics")
+        areas.add("Data Science")
     if token_matches("climate"):
         areas.add("Climate Science")
         areas.add("Earth / Climate Science")
@@ -16640,10 +18203,6 @@ def research_areas_from_fields(fields_value):
         areas.add("Computational Science")
         areas.add("Computer Science")
         areas.add("Applied Mathematics")
-    if token_matches("operations research"):
-        areas.add("Applied Mathematics")
-        areas.add("Statistics")
-        areas.add("Data Science")
     if token_matches("information technology", "information science", "information systems"):
         areas.add("Information Technology / Information Science")
         areas.add("Computer Science")
@@ -16685,6 +18244,71 @@ def research_areas_from_fields(fields_value):
     if token_matches("software"):
         areas.add("Software Engineering")
         areas.add("Computer Science")
+    if token_matches("machine learning"):
+        areas.add("Machine Learning")
+        areas.add("Artificial Intelligence")
+    if token_matches("game development", "game design"):
+        areas.add("Game Development")
+        areas.add("Computer Science")
+    if token_matches("human-computer", "hci", "ux"):
+        areas.add("Human-Computer Interaction")
+    if token_matches("mechatronics"):
+        areas.add("Mechatronics")
+        areas.add("Robotics")
+    if token_matches("nuclear"):
+        areas.add("Nuclear Science")
+        areas.add("Physics")
+    if token_matches("ecology"):
+        areas.add("Ecology")
+        areas.add("Environmental Science")
+    if token_matches("marine", "ocean"):
+        areas.add("Marine Science")
+        areas.add("Environmental Science")
+    if token_matches("geology"):
+        areas.add("Geology")
+        areas.add("Earth Science")
+    if token_matches("genetics", "genomics"):
+        areas.add("Genetics / Genomics")
+        areas.add("Biology")
+    if token_matches("pharmacy", "pharmaceutical"):
+        areas.add("Pharmacy / Pharmaceutical Science")
+        areas.add("Chemistry")
+    if token_matches("pre-med", "premed"):
+        areas.add("Medicine / Pre-Med")
+        areas.add("Medicine / Health Science")
+    if token_matches("psychology", "cognitive"):
+        areas.add("Psychology / Cognitive Science")
+        areas.add("Cognitive Science")
+    if token_matches("finance", "financial"):
+        areas.add("Finance")
+        areas.add("Financial Engineering")
+        areas.add("Quantitative Finance")
+    if token_matches("fintech"):
+        areas.add("FinTech")
+        areas.add("Finance")
+        areas.add("Computer Science")
+    if token_matches("economics", "econom"):
+        areas.add("Economics")
+        areas.add("Quantitative Economics")
+    if token_matches("accounting"):
+        areas.add("Accounting")
+        areas.add("Finance")
+    if token_matches("business analytics", "analytics"):
+        areas.add("Business Analytics")
+        areas.add("Data Science")
+    if token_matches("actuarial"):
+        areas.add("Actuarial Science")
+        areas.add("Statistics")
+    if token_matches("architecture", "architect"):
+        areas.add("Architecture")
+    if token_matches("urban planning", "urban design"):
+        areas.add("Urban Planning")
+    if token_matches("construction"):
+        areas.add("Construction Engineering")
+        areas.add("Civil Engineering")
+    if token_matches("structural engineering"):
+        areas.add("Structural Engineering")
+        areas.add("Civil Engineering")
 
     general_tokens = {
         "stem",
@@ -18907,7 +20531,10 @@ if not st.session_state.profile_completed:
     )
 
     st.caption(
-        "Choose any STEM areas that interest you. You can select from more than one group."
+        "Choose any STEM or quantitative areas that interest you. "
+        "You can select from more than one group, including engineering, "
+        "computing, life sciences, physical sciences, environment, math, "
+        "finance/quant pathways, and architecture."
     )
 
     interests = collect_grouped_stem_fields(
@@ -18929,9 +20556,14 @@ if not st.session_state.profile_completed:
         "Robotics",
         "Scientific Research",
         "Engineering Projects",
+        "Lab Experiments",
         "Data Analysis",
         "Math Competitions",
         "Science Competitions",
+        "Biology / Life Science Projects",
+        "Environmental or Field Research",
+        "Finance / Economics Projects",
+        "Architecture or Design Projects",
         "None yet"
     ]
 
@@ -19978,8 +21610,8 @@ elif page == "My STEM Pathway":
     render_page_header(
         "My STEM Pathway",
         (
-            "Answer the Career Explorer questions to discover "
-            "STEM fields, majors, and careers that may fit you."
+            "Work through six short sections to discover "
+            "STEM fields and majors that may fit you."
         )
     )
 
@@ -19993,121 +21625,197 @@ elif page == "My STEM Pathway":
         st.html(
             '<div class="sp-stemq-title-block">'
             '<h2 class="sp-stemq-page-title">'
-            "Discover Your STEM Direction"
+            "Find Your Potential Major"
             "</h2>"
             '<p class="sp-stemq-page-sub">'
-            "Answer a few questions about how you like to work. "
-            "There are no right or wrong answers."
+            "Complete each section below. Your answers work together to "
+            "suggest STEM majors and career directions — there are no right or wrong answers."
             "</p>"
             "</div>"
         )
 
-        def stemq_interest_slider(label, card_key):
-            with st.container(key=card_key):
-                value = st.slider(label, 1, 10, 5)
-                st.html(
-                    '<div class="sp-stemq-slider-ends" aria-hidden="true">'
-                    "<span>1 — Not interested</span>"
-                    "<span>10 — Very interested</span>"
-                    "</div>"
-                )
-                return value
-
-        with st.container(key="stemq_interests", border=True):
+        # ----------------------------------------------------
+        # 1. Work style
+        # ----------------------------------------------------
+        with st.container(key="stemq_major_1_work", border=True):
 
             st.html(
-                '<h3 class="sp-stemq-card-title">Your Interests</h3>'
+                '<h3 class="sp-stemq-card-title">1. Work Style</h3>'
+                '<p class="sp-stemq-card-hint">'
+                "What kind of day-to-day work sounds most appealing?"
+                "</p>"
             )
 
             preferred_work = st.selectbox(
                 "Which type of work sounds most interesting?",
                 [
                     "Building physical machines or products",
-                    "Designing electronics and circuits",
-                    "Programming software",
-                    "Working with data and artificial intelligence",
-                    "Solving healthcare problems",
-                    "Conducting scientific research",
-                    "Working with mathematics and models",
-                    "Improving the environment",
-                    "Building robots and automated systems",
-                    "I am not sure yet"
-                ]
+                    "Designing circuits, electronics, or hardware",
+                    "Writing software or building apps",
+                    "Working with AI, algorithms, or large datasets",
+                    "Designing buildings or infrastructure",
+                    "Working in laboratories and conducting experiments",
+                    "Studying living organisms or human health",
+                    "Solving advanced math or statistical problems",
+                    "Studying markets, investing, or financial systems",
+                    "Optimizing businesses, transportation, or supply chains",
+                    "Studying climate, Earth, oceans, or the environment",
+                    "Designing products around human needs and usability",
+                    "I am not sure yet",
+                ],
+                key="stemq_work_v4",
+            )
+
+        # ----------------------------------------------------
+        # 2. Activities
+        # ----------------------------------------------------
+        with st.container(key="stemq_major_2_activity", border=True):
+
+            st.html(
+                '<h3 class="sp-stemq-card-title">2. Activities You Enjoy</h3>'
+                '<p class="sp-stemq-card-hint">'
+                "Pick the activity that feels most fun or natural for you."
+                "</p>"
             )
 
             favorite_activity = st.selectbox(
                 "Which activity sounds most enjoyable?",
                 [
                     "Designing something in CAD",
-                    "Building a circuit",
-                    "Writing a program",
-                    "Analyzing a dataset",
-                    "Running an experiment",
-                    "Building a robot",
-                    "Solving difficult math problems",
-                    "Designing a healthcare device",
-                    "Studying the environment",
-                    "I am not sure yet"
-                ]
+                    "Building an electronic circuit",
+                    "Programming an application",
+                    "Training or analyzing an AI model",
+                    "Solving challenging math problems",
+                    "Analyzing financial markets or company data",
+                    "Running a biology or chemistry experiment",
+                    "Designing a bridge, building, or city",
+                    "Analyzing a large dataset",
+                    "Studying weather, climate, or ecosystems",
+                    "Designing a medical or assistive device",
+                    "Planning how a company or system can operate more efficiently",
+                    "I am not sure yet",
+                ],
+                key="stemq_activity_v4",
             )
 
-        with st.container(key="stemq_ratings", border=True):
+        # ----------------------------------------------------
+        # 3. Computing & technology
+        # ----------------------------------------------------
+        with st.container(key="stemq_major_3_computing", border=True):
 
             st.html(
-                '<h3 class="sp-stemq-card-title">Rate Your Interests</h3>'
+                '<h3 class="sp-stemq-card-title">3. Computing & Technology</h3>'
+                '<p class="sp-stemq-card-hint">'
+                "Helps distinguish software, AI, cybersecurity, hardware, data, and related paths."
+                "</p>"
             )
 
-            with st.container(key="stemq_slider_grid"):
-
-                programming_score = stemq_interest_slider(
-                    "How much do you enjoy programming?",
-                    "stemq_s_programming"
-                )
-
-                hands_on_score = stemq_interest_slider(
-                    "How much do you enjoy building physical things?",
-                    "stemq_s_handson"
-                )
-
-                math_score = stemq_interest_slider(
-                    "How much do you enjoy mathematics?",
-                    "stemq_s_math"
-                )
-
-                electronics_score = stemq_interest_slider(
-                    "How interested are you in electronics and circuits?",
-                    "stemq_s_electronics"
-                )
-
-                science_score = stemq_interest_slider(
-                    "How interested are you in science and research?",
-                    "stemq_s_science"
-                )
-
-                data_score = stemq_interest_slider(
-                    "How interested are you in data, statistics, or AI?",
-                    "stemq_s_data"
-                )
-
-        with st.container(key="stemq_environment", border=True):
-
-            st.html(
-                '<h3 class="sp-stemq-card-title">Your Ideal Environment</h3>'
-            )
-
-            preferred_environment = st.selectbox(
-                "Which environment sounds most appealing?",
+            preferred_tech = st.selectbox(
+                "Which technology area interests you most?",
                 [
-                    "Technology company",
-                    "Engineering design company",
-                    "Engineering laboratory",
-                    "Research laboratory",
-                    "Hospital or healthcare technology",
-                    "Manufacturing company",
-                    "University or research institution",
-                    "Environmental organization",
-                    "I am not sure yet"
-                ]
+                    "Software and app development",
+                    "Artificial intelligence and machine learning",
+                    "Cybersecurity",
+                    "Computer hardware and processors",
+                    "Robotics and embedded systems",
+                    "Data science and analytics",
+                    "Web / user experience design",
+                    "Financial technology / algorithmic trading",
+                    "Bioinformatics / computational biology",
+                    "Technology does not strongly interest me",
+                ],
+                key="stemq_tech_v4",
+            )
+
+        # ----------------------------------------------------
+        # 4. Science & discovery
+        # ----------------------------------------------------
+        with st.container(key="stemq_major_4_science", border=True):
+
+            st.html(
+                '<h3 class="sp-stemq-card-title">4. Science & Discovery</h3>'
+                '<p class="sp-stemq-card-hint">'
+                "Helps identify physical sciences, life sciences, Earth/space fields, and applied paths."
+                "</p>"
+            )
+
+            preferred_science = st.selectbox(
+                "Which scientific area are you most curious about?",
+                [
+                    "Physics and how the universe works",
+                    "Chemistry and materials",
+                    "Biology and living systems",
+                    "Human health and medicine",
+                    "Neuroscience and the brain",
+                    "Genetics and biotechnology",
+                    "Environment and climate",
+                    "Earth, geology, and oceans",
+                    "Astronomy and space",
+                    "I prefer applied engineering/business problems over pure science",
+                ],
+                key="stemq_science_v4",
+            )
+
+        # ----------------------------------------------------
+        # 5. Math, data & business
+        # ----------------------------------------------------
+        with st.container(key="stemq_major_5_quant", border=True):
+
+            st.html(
+                '<h3 class="sp-stemq-card-title">5. Math, Data & Business</h3>'
+                '<p class="sp-stemq-card-hint">'
+                "Helps distinguish Mathematics, Statistics, Data Science, Finance, Economics, "
+                "and optimization-focused majors."
+                "</p>"
+            )
+
+            preferred_quant = st.selectbox(
+                "Which kind of problem would you most enjoy solving?",
+                [
+                    "Using calculus and physics to design systems",
+                    "Finding patterns in large datasets",
+                    "Building statistical models",
+                    "Predicting financial markets or evaluating investments",
+                    "Managing risk using mathematics",
+                    "Optimizing transportation, factories, or supply chains",
+                    "Understanding how economies and markets behave",
+                    "Analyzing business performance",
+                    "Working with probability and uncertainty",
+                    "Math is useful to me, but I prefer hands-on design",
+                ],
+                key="stemq_quant_v4",
+            )
+
+        # ----------------------------------------------------
+        # 6. Impact / career goals
+        # ----------------------------------------------------
+        with st.container(key="stemq_major_6_impact", border=True):
+
+            st.html(
+                '<h3 class="sp-stemq-card-title">6. Impact / Career Goals</h3>'
+                '<p class="sp-stemq-card-hint">'
+                "Your preferred impact helps refine majors across engineering, science, "
+                "technology, and quantitative business."
+                "</p>"
+            )
+
+            preferred_impact = st.selectbox(
+                "What kind of impact would you most like your work to have?",
+                [
+                    "Create new technology",
+                    "Improve healthcare",
+                    "Build safer or more efficient infrastructure",
+                    "Develop cleaner energy and environmental solutions",
+                    "Advance scientific knowledge",
+                    "Protect computers and digital systems",
+                    "Improve transportation and logistics",
+                    "Design better products for people",
+                    "Build successful businesses",
+                    "Work in investing, banking, or financial markets",
+                    "Use mathematics and data to make better decisions",
+                    "Explore space or aerospace technology",
+                ],
+                key="stemq_impact_v4",
             )
 
     # ========================================================
@@ -20435,11 +22143,11 @@ elif page == "My STEM Pathway":
         },
         "Medicine / Health Science": {
             "majors": ["Biology", "Public Health", "Biomedical Sciences"],
-            "careers": ["Physician pathway", "Clinical researcher", "Health scientist"]
+            "careers": ["Doctor / Physician", "Clinical researcher", "Health scientist"]
         },
         "Medicine / Health": {
             "majors": ["Biology", "Public Health", "Biomedical Sciences"],
-            "careers": ["Physician pathway", "Clinical researcher", "Health scientist"]
+            "careers": ["Doctor / Physician", "Clinical researcher", "Health scientist"]
         },
         "Public Health": {
             "majors": ["Public Health", "Epidemiology", "Health Science"],
@@ -20467,7 +22175,119 @@ elif page == "My STEM Pathway":
         },
         "Quantitative Finance / Financial Engineering": {
             "majors": ["Financial Engineering", "Applied Mathematics", "Statistics"],
-            "careers": ["Quantitative analyst", "Risk analyst", "Financial engineer"]
+            "careers": ["Quantitative Analyst", "Financial Engineer", "Risk Analyst"]
+        },
+        "Financial Engineering": {
+            "majors": ["Financial Engineering", "Applied Mathematics", "Statistics"],
+            "careers": ["Financial Engineer", "Quantitative Analyst", "Risk Modeler"]
+        },
+        "Quantitative Finance": {
+            "majors": ["Quantitative Finance", "Financial Engineering", "Mathematics"],
+            "careers": ["Quantitative Analyst", "Trading Analyst", "Portfolio Risk Analyst"]
+        },
+        "FinTech": {
+            "majors": ["FinTech", "Computer Science", "Finance"],
+            "careers": ["FinTech Engineer", "Financial Software Developer", "Payments Analyst"]
+        },
+        "Finance": {
+            "majors": ["Finance", "Economics", "Business Analytics"],
+            "careers": ["Financial Analyst", "Investment Analyst", "Corporate Finance Analyst"]
+        },
+        "Economics": {
+            "majors": ["Economics", "Quantitative Economics", "Statistics"],
+            "careers": ["Economist", "Economic Analyst", "Policy Analyst"]
+        },
+        "Quantitative Economics": {
+            "majors": ["Quantitative Economics", "Economics", "Applied Mathematics"],
+            "careers": ["Quantitative Economist", "Economic Data Analyst", "Policy Researcher"]
+        },
+        "Accounting": {
+            "majors": ["Accounting", "Finance", "Business Analytics"],
+            "careers": ["Accountant", "Auditor", "Financial Reporting Analyst"]
+        },
+        "Business Analytics": {
+            "majors": ["Business Analytics", "Data Science", "Statistics"],
+            "careers": ["Business Analyst", "Data Analyst", "Analytics Consultant"]
+        },
+        "Actuarial Science": {
+            "majors": ["Actuarial Science", "Statistics", "Mathematics"],
+            "careers": ["Actuary", "Risk Analyst", "Insurance Analyst"]
+        },
+        "Operations Research": {
+            "majors": ["Operations Research", "Applied Mathematics", "Industrial Engineering"],
+            "careers": ["Operations Research Analyst", "Optimization Specialist", "Logistics Analyst"]
+        },
+        "Machine Learning": {
+            "majors": ["Machine Learning", "Artificial Intelligence", "Computer Science"],
+            "careers": ["Machine Learning Engineer", "AI Researcher", "Data Scientist"]
+        },
+        "Game Development": {
+            "majors": ["Game Development", "Computer Science", "Software Engineering"],
+            "careers": ["Game Developer", "Gameplay Programmer", "Technical Artist"]
+        },
+        "Human-Computer Interaction": {
+            "majors": ["Human-Computer Interaction", "Computer Science", "Cognitive Science"],
+            "careers": ["UX Researcher", "Interaction Designer", "HCI Specialist"]
+        },
+        "Mechatronics": {
+            "majors": ["Mechatronics", "Mechanical Engineering", "Robotics"],
+            "careers": ["Mechatronics Engineer", "Automation Engineer", "Robotics Technician"]
+        },
+        "Medicine / Pre-Med": {
+            "majors": ["Biology", "Biomedical Sciences", "Pre-Med"],
+            "careers": ["Doctor / Physician", "Clinical Researcher", "Medical Scientist"]
+        },
+        "Genetics / Genomics": {
+            "majors": ["Genetics", "Genomics", "Biology"],
+            "careers": ["Geneticist", "Genomics Analyst", "Genetic Counselor pathway"]
+        },
+        "Pharmacy / Pharmaceutical Science": {
+            "majors": ["Pharmacy", "Pharmaceutical Sciences", "Chemistry"],
+            "careers": ["Pharmacist pathway", "Pharmaceutical Scientist", "Drug Development Analyst"]
+        },
+        "Psychology / Cognitive Science": {
+            "majors": ["Psychology", "Cognitive Science", "Neuroscience"],
+            "careers": ["Cognitive Scientist", "Behavioral Researcher", "UX Researcher"]
+        },
+        "Nuclear Science": {
+            "majors": ["Nuclear Science", "Physics", "Nuclear Engineering"],
+            "careers": ["Nuclear Scientist", "Radiation Specialist", "Energy Researcher"]
+        },
+        "Ecology": {
+            "majors": ["Ecology", "Environmental Science", "Biology"],
+            "careers": ["Ecologist", "Conservation Scientist", "Field Biologist"]
+        },
+        "Geology": {
+            "majors": ["Geology", "Earth Science", "Environmental Science"],
+            "careers": ["Geologist", "Geoscientist", "Environmental Geologist"]
+        },
+        "Earth Science": {
+            "majors": ["Earth Science", "Geology", "Environmental Science"],
+            "careers": ["Earth Scientist", "Geoscientist", "Hydrologist"]
+        },
+        "Marine Science": {
+            "majors": ["Marine Science", "Oceanography", "Biology"],
+            "careers": ["Marine Scientist", "Oceanographer", "Coastal Researcher"]
+        },
+        "Sustainability": {
+            "majors": ["Sustainability", "Environmental Studies", "Environmental Science"],
+            "careers": ["Sustainability Specialist", "ESG Analyst", "Environmental Planner"]
+        },
+        "Architecture": {
+            "majors": ["Architecture", "Architectural Studies", "Urban Design"],
+            "careers": ["Architect", "Architectural Designer", "Urban Designer"]
+        },
+        "Urban Planning": {
+            "majors": ["Urban Planning", "Urban Studies", "Geography"],
+            "careers": ["Urban Planner", "Transportation Planner", "Community Development Analyst"]
+        },
+        "Construction Engineering": {
+            "majors": ["Construction Engineering", "Civil Engineering", "Construction Management"],
+            "careers": ["Construction Engineer", "Project Engineer", "Site Engineer"]
+        },
+        "Structural Engineering": {
+            "majors": ["Structural Engineering", "Civil Engineering", "Architecture"],
+            "careers": ["Structural Engineer", "Bridge Engineer", "Building Design Engineer"]
         },
         "General / Interdisciplinary STEM": {
             "majors": ["General STEM", "Liberal Arts and Sciences", "Undeclared STEM"],
@@ -20633,6 +22453,67 @@ elif page == "My STEM Pathway":
                 "Laboratory technician"
             ]
         },
+
+        "Nuclear Engineering": {
+            "majors": ["Nuclear Engineering", "Engineering Physics", "Physics"],
+            "careers": ["Nuclear Engineer", "Reactor Engineer", "Radiation Protection Specialist"]
+        },
+        "Systems Engineering": {
+            "majors": ["Systems Engineering", "Industrial Engineering", "Electrical Engineering"],
+            "careers": ["Systems Engineer", "Systems Analyst", "Integration Engineer"]
+        },
+        "Engineering Physics": {
+            "majors": ["Engineering Physics", "Applied Physics", "Physics"],
+            "careers": ["Engineering Physicist", "Applied Physicist", "R&D Engineer"]
+        },
+        "Information Systems": {
+            "majors": ["Information Systems", "Management Information Systems", "Computer Science"],
+            "careers": ["Systems Analyst", "IT Consultant", "Business Systems Analyst"]
+        },
+        "Management Information Systems": {
+            "majors": ["Management Information Systems", "Information Systems", "Business Analytics"],
+            "careers": ["MIS Analyst", "IT Manager pathway", "Business Technology Analyst"]
+        },
+        "Molecular Biology": {
+            "majors": ["Molecular Biology", "Biology", "Biochemistry"],
+            "careers": ["Molecular Biologist", "Lab Researcher", "Biotech Research Assistant"]
+        },
+        "Meteorology / Atmospheric Science": {
+            "majors": ["Meteorology", "Atmospheric Science", "Climate Science"],
+            "careers": ["Meteorologist", "Atmospheric Scientist", "Weather Analyst"]
+        },
+        "Oceanography": {
+            "majors": ["Oceanography", "Marine Science", "Earth Science"],
+            "careers": ["Oceanographer", "Marine Scientist", "Coastal Researcher"]
+        },
+        "Agricultural Science": {
+            "majors": ["Agricultural Science", "Plant Science", "Food Science"],
+            "careers": ["Agricultural Scientist", "Agronomist", "Crop Specialist"]
+        },
+        "Food Science": {
+            "majors": ["Food Science", "Chemistry", "Agricultural Science"],
+            "careers": ["Food Scientist", "Quality Assurance Specialist", "Product Development Scientist"]
+        },
+        "Architectural Engineering": {
+            "majors": ["Architectural Engineering", "Civil Engineering", "Architecture"],
+            "careers": ["Architectural Engineer", "Building Systems Engineer", "Structural Designer"]
+        },
+        "Construction Management": {
+            "majors": ["Construction Management", "Civil Engineering", "Construction Engineering"],
+            "careers": ["Construction Manager", "Project Manager", "Site Superintendent"]
+        },
+        "Industrial Design": {
+            "majors": ["Industrial Design", "Product Design", "Mechanical Engineering"],
+            "careers": ["Industrial Designer", "Product Designer", "UX Hardware Designer"]
+        },
+        "Supply Chain Management": {
+            "majors": ["Supply Chain Management", "Operations Management", "Industrial Engineering"],
+            "careers": ["Supply Chain Analyst", "Logistics Coordinator", "Operations Planner"]
+        },
+        "Operations Management": {
+            "majors": ["Operations Management", "Supply Chain Management", "Business Analytics"],
+            "careers": ["Operations Manager", "Process Improvement Analyst", "Operations Analyst"]
+        },
         "Undecided STEM": {
             "majors": [
                 "Undeclared STEM",
@@ -20648,320 +22529,469 @@ elif page == "My STEM Pathway":
     }
 
     # ========================================================
-    # SCORING
+    # SCORING  (dropdown answers → weighted major map)
     # ========================================================
 
     scores = {
-        field: 0
+        field: 0.0
         for field in all_stem_field_options()
     }
 
-    for interest in profile["interests"]:
+    field_signal_counts = {
+        field: 0
+        for field in scores
+    }
 
+    answer_reasons = {
+        field: []
+        for field in scores
+    }
+
+    def apply_answer_boosts(answer, mapping, reason_label):
+        for field, boost in mapping.get(answer, []):
+            canonical = canonicalize_stem_field(field)
+            target = canonical if canonical in scores else field
+            if target not in scores:
+                continue
+            scores[target] += float(boost)
+            if boost >= 10:
+                field_signal_counts[target] += 1
+            if reason_label and reason_label not in answer_reasons[target]:
+                answer_reasons[target].append(reason_label)
+
+    # Light profile-interest bonus so saved interests still matter, but
+    # questionnaire answers dominate differentiation.
+    for interest in profile.get("interests") or []:
         canonical = canonicalize_stem_field(interest)
         target = canonical if canonical in scores else interest
-
         if target in scores:
-            scores[target] += 20
-
-    scores["Computer Science"] += (
-        programming_score * 2
-    )
-
-    scores["Computer Engineering"] += (
-        programming_score * 1.5
-    )
-
-    scores["Artificial Intelligence"] += (
-        programming_score * 2
-    )
-
-    scores["Data Science"] += (
-        programming_score * 1.5
-    )
-
-    scores["Computational Science"] += (
-        programming_score * 1.5
-    )
-
-    scores["Information Technology / Information Science"] += (
-        programming_score
-    )
-
-    scores["Robotics"] += (
-        programming_score
-    )
-
-    scores["Mechanical Engineering"] += (
-        hands_on_score * 2
-    )
-
-    scores["Electrical Engineering"] += (
-        hands_on_score
-    )
-
-    scores["Computer Engineering"] += (
-        hands_on_score
-    )
-
-    scores["Robotics"] += (
-        hands_on_score * 2
-    )
-
-    scores["Engineering"] += (
-        hands_on_score
-    )
-
-    scores["General Engineering / Undecided Engineering"] += (
-        hands_on_score
-    )
-
-    scores["Mathematics"] += (
-        math_score * 2
-    )
-
-    scores["Applied Mathematics"] += (
-        math_score * 2
-    )
-
-    scores["Statistics"] += (
-        math_score * 1.5
-    )
-
-    scores["Physics"] += (
-        math_score * 1.5
-    )
-
-    scores["Applied Physics"] += (
-        math_score
-    )
-
-    scores["Computational Science"] += (
-        math_score
-    )
-
-    scores["Data Science"] += (
-        math_score
-    )
-
-    scores["Artificial Intelligence"] += (
-        math_score
-    )
-
-    scores["Electrical Engineering"] += (
-        math_score
-    )
-
-    scores["Mechanical Engineering"] += (
-        math_score
-    )
-
-    scores["Electrical Engineering"] += (
-        electronics_score * 2
-    )
-
-    scores["Computer Engineering"] += (
-        electronics_score * 2
-    )
-
-    scores["Robotics"] += (
-        electronics_score * 1.5
-    )
-
-    scores["Biology"] += (
-        science_score * 2
-    )
-
-    scores["Chemistry"] += (
-        science_score * 1.5
-    )
-
-    scores["Biochemistry"] += (
-        science_score * 1.5
-    )
-
-    scores["Biomedical Science"] += (
-        science_score * 1.5
-    )
-
-    scores["Neuroscience"] += (
-        science_score
-    )
-
-    scores["Biomedical Engineering"] += (
-        science_score * 1.5
-    )
-
-    scores["Physics"] += (
-        science_score * 1.5
-    )
-
-    scores["Applied Physics"] += (
-        science_score * 1.5
-    )
-
-    scores["Astronomy / Astrophysics"] += (
-        science_score
-    )
-
-    scores["Earth Science"] += (
-        science_score
-    )
-
-    scores["Environmental Science"] += (
-        science_score * 1.5
-    )
-
-    scores["Environmental Studies / Sustainability"] += (
-        science_score
-    )
-
-    scores["Health Science"] += (
-        science_score
-    )
-
-    scores["Cognitive Science"] += (
-        science_score
-    )
-
-    scores["Data Science"] += (
-        data_score * 2
-    )
-
-    scores["Artificial Intelligence"] += (
-        data_score * 2
-    )
-
-    scores["Computer Science"] += (
-        data_score
-    )
-
-    scores["Mathematics"] += (
-        data_score
-    )
-
-    scores["Statistics"] += (
-        data_score * 1.5
-    )
-
-    scores["Applied Mathematics"] += (
-        data_score
-    )
-
-    scores["Computational Science"] += (
-        data_score * 1.5
-    )
+            scores[target] += 8
+            field_signal_counts[target] += 1
 
     work_mapping = {
-
-        "Building physical machines or products":
-            "Mechanical Engineering",
-
-        "Designing electronics and circuits":
-            "Electrical Engineering",
-
-        "Programming software":
-            "Computer Science",
-
-        "Working with data and artificial intelligence":
-            "Artificial Intelligence",
-
-        "Solving healthcare problems":
-            "Biomedical Engineering",
-
-        "Conducting scientific research":
-            "Biology",
-
-        "Working with mathematics and models":
-            "Mathematics",
-
-        "Improving the environment":
-            "Environmental Science",
-
-        "Building robots and automated systems":
-            "Robotics"
+        "Building physical machines or products": [
+            ("Mechanical Engineering", 26), ("Aerospace Engineering", 14),
+            ("Industrial Engineering", 10), ("Mechatronics", 12),
+            ("Robotics", 12), ("Industrial Design", 10), ("Engineering", 8),
+        ],
+        "Designing circuits, electronics, or hardware": [
+            ("Electrical Engineering", 28), ("Computer Engineering", 22),
+            ("Robotics", 12), ("Mechatronics", 10), ("Physics", 8),
+            ("Engineering Physics", 10),
+        ],
+        "Writing software or building apps": [
+            ("Computer Science", 28), ("Software Engineering", 24),
+            ("Web Development", 12), ("Information Technology / Information Science", 10),
+            ("Human-Computer Interaction", 8),
+        ],
+        "Working with AI, algorithms, or large datasets": [
+            ("Artificial Intelligence", 26), ("Machine Learning", 24),
+            ("Data Science", 22), ("Computer Science", 12),
+            ("Statistics", 10), ("Computational Science", 8),
+        ],
+        "Designing buildings or infrastructure": [
+            ("Civil Engineering", 26), ("Architecture", 22),
+            ("Architectural Engineering", 18), ("Structural Engineering", 16),
+            ("Urban Planning", 12), ("Construction Management", 12),
+            ("Construction Engineering", 10),
+        ],
+        "Working in laboratories and conducting experiments": [
+            ("Chemistry", 20), ("Biology", 18), ("Physics", 16),
+            ("Biochemistry", 14), ("Materials Science", 12),
+            ("STEM / General Science", 8),
+        ],
+        "Studying living organisms or human health": [
+            ("Biology", 24), ("Biomedical Science", 18),
+            ("Medicine / Health Science", 16), ("Public Health", 12),
+            ("Health Science", 12), ("Neuroscience", 10),
+            ("Molecular Biology", 10),
+        ],
+        "Solving advanced math or statistical problems": [
+            ("Mathematics", 26), ("Applied Mathematics", 22),
+            ("Statistics", 20), ("Operations Research", 12),
+            ("Actuarial Science", 10), ("Physics", 8),
+        ],
+        "Studying markets, investing, or financial systems": [
+            ("Finance", 26), ("Economics", 20),
+            ("Quantitative Finance", 16), ("Financial Engineering", 14),
+            ("Business Analytics", 12), ("Accounting", 10),
+        ],
+        "Optimizing businesses, transportation, or supply chains": [
+            ("Industrial Engineering", 24), ("Operations Research", 22),
+            ("Supply Chain Management", 20), ("Operations Management", 18),
+            ("Business Analytics", 14), ("Systems Engineering", 10),
+        ],
+        "Studying climate, Earth, oceans, or the environment": [
+            ("Environmental Science", 24), ("Climate Science", 18),
+            ("Earth Science", 16), ("Geology", 14), ("Oceanography", 14),
+            ("Marine Science", 12), ("Ecology", 12),
+            ("Environmental Engineering", 10), ("Meteorology / Atmospheric Science", 10),
+        ],
+        "Designing products around human needs and usability": [
+            ("Human-Computer Interaction", 24), ("Industrial Design", 20),
+            ("Web Development", 12), ("Architecture", 10),
+            ("Biomedical Engineering", 10), ("Psychology / Cognitive Science", 8),
+        ],
     }
-
-    if preferred_work in work_mapping:
-
-        scores[
-            work_mapping[
-                preferred_work
-            ]
-        ] += 25
 
     activity_mapping = {
-
-        "Designing something in CAD":
-            "Mechanical Engineering",
-
-        "Building a circuit":
-            "Electrical Engineering",
-
-        "Writing a program":
-            "Computer Science",
-
-        "Analyzing a dataset":
-            "Data Science",
-
-        "Running an experiment":
-            "Biology",
-
-        "Building a robot":
-            "Robotics",
-
-        "Solving difficult math problems":
-            "Mathematics",
-
-        "Designing a healthcare device":
-            "Biomedical Engineering",
-
-        "Studying the environment":
-            "Environmental Science"
+        "Designing something in CAD": [
+            ("Mechanical Engineering", 24), ("Aerospace Engineering", 16),
+            ("Civil Engineering", 14), ("Industrial Design", 14),
+            ("Architecture", 12), ("Biomedical Engineering", 10),
+            ("Architectural Engineering", 8),
+        ],
+        "Building an electronic circuit": [
+            ("Electrical Engineering", 26), ("Computer Engineering", 18),
+            ("Robotics", 14), ("Mechatronics", 12), ("Physics", 10),
+        ],
+        "Programming an application": [
+            ("Computer Science", 24), ("Software Engineering", 22),
+            ("Web Development", 12), ("Information Systems", 8),
+        ],
+        "Training or analyzing an AI model": [
+            ("Artificial Intelligence", 26), ("Machine Learning", 24),
+            ("Data Science", 16), ("Computer Science", 12),
+            ("Statistics", 10),
+        ],
+        "Solving challenging math problems": [
+            ("Mathematics", 24), ("Applied Mathematics", 20),
+            ("Physics", 12), ("Statistics", 10), ("Engineering Physics", 8),
+        ],
+        "Analyzing financial markets or company data": [
+            ("Finance", 24), ("Economics", 18),
+            ("Financial Engineering", 16), ("Quantitative Finance", 16),
+            ("Business Analytics", 16), ("Statistics", 12),
+            ("Accounting", 8),
+        ],
+        "Running a biology or chemistry experiment": [
+            ("Biology", 20), ("Chemistry", 20), ("Biochemistry", 16),
+            ("Biotechnology", 12), ("Molecular Biology", 12),
+        ],
+        "Designing a bridge, building, or city": [
+            ("Civil Engineering", 24), ("Architecture", 20),
+            ("Structural Engineering", 16), ("Urban Planning", 16),
+            ("Architectural Engineering", 14), ("Construction Management", 10),
+        ],
+        "Analyzing a large dataset": [
+            ("Data Science", 24), ("Statistics", 18),
+            ("Business Analytics", 14), ("Computer Science", 10),
+            ("Machine Learning", 10),
+        ],
+        "Studying weather, climate, or ecosystems": [
+            ("Meteorology / Atmospheric Science", 22), ("Climate Science", 20),
+            ("Ecology", 18), ("Environmental Science", 16),
+            ("Earth Science", 10), ("Marine Science", 8),
+        ],
+        "Designing a medical or assistive device": [
+            ("Biomedical Engineering", 26), ("Bioengineering", 18),
+            ("Mechanical Engineering", 10), ("Electrical Engineering", 8),
+            ("Health Science", 8),
+        ],
+        "Planning how a company or system can operate more efficiently": [
+            ("Industrial Engineering", 24), ("Operations Research", 22),
+            ("Supply Chain Management", 18), ("Business Analytics", 16),
+            ("Operations Management", 16), ("Systems Engineering", 10),
+        ],
     }
 
-    if favorite_activity in activity_mapping:
-
-        scores[
-            activity_mapping[
-                favorite_activity
-            ]
-        ] += 20
-
-    environment_mapping = {
-
-        "Technology company":
-            "Computer Science",
-
-        "Engineering design company":
-            "Mechanical Engineering",
-
-        "Engineering laboratory":
-            "Electrical Engineering",
-
-        "Research laboratory":
-            "Physics",
-
-        "Hospital or healthcare technology":
-            "Biomedical Engineering",
-
-        "Manufacturing company":
-            "Mechanical Engineering",
-
-        "University or research institution":
-            "Biology",
-
-        "Environmental organization":
-            "Environmental Science"
+    tech_mapping = {
+        "Software and app development": [
+            ("Computer Science", 24), ("Software Engineering", 24),
+            ("Web Development", 12), ("Information Technology / Information Science", 8),
+        ],
+        "Artificial intelligence and machine learning": [
+            ("Artificial Intelligence", 26), ("Machine Learning", 26),
+            ("Data Science", 14), ("Computer Science", 12),
+            ("Statistics", 8),
+        ],
+        "Cybersecurity": [
+            ("Cybersecurity", 28), ("Computer Science", 14),
+            ("Information Technology / Information Science", 12),
+            ("Computer Engineering", 8),
+        ],
+        "Computer hardware and processors": [
+            ("Computer Engineering", 26), ("Electrical Engineering", 20),
+            ("Engineering Physics", 10), ("Physics", 8),
+        ],
+        "Robotics and embedded systems": [
+            ("Robotics", 26), ("Mechatronics", 20),
+            ("Computer Engineering", 16), ("Electrical Engineering", 14),
+            ("Mechanical Engineering", 10),
+        ],
+        "Data science and analytics": [
+            ("Data Science", 26), ("Statistics", 16),
+            ("Business Analytics", 14), ("Computer Science", 10),
+            ("Machine Learning", 10),
+        ],
+        "Web / user experience design": [
+            ("Human-Computer Interaction", 24), ("Web Development", 20),
+            ("Industrial Design", 10), ("Computer Science", 8),
+            ("Psychology / Cognitive Science", 8),
+        ],
+        "Financial technology / algorithmic trading": [
+            ("FinTech", 24), ("Quantitative Finance", 20),
+            ("Financial Engineering", 18), ("Computer Science", 12),
+            ("Finance", 12), ("Data Science", 10),
+        ],
+        "Bioinformatics / computational biology": [
+            ("Bioinformatics / Computational Biology", 28),
+            ("Computational Science", 14), ("Biology", 12),
+            ("Computer Science", 12), ("Genetics / Genomics", 10),
+            ("Biotechnology", 8),
+        ],
+        "Technology does not strongly interest me": [
+            ("Biology", 6), ("Chemistry", 6), ("Physics", 6),
+            ("Mathematics", 6), ("Environmental Science", 6),
+            ("Architecture", 4), ("Finance", 4), ("Economics", 4),
+        ],
     }
 
-    if preferred_environment in environment_mapping:
+    science_mapping = {
+        "Physics and how the universe works": [
+            ("Physics", 26), ("Applied Physics", 16),
+            ("Engineering Physics", 14), ("Astronomy / Astrophysics", 12),
+            ("Mathematics", 8),
+        ],
+        "Chemistry and materials": [
+            ("Chemistry", 26), ("Materials Science", 18),
+            ("Materials Science / Engineering", 16),
+            ("Chemical Engineering", 14), ("Biochemistry", 10),
+        ],
+        "Biology and living systems": [
+            ("Biology", 26), ("Molecular Biology", 16),
+            ("Ecology", 10), ("Biotechnology", 10),
+            ("Biochemistry", 8),
+        ],
+        "Human health and medicine": [
+            ("Medicine / Health Science", 22), ("Biomedical Science", 20),
+            ("Health Science", 18), ("Public Health", 14),
+            ("Biology", 12), ("Medicine / Pre-Med", 12),
+        ],
+        "Neuroscience and the brain": [
+            ("Neuroscience", 28), ("Biology", 12),
+            ("Psychology / Cognitive Science", 12),
+            ("Cognitive Science", 10), ("Biomedical Science", 8),
+        ],
+        "Genetics and biotechnology": [
+            ("Genetics / Genomics", 26), ("Biotechnology", 22),
+            ("Molecular Biology", 16), ("Bioinformatics / Computational Biology", 12),
+            ("Biology", 10),
+        ],
+        "Environment and climate": [
+            ("Environmental Science", 24), ("Climate Science", 20),
+            ("Ecology", 14), ("Sustainability", 14),
+            ("Environmental Engineering", 12),
+            ("Environmental Studies / Sustainability", 10),
+        ],
+        "Earth, geology, and oceans": [
+            ("Geology", 22), ("Earth Science", 20),
+            ("Oceanography", 18), ("Marine Science", 16),
+            ("Environmental Science", 8),
+        ],
+        "Astronomy and space": [
+            ("Astronomy / Astrophysics", 26), ("Space Science", 18),
+            ("Physics", 14), ("Aerospace Engineering", 12),
+        ],
+        "I prefer applied engineering/business problems over pure science": [
+            ("Industrial Engineering", 12), ("Mechanical Engineering", 10),
+            ("Business Analytics", 10), ("Systems Engineering", 10),
+            ("Civil Engineering", 8), ("Finance", 8),
+            ("Operations Research", 8),
+        ],
+    }
 
-        scores[
-            environment_mapping[
-                preferred_environment
-            ]
-        ] += 15
+    quant_mapping = {
+        "Using calculus and physics to design systems": [
+            ("Mechanical Engineering", 18), ("Aerospace Engineering", 16),
+            ("Engineering Physics", 16), ("Applied Mathematics", 14),
+            ("Electrical Engineering", 12), ("Physics", 12),
+            ("Civil Engineering", 8),
+        ],
+        "Finding patterns in large datasets": [
+            ("Data Science", 24), ("Statistics", 16),
+            ("Machine Learning", 14), ("Business Analytics", 12),
+            ("Computer Science", 8),
+        ],
+        "Building statistical models": [
+            ("Statistics", 26), ("Data Science", 18),
+            ("Applied Mathematics", 14), ("Actuarial Science", 12),
+            ("Business Analytics", 10),
+        ],
+        "Predicting financial markets or evaluating investments": [
+            ("Quantitative Finance", 24), ("Financial Engineering", 22),
+            ("Finance", 18), ("Economics", 12),
+            ("Statistics", 10), ("Business Analytics", 10),
+        ],
+        "Managing risk using mathematics": [
+            ("Actuarial Science", 28), ("Statistics", 16),
+            ("Financial Engineering", 14), ("Mathematics", 12),
+            ("Quantitative Finance", 12), ("Applied Mathematics", 10),
+        ],
+        "Optimizing transportation, factories, or supply chains": [
+            ("Industrial Engineering", 24), ("Operations Research", 24),
+            ("Supply Chain Management", 18), ("Operations Management", 14),
+            ("Systems Engineering", 10), ("Business Analytics", 10),
+        ],
+        "Understanding how economies and markets behave": [
+            ("Economics", 26), ("Quantitative Economics", 18),
+            ("Finance", 14), ("Business Analytics", 8),
+            ("Mathematics", 8),
+        ],
+        "Analyzing business performance": [
+            ("Business Analytics", 24), ("Accounting", 16),
+            ("Finance", 14), ("Management Information Systems", 12),
+            ("Business", 12), ("Economics", 8),
+        ],
+        "Working with probability and uncertainty": [
+            ("Statistics", 22), ("Actuarial Science", 18),
+            ("Mathematics", 16), ("Applied Mathematics", 12),
+            ("Data Science", 10), ("Financial Engineering", 8),
+        ],
+        "Math is useful to me, but I prefer hands-on design": [
+            ("Mechanical Engineering", 14), ("Industrial Design", 14),
+            ("Architecture", 12), ("Civil Engineering", 10),
+            ("Biomedical Engineering", 10), ("Robotics", 8),
+            ("Electrical Engineering", 8),
+        ],
+    }
+
+    impact_mapping = {
+        "Create new technology": [
+            ("Computer Science", 14), ("Electrical Engineering", 12),
+            ("Software Engineering", 12), ("Artificial Intelligence", 12),
+            ("Computer Engineering", 10), ("Engineering", 8),
+        ],
+        "Improve healthcare": [
+            ("Biomedical Engineering", 20), ("Medicine / Health Science", 16),
+            ("Public Health", 14), ("Biomedical Science", 12),
+            ("Bioengineering", 12), ("Health Science", 10),
+            ("Biotechnology", 8),
+        ],
+        "Build safer or more efficient infrastructure": [
+            ("Civil Engineering", 22), ("Structural Engineering", 16),
+            ("Architectural Engineering", 12), ("Construction Management", 10),
+            ("Urban Planning", 10), ("Systems Engineering", 8),
+        ],
+        "Develop cleaner energy and environmental solutions": [
+            ("Environmental Engineering", 22), ("Environmental Science", 16),
+            ("Chemical Engineering", 12), ("Sustainability", 12),
+            ("Climate Science", 10), ("Nuclear Engineering", 8),
+        ],
+        "Advance scientific knowledge": [
+            ("Physics", 14), ("Biology", 12), ("Chemistry", 12),
+            ("Mathematics", 10), ("Astronomy / Astrophysics", 10),
+            ("STEM / General Science", 8),
+        ],
+        "Protect computers and digital systems": [
+            ("Cybersecurity", 26), ("Computer Science", 12),
+            ("Information Technology / Information Science", 12),
+            ("Computer Engineering", 8),
+        ],
+        "Improve transportation and logistics": [
+            ("Industrial Engineering", 18), ("Supply Chain Management", 16),
+            ("Operations Research", 14), ("Civil Engineering", 12),
+            ("Aerospace Engineering", 10), ("Operations Management", 10),
+        ],
+        "Design better products for people": [
+            ("Industrial Design", 18), ("Human-Computer Interaction", 16),
+            ("Mechanical Engineering", 12), ("Biomedical Engineering", 10),
+            ("Architecture", 8),
+        ],
+        "Build successful businesses": [
+            ("Business", 18), ("Business Analytics", 14),
+            ("Finance", 12), ("Economics", 10),
+            ("Management Information Systems", 10), ("Accounting", 8),
+        ],
+        "Work in investing, banking, or financial markets": [
+            ("Finance", 24), ("Quantitative Finance", 18),
+            ("Financial Engineering", 16), ("Economics", 14),
+            ("Accounting", 10), ("Business Analytics", 8),
+        ],
+        "Use mathematics and data to make better decisions": [
+            ("Data Science", 18), ("Statistics", 16),
+            ("Operations Research", 14), ("Business Analytics", 14),
+            ("Applied Mathematics", 12), ("Actuarial Science", 10),
+            ("Mathematics", 10),
+        ],
+        "Explore space or aerospace technology": [
+            ("Aerospace Engineering", 26), ("Astronomy / Astrophysics", 14),
+            ("Space Science", 14), ("Mechanical Engineering", 12),
+            ("Physics", 10), ("Electrical Engineering", 8),
+        ],
+    }
+
+    apply_answer_boosts(
+        preferred_work, work_mapping, preferred_work
+    )
+    apply_answer_boosts(
+        favorite_activity, activity_mapping, favorite_activity
+    )
+    apply_answer_boosts(
+        preferred_tech, tech_mapping, preferred_tech
+    )
+    apply_answer_boosts(
+        preferred_science, science_mapping, preferred_science
+    )
+    apply_answer_boosts(
+        preferred_quant, quant_mapping, preferred_quant
+    )
+    apply_answer_boosts(
+        preferred_impact, impact_mapping, preferred_impact
+    )
+
+    # Soft dampening: traditional STEM labels should not dominate when
+    # answers point clearly at Finance / Economics (and vice versa).
+    finance_lean = any(
+        token in str(preferred_work) + str(favorite_activity) + str(preferred_quant) + str(preferred_impact)
+        for token in [
+            "markets", "investing", "financial", "econom", "banking",
+            "business performance", "company data",
+        ]
+    )
+    engineering_lean = any(
+        token in str(preferred_work) + str(favorite_activity) + str(preferred_tech) + str(preferred_impact)
+        for token in [
+            "circuit", "hardware", "machines", "CAD", "robot",
+            "infrastructure", "aerospace", "embedded",
+        ]
+    )
+
+    if finance_lean and not engineering_lean:
+        for field in list(scores):
+            fl = field.lower()
+            if any(t in fl for t in ["civil", "mechanical", "robot", "biology", "chemistry"]):
+                scores[field] *= 0.72
+    if engineering_lean and not finance_lean:
+        for field in ("Finance", "Economics", "Accounting", "Business"):
+            if field in scores:
+                scores[field] *= 0.75
+
+    def career_rank_key(item):
+        field, score = item
+        signals = field_signal_counts.get(field, 0)
+        multi_signal = 1 if signals >= 2 else 0
+        return (multi_signal, score, signals)
+
+    def major_match_explanation(field):
+        reasons = answer_reasons.get(field, [])[:3]
+        if not reasons:
+            return (
+                "Recommended based on multiple Career Explorer answers "
+                "pointing in this direction."
+            )
+        if len(reasons) == 1:
+            joined = reasons[0]
+        elif len(reasons) == 2:
+            joined = reasons[0] + " and " + reasons[1]
+        else:
+            joined = ", ".join(reasons[:-1]) + ", and " + reasons[-1]
+        prefix = "Strong match because you chose "
+        if field in QUANTITATIVE_STEM_ADJACENT_FIELDS:
+            prefix = "Strong quantitative / business match because you chose "
+        elif field in QUANTITATIVE_STEM_MAJORS:
+            prefix = "Strong quantitative STEM match because you chose "
+        return prefix + joined + "."
 
     # ========================================================
     # GENERATE RESULTS
@@ -20972,199 +23002,200 @@ elif page == "My STEM Pathway":
         if st.button(
             "Generate My STEM Recommendations",
             type="primary",
-            use_container_width=True
+            width="stretch",
         ):
 
             ranked = sorted(
                 scores.items(),
-                key=lambda item: item[1],
+                key=career_rank_key,
                 reverse=True
             )
 
-            st.session_state.career_results = (
-                ranked[:3]
+            strong = [
+                item
+                for item in ranked
+                if field_signal_counts.get(item[0], 0) >= 2
+                and item[1] > 0
+            ]
+
+            selected = (
+                strong[:5]
+                if len(strong) >= 3
+                else ranked[: max(3, min(5, len(strong) or 3))]
             )
+
+            if len(selected) < 3:
+                selected = ranked[:3]
+            elif len(selected) > 5:
+                selected = selected[:5]
+
+            st.session_state.career_results = selected
+            st.session_state.career_signal_counts = {
+                field: field_signal_counts.get(field, 0)
+                for field, _ in selected
+            }
+            st.session_state.career_answer_snapshot = {
+                "work": preferred_work,
+                "activity": favorite_activity,
+                "tech": preferred_tech,
+                "science": preferred_science,
+                "quant": preferred_quant,
+                "impact": preferred_impact,
+            }
 
     if st.session_state.career_results:
 
-        top_three = (
-            st.session_state.career_results
-        )
-
-        max_score_value = (
-            top_three[0][1]
-        )
+        top_matches = st.session_state.career_results
+        max_score_value = top_matches[0][1] or 1
 
         st.divider()
 
-        st.header(
-            "Your STEM Direction"
-        )
+        st.header("Your Potential Majors")
 
         st.caption(
-            "These are the strongest-matching STEM fields from your Career Explorer answers."
+            "These recommendations use all six questionnaire answers. "
+            "Finance and economics paths are listed separately from "
+            "traditional STEM majors when your answers point that way."
         )
 
-        pathway_cards = []
-
-        for index, (
-            field,
-            score
-        ) in enumerate(
-            top_three,
-            start=1
-        ):
-
-            percentage = round(
-                (
-                    score /
-                    max_score_value
-                ) * 100
-            )
-
+        def build_major_card(index, field, score, badge_label=""):
+            percentage = round((score / max_score_value) * 100)
             major_info = (
                 career_database.get(field)
                 or career_database.get(canonicalize_stem_field(field))
+                or {
+                    "majors": [field],
+                    "careers": ["STEM explorer", "Research assistant"],
+                }
             )
+            explanation = major_match_explanation(field)
+            title = field
+            if field in QUANTITATIVE_STEM_ADJACENT_FIELDS:
+                title = field + " (Quantitative / Business)"
+            elif field in QUANTITATIVE_STEM_MAJORS:
+                title = field + " (Quantitative STEM)"
 
-            if not major_info:
-                continue
-
-            pathway_cards.append(
-                stem_direction_card_html(
-                    index,
-                    field,
-                    percentage,
-                    stem_pathway_direction_explanation(
-                        field,
-                        preferred_work=preferred_work,
-                        favorite_activity=favorite_activity,
-                        programming_score=programming_score,
-                        hands_on_score=hands_on_score,
-                        math_score=math_score,
-                        electronics_score=electronics_score,
-                        science_score=science_score,
-                        data_score=data_score,
-                        preferred_environment=preferred_environment
+            card = stem_direction_card_html(
+                index,
+                title,
+                percentage,
+                explanation,
+                majors=major_info.get("majors"),
+            )
+            if badge_label:
+                card = card.replace(
+                    '<div class="sp-stem-dir-card">',
+                    (
+                        '<div class="sp-stem-dir-card">'
+                        f'<div class="sp-deadline-badge sp-deadline-badge-upcoming">'
+                        f"{html_module.escape(badge_label)}</div>"
                     ),
-                    majors=major_info.get("majors")
+                    1,
                 )
-            )
+            return card, major_info
 
-        if pathway_cards:
+        # Top Match
+        top_field, top_score = top_matches[0]
+        top_card, top_info = build_major_card(
+            1, top_field, top_score, "Top Match"
+        )
+        st.subheader("Top Match")
+        st.html(
+            '<div class="sp-stem-path-grid">'
+            + top_card
+            + "</div>"
+        )
 
+        # Strong Matches (#2–3)
+        strong_items = top_matches[1:3]
+        if strong_items:
+            st.subheader("Strong Matches")
+            strong_cards = []
+            for index, (field, score) in enumerate(strong_items, start=2):
+                card, _ = build_major_card(
+                    index, field, score, "Strong Match"
+                )
+                strong_cards.append(card)
             st.html(
                 '<div class="sp-stem-path-grid">'
-                + "".join(pathway_cards)
+                + "".join(strong_cards)
                 + "</div>"
             )
 
-        top_field = (
-            top_three[0][0]
-        )
-
-        top_info = (
-            career_database.get(top_field)
-            or career_database.get(canonicalize_stem_field(top_field))
-            or {
-                "majors": [top_field],
-                "careers": ["STEM explorer", "Research assistant"]
-            }
-        )
+        # Worth Exploring (#4–5)
+        explore_items = top_matches[3:5]
+        if explore_items:
+            st.subheader("Worth Exploring")
+            explore_cards = []
+            for index, (field, score) in enumerate(explore_items, start=4):
+                card, _ = build_major_card(
+                    index, field, score, "Worth Exploring"
+                )
+                explore_cards.append(card)
+            st.html(
+                '<div class="sp-stem-path-grid">'
+                + "".join(explore_cards)
+                + "</div>"
+            )
 
         st.divider()
 
-        st.header(
-            "Recommended Major Direction"
-        )
-
-        st.subheader(
-            top_info["majors"][0]
-        )
-
+        st.header("Recommended Major Direction")
+        st.subheader(top_info["majors"][0])
         st.info(
             "This is a starting point for exploration, not a final decision."
         )
 
         st.divider()
 
-        st.header(
-            "Specific Careers to Explore"
-        )
+        st.header("Specific Careers to Explore")
 
         career_columns = st.columns(2)
 
-        for index, career_name in enumerate(
-            top_info["careers"]
-        ):
+        for index, career_name in enumerate(top_info["careers"]):
 
-            with career_columns[
-                index % 2
-            ]:
+            with career_columns[index % 2]:
 
-                with st.container(
-                    border=True
-                ):
+                with st.container(border=True):
 
-                    st.subheader(
-                        career_name
-                    )
+                    st.subheader(career_name)
 
                     if careers.empty:
 
-                        st.info(
-                            "Career database unavailable."
-                        )
-
+                        st.info("Career database unavailable.")
                         continue
 
                     career_match = careers[
-                        careers["career"]
-                        .astype(str)
-                        .str.lower()
+                        careers["career"].astype(str).str.lower()
                         == career_name.lower()
                     ]
 
                     if career_match.empty:
-
-                        st.info(
-                            "Detailed career data is being added."
+                        st.caption(
+                            "Related career path based on your top major match."
                         )
-
                         continue
 
-                    career_data = (
-                        career_match.iloc[0]
-                    )
+                    career_data = career_match.iloc[0]
 
                     st.caption(
                         f"Recommended major: "
                         f"{career_data['recommended_major']}"
                     )
 
-                    st.write(
-                        career_data[
-                            "description"
-                        ]
-                    )
+                    st.write(career_data["description"])
 
-                    st.markdown(
-                        "#### Salary & Career Pay"
-                    )
+                    st.markdown("#### Salary & Career Pay")
 
-                    salary_col1, salary_col2 = (
-                        st.columns(2)
-                    )
+                    salary_col1, salary_col2 = st.columns(2)
 
                     with salary_col1:
 
                         st.metric(
                             "Early-Career Benchmark",
                             format_salary(
-                                career_data[
-                                    "early_career_salary"
-                                ]
-                            )
+                                career_data["early_career_salary"]
+                            ),
                         )
 
                         st.caption(
@@ -21711,19 +23742,43 @@ elif page == "Opportunities":
                 )
             )
 
-            if (
+            # Expand opportunity tags so related business/STEM labels can match.
+            for field in list(opportunity_fields):
+                opportunity_fields.update(
+                    RELATED_STEM_FIELDS.get(field, [])
+                )
+                canonical = canonicalize_stem_field(field)
+                if canonical:
+                    opportunity_fields.add(canonical)
+                    opportunity_fields.update(
+                        RELATED_STEM_FIELDS.get(canonical, [])
+                    )
+
+            field_hit = bool(
                 expanded_interests
                 and
                 expanded_interests.intersection(
                     opportunity_fields
                 )
-            ):
+            )
+            scope_hit = opportunity_scope_matches_interests(
+                opportunity,
+                expanded_interests
+            )
+
+            if field_hit or scope_hit:
 
                 score += 40
 
-                reasons.append(
-                    "Your STEM interests align with this opportunity."
-                )
+                if scope_hit and not field_hit:
+                    reasons.append(
+                        "This opportunity is open to your interest area "
+                        "(including business-related or any-major pathways)."
+                    )
+                else:
+                    reasons.append(
+                        "Your STEM interests align with this opportunity."
+                    )
 
             max_score += 15
 
@@ -21951,10 +24006,22 @@ elif page == "Opportunities":
                         for group_name, _
                         in STEM_FIELD_GROUPS
                     ] + [
+                        "opportunity_filter_research_Engineering",
+                        "opportunity_filter_research_Computing & Data",
                         "opportunity_filter_research_Computing & Technology",
                         "opportunity_filter_research_Math & Physical Sciences",
+                        "opportunity_filter_research_Physical Sciences",
+                        "opportunity_filter_research_Life & Health Sciences",
+                        "opportunity_filter_research_Mathematics",
                         "opportunity_filter_research_Earth & Environmental Sciences",
-                        "opportunity_filter_research_Interdisciplinary STEM"
+                        "opportunity_filter_research_Interdisciplinary STEM",
+                        "opportunity_filter_research_Interdisciplinary / General STEM",
+                        "opportunity_filter_research_Engineering & Technology",
+                        "opportunity_filter_research_Computer Science & AI",
+                        "opportunity_filter_research_Environmental & Earth Sciences",
+                        "opportunity_filter_research_Mathematics & Statistics",
+                        "opportunity_filter_research_Finance & Quantitative Business",
+                        "opportunity_filter_research_Architecture & Built Environment"
                     ]:
 
                         st.session_state.pop(
@@ -23206,9 +25273,11 @@ elif page == "College Suggestions":
                     "Nature, climate, and the environment",
                     "Working with data and patterns",
                     "Designing or creating new things",
+                    "Business, finance, or economics",
+                    "Architecture or city design",
                     "I'm not sure yet"
                 ],
-                key="college_discovery_interests_v2"
+                key="college_discovery_interests_v3"
             )
 
             q2 = st.selectbox(
@@ -23220,9 +25289,11 @@ elif page == "College Suggestions":
                     "Computer Science / Technology",
                     "Biology",
                     "Physics",
+                    "Chemistry",
+                    "Business / Economics",
                     "A mix of math and science"
                 ],
-                key="college_discovery_subject_v2"
+                key="college_discovery_subject_v3"
             )
 
             q3 = st.selectbox(
@@ -23348,43 +25419,258 @@ elif page == "College Suggestions":
         elif answer == "Medicine and the human body":
             add_points(["Biology", "Biomedical Science", "Neuroscience", "Medicine / Health Science", "Health Science", "Public Health", "Biochemistry", "Biomedical Engineering"], 6)
         elif answer == "Nature, climate, and the environment":
-            add_points(["Environmental Science", "Biology", "Climate Science", "Earth Science", "Environmental Studies / Sustainability", "Environmental Engineering"], 6)
+            add_points(
+                [
+                    "Environmental Science",
+                    "Biology",
+                    "Climate Science",
+                    "Earth Science",
+                    "Ecology",
+                    "Marine Science",
+                    "Sustainability",
+                    "Environmental Engineering"
+                ],
+                6
+            )
         elif answer == "Working with data and patterns":
-            add_points(["Data Science", "Artificial Intelligence", "Mathematics", "Statistics", "Applied Mathematics", "Computational Science"], 6)
+            add_points(["Data Science", "Artificial Intelligence", "Mathematics", "Statistics", "Applied Mathematics", "Business Analytics", "Computational Science"], 6)
         elif answer == "Designing or creating new things":
-            add_points(["Engineering", "Mechanical Engineering", "Robotics"], 5)
+            add_points(
+                [
+                    "Engineering",
+                    "Mechanical Engineering",
+                    "Architecture",
+                    "Human-Computer Interaction",
+                    "Game Development"
+                ],
+                5
+            )
+        elif answer == "Business, finance, or economics":
+            add_points(
+                [
+                    "Finance",
+                    "Economics",
+                    "Business Analytics",
+                    "Financial Engineering",
+                    "Quantitative Finance",
+                    "FinTech",
+                    "Actuarial Science"
+                ],
+                6
+            )
+        elif answer == "Architecture or city design":
+            add_points(
+                [
+                    "Architecture",
+                    "Urban Planning",
+                    "Civil Engineering",
+                    "Structural Engineering",
+                    "Construction Engineering"
+                ],
+                6
+            )
 
     subject_map = {
-        "Math": ["Mathematics", "Applied Mathematics", "Statistics", "Data Science", "Computational Science", "Physics"],
-        "Science": ["Biology", "Chemistry", "Physics", "Applied Physics", "Environmental Science", "Biochemistry", "Neuroscience", "Biomedical Science"],
-        "Computer Science / Technology": ["Computer Science", "Computer Engineering", "Artificial Intelligence", "Robotics", "Cybersecurity", "Data Science", "Information Technology / Information Science"],
-        "Biology": ["Biology", "Biomedical Science", "Biotechnology", "Biochemistry", "Environmental Science", "Biomedical Engineering"],
-        "Physics": ["Physics", "Applied Physics", "Astronomy / Astrophysics", "Electrical Engineering", "Mechanical Engineering", "Engineering"],
-        "A mix of math and science": ["Physics", "Chemistry", "Mathematics", "Applied Mathematics", "Data Science", "Biology", "Engineering"]
+        "Math": [
+            "Mathematics",
+            "Applied Mathematics",
+            "Statistics",
+            "Data Science",
+            "Computational Science",
+            "Physics",
+            "Actuarial Science",
+            "Operations Research",
+            "Financial Engineering"
+        ],
+        "Science": [
+            "Biology",
+            "Chemistry",
+            "Physics",
+            "Applied Physics",
+            "Environmental Science",
+            "Biochemistry",
+            "Neuroscience",
+            "Biomedical Science"
+        ],
+        "Computer Science / Technology": [
+            "Computer Science",
+            "Computer Engineering",
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Robotics",
+            "Cybersecurity",
+            "Data Science",
+            "Information Technology / Information Science",
+            "Software Engineering"
+        ],
+        "Biology": [
+            "Biology",
+            "Biomedical Science",
+            "Biotechnology",
+            "Biochemistry",
+            "Genetics / Genomics",
+            "Medicine / Pre-Med",
+            "Environmental Science",
+            "Biomedical Engineering"
+        ],
+        "Physics": [
+            "Physics",
+            "Applied Physics",
+            "Astronomy / Astrophysics",
+            "Nuclear Science",
+            "Materials Science"
+        ],
+        "Chemistry": [
+            "Chemistry",
+            "Biochemistry",
+            "Chemical Engineering",
+            "Materials Science",
+            "Pharmacy / Pharmaceutical Science"
+        ],
+        "Business / Economics": [
+            "Economics",
+            "Finance",
+            "Business Analytics",
+            "Quantitative Economics",
+            "Financial Engineering",
+            "Accounting",
+            "FinTech"
+        ],
+        "A mix of math and science": [
+            "Physics",
+            "Chemistry",
+            "Mathematics",
+            "Applied Mathematics",
+            "Data Science",
+            "Biology"
+        ]
     }
 
     add_points(subject_map.get(q2, []), 4)
 
     work_map = {
-        "Building something with my hands": ["Mechanical Engineering", "Robotics", "Engineering"],
-        "Working on a computer": ["Computer Science", "Artificial Intelligence", "Data Science", "Computer Engineering", "Information Technology / Information Science"],
-        "Solving difficult problems": ["Mathematics", "Physics", "Applied Mathematics", "Computer Science", "Engineering"],
-        "Designing new products or systems": ["Mechanical Engineering", "Electrical Engineering", "Computer Engineering", "Engineering"],
-        "Running experiments or doing research": ["Biology", "Physics", "Chemistry", "Applied Physics", "Biochemistry", "Biomedical Science", "Environmental Science", "Neuroscience"],
-        "Helping people through science or technology": ["Biology", "Medicine / Health Science", "Health Science", "Public Health", "Biomedical Science", "Biomedical Engineering"],
-        "Analyzing information and finding patterns": ["Data Science", "Artificial Intelligence", "Mathematics", "Statistics", "Applied Mathematics", "Computational Science"]
+        "Building something with my hands": [
+            "Mechanical Engineering",
+            "Robotics",
+            "Engineering",
+            "Architecture",
+            "Mechatronics"
+        ],
+        "Working on a computer": [
+            "Computer Science",
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Data Science",
+            "Computer Engineering",
+            "Information Technology / Information Science",
+            "Software Engineering"
+        ],
+        "Solving difficult problems": [
+            "Mathematics",
+            "Physics",
+            "Applied Mathematics",
+            "Computer Science",
+            "Operations Research"
+        ],
+        "Designing new products or systems": [
+            "Mechanical Engineering",
+            "Electrical Engineering",
+            "Computer Engineering",
+            "Architecture",
+            "Industrial Engineering"
+        ],
+        "Running experiments or doing research": [
+            "Biology",
+            "Physics",
+            "Chemistry",
+            "Applied Physics",
+            "Biochemistry",
+            "Biomedical Science",
+            "Environmental Science",
+            "Neuroscience"
+        ],
+        "Helping people through science or technology": [
+            "Biology",
+            "Medicine / Health Science",
+            "Medicine / Pre-Med",
+            "Health Science",
+            "Public Health",
+            "Biomedical Science",
+            "Biomedical Engineering"
+        ],
+        "Analyzing information and finding patterns": [
+            "Data Science",
+            "Artificial Intelligence",
+            "Mathematics",
+            "Statistics",
+            "Applied Mathematics",
+            "Business Analytics",
+            "Economics",
+            "Computational Science"
+        ]
     }
 
     add_points(work_map.get(q3, []), 4)
 
     environment_map = {
-        "Hardware, machines, or physical objects": ["Mechanical Engineering", "Electrical Engineering", "Robotics"],
-        "Software and computers": ["Computer Science", "Artificial Intelligence", "Data Science", "Information Technology / Information Science"],
-        "People and healthcare": ["Biology", "Medicine / Health Science", "Health Science", "Public Health", "Biomedical Science", "Biomedical Engineering"],
-        "Numbers and data": ["Data Science", "Mathematics", "Statistics", "Applied Mathematics", "Artificial Intelligence", "Computational Science"],
-        "Science and research": ["Physics", "Biology", "Chemistry", "Applied Physics", "Biochemistry", "Environmental Science", "Neuroscience", "Biomedical Science"],
-        "The environment": ["Environmental Science", "Biology", "Climate Science", "Earth Science", "Environmental Studies / Sustainability"],
-        "A mix of hardware and software": ["Computer Engineering", "Robotics", "Electrical Engineering"]
+        "Hardware, machines, or physical objects": [
+            "Mechanical Engineering",
+            "Electrical Engineering",
+            "Robotics",
+            "Mechatronics"
+        ],
+        "Software and computers": [
+            "Computer Science",
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Data Science",
+            "Software Engineering",
+            "Information Technology / Information Science"
+        ],
+        "People and healthcare": [
+            "Biology",
+            "Medicine / Health Science",
+            "Medicine / Pre-Med",
+            "Health Science",
+            "Public Health",
+            "Biomedical Science",
+            "Biomedical Engineering"
+        ],
+        "Numbers and data": [
+            "Data Science",
+            "Mathematics",
+            "Statistics",
+            "Applied Mathematics",
+            "Business Analytics",
+            "Financial Engineering",
+            "Economics",
+            "Actuarial Science"
+        ],
+        "Science and research": [
+            "Physics",
+            "Biology",
+            "Chemistry",
+            "Applied Physics",
+            "Biochemistry",
+            "Environmental Science",
+            "Neuroscience",
+            "Biomedical Science"
+        ],
+        "The environment": [
+            "Environmental Science",
+            "Biology",
+            "Climate Science",
+            "Earth Science",
+            "Ecology",
+            "Sustainability",
+            "Marine Science"
+        ],
+        "A mix of hardware and software": [
+            "Computer Engineering",
+            "Robotics",
+            "Electrical Engineering",
+            "Mechatronics"
+        ]
     }
 
     add_points(environment_map.get(q4, []), 4)
@@ -23399,21 +25685,20 @@ elif page == "College Suggestions":
 
     add_points(
         [
-            "Computer Science",
-            "Artificial Intelligence",
-            "Data Science",
-            "Physics",
-            "Applied Physics",
             "Mathematics",
             "Applied Mathematics",
             "Statistics",
+            "Physics",
+            "Applied Physics",
+            "Data Science",
+            "Artificial Intelligence",
+            "Machine Learning",
             "Computational Science",
-            "Engineering",
-            "Electrical Engineering",
-            "Mechanical Engineering",
-            "Computer Engineering",
-            "Robotics",
-            "Quantitative Finance / Financial Engineering"
+            "Actuarial Science",
+            "Operations Research",
+            "Financial Engineering",
+            "Quantitative Finance",
+            "Business Analytics"
         ],
         math_points
     )
@@ -23430,9 +25715,23 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Medium",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Physics", "Mathematics", "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Physics",
+                "Mathematics",
+                "Robotics",
+                "Biology",
+                "Chemistry",
+                "Economics",
+                "Architecture",
+                "Business Analytics",
+                "Financial Engineering",
+                "Urban Planning"
             ],
             "admit_rate": 4.5,
             "rate_label": "Fall 2024 overall",
@@ -23446,9 +25745,23 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Science", "Artificial Intelligence", "Data Science",
-                "Biomedical Engineering", "Biology", "Physics", "Mathematics", "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Biology",
+                "Physics",
+                "Mathematics",
+                "Robotics",
+                "Chemistry",
+                "Economics",
+                "Finance",
+                "Psychology / Cognitive Science",
+                "Medicine / Health Science",
+                "Public Health"
             ],
             "admit_rate": 3.8,
             "rate_label": "Fall 2025 overall",
@@ -23462,9 +25775,21 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Medium",
             "fields": [
-                "Engineering", "Electrical Engineering", "Computer Engineering",
-                "Computer Science", "Artificial Intelligence", "Data Science",
-                "Mathematics", "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Mathematics",
+                "Robotics",
+                "Chemistry",
+                "Biology",
+                "Economics",
+                "Business Analytics",
+                "Human-Computer Interaction",
+                "Architecture",
+                "Statistics"
             ],
             "admit_rate": 11.1,
             "rate_label": "Fall 2025 overall",
@@ -23478,10 +25803,24 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Science", "Artificial Intelligence", "Data Science",
-                "Biomedical Engineering", "Biology", "Physics", "Mathematics",
-                "Environmental Science"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Biology",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Chemistry",
+                "Economics",
+                "Finance",
+                "Public Health",
+                "Architecture",
+                "Statistics",
+                "Business Analytics"
             ],
             "admit_rate": 11.0,
             "rate_label": "2026 first-year overall",
@@ -23495,9 +25834,23 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Physics",
+                "Mathematics",
+                "Robotics",
+                "Chemistry",
+                "Economics",
+                "Business Analytics",
+                "Architecture",
+                "Public Health",
+                "Industrial Engineering"
             ],
             "admit_rate": 13.3,
             "rate_label": "Fall 2025 overall",
@@ -23511,10 +25864,26 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
-                "Environmental Science", "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Robotics",
+                "Chemistry",
+                "Economics",
+                "Finance",
+                "Public Health",
+                "Architecture",
+                "Statistics",
+                "Business Analytics",
+                "Medicine / Health Science"
             ],
             "admit_rate": 16.4,
             "rate_label": "Fall 2025 overall",
@@ -23528,9 +25897,21 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Physics", "Mathematics", "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Physics",
+                "Mathematics",
+                "Robotics",
+                "Chemistry",
+                "Economics",
+                "Architecture",
+                "Statistics"
             ],
             "admit_rate": 49.9,
             "rate_label": "Fall 2024 overall",
@@ -23544,10 +25925,25 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Biology", "Physics",
-                "Mathematics", "Environmental Science", "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Biology",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Robotics",
+                "Chemistry",
+                "Economics",
+                "Architecture",
+                "Public Health",
+                "Statistics",
+                "Finance"
             ],
             "admit_rate": 7.9,
             "rate_label": "Fall 2023 overall",
@@ -23561,10 +25957,26 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Biology", "Physics",
-                "Mathematics", "Environmental Science"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Biology",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Chemistry",
+                "Economics",
+                "Finance",
+                "Architecture",
+                "Public Health",
+                "Statistics",
+                "Business Analytics",
+                "Urban Planning"
             ],
             "admit_rate": 3.9,
             "rate_label": "Class of 2027 overall",
@@ -23578,9 +25990,21 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Small",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Science", "Artificial Intelligence", "Physics",
-                "Mathematics", "Biology", "Environmental Science"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Physics",
+                "Mathematics",
+                "Biology",
+                "Environmental Science",
+                "Chemistry",
+                "Economics",
+                "Public Health",
+                "Architecture",
+                "Statistics",
+                "Finance"
             ],
             "admit_rate": 4.4,
             "rate_label": "Class of 2029 overall",
@@ -23594,9 +26018,23 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Medium",
             "fields": [
-                "Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Biology", "Physics",
-                "Mathematics", "Environmental Science"
+                "Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Biology",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Chemistry",
+                "Economics",
+                "Public Health",
+                "Statistics",
+                "Finance",
+                "Architecture",
+                "Medicine / Health Science",
+                "Psychology / Cognitive Science"
             ],
             "admit_rate": 4.2,
             "rate_label": "Class of 2029 overall",
@@ -23610,9 +26048,21 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Medium",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Science", "Artificial Intelligence", "Data Science",
-                "Biomedical Engineering", "Biology", "Mathematics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Biology",
+                "Mathematics",
+                "Chemistry",
+                "Economics",
+                "Public Health",
+                "Statistics",
+                "Medicine / Health Science",
+                "Finance"
             ],
             "admit_rate": 5.2,
             "rate_label": "Class of 2029 overall",
@@ -23626,9 +26076,22 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Medium",
             "fields": [
-                "Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Biology", "Physics",
-                "Mathematics", "Environmental Science"
+                "Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Biology",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Chemistry",
+                "Public Health",
+                "Medicine / Health Science",
+                "Neuroscience",
+                "Statistics",
+                "Economics",
+                "Biomedical Science"
             ],
             "admit_rate": 6.4,
             "rate_label": "Fall 2024 overall",
@@ -23642,9 +26105,18 @@ elif page == "College Suggestions":
             "setting": "Small college",
             "size": "Small",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Science", "Artificial Intelligence", "Physics",
-                "Mathematics", "Biology"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Physics",
+                "Mathematics",
+                "Biology",
+                "Chemistry",
+                "Astronomy / Astrophysics",
+                "Geology",
+                "Economics"
             ],
             "admit_rate": 3.1,
             "rate_label": "Fall 2023 overall",
@@ -23658,8 +26130,13 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Small",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Architecture",
+                "Civil Engineering",
+                "Structural Engineering"
             ],
             "admit_rate": 13.0,
             "rate_label": "2024-25 overall",
@@ -23673,9 +26150,22 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Robotics",
+                "Chemistry",
+                "Finance",
+                "Business Analytics",
+                "Urban Planning",
+                "Game Development",
+                "Cybersecurity",
+                "Economics"
             ],
             "admit_rate": 13.0,
             "rate_label": "NYU university-wide",
@@ -23689,10 +26179,23 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Medium",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
-                "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Physics",
+                "Mathematics",
+                "Robotics",
+                "Chemistry",
+                "Finance",
+                "Business Analytics",
+                "FinTech",
+                "Cybersecurity",
+                "Quantitative Finance"
             ],
             "admit_rate": 51.0,
             "rate_label": "Fall 2025 overall",
@@ -23706,9 +26209,21 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Biomedical Engineering",
-                "Biology", "Physics", "Mathematics", "Environmental Science"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Biomedical Engineering",
+                "Biology",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Chemistry",
+                "Architecture",
+                "Economics",
+                "Public Health",
+                "Urban Planning"
             ],
             "admit_rate": 60.0,
             "rate_label": "Fall 2024 overall",
@@ -23722,10 +26237,25 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Biology", "Physics",
-                "Mathematics", "Environmental Science"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Biology",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Chemistry",
+                "Marine Science",
+                "Astronomy / Astrophysics",
+                "Economics",
+                "Public Health",
+                "Statistics",
+                "Medicine / Health Science"
             ],
             "admit_rate": 48.2,
             "rate_label": "Fall 2025 overall",
@@ -23739,9 +26269,19 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Data Science",
-                "Mathematics", "Physics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Data Science",
+                "Mathematics",
+                "Physics",
+                "Architecture",
+                "Construction Engineering",
+                "Chemistry",
+                "Health Science",
+                "Business Analytics"
             ],
             "admit_rate": 80.3,
             "rate_label": "Fall 2024 overall",
@@ -23755,10 +26295,21 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Artificial Intelligence",
-                "Data Science", "Biomedical Engineering", "Physics", "Mathematics",
-                "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science",
+                "Biomedical Engineering",
+                "Physics",
+                "Mathematics",
+                "Robotics",
+                "Chemistry",
+                "Economics",
+                "Public Health",
+                "Business Analytics"
             ],
             "admit_rate": 83.0,
             "rate_label": "Fall 2024 overall",
@@ -23772,9 +26323,18 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Medium",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Data Science",
-                "Biomedical Engineering", "Mathematics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Data Science",
+                "Biomedical Engineering",
+                "Mathematics",
+                "Chemistry",
+                "Economics",
+                "Business Analytics",
+                "Pharmacy / Pharmaceutical Science"
             ],
             "admit_rate": 83.5,
             "rate_label": "Fall 2024 overall",
@@ -23788,7 +26348,16 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Large",
             "fields": [
-                "Computer Science", "Data Science", "Mathematics", "Physics"
+                "Computer Science",
+                "Data Science",
+                "Mathematics",
+                "Physics",
+                "Biology",
+                "Chemistry",
+                "Environmental Science",
+                "Economics",
+                "Public Health",
+                "Marine Science"
             ],
             "admit_rate": 85.5,
             "rate_label": "Fall 2025 overall",
@@ -23802,9 +26371,19 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Medium",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Data Science",
-                "Biomedical Engineering", "Mathematics", "Robotics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Data Science",
+                "Biomedical Engineering",
+                "Mathematics",
+                "Robotics",
+                "Architecture",
+                "Construction Engineering",
+                "Civil Engineering",
+                "Chemistry"
             ],
             "admit_rate": 87.8,
             "rate_label": "Fall 2025 overall",
@@ -23818,9 +26397,21 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Data Science",
-                "Biomedical Engineering", "Physics", "Mathematics", "Environmental Science"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Data Science",
+                "Biomedical Engineering",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Chemistry",
+                "Marine Science",
+                "Economics",
+                "Ecology",
+                "Sustainability"
             ],
             "admit_rate": 88.2,
             "rate_label": "Fall 2024 overall",
@@ -23834,9 +26425,19 @@ elif page == "College Suggestions":
             "setting": "Traditional college campus",
             "size": "Large",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Data Science",
-                "Biomedical Engineering", "Physics", "Mathematics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Data Science",
+                "Biomedical Engineering",
+                "Physics",
+                "Mathematics",
+                "Chemistry",
+                "Marine Science",
+                "Economics",
+                "Business Analytics"
             ],
             "admit_rate": 90.6,
             "rate_label": "Fall 2024 overall",
@@ -23850,9 +26451,18 @@ elif page == "College Suggestions":
             "setting": "City / urban",
             "size": "Medium",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Science", "Data Science", "Physics", "Mathematics",
-                "Environmental Science"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Science",
+                "Data Science",
+                "Physics",
+                "Mathematics",
+                "Environmental Science",
+                "Biology",
+                "Chemistry",
+                "Pharmacy / Pharmaceutical Science",
+                "Economics"
             ],
             "admit_rate": 94.0,
             "rate_label": "Fall 2025 overall",
@@ -23860,15 +26470,24 @@ elif page == "College Suggestions":
             "research": True
         },
         {
-            "name":             "University of Pittsburgh at Johnstown",
+            "name": "University of Pittsburgh at Johnstown",
             "location": "Johnstown, PA",
             "region": "Northeast",
             "setting": "Traditional college campus",
             "size": "Medium",
             "fields": [
-                "Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Computer Engineering", "Computer Science", "Data Science",
-                "Mathematics", "Physics"
+                "Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Computer Science",
+                "Data Science",
+                "Mathematics",
+                "Physics",
+                "Biology",
+                "Chemistry",
+                "Economics",
+                "Civil Engineering"
             ],
             "admit_rate": 94.8,
             "rate_label": "Fall 2024 overall",
@@ -24033,23 +26652,56 @@ elif page == "College Suggestions":
         college_field_synonyms = {
             "Astrophysics / Astronomy": ["Astronomy / Astrophysics"],
             "Astronomy / Astrophysics": ["Astrophysics / Astronomy"],
-            "Earth Science / Geoscience": ["Earth Science"],
-            "Earth Science": ["Earth Science / Geoscience"],
+            "Earth Science / Geoscience": ["Earth Science", "Geology"],
+            "Earth Science": ["Earth Science / Geoscience", "Geology"],
+            "Geology": ["Earth Science", "Earth Science / Geoscience"],
             "Materials Science / Engineering": ["Materials Science"],
             "Materials Science": ["Materials Science / Engineering"],
-            "Medicine / Health Science": ["Health Science"],
+            "Medicine / Health Science": ["Health Science", "Medicine / Pre-Med"],
+            "Medicine / Pre-Med": ["Medicine / Health Science", "Biology"],
             "Public Health": ["Health Science"],
-            "Physics": ["Applied Physics"],
-            "Biology": ["Biochemistry"],
-            "Chemistry": ["Biochemistry"],
+            "Physics": ["Applied Physics", "Nuclear Science"],
+            "Biology": ["Biochemistry", "Genetics / Genomics"],
+            "Chemistry": ["Biochemistry", "Pharmacy / Pharmaceutical Science"],
             "Computer Science": [
                 "Information Technology / Information Science",
-                "Computational Science"
+                "Computational Science",
+                "Software Engineering",
+                "Machine Learning"
             ],
-            "Neuroscience": ["Cognitive Science"],
-            "Environmental Science": ["Environmental Studies / Sustainability"],
+            "Artificial Intelligence": ["Machine Learning"],
+            "Machine Learning": ["Artificial Intelligence"],
+            "Neuroscience": ["Cognitive Science", "Psychology / Cognitive Science"],
+            "Cognitive Science": ["Psychology / Cognitive Science"],
+            "Psychology / Cognitive Science": ["Cognitive Science", "Neuroscience"],
+            "Environmental Science": [
+                "Environmental Studies / Sustainability",
+                "Sustainability",
+                "Ecology",
+                "Marine Science"
+            ],
+            "Sustainability": ["Environmental Studies / Sustainability", "Environmental Science"],
             "Engineering": ["General Engineering / Undecided Engineering"],
-            "Mathematics": ["Applied Mathematics"],
+            "Mathematics": ["Applied Mathematics", "Actuarial Science", "Operations Research"],
+            "Statistics": ["Actuarial Science", "Data Science"],
+            "Financial Engineering": [
+                "Quantitative Finance",
+                "Quantitative Finance / Financial Engineering",
+                "Finance"
+            ],
+            "Quantitative Finance": [
+                "Financial Engineering",
+                "Quantitative Finance / Financial Engineering",
+                "Finance"
+            ],
+            "Quantitative Finance / Financial Engineering": [
+                "Financial Engineering",
+                "Quantitative Finance"
+            ],
+            "Finance": ["Economics", "Business Analytics", "FinTech"],
+            "Economics": ["Finance", "Quantitative Economics"],
+            "Architecture": ["Urban Planning", "Structural Engineering"],
+            "Civil Engineering": ["Structural Engineering", "Construction Engineering"],
             "General / Interdisciplinary STEM": [
                 "STEM / General Science",
                 "Undecided STEM"
@@ -26056,15 +28708,7 @@ elif page == "Projects":
         },
         {
             "title": "Budget Optimization Tool",
-            "fields": ["Industrial Engineering", "Data Science", "Mathematics", "Computer Science", "Statistics"],
-            "create": ["A website or app", "Something with data", "Something that solves an optimization problem"],
-            "level": "Advanced",
-            "time": "2–4 weeks",
-            "hours": "15–25 hours",
-            "style": ["Coding", "Working with data", "Solving logic problems"],
-            "equipment": ["Computer"],
-            "cost": "Free",
-            "description": "Create a tool that allocates a limited budget across competing needs while respecting user-defined constraints.",
+            "fields": ["Industrial Engineering", "Data Science", "Mathematics", "Computer Science", "Statistics", "Operations Research", "Business Analytics"],
             "skills": ["Optimization", "Python", "Linear programming", "Data modeling", "UI design"],
             "materials": ["Computer", "Python", "Optimization library"],
             "steps": [
@@ -26099,6 +28743,397 @@ elif page == "Projects":
                 "Explain ethical limitations and what real deployment would require."
             ],
             "portfolio": "Developed a facility-location optimization model to evaluate service coverage and resource-allocation tradeoffs."
+        },
+        {
+            "title": "Public Health Data Mini-Study",
+            "fields": ["Public Health", "Biology", "Data Science", "Statistics", "Medicine / Health Science"],
+            "create": ["A research project", "Something with data", "Something related to health or the human body", "Something involving biology"],
+            "level": "Beginner",
+            "time": "1–2 weeks",
+            "hours": "6–12 hours",
+            "style": ["Working with data", "Researching", "Testing and experimenting"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Analyze a public health dataset (for example vaccination, asthma, or food access) and summarize patterns for a neighborhood or city.",
+            "skills": ["Data cleaning", "Charts", "Public health concepts", "Scientific writing"],
+            "materials": ["Computer", "Spreadsheet or Python", "Open public-health data"],
+            "steps": [
+                "Choose one clear public-health question.",
+                "Find a trustworthy open dataset.",
+                "Clean and organize the variables you need.",
+                "Create charts that answer your question.",
+                "Write a short findings summary with limitations.",
+                "Suggest one follow-up question for further research."
+            ],
+            "portfolio": "Completed a public-health mini-study using open data, visualizations, and a written summary of patterns and limitations."
+        },
+        {
+            "title": "Bioinformatics Sequence Explorer",
+            "fields": ["Bioinformatics / Computational Biology", "Biology", "Genetics / Genomics", "Computer Science", "Data Science"],
+            "create": ["A research project", "Something with data", "Something involving biology", "A website or app"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–20 hours",
+            "style": ["Coding", "Working with data", "Researching"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Build a simple tool that compares short DNA or protein sequences and explains similarity in student-friendly language.",
+            "skills": ["Python", "String algorithms", "Genetics basics", "Data visualization"],
+            "materials": ["Computer", "Python", "Sample FASTA sequences"],
+            "steps": [
+                "Learn how DNA sequences are represented as text.",
+                "Load or paste short example sequences.",
+                "Compute a simple similarity score.",
+                "Highlight matching regions.",
+                "Explain what similarity does and does not prove.",
+                "Document one biology question your tool could help explore."
+            ],
+            "portfolio": "Built a beginner bioinformatics tool that compares genetic sequences and communicates results clearly."
+        },
+        {
+            "title": "Safe Water Quality Experiment",
+            "fields": ["Chemistry", "Environmental Science", "Biology"],
+            "create": ["A research project", "Something involving chemistry", "Something about the environment", "Something that helps my community"],
+            "level": "Beginner",
+            "time": "1–2 weeks",
+            "hours": "5–10 hours",
+            "style": ["Testing and experimenting", "Researching", "Building with my hands"],
+            "equipment": ["Basic household materials", "Adult supervision for chemicals"],
+            "cost": "Low",
+            "description": "Design a safe, adult-supervised water-quality comparison using approved test strips or school lab kits (never handle unknown chemicals alone).",
+            "skills": ["Experimental design", "Measurement", "Data tables", "Safety procedures"],
+            "materials": ["School-approved water test kit or strips", "Notebook", "Labeled sample containers"],
+            "steps": [
+                "Review safety rules with a teacher or adult.",
+                "Define which water sources you can legally and safely test.",
+                "Collect samples with labels and dates.",
+                "Record pH or other kit-approved measurements.",
+                "Compare results in a table and chart.",
+                "Discuss uncertainty, contamination risks, and next steps."
+            ],
+            "portfolio": "Designed and documented a supervised water-quality experiment with safety protocols, measurements, and data analysis."
+        },
+        {
+            "title": "Reaction-Rate Kitchen Chemistry Study",
+            "fields": ["Chemistry", "Mathematics", "Data Science"],
+            "create": ["A research project", "Something involving chemistry", "Something with data", "A simulation"],
+            "level": "Beginner",
+            "time": "Weekend",
+            "hours": "4–8 hours",
+            "style": ["Testing and experimenting", "Working with data", "Solving logic problems"],
+            "equipment": ["Basic household materials"],
+            "cost": "Low",
+            "description": "Measure how temperature or concentration changes the speed of a safe household reaction (for example vinegar and baking soda) and model the trend.",
+            "skills": ["Controlled experiments", "Timing", "Graphing", "Variables"],
+            "materials": ["Baking soda", "Vinegar", "Thermometer", "Stopwatch", "Notebook"],
+            "steps": [
+                "Choose one variable to change safely.",
+                "Keep other conditions constant.",
+                "Time multiple trials.",
+                "Graph rate versus your variable.",
+                "Write a claim-evidence-reasoning conclusion.",
+                "List sources of experimental error."
+            ],
+            "portfolio": "Ran a controlled chemistry rate experiment and analyzed how one variable affected reaction speed."
+        },
+        {
+            "title": "NYC Heat-Island Neighborhood Study",
+            "fields": ["Environmental Science", "Climate Science", "Data Science", "Urban Planning", "Ecology"],
+            "create": ["A research project", "Something about the environment", "Something with data", "Something related to architecture or cities"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–18 hours",
+            "style": ["Working with data", "Researching", "Coding"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Compare temperature, tree cover, or land-use patterns across NYC neighborhoods to explore urban heat-island effects.",
+            "skills": ["Open data", "Mapping or charts", "Climate concepts", "Urban analysis"],
+            "materials": ["Computer", "NYC Open Data or similar", "Spreadsheet or Python"],
+            "steps": [
+                "Pick two to three neighborhoods to compare.",
+                "Gather temperature or land-cover indicators.",
+                "Clean and join the datasets.",
+                "Visualize differences.",
+                "Connect findings to shade, buildings, or parks.",
+                "Propose one equity-focused cooling idea."
+            ],
+            "portfolio": "Completed an NYC urban heat-island study linking neighborhood data to climate and equity insights."
+        },
+        {
+            "title": "Stock Portfolio Simulator",
+            "fields": ["Finance", "Business Analytics", "Data Science", "Mathematics", "Economics"],
+            "create": ["A website or app", "Something with data", "Something related to finance or economics", "A simulation"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–20 hours",
+            "style": ["Coding", "Working with data", "Solving logic problems"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Build an educational simulator that tracks a pretend stock portfolio using historical prices (no real money or live trading).",
+            "skills": ["Python or spreadsheets", "Returns", "Diversification", "Data visualization"],
+            "materials": ["Computer", "Historical price CSV or API", "Python or Sheets"],
+            "steps": [
+                "Define paper-trading rules and a starting budget.",
+                "Import historical price data.",
+                "Track buy/sell decisions on paper.",
+                "Calculate simple returns over time.",
+                "Compare a diversified vs concentrated portfolio.",
+                "Write what you learned about risk."
+            ],
+            "portfolio": "Created an educational stock portfolio simulator analyzing historical returns and diversification tradeoffs."
+        },
+        {
+            "title": "Financial Literacy Budget App",
+            "fields": ["Finance", "Computer Science", "Business Analytics", "Economics"],
+            "create": ["A website or app", "Something related to finance or economics", "Something useful for school or my future", "Something that helps people"],
+            "level": "Beginner",
+            "time": "1–2 weeks",
+            "hours": "6–12 hours",
+            "style": ["Coding", "Solving logic problems", "Working with data"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Design a budgeting / financial-literacy app that helps teens plan saving, spending, and goals.",
+            "skills": ["UI basics", "Percentages", "Budget categories", "User testing"],
+            "materials": ["Computer", "Python/Streamlit or web tools"],
+            "steps": [
+                "List income and expense categories for a student.",
+                "Build input forms for a monthly budget.",
+                "Show remaining money and savings rate.",
+                "Add a simple savings goal tracker.",
+                "Test with a classmate and revise.",
+                "Include a short money-safety tip sheet."
+            ],
+            "portfolio": "Built a teen-focused budgeting app that visualizes spending, saving goals, and financial literacy basics."
+        },
+        {
+            "title": "Compound Interest Explorer",
+            "fields": ["Finance", "Mathematics", "Statistics", "Economics"],
+            "create": ["A simulation", "Something related to finance or economics", "Something with data", "A website or app"],
+            "level": "Beginner",
+            "time": "Weekend",
+            "hours": "3–6 hours",
+            "style": ["Coding", "Working with data", "Solving logic problems"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Create an interactive compound-interest calculator that shows how time, rate, and contributions change growth.",
+            "skills": ["Exponential growth", "Functions", "Charts", "Financial literacy"],
+            "materials": ["Computer", "Python or spreadsheet"],
+            "steps": [
+                "Write the compound interest formula.",
+                "Let users change principal, rate, and years.",
+                "Plot balance over time.",
+                "Compare monthly vs yearly contributions.",
+                "Explain assumptions clearly.",
+                "Add one caution about fees or inflation."
+            ],
+            "portfolio": "Developed an interactive compound-interest explorer that teaches exponential growth and saving habits."
+        },
+        {
+            "title": "Risk and Return Lab",
+            "fields": ["Finance", "Statistics", "Mathematics", "Data Science", "Quantitative Finance"],
+            "create": ["Something with data", "Something related to finance or economics", "A simulation", "A research project"],
+            "level": "Intermediate",
+            "time": "1–2 weeks",
+            "hours": "8–15 hours",
+            "style": ["Working with data", "Coding", "Solving logic problems"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Compare risk and return for a few assets or funds using historical data and basic statistics (educational only).",
+            "skills": ["Mean and volatility", "Correlation", "Charts", "Risk concepts"],
+            "materials": ["Computer", "Historical returns data", "Python or Sheets"],
+            "steps": [
+                "Choose 3–5 assets with historical returns.",
+                "Compute average return and volatility.",
+                "Plot risk versus return.",
+                "Estimate a simple correlation.",
+                "Discuss diversification.",
+                "State clearly that this is not investment advice."
+            ],
+            "portfolio": "Analyzed historical risk/return tradeoffs and communicated diversification insights for an educational lab."
+        },
+        {
+            "title": "Beginner Trading Backtest",
+            "fields": ["Quantitative Finance", "FinTech", "Data Science", "Computer Science", "Statistics"],
+            "create": ["Something with data", "Something related to finance or economics", "A simulation", "An AI project"],
+            "level": "Advanced",
+            "time": "2–4 weeks",
+            "hours": "15–25 hours",
+            "style": ["Coding", "Working with data", "Solving logic problems"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Backtest a simple rule-based strategy on historical prices (for learning only; no live trading or real money).",
+            "skills": ["Python", "Strategy rules", "Backtesting", "Performance metrics"],
+            "materials": ["Computer", "Historical OHLCV data", "Python"],
+            "steps": [
+                "Define one simple rule (for example moving-average crossover).",
+                "Load historical price data.",
+                "Simulate trades with paper rules.",
+                "Track equity curve and drawdown.",
+                "Compare against a buy-and-hold baseline.",
+                "Write why backtests can overfit."
+            ],
+            "portfolio": "Implemented an educational algorithmic backtest comparing a simple rule to a buy-and-hold baseline."
+        },
+        {
+            "title": "NYC Housing Cost Analysis",
+            "fields": ["Economics", "Data Science", "Statistics", "Urban Planning", "Business Analytics"],
+            "create": ["A research project", "Something with data", "Something related to finance or economics", "Something related to architecture or cities"],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–18 hours",
+            "style": ["Working with data", "Researching", "Coding"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Analyze NYC housing costs or rents across boroughs and discuss economic drivers and equity.",
+            "skills": ["Open data", "Descriptive statistics", "Economics writing", "Charts"],
+            "materials": ["Computer", "NYC Open Data", "Python or Sheets"],
+            "steps": [
+                "Select rent or housing cost indicators.",
+                "Clean and filter by borough or neighborhood.",
+                "Compute averages and spreads.",
+                "Visualize comparisons.",
+                "Relate findings to income or transit access if data allows.",
+                "Write policy-relevant takeaways carefully."
+            ],
+            "portfolio": "Produced an NYC housing-cost analysis connecting open data patterns to economic and equity questions."
+        },
+        {
+            "title": "Inflation Data Story",
+            "fields": ["Economics", "Statistics", "Data Science", "Mathematics"],
+            "create": ["A research project", "Something with data", "Something related to finance or economics", "A website or app"],
+            "level": "Beginner",
+            "time": "1–2 weeks",
+            "hours": "6–12 hours",
+            "style": ["Working with data", "Researching", "Coding"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Tell a clear story about inflation using public CPI or price-index data and everyday examples.",
+            "skills": ["Index numbers", "Percent change", "Data storytelling", "Charts"],
+            "materials": ["Computer", "Public inflation data", "Spreadsheet or Python"],
+            "steps": [
+                "Download a public price index series.",
+                "Calculate year-over-year changes.",
+                "Pick two categories students care about.",
+                "Make annotated charts.",
+                "Explain real vs nominal ideas in plain language.",
+                "List what the data cannot show."
+            ],
+            "portfolio": "Created an inflation data story translating public price indexes into student-friendly insights."
+        },
+        {
+            "title": "Insurance Risk Probability Lab",
+            "fields": ["Actuarial Science", "Statistics", "Mathematics", "Finance"],
+            "create": ["A simulation", "A probability or statistics project", "Something related to finance or economics", "Something with data"],
+            "level": "Intermediate",
+            "time": "1–2 weeks",
+            "hours": "8–14 hours",
+            "style": ["Coding", "Solving logic problems", "Working with data"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Build a simplified insurance-risk model using probabilities and expected value (classroom scenario, not real insurance pricing).",
+            "skills": ["Probability", "Expected value", "Simulation", "Risk pooling"],
+            "materials": ["Computer", "Python or spreadsheet"],
+            "steps": [
+                "Define a simple claim probability scenario.",
+                "Compute expected payouts.",
+                "Simulate many policyholders.",
+                "Show how pooling reduces volatility.",
+                "Discuss fairness and assumptions.",
+                "Present results with clear caveats."
+            ],
+            "portfolio": "Modeled a simplified insurance-risk scenario using probability, expected value, and simulation."
+        },
+        {
+            "title": "Monte Carlo Probability Simulator",
+            "fields": ["Statistics", "Mathematics", "Actuarial Science", "Data Science", "Computer Science"],
+            "create": ["A simulation", "A probability or statistics project", "Something with data", "A website or app"],
+            "level": "Intermediate",
+            "time": "1–2 weeks",
+            "hours": "8–15 hours",
+            "style": ["Coding", "Solving logic problems", "Working with data"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Use Monte Carlo simulation to estimate probabilities for games, queues, or simple real-world chance events.",
+            "skills": ["Random simulation", "Law of large numbers", "Python", "Visualization"],
+            "materials": ["Computer", "Python"],
+            "steps": [
+                "Pick a probability question with a known or estimable answer.",
+                "Simulate many random trials.",
+                "Track running estimates.",
+                "Compare estimate to theory if available.",
+                "Visualize convergence.",
+                "Explain when simulation helps."
+            ],
+            "portfolio": "Built a Monte Carlo simulator demonstrating how repeated random trials estimate probabilities."
+        },
+        {
+            "title": "Solar Energy Mini Experiment",
+            "fields": ["Physics", "Environmental Science", "Engineering", "Chemistry"],
+            "create": ["A research project", "Something involving physics", "Something involving energy", "Something about the environment"],
+            "level": "Beginner",
+            "time": "1–2 weeks",
+            "hours": "5–10 hours",
+            "style": ["Testing and experimenting", "Building with my hands", "Researching"],
+            "equipment": ["Basic household materials"],
+            "cost": "Low",
+            "description": "Compare how angle, surface, or insulation affects a small solar-oven or solar-heating setup.",
+            "skills": ["Energy transfer", "Measurement", "Experimental controls", "Graphing"],
+            "materials": ["Cardboard", "Foil", "Thermometer", "Plastic wrap", "Notebook"],
+            "steps": [
+                "Build two comparable solar setups.",
+                "Change one variable at a time.",
+                "Record temperatures safely.",
+                "Graph heating over time.",
+                "Explain heat transfer ideas.",
+                "Propose an improved design."
+            ],
+            "portfolio": "Designed a solar-energy experiment comparing design variables and analyzing temperature data."
+        },
+        {
+            "title": "Mechanics Motion Lab",
+            "fields": ["Physics", "Mathematics", "Engineering"],
+            "create": ["A research project", "Something involving physics", "A simulation", "Something that moves"],
+            "level": "Beginner",
+            "time": "Weekend",
+            "hours": "4–8 hours",
+            "style": ["Testing and experimenting", "Working with data", "Solving logic problems"],
+            "equipment": ["Basic household materials", "Phone camera optional"],
+            "cost": "Low",
+            "description": "Study projectile motion or rolling mechanics with measurements and compare results to simple physics equations.",
+            "skills": ["Kinematics", "Measurement", "Error analysis", "Graphing"],
+            "materials": ["Ramp or ball", "Meter stick", "Stopwatch or video", "Notebook"],
+            "steps": [
+                "Choose one mechanics question.",
+                "Plan safe measurement methods.",
+                "Collect repeated trials.",
+                "Compare data to a predicted model.",
+                "Discuss friction or air resistance.",
+                "Summarize what matched and what did not."
+            ],
+            "portfolio": "Completed a mechanics lab connecting measured motion data to introductory physics models."
+        },
+        {
+            "title": "Tiny Campus Building Concept",
+            "fields": ["Architecture", "Civil Engineering", "Structural Engineering", "Urban Planning", "Sustainability"],
+            "create": ["Something related to architecture or cities", "Something creative", "Something that helps my community", "A research project"],
+            "level": "Beginner",
+            "time": "1–2 weeks",
+            "hours": "6–12 hours",
+            "style": ["Designing in CAD", "Researching", "Solving logic problems"],
+            "equipment": ["Paper / sketchbook", "Computer optional"],
+            "cost": "Free–Low",
+            "description": "Design a small community or school space concept with sketches, basic constraints, and sustainability notes.",
+            "skills": ["Sketching", "Spatial planning", "Constraints", "Presentation"],
+            "materials": ["Paper", "Pencil", "Ruler", "Optional CAD or slides"],
+            "steps": [
+                "Define who the space serves.",
+                "List site constraints and needs.",
+                "Sketch floor-plan options.",
+                "Note light, access, and materials.",
+                "Add one sustainability feature.",
+                "Present a final concept board."
+            ],
+            "portfolio": "Developed an architecture concept with sketches, user needs, and sustainability considerations."
         }
     ]
 
@@ -26120,12 +29155,18 @@ elif page == "Projects":
             "A research project",
             "Something related to health or the human body",
             "Something involving biology",
+            "Something involving chemistry",
+            "Something involving physics",
+            "Something about the environment",
+            "Something related to finance or economics",
+            "Something related to architecture or cities",
             "Something involving energy",
             "Something with sensors",
             "Something with lights or electronics",
             "Something that moves",
             "A simulation",
             "Something that solves an optimization problem",
+            "A probability or statistics project",
             "Something that helps people",
             "Something that helps my community",
             "Something that makes everyday life easier",
