@@ -15671,6 +15671,758 @@ def gpa_banner_html(message, kind="info"):
     )
 
 
+def personalized_stem_major_explanation(
+    field,
+    profile=None,
+    interest_ratings=None,
+    preferred_work="",
+    favorite_activity="",
+    preferred_tech="",
+    preferred_science="",
+    preferred_quant="",
+    preferred_impact="",
+    skip_label="Skip for now / not sure",
+):
+    """
+    Build a concise, field-specific 1–2 sentence explanation using only
+    evidence from the student's questionnaire answers and saved profile.
+    """
+
+    field = str(field or "").strip() or "this STEM field"
+    field_lower = field.lower()
+    profile = profile or {}
+    interest_ratings = interest_ratings or {}
+
+    def _clean_list(values):
+        out = []
+        for item in values or []:
+            text = str(item or "").strip()
+            if (
+                text
+                and text not in out
+                and text not in {"None yet", "Not sure yet", skip_label}
+            ):
+                out.append(text)
+        return out
+
+    def _join_phrases(items, max_items=3):
+        items = [str(x).strip() for x in items if str(x).strip()][:max_items]
+        if not items:
+            return ""
+        if len(items) == 1:
+            return items[0]
+        if len(items) == 2:
+            return items[0] + " and " + items[1]
+        return ", ".join(items[:-1]) + ", and " + items[-1]
+
+    profile_interests = _clean_list(profile.get("interests") or [])
+    experience_areas = _clean_list(profile.get("experience_areas") or [])
+    goals = _clean_list(profile.get("goals") or [])
+    exploration_stage = str(profile.get("exploration_stage") or "").strip()
+    try:
+        confidence = int(profile.get("confidence") or 0)
+    except (TypeError, ValueError):
+        confidence = 0
+
+    # Broad rating → friendly label (only use when rating is meaningfully high).
+    category_labels = {
+        "engineering": "engineering",
+        "computing": "computer science and technology",
+        "physical": "physical sciences",
+        "life": "life sciences / biology",
+        "math": "mathematics and statistics",
+        "data_ai": "data science / AI",
+        "health": "health / biomedical topics",
+        "business": "business, finance, and economics",
+    }
+
+    field_category_tokens = {
+        "engineering": [
+            "engineering", "robot", "mechatronic", "systems engineering",
+        ],
+        "computing": [
+            "computer science", "software", "cyber", "information technology",
+            "information systems", "web development", "human-computer",
+            "game development", "management information",
+        ],
+        "physical": [
+            "physics", "chemistry", "astronomy", "materials science",
+            "nuclear science", "space science", "meteorology", "oceanography",
+        ],
+        "life": [
+            "biology", "molecular", "biochem", "genetics", "ecology",
+            "biotech", "marine science", "agricultural", "bioinformatics",
+        ],
+        "math": [
+            "mathematics", "statistics", "actuarial", "operations research",
+            "financial engineering", "quantitative finance",
+        ],
+        "data_ai": [
+            "data science", "artificial intelligence", "machine learning",
+            "computational science", "business analytics",
+        ],
+        "health": [
+            "biomedical", "bioengineering", "medicine", "public health",
+            "health science", "pharmacy", "neuroscience",
+        ],
+        "business": [
+            "finance", "econom", "business", "accounting", "entrepreneur",
+            "fintech", "actuar", "supply chain", "operations management",
+            "management information", "quantitative finance",
+            "financial engineering", "business analytics",
+        ],
+    }
+
+    strong_ratings = []
+    for key, label in category_labels.items():
+        try:
+            rating = int(interest_ratings.get(key, 0) or 0)
+        except (TypeError, ValueError):
+            rating = 0
+        tokens = field_category_tokens.get(key, [])
+        if rating >= 7 and any(token in field_lower for token in tokens):
+            strong_ratings.append((rating, label))
+    strong_ratings.sort(reverse=True)
+
+    # Experience areas that support this field (only if student reported them).
+    experience_support = {
+        "Coding": [
+            "computer", "software", "data", "artificial", "cyber",
+            "information", "web", "machine learning", "computational",
+            "financial engineering", "fintech",
+        ],
+        "Electronics": [
+            "electrical", "computer engineering", "robot", "mechatronic",
+            "physics", "engineering physics", "materials",
+        ],
+        "Circuit Design": [
+            "electrical", "computer engineering", "robot", "mechatronic",
+            "engineering physics",
+        ],
+        "CAD / 3D Design": [
+            "mechanical", "aerospace", "civil", "architecture",
+            "industrial design", "biomedical engineering", "materials",
+        ],
+        "3D Printing": [
+            "mechanical", "industrial design", "materials", "biomedical",
+            "architecture",
+        ],
+        "Robotics": [
+            "robot", "mechatronic", "mechanical", "electrical",
+            "computer engineering",
+        ],
+        "Scientific Research": [
+            "physics", "chemistry", "biology", "astronomy", "materials",
+            "environmental", "neuroscience", "biochem",
+        ],
+        "Engineering Projects": [
+            "engineering", "robot", "mechatronic", "systems",
+        ],
+        "Lab Experiments": [
+            "chemistry", "biology", "physics", "biochem", "materials",
+            "biomedical science",
+        ],
+        "Data Analysis": [
+            "data", "statistics", "business analytics", "machine learning",
+            "artificial", "economics", "finance",
+        ],
+        "Math Competitions": [
+            "math", "statistics", "actuarial", "physics", "operations research",
+        ],
+        "Science Competitions": [
+            "physics", "chemistry", "biology", "environmental", "engineering",
+        ],
+        "Biology / Life Science Projects": [
+            "biology", "biomedical", "biotech", "genetics", "neuro",
+            "public health", "health",
+        ],
+        "Environmental or Field Research": [
+            "environment", "climate", "earth", "geology", "ecology",
+            "marine", "ocean", "sustainability",
+        ],
+        "Finance / Economics Projects": [
+            "finance", "econom", "actuar", "business analytics",
+            "quantitative", "accounting",
+        ],
+        "Architecture or Design Projects": [
+            "architecture", "urban", "civil", "industrial design",
+            "construction", "structural",
+        ],
+    }
+
+    matched_experience = []
+    for exp in experience_areas:
+        tokens = experience_support.get(exp, [])
+        if tokens and any(token in field_lower for token in tokens):
+            matched_experience.append(exp.lower())
+
+    # Questionnaire refinements → short evidence phrases for this field.
+    answer_evidence_map = {
+        "Building physical machines or products": (
+            ["mechanical", "aerospace", "robot", "mechatronic", "industrial", "engineering"],
+            "building physical machines and products",
+        ),
+        "Designing circuits, electronics, or hardware": (
+            ["electrical", "computer engineering", "robot", "mechatronic", "engineering physics"],
+            "circuits, electronics, and hardware",
+        ),
+        "Writing software or building apps": (
+            ["computer science", "software", "web", "information"],
+            "writing software and building apps",
+        ),
+        "Working with AI, algorithms, or large datasets": (
+            ["artificial", "machine learning", "data science", "statistics", "computer science"],
+            "AI, algorithms, and large datasets",
+        ),
+        "Designing buildings or infrastructure": (
+            ["civil", "architecture", "structural", "urban", "construction"],
+            "designing buildings and infrastructure",
+        ),
+        "Working in laboratories and conducting experiments": (
+            ["chemistry", "biology", "physics", "biochem", "materials"],
+            "laboratory experimentation",
+        ),
+        "Studying living organisms or human health": (
+            ["biology", "biomedical", "health", "medicine", "neuro", "public health"],
+            "living systems and human health",
+        ),
+        "Solving advanced math or statistical problems": (
+            ["math", "statistics", "actuar", "operations research", "physics"],
+            "advanced math and statistical problem-solving",
+        ),
+        "Studying markets, investing, or financial systems": (
+            ["finance", "econom", "actuar", "business analytics", "quantitative"],
+            "markets, investing, and financial systems",
+        ),
+        "Optimizing businesses, transportation, or supply chains": (
+            ["industrial", "operations research", "supply chain", "operations management", "systems"],
+            "optimizing systems and supply chains",
+        ),
+        "Studying climate, Earth, oceans, or the environment": (
+            ["environment", "climate", "earth", "geology", "ocean", "marine", "ecology"],
+            "climate, Earth, oceans, and the environment",
+        ),
+        "Designing products around human needs and usability": (
+            ["human-computer", "industrial design", "web", "architecture", "biomedical"],
+            "human-centered design and usability",
+        ),
+        "Hands-on building and making": (
+            ["mechanical", "robot", "mechatronic", "electrical", "industrial design"],
+            "hands-on building and making",
+        ),
+        "Theoretical / research-focused work": (
+            ["physics", "math", "chemistry", "biology", "astronomy"],
+            "theoretical and research-focused work",
+        ),
+        "Designing something in CAD": (
+            ["mechanical", "aerospace", "civil", "architecture", "industrial design", "biomedical"],
+            "CAD design",
+        ),
+        "Building an electronic circuit": (
+            ["electrical", "computer engineering", "robot", "mechatronic", "physics"],
+            "building electronic circuits",
+        ),
+        "Programming an application": (
+            ["computer science", "software", "web", "information"],
+            "application programming",
+        ),
+        "Programming embedded systems or robots": (
+            ["computer engineering", "electrical", "robot", "mechatronic"],
+            "embedded systems and robotics programming",
+        ),
+        "Training or analyzing an AI model": (
+            ["artificial", "machine learning", "data science", "computer science", "statistics"],
+            "training and analyzing AI models",
+        ),
+        "Solving challenging math problems": (
+            ["math", "physics", "statistics", "engineering physics"],
+            "challenging math problems",
+        ),
+        "Analyzing financial markets or company data": (
+            ["finance", "econom", "quantitative", "business analytics", "statistics"],
+            "analyzing financial markets and company data",
+        ),
+        "Running a biology or chemistry experiment": (
+            ["biology", "chemistry", "biochem", "biotech", "molecular"],
+            "biology and chemistry experiments",
+        ),
+        "Designing a bridge, building, or city": (
+            ["civil", "architecture", "structural", "urban", "construction"],
+            "designing bridges, buildings, or cities",
+        ),
+        "Analyzing a large dataset": (
+            ["data science", "statistics", "business analytics", "machine learning"],
+            "analyzing large datasets",
+        ),
+        "Studying weather, climate, or ecosystems": (
+            ["meteorolog", "climate", "ecology", "environment", "earth", "marine"],
+            "weather, climate, and ecosystems",
+        ),
+        "Designing a medical or assistive device": (
+            ["biomedical", "bioengineering", "health"],
+            "designing medical or assistive devices",
+        ),
+        "Planning how a company or system can operate more efficiently": (
+            ["industrial", "operations research", "supply chain", "business analytics", "operations management"],
+            "planning efficient systems and operations",
+        ),
+        "Studying space, stars, or the universe": (
+            ["astronomy", "space", "physics", "aerospace"],
+            "space, stars, and the universe",
+        ),
+        "Software and app development": (
+            ["computer science", "software", "web"],
+            "software and app development",
+        ),
+        "Artificial intelligence and machine learning": (
+            ["artificial", "machine learning", "data science"],
+            "artificial intelligence and machine learning",
+        ),
+        "Cybersecurity": (
+            ["cyber", "computer science", "information technology"],
+            "cybersecurity",
+        ),
+        "Computer hardware and processors": (
+            ["computer engineering", "electrical", "engineering physics"],
+            "computer hardware and processors",
+        ),
+        "Robotics and embedded systems": (
+            ["robot", "mechatronic", "computer engineering", "electrical", "mechanical"],
+            "robotics and embedded systems",
+        ),
+        "Data science and analytics": (
+            ["data science", "statistics", "business analytics", "machine learning"],
+            "data science and analytics",
+        ),
+        "Web / user experience design": (
+            ["human-computer", "web", "industrial design"],
+            "web and user-experience design",
+        ),
+        "Financial technology / algorithmic trading": (
+            ["fintech", "quantitative finance", "financial engineering", "finance", "computer science"],
+            "financial technology and algorithmic trading",
+        ),
+        "Bioinformatics / computational biology": (
+            ["bioinformatics", "computational", "biology", "genetics", "biotech"],
+            "bioinformatics and computational biology",
+        ),
+        "Physics and how the universe works": (
+            ["physics", "astronomy", "engineering physics"],
+            "physics and how the universe works",
+        ),
+        "Energy, forces, and matter": (
+            ["physics", "applied physics", "engineering physics", "nuclear"],
+            "energy, forces, and matter",
+        ),
+        "Chemistry and materials": (
+            ["chemistry", "materials", "chemical engineering", "biochem"],
+            "chemistry and materials",
+        ),
+        "Biology and living systems": (
+            ["biology", "molecular", "ecology", "biotech"],
+            "biology and living systems",
+        ),
+        "Human body, disease, and medicine": (
+            ["medicine", "biomedical", "health", "public health", "biology", "neuro"],
+            "the human body, disease, and medicine",
+        ),
+        "Neuroscience and the brain": (
+            ["neuro", "biology", "cognitive", "psychology"],
+            "neuroscience and the brain",
+        ),
+        "Genetics and biotechnology": (
+            ["genetics", "biotech", "molecular", "bioinformatics", "biology"],
+            "genetics and biotechnology",
+        ),
+        "Plants, ecosystems, and the living environment": (
+            ["ecology", "environment", "agricultural", "biology", "marine"],
+            "plants, ecosystems, and the living environment",
+        ),
+        "Environment and climate": (
+            ["environment", "climate", "ecology", "sustainability"],
+            "environment and climate",
+        ),
+        "Earth, geology, and oceans": (
+            ["geology", "earth", "ocean", "marine"],
+            "Earth, geology, and oceans",
+        ),
+        "Astronomy and space": (
+            ["astronomy", "space", "physics", "aerospace"],
+            "astronomy and space",
+        ),
+        "Using calculus and physics to design systems": (
+            ["mechanical", "aerospace", "engineering physics", "applied mathematics", "electrical", "physics"],
+            "using calculus and physics to design systems",
+        ),
+        "Finding patterns in large datasets": (
+            ["data science", "statistics", "machine learning", "business analytics"],
+            "finding patterns in large datasets",
+        ),
+        "Building statistical models": (
+            ["statistics", "data science", "actuarial", "applied mathematics"],
+            "building statistical models",
+        ),
+        "Predicting financial markets or evaluating investments": (
+            ["quantitative finance", "financial engineering", "finance", "econom", "statistics"],
+            "predicting markets and evaluating investments",
+        ),
+        "Managing risk using mathematics": (
+            ["actuarial", "statistics", "financial engineering", "mathematics", "quantitative finance"],
+            "managing risk with mathematics",
+        ),
+        "Optimizing transportation, factories, or supply chains": (
+            ["industrial", "operations research", "supply chain", "operations management", "systems"],
+            "optimizing transportation, factories, or supply chains",
+        ),
+        "Understanding how economies and markets behave": (
+            ["econom", "finance", "business analytics", "mathematics"],
+            "understanding how economies and markets behave",
+        ),
+        "Analyzing business performance": (
+            ["business analytics", "accounting", "finance", "management information", "business"],
+            "analyzing business performance",
+        ),
+        "Working with probability and uncertainty": (
+            ["statistics", "actuarial", "mathematics", "data science", "financial engineering"],
+            "working with probability and uncertainty",
+        ),
+        "Create new technology": (
+            ["computer", "electrical", "software", "artificial", "engineering"],
+            "creating new technology",
+        ),
+        "Improve healthcare": (
+            ["biomedical", "medicine", "public health", "health", "bioengineering", "biotech"],
+            "improving healthcare",
+        ),
+        "Build safer or more efficient infrastructure": (
+            ["civil", "structural", "architecture", "construction", "urban", "systems"],
+            "building safer or more efficient infrastructure",
+        ),
+        "Develop cleaner energy and environmental solutions": (
+            ["environmental", "climate", "chemical engineering", "sustainability", "nuclear"],
+            "cleaner energy and environmental solutions",
+        ),
+        "Advance scientific knowledge": (
+            ["physics", "biology", "chemistry", "mathematics", "astronomy"],
+            "advancing scientific knowledge",
+        ),
+        "Protect computers and digital systems": (
+            ["cyber", "computer science", "information technology"],
+            "protecting computers and digital systems",
+        ),
+        "Improve transportation and logistics": (
+            ["industrial", "supply chain", "operations research", "civil", "aerospace"],
+            "improving transportation and logistics",
+        ),
+        "Design better products for people": (
+            ["industrial design", "human-computer", "mechanical", "biomedical", "architecture"],
+            "designing better products for people",
+        ),
+        "Build successful businesses": (
+            ["business", "business analytics", "finance", "econom", "management information"],
+            "building successful businesses",
+        ),
+        "Work in investing, banking, or financial markets": (
+            ["finance", "quantitative finance", "financial engineering", "econom", "accounting"],
+            "investing, banking, and financial markets",
+        ),
+        "Use mathematics and data to make better decisions": (
+            ["data science", "statistics", "operations research", "business analytics", "mathematics", "actuarial"],
+            "using mathematics and data for better decisions",
+        ),
+        "Explore space or aerospace technology": (
+            ["aerospace", "astronomy", "space", "mechanical", "physics"],
+            "space and aerospace technology",
+        ),
+    }
+
+    questionnaire_answers = [
+        preferred_work,
+        favorite_activity,
+        preferred_tech,
+        preferred_science,
+        preferred_quant,
+        preferred_impact,
+    ]
+    matched_answers = []
+    for answer in questionnaire_answers:
+        answer = str(answer or "").strip()
+        if not answer or answer == skip_label:
+            continue
+        info = answer_evidence_map.get(answer)
+        if not info:
+            continue
+        tokens, phrase = info
+        if any(token in field_lower for token in tokens):
+            if phrase not in matched_answers:
+                matched_answers.append(phrase)
+
+    # Profile STEM interests that align with this field.
+    interest_support_tokens = {
+        "Electrical Engineering": ["electrical", "computer engineering", "robot", "physics"],
+        "Computer Engineering": ["computer", "electrical", "software", "robot"],
+        "Mechanical Engineering": ["mechanical", "aerospace", "robot", "industrial design"],
+        "Civil Engineering": ["civil", "architecture", "structural", "urban"],
+        "Computer Science": ["computer", "software", "data", "artificial", "cyber"],
+        "Biology": ["biology", "biomedical", "health", "medicine", "ecology"],
+        "Physics": ["physics", "astronomy", "engineering physics", "materials"],
+        "Mathematics": ["math", "statistics", "actuarial", "operations research"],
+        "Data Science": ["data", "statistics", "artificial", "machine learning"],
+        "Environmental Science": ["environment", "climate", "earth", "ecology"],
+        "Finance": ["finance", "econom", "business analytics", "actuar"],
+        "Chemistry": ["chemistry", "materials", "chemical", "biochem"],
+    }
+    matched_profile_interests = []
+    for interest in profile_interests:
+        tokens = interest_support_tokens.get(interest)
+        if tokens is None:
+            # Fallback: shared words / related naming.
+            interest_l = interest.lower()
+            if any(
+                token in field_lower
+                for token in interest_l.replace("/", " ").split()
+                if len(token) > 3
+            ):
+                matched_profile_interests.append(interest)
+            continue
+        if any(token in field_lower for token in tokens):
+            matched_profile_interests.append(interest)
+
+    # Field-specific "what you may enjoy" second sentence.
+    field_focus = {
+        "Electrical Engineering":
+            "You may especially enjoy circuits, signals, embedded systems, power systems, and hardware design.",
+        "Computer Engineering":
+            "The field combines hardware and software through areas such as digital systems, embedded devices, processors, and computer architecture.",
+        "Mechanical Engineering":
+            "It focuses on designing and improving machines, products, energy systems, and physical mechanisms used across industry and technology.",
+        "Civil Engineering":
+            "It centers on infrastructure such as bridges, buildings, transportation systems, and resilient community design.",
+        "Chemical Engineering":
+            "It applies chemistry and process design to materials, energy, pharmaceuticals, and large-scale manufacturing.",
+        "Biomedical Engineering":
+            "It connects engineering with biology and medicine to design devices, diagnostics, and technologies that improve healthcare.",
+        "Aerospace Engineering":
+            "It applies mechanics, materials, and systems design to aircraft, spacecraft, propulsion, and flight technology.",
+        "Environmental Engineering":
+            "It uses engineering methods to improve water, air, energy, and environmental systems for healthier communities.",
+        "Industrial Engineering":
+            "It focuses on optimizing people, processes, factories, logistics, and complex operational systems.",
+        "Materials Science / Engineering":
+            "The field combines engineering, physics, chemistry, and design to develop materials used in electronics, energy systems, manufacturing, and emerging technologies.",
+        "Materials Science":
+            "It explores how the structure of materials shapes strength, conductivity, durability, and performance in real technologies.",
+        "Engineering Physics":
+            "It combines advanced physics with engineering applications such as circuits, materials, energy, and emerging technologies.",
+        "Nuclear Engineering":
+            "It applies physics and engineering to nuclear energy, radiation systems, and advanced power technologies.",
+        "Systems Engineering":
+            "It focuses on integrating complex technical systems across hardware, software, people, and processes.",
+        "Robotics":
+            "It blends mechanics, electronics, sensing, and control to build machines that perceive and act in the real world.",
+        "Mechatronics":
+            "It integrates mechanical design, electronics, and control software for automated and intelligent machines.",
+        "Computer Science":
+            "It centers on algorithms, software systems, computing theory, and building reliable digital tools.",
+        "Software Engineering":
+            "It emphasizes designing, testing, and maintaining large software systems used in real products and services.",
+        "Cybersecurity":
+            "It focuses on protecting networks, software, and digital systems from threats through secure design and analysis.",
+        "Data Science":
+            "It uses statistics, programming, and domain knowledge to find patterns and make decisions from data.",
+        "Artificial Intelligence":
+            "It explores building systems that learn from data to recognize patterns, make predictions, and support decisions.",
+        "Machine Learning":
+            "It focuses on statistical models and algorithms that improve performance as they learn from data.",
+        "Human-Computer Interaction":
+            "It connects computing with design and psychology to create technology that people can use effectively.",
+        "Information Technology / Information Science":
+            "It focuses on systems, networks, and digital tools that organizations use to store, secure, and share information.",
+        "Physics":
+            "It investigates energy, matter, forces, and the fundamental principles behind technology and the universe.",
+        "Applied Physics":
+            "It applies physics concepts to practical technologies in electronics, optics, materials, and instrumentation.",
+        "Chemistry":
+            "It studies how substances interact and transform, supporting materials, medicines, energy, and manufacturing.",
+        "Astronomy / Astrophysics":
+            "It explores stars, planets, galaxies, and the physical laws that shape the universe.",
+        "Biology":
+            "It examines living systems, from cells and genetics to ecosystems and organism function.",
+        "Biochemistry":
+            "It connects chemistry and biology to explain molecular processes in living systems and medicine.",
+        "Neuroscience":
+            "It studies the brain and nervous system, linking biology, psychology, and often data or engineering tools.",
+        "Biotechnology":
+            "It applies biological science to develop products and processes in medicine, agriculture, and industry.",
+        "Genetics / Genomics":
+            "It focuses on DNA, inheritance, and genome analysis used in medicine, research, and biotechnology.",
+        "Public Health":
+            "It uses science and data to improve community health, prevent disease, and support healthier populations.",
+        "Environmental Science":
+            "It studies ecosystems, climate, and human impact to inform conservation and sustainability solutions.",
+        "Climate Science":
+            "It analyzes Earth's climate system using physics, data, and environmental science.",
+        "Mathematics":
+            "It develops abstract reasoning and models that support science, engineering, finance, and computing.",
+        "Applied Mathematics":
+            "It uses mathematical modeling to solve problems in engineering, science, data, and industry.",
+        "Statistics":
+            "It focuses on collecting, analyzing, and interpreting data to understand uncertainty and make decisions.",
+        "Actuarial Science":
+            "It applies probability and statistics to measure risk in insurance, finance, and long-term planning.",
+        "Operations Research":
+            "It uses math and optimization to improve decisions in logistics, operations, and complex systems.",
+        "Financial Engineering":
+            "It applies advanced math, statistics, and computing to pricing, risk, and financial decision models.",
+        "Quantitative Finance":
+            "It uses mathematics, data, and programming to analyze markets, investments, and financial risk.",
+        "Finance":
+            "It focuses on investing, markets, corporate finance, and how money and risk are managed.",
+        "Business":
+            "It develops skills in management, organizations, strategy, and how companies create value.",
+        "Entrepreneurship":
+            "It focuses on building products, ventures, and businesses from early ideas through growth.",
+        "Economics":
+            "It studies how people, firms, and markets make decisions and how economic systems behave.",
+        "Business Analytics":
+            "It uses data and statistical tools to improve business decisions, performance, and strategy.",
+        "Accounting":
+            "It focuses on financial reporting, auditing, and analyzing how organizations track performance and value.",
+        "FinTech":
+            "It combines finance with technology to build tools for payments, markets, banking, and digital financial services.",
+        "Supply Chain Management":
+            "It focuses on moving products and information efficiently across suppliers, factories, and customers.",
+        "Operations Management":
+            "It improves how organizations run day-to-day processes, productivity, and service delivery.",
+        "Architecture":
+            "It blends design, space planning, and building knowledge to shape the built environment.",
+        "Urban Planning":
+            "It focuses on how cities grow, including land use, transportation, housing, and community design.",
+    }
+
+    focus_sentence = field_focus.get(field)
+    if not focus_sentence:
+        if "engineering" in field_lower:
+            focus_sentence = (
+                f"{field} applies technical problem-solving to design, build, "
+                "and improve real-world systems and technologies."
+            )
+        elif any(t in field_lower for t in ["computer", "software", "data", "cyber"]):
+            focus_sentence = (
+                f"{field} connects computing, problem-solving, and technology "
+                "to design digital systems and tools."
+            )
+        elif any(t in field_lower for t in ["bio", "health", "medicine"]):
+            focus_sentence = (
+                f"{field} explores living systems and health-related problems "
+                "through science, research, and applied problem-solving."
+            )
+        elif any(t in field_lower for t in ["math", "statistic", "actuar"]):
+            focus_sentence = (
+                f"{field} uses mathematical reasoning and models to analyze "
+                "patterns, uncertainty, and complex problems."
+            )
+        elif any(t in field_lower for t in ["finance", "econom", "business"]):
+            focus_sentence = (
+                f"{field} connects quantitative thinking with markets, "
+                "organizations, and real-world decision-making."
+            )
+        else:
+            focus_sentence = (
+                f"{field} connects your interests to meaningful STEM work "
+                "through analysis, design, and real-world problem-solving."
+            )
+
+    # Build sentence 1 from truthful evidence only.
+    # Prefer: strong ratings → real experience → questionnaire focus → profile interests.
+    rating_bits = []
+    if strong_ratings:
+        top_rating, top_label = strong_ratings[0]
+        rating_bits.append(f"strong interest in {top_label} ({top_rating}/10)")
+        if len(strong_ratings) > 1 and strong_ratings[1][0] >= 8:
+            rating_bits.append(
+                f"{strong_ratings[1][1]} ({strong_ratings[1][0]}/10)"
+            )
+
+    experience_bits = []
+    if matched_experience:
+        experience_bits.append(
+            "experience with " + _join_phrases(
+                [exp for exp in matched_experience[:2]],
+                2,
+            )
+        )
+
+    answer_bits = matched_answers[:2]
+    interest_bits = []
+    for interest in matched_profile_interests[:2]:
+        # Avoid near-duplicates of rating labels.
+        blob = " ".join(rating_bits + experience_bits + answer_bits).lower()
+        if interest.lower() not in blob:
+            interest_bits.append(f"interest in {interest}")
+
+    goal_bits = []
+    goal_map = {
+        "Build STEM projects": ["engineering", "computer", "robot", "design"],
+        "Learn technical skills": ["engineering", "computer", "data", "math"],
+        "Participate in research": [
+            "physics", "biology", "chemistry", "astronomy", "neuroscience",
+            "environmental", "biomedical science",
+        ],
+        "Enter competitions": ["math", "robot", "engineering", "computer", "science"],
+    }
+    for goal in goals:
+        tokens = goal_map.get(goal)
+        if not tokens:
+            continue
+        if any(token in field_lower for token in tokens):
+            goal_bits.append("a goal to " + goal.lower())
+            break
+
+    support_bits = []
+    for group in (experience_bits, answer_bits, interest_bits, goal_bits):
+        for item in group:
+            if item not in support_bits:
+                support_bits.append(item)
+        if len(support_bits) >= 2:
+            break
+    support_bits = support_bits[:2]
+
+    stage_note = ""
+    if (
+        confidence >= 7
+        and (rating_bits or support_bits)
+        and exploration_stage in {
+            "I know which STEM fields interest me.",
+            "I have experience and want to develop more advanced skills.",
+            "I already have a specific STEM career or major in mind.",
+        }
+    ):
+        stage_note = " That fits your clearer sense of direction in STEM."
+
+    if rating_bits and support_bits:
+        first = (
+            f"Your {_join_phrases(rating_bits, 2)}, along with "
+            f"{_join_phrases(support_bits, 2)}, make {field} a strong fit."
+        )
+    elif rating_bits:
+        first = (
+            f"Your {_join_phrases(rating_bits, 2)} make {field} a strong fit."
+        )
+    elif support_bits:
+        first = (
+            f"Your {_join_phrases(support_bits, 2)} make {field} a strong match."
+        )
+    else:
+        first = (
+            f"{field} is a strong direction based on your Career Explorer answers "
+            "and overall STEM profile."
+        )
+
+    first = first + stage_note
+    return (first + " " + focus_sentence).strip()
+
+
 def stem_pathway_direction_explanation(
     field,
     preferred_work="",
@@ -17006,6 +17758,7 @@ STEM_FIELD_GROUPS = [
             "Business",
             "Economics",
             "Accounting",
+            "Entrepreneurship",
             "Supply Chain Management",
             "Operations Management"
         ]
@@ -21610,8 +22363,8 @@ elif page == "My STEM Pathway":
     render_page_header(
         "My STEM Pathway",
         (
-            "Work through six short sections to discover "
-            "STEM fields and majors that may fit you."
+            "Rate what you care about most, then optionally refine "
+            "to discover majors that may fit you."
         )
     )
 
@@ -21628,27 +22381,167 @@ elif page == "My STEM Pathway":
             "Find Your Potential Major"
             "</h2>"
             '<p class="sp-stemq-page-sub">'
-            "Complete each section below. Your answers work together to "
-            "suggest STEM majors and career directions — there are no right or wrong answers."
+            "Start by rating what you care about most. Your highest-rated interests "
+            "drive the recommendations — the questions below only refine which major "
+            "within those areas fits you best."
             "</p>"
             "</div>"
         )
 
+        def stemq_interest_slider(label, card_key, widget_key, default=1):
+            with st.container(key=card_key):
+                value = st.slider(
+                    label,
+                    min_value=1,
+                    max_value=10,
+                    value=int(default),
+                    key=widget_key,
+                )
+                st.html(
+                    '<div class="sp-stemq-slider-ends" aria-hidden="true">'
+                    "<span>1 — Not interested</span>"
+                    "<span>10 — Extremely interested</span>"
+                    "</div>"
+                )
+                return value
+
+        def resolve_stem_rating_default(rating_name):
+            """Use saved ratings when available; otherwise default to 1."""
+            saved = None
+
+            profile_ratings = profile.get("stem_interest_ratings")
+            if isinstance(profile_ratings, dict) and rating_name in profile_ratings:
+                saved = profile_ratings.get(rating_name)
+            else:
+                snapshot = st.session_state.get("career_answer_snapshot") or {}
+                snap_ratings = snapshot.get("ratings")
+                if isinstance(snap_ratings, dict) and rating_name in snap_ratings:
+                    saved = snap_ratings.get(rating_name)
+
+            try:
+                if saved is not None:
+                    return max(1, min(10, int(saved)))
+            except (TypeError, ValueError):
+                pass
+            return 1
+
         # ----------------------------------------------------
-        # 1. Work style
+        # PRIMARY: Rate Your STEM Interests
+        # ----------------------------------------------------
+        with st.container(key="stemq_major_0_ratings", border=True):
+
+            st.html(
+                '<h3 class="sp-stemq-card-title">Rate Your STEM Interests</h3>'
+                '<p class="sp-stemq-card-hint">'
+                "Rate each area from 1–10. Your highest-rated interests will have "
+                "the biggest influence on your recommended majors."
+                "</p>"
+            )
+
+            with st.container(key="stemq_slider_grid_ratings"):
+
+                rating_defaults = {
+                    "engineering": resolve_stem_rating_default("engineering"),
+                    "computing": resolve_stem_rating_default("computing"),
+                    "physical": resolve_stem_rating_default("physical"),
+                    "life": resolve_stem_rating_default("life"),
+                    "math": resolve_stem_rating_default("math"),
+                    "data_ai": resolve_stem_rating_default("data_ai"),
+                    "health": resolve_stem_rating_default("health"),
+                    "business": resolve_stem_rating_default("business"),
+                }
+
+                # Seed widget state once so new users start at 1, while
+                # previously saved ratings are restored without overwriting.
+                rating_widget_keys = {
+                    "engineering": "stemq_rating_engineering_v2",
+                    "computing": "stemq_rating_computing_v2",
+                    "physical": "stemq_rating_physical_v2",
+                    "life": "stemq_rating_life_v2",
+                    "math": "stemq_rating_math_v2",
+                    "data_ai": "stemq_rating_data_ai_v2",
+                    "health": "stemq_rating_health_v2",
+                    "business": "stemq_rating_business_v3",
+                }
+                for name, widget_key in rating_widget_keys.items():
+                    if widget_key not in st.session_state:
+                        st.session_state[widget_key] = rating_defaults[name]
+
+                rating_engineering = stemq_interest_slider(
+                    "Engineering",
+                    "stemq_s_rating_engineering_v2",
+                    rating_widget_keys["engineering"],
+                    rating_defaults["engineering"],
+                )
+                rating_computing = stemq_interest_slider(
+                    "Computer Science & Technology",
+                    "stemq_s_rating_computing_v2",
+                    rating_widget_keys["computing"],
+                    rating_defaults["computing"],
+                )
+                rating_physical = stemq_interest_slider(
+                    "Physical Sciences",
+                    "stemq_s_rating_physical_v2",
+                    rating_widget_keys["physical"],
+                    rating_defaults["physical"],
+                )
+                rating_life = stemq_interest_slider(
+                    "Life Sciences / Biology",
+                    "stemq_s_rating_life_v2",
+                    rating_widget_keys["life"],
+                    rating_defaults["life"],
+                )
+                rating_math = stemq_interest_slider(
+                    "Mathematics & Statistics",
+                    "stemq_s_rating_math_v2",
+                    rating_widget_keys["math"],
+                    rating_defaults["math"],
+                )
+                rating_data_ai = stemq_interest_slider(
+                    "Data Science / AI",
+                    "stemq_s_rating_data_ai_v2",
+                    rating_widget_keys["data_ai"],
+                    rating_defaults["data_ai"],
+                )
+                rating_health = stemq_interest_slider(
+                    "Health / Biomedical",
+                    "stemq_s_rating_health_v2",
+                    rating_widget_keys["health"],
+                    rating_defaults["health"],
+                )
+                rating_business = stemq_interest_slider(
+                    "Business, Finance & Economics",
+                    "stemq_s_rating_business_v3",
+                    rating_widget_keys["business"],
+                    rating_defaults["business"],
+                )
+
+        st.html(
+            '<p class="sp-stemq-page-sub" style="margin:0.35rem 0 0.15rem 0;">'
+            "<strong>Optional refinements.</strong> These questions help refine your "
+            "results within your top-rated areas. Answer as many as you can — "
+            "you can skip any question and still get recommendations from your ratings alone."
+            "</p>"
+        )
+
+        SKIP = "Skip for now / not sure"
+
+        # ----------------------------------------------------
+        # 1. Work style (secondary ~10%)
         # ----------------------------------------------------
         with st.container(key="stemq_major_1_work", border=True):
 
             st.html(
                 '<h3 class="sp-stemq-card-title">1. Work Style</h3>'
                 '<p class="sp-stemq-card-hint">'
-                "What kind of day-to-day work sounds most appealing?"
+                "Optional refinement — helps distinguish related majors within your top interests."
                 "</p>"
             )
 
             preferred_work = st.selectbox(
                 "Which type of work sounds most interesting?",
                 [
+                    SKIP,
                     "Building physical machines or products",
                     "Designing circuits, electronics, or hardware",
                     "Writing software or building apps",
@@ -21661,9 +22554,10 @@ elif page == "My STEM Pathway":
                     "Optimizing businesses, transportation, or supply chains",
                     "Studying climate, Earth, oceans, or the environment",
                     "Designing products around human needs and usability",
-                    "I am not sure yet",
+                    "Hands-on building and making",
+                    "Theoretical / research-focused work",
                 ],
-                key="stemq_work_v4",
+                key="stemq_work_v5",
             )
 
         # ----------------------------------------------------
@@ -21674,16 +22568,18 @@ elif page == "My STEM Pathway":
             st.html(
                 '<h3 class="sp-stemq-card-title">2. Activities You Enjoy</h3>'
                 '<p class="sp-stemq-card-hint">'
-                "Pick the activity that feels most fun or natural for you."
+                "Optional refinement — used to choose among majors in fields you rated highly."
                 "</p>"
             )
 
             favorite_activity = st.selectbox(
                 "Which activity sounds most enjoyable?",
                 [
+                    SKIP,
                     "Designing something in CAD",
                     "Building an electronic circuit",
                     "Programming an application",
+                    "Programming embedded systems or robots",
                     "Training or analyzing an AI model",
                     "Solving challenging math problems",
                     "Analyzing financial markets or company data",
@@ -21693,26 +22589,27 @@ elif page == "My STEM Pathway":
                     "Studying weather, climate, or ecosystems",
                     "Designing a medical or assistive device",
                     "Planning how a company or system can operate more efficiently",
-                    "I am not sure yet",
+                    "Studying space, stars, or the universe",
                 ],
-                key="stemq_activity_v4",
+                key="stemq_activity_v5",
             )
 
         # ----------------------------------------------------
-        # 3. Computing & technology
+        # 3. Computing
         # ----------------------------------------------------
         with st.container(key="stemq_major_3_computing", border=True):
 
             st.html(
-                '<h3 class="sp-stemq-card-title">3. Computing & Technology</h3>'
+                '<h3 class="sp-stemq-card-title">3. Computing Interests</h3>'
                 '<p class="sp-stemq-card-hint">'
-                "Helps distinguish software, AI, cybersecurity, hardware, data, and related paths."
+                "Optional — most useful if you rated Computer Science & Technology or Data Science / AI highly."
                 "</p>"
             )
 
             preferred_tech = st.selectbox(
                 "Which technology area interests you most?",
                 [
+                    SKIP,
                     "Software and app development",
                     "Artificial intelligence and machine learning",
                     "Cybersecurity",
@@ -21724,54 +22621,57 @@ elif page == "My STEM Pathway":
                     "Bioinformatics / computational biology",
                     "Technology does not strongly interest me",
                 ],
-                key="stemq_tech_v4",
+                key="stemq_tech_v5",
             )
 
         # ----------------------------------------------------
-        # 4. Science & discovery
+        # 4. Science
         # ----------------------------------------------------
         with st.container(key="stemq_major_4_science", border=True):
 
             st.html(
-                '<h3 class="sp-stemq-card-title">4. Science & Discovery</h3>'
+                '<h3 class="sp-stemq-card-title">4. Science Interests</h3>'
                 '<p class="sp-stemq-card-hint">'
-                "Helps identify physical sciences, life sciences, Earth/space fields, and applied paths."
+                "Optional — most useful if you rated Physical Sciences, Life Sciences, or Health highly."
                 "</p>"
             )
 
             preferred_science = st.selectbox(
                 "Which scientific area are you most curious about?",
                 [
+                    SKIP,
                     "Physics and how the universe works",
+                    "Energy, forces, and matter",
                     "Chemistry and materials",
                     "Biology and living systems",
-                    "Human health and medicine",
+                    "Human body, disease, and medicine",
                     "Neuroscience and the brain",
                     "Genetics and biotechnology",
+                    "Plants, ecosystems, and the living environment",
                     "Environment and climate",
                     "Earth, geology, and oceans",
                     "Astronomy and space",
                     "I prefer applied engineering/business problems over pure science",
                 ],
-                key="stemq_science_v4",
+                key="stemq_science_v5",
             )
 
         # ----------------------------------------------------
-        # 5. Math, data & business
+        # 5. Math / data / business
         # ----------------------------------------------------
         with st.container(key="stemq_major_5_quant", border=True):
 
             st.html(
-                '<h3 class="sp-stemq-card-title">5. Math, Data & Business</h3>'
+                '<h3 class="sp-stemq-card-title">5. Math, Data & Problem Style</h3>'
                 '<p class="sp-stemq-card-hint">'
-                "Helps distinguish Mathematics, Statistics, Data Science, Finance, Economics, "
-                "and optimization-focused majors."
+                "Optional — helps distinguish Math, Statistics, Data Science, Finance, and optimization paths."
                 "</p>"
             )
 
             preferred_quant = st.selectbox(
                 "Which kind of problem would you most enjoy solving?",
                 [
+                    SKIP,
                     "Using calculus and physics to design systems",
                     "Finding patterns in large datasets",
                     "Building statistical models",
@@ -21783,25 +22683,25 @@ elif page == "My STEM Pathway":
                     "Working with probability and uncertainty",
                     "Math is useful to me, but I prefer hands-on design",
                 ],
-                key="stemq_quant_v4",
+                key="stemq_quant_v5",
             )
 
         # ----------------------------------------------------
-        # 6. Impact / career goals
+        # 6. Impact
         # ----------------------------------------------------
         with st.container(key="stemq_major_6_impact", border=True):
 
             st.html(
                 '<h3 class="sp-stemq-card-title">6. Impact / Career Goals</h3>'
                 '<p class="sp-stemq-card-hint">'
-                "Your preferred impact helps refine majors across engineering, science, "
-                "technology, and quantitative business."
+                "Optional — a light preference signal for refining related majors."
                 "</p>"
             )
 
             preferred_impact = st.selectbox(
                 "What kind of impact would you most like your work to have?",
                 [
+                    SKIP,
                     "Create new technology",
                     "Improve healthcare",
                     "Build safer or more efficient infrastructure",
@@ -21815,7 +22715,7 @@ elif page == "My STEM Pathway":
                     "Use mathematics and data to make better decisions",
                     "Explore space or aerospace technology",
                 ],
-                key="stemq_impact_v4",
+                key="stemq_impact_v5",
             )
 
     # ========================================================
@@ -22193,6 +23093,14 @@ elif page == "My STEM Pathway":
             "majors": ["Finance", "Economics", "Business Analytics"],
             "careers": ["Financial Analyst", "Investment Analyst", "Corporate Finance Analyst"]
         },
+        "Business": {
+            "majors": ["Business Administration", "Business", "Management"],
+            "careers": ["Business Analyst", "Operations Associate", "Management Trainee"]
+        },
+        "Entrepreneurship": {
+            "majors": ["Entrepreneurship", "Business Administration", "Business"],
+            "careers": ["Founder / Startup Builder", "Product Manager pathway", "Small Business Manager"]
+        },
         "Economics": {
             "majors": ["Economics", "Quantitative Economics", "Statistics"],
             "careers": ["Economist", "Economic Analyst", "Policy Analyst"]
@@ -22529,7 +23437,9 @@ elif page == "My STEM Pathway":
     }
 
     # ========================================================
-    # SCORING  (dropdown answers → weighted major map)
+    # SCORING
+    # Primary: 1–10 STEM interest ratings (~60%)
+    # Secondary: detailed questions (~30%) + work style (~10%)
     # ========================================================
 
     scores = {
@@ -22537,36 +23447,133 @@ elif page == "My STEM Pathway":
         for field in all_stem_field_options()
     }
 
-    field_signal_counts = {
-        field: 0
-        for field in scores
+    primary_scores = {field: 0.0 for field in scores}
+    detail_scores = {field: 0.0 for field in scores}
+    work_scores = {field: 0.0 for field in scores}
+
+    field_signal_counts = {field: 0 for field in scores}
+    answer_reasons = {field: [] for field in scores}
+    field_category_rating = {field: 0 for field in scores}
+
+    SKIP = "Skip for now / not sure"
+
+    interest_ratings = {
+        "engineering": int(rating_engineering),
+        "computing": int(rating_computing),
+        "physical": int(rating_physical),
+        "life": int(rating_life),
+        "math": int(rating_math),
+        "data_ai": int(rating_data_ai),
+        "health": int(rating_health),
+        "business": int(rating_business),
     }
 
-    answer_reasons = {
-        field: []
-        for field in scores
+    # Majors belonging to each broad interest area.
+    interest_major_map = {
+        "engineering": [
+            "Electrical Engineering", "Computer Engineering", "Mechanical Engineering",
+            "Civil Engineering", "Chemical Engineering", "Biomedical Engineering",
+            "Aerospace Engineering", "Environmental Engineering", "Industrial Engineering",
+            "Robotics", "Mechatronics", "Materials Science / Engineering",
+            "Nuclear Engineering", "Systems Engineering", "Engineering Physics",
+            "Bioengineering", "General Engineering / Undecided Engineering", "Engineering",
+            "Architectural Engineering", "Structural Engineering", "Construction Engineering",
+        ],
+        "computing": [
+            "Computer Science", "Software Engineering", "Cybersecurity",
+            "Information Technology / Information Science", "Information Systems",
+            "Management Information Systems", "Human-Computer Interaction",
+            "Web Development", "Game Development", "Computer Engineering",
+            "Artificial Intelligence", "Machine Learning",
+        ],
+        "physical": [
+            "Physics", "Applied Physics", "Chemistry", "Astronomy / Astrophysics",
+            "Materials Science", "Nuclear Science", "Space Science",
+            "Meteorology / Atmospheric Science", "Oceanography", "Engineering Physics",
+            "Materials Science / Engineering",
+        ],
+        "life": [
+            "Biology", "Molecular Biology", "Biochemistry", "Genetics / Genomics",
+            "Neuroscience", "Ecology", "Biotechnology", "Biomedical Science",
+            "Marine Science", "Agricultural Science", "Bioinformatics / Computational Biology",
+            "Food Science",
+        ],
+        "math": [
+            "Mathematics", "Applied Mathematics", "Statistics",
+            "Actuarial Science", "Operations Research",
+            "Financial Engineering", "Quantitative Finance",
+        ],
+        "data_ai": [
+            "Data Science", "Artificial Intelligence", "Machine Learning",
+            "Computational Science", "Business Analytics",
+            "Bioinformatics / Computational Biology", "Statistics",
+        ],
+        "health": [
+            "Biomedical Engineering", "Bioengineering", "Biomedical Science",
+            "Medicine / Health Science", "Medicine / Pre-Med", "Public Health",
+            "Health Science", "Pharmacy / Pharmaceutical Science", "Neuroscience",
+            "Biotechnology",
+        ],
+        "business": [
+            "Finance", "Economics", "Business", "Accounting",
+            "Entrepreneurship", "Business Analytics",
+            "Financial Engineering", "Quantitative Finance", "FinTech",
+            "Quantitative Economics", "Actuarial Science",
+            "Supply Chain Management", "Operations Management",
+            "Management Information Systems", "Information Systems",
+            "Industrial Engineering", "Operations Research",
+        ],
     }
 
-    def apply_answer_boosts(answer, mapping, reason_label):
+    category_labels = {
+        "engineering": "Engineering",
+        "computing": "Computer Science & Technology",
+        "physical": "Physical Sciences",
+        "life": "Life Sciences / Biology",
+        "math": "Mathematics & Statistics",
+        "data_ai": "Data Science / AI",
+        "health": "Health / Biomedical",
+        "business": "Business, Finance & Economics",
+    }
+
+    def note_reason(field, reason):
+        if reason and reason not in answer_reasons[field]:
+            answer_reasons[field].append(reason)
+
+    # ---- PRIMARY (~60%): broad interest ratings ----
+    for category, majors in interest_major_map.items():
+        rating = interest_ratings.get(category, 1)
+        # Squared emphasis so 9–10 clearly dominate 5–6.
+        primary_points = (rating ** 2) * 1.15
+        reason = f"rated {category_labels[category]} {rating}/10"
+        for major in majors:
+            canonical = canonicalize_stem_field(major)
+            target = canonical if canonical in primary_scores else major
+            if target not in primary_scores:
+                continue
+            # Keep the strongest category rating for soft-gating later.
+            if rating > field_category_rating[target]:
+                field_category_rating[target] = rating
+            primary_scores[target] += primary_points
+            if rating >= 7:
+                field_signal_counts[target] += 1
+                note_reason(target, reason)
+            elif rating >= 5:
+                note_reason(target, reason)
+
+    def apply_to_bucket(bucket, answer, mapping, reason_label, scale=1.0, count_threshold=8):
+        if not answer or answer == SKIP:
+            return
         for field, boost in mapping.get(answer, []):
             canonical = canonicalize_stem_field(field)
-            target = canonical if canonical in scores else field
-            if target not in scores:
+            target = canonical if canonical in bucket else field
+            if target not in bucket:
                 continue
-            scores[target] += float(boost)
-            if boost >= 10:
+            points = float(boost) * scale
+            bucket[target] += points
+            if points >= count_threshold:
                 field_signal_counts[target] += 1
-            if reason_label and reason_label not in answer_reasons[target]:
-                answer_reasons[target].append(reason_label)
-
-    # Light profile-interest bonus so saved interests still matter, but
-    # questionnaire answers dominate differentiation.
-    for interest in profile.get("interests") or []:
-        canonical = canonicalize_stem_field(interest)
-        target = canonical if canonical in scores else interest
-        if target in scores:
-            scores[target] += 8
-            field_signal_counts[target] += 1
+            note_reason(target, reason_label)
 
     work_mapping = {
         "Building physical machines or products": [
@@ -22632,6 +23639,15 @@ elif page == "My STEM Pathway":
             ("Web Development", 12), ("Architecture", 10),
             ("Biomedical Engineering", 10), ("Psychology / Cognitive Science", 8),
         ],
+        "Hands-on building and making": [
+            ("Mechanical Engineering", 18), ("Robotics", 14),
+            ("Mechatronics", 12), ("Electrical Engineering", 10),
+            ("Industrial Design", 10),
+        ],
+        "Theoretical / research-focused work": [
+            ("Physics", 16), ("Mathematics", 16), ("Chemistry", 12),
+            ("Biology", 12), ("Astronomy / Astrophysics", 10),
+        ],
     }
 
     activity_mapping = {
@@ -22648,6 +23664,10 @@ elif page == "My STEM Pathway":
         "Programming an application": [
             ("Computer Science", 24), ("Software Engineering", 22),
             ("Web Development", 12), ("Information Systems", 8),
+        ],
+        "Programming embedded systems or robots": [
+            ("Computer Engineering", 24), ("Electrical Engineering", 18),
+            ("Robotics", 20), ("Mechatronics", 14), ("Software Engineering", 8),
         ],
         "Training or analyzing an AI model": [
             ("Artificial Intelligence", 26), ("Machine Learning", 24),
@@ -22692,6 +23712,10 @@ elif page == "My STEM Pathway":
             ("Industrial Engineering", 24), ("Operations Research", 22),
             ("Supply Chain Management", 18), ("Business Analytics", 16),
             ("Operations Management", 16), ("Systems Engineering", 10),
+        ],
+        "Studying space, stars, or the universe": [
+            ("Astronomy / Astrophysics", 26), ("Space Science", 18),
+            ("Physics", 14), ("Aerospace Engineering", 10),
         ],
     }
 
@@ -22740,11 +23764,7 @@ elif page == "My STEM Pathway":
             ("Computer Science", 12), ("Genetics / Genomics", 10),
             ("Biotechnology", 8),
         ],
-        "Technology does not strongly interest me": [
-            ("Biology", 6), ("Chemistry", 6), ("Physics", 6),
-            ("Mathematics", 6), ("Environmental Science", 6),
-            ("Architecture", 4), ("Finance", 4), ("Economics", 4),
-        ],
+        "Technology does not strongly interest me": [],
     }
 
     science_mapping = {
@@ -22752,6 +23772,11 @@ elif page == "My STEM Pathway":
             ("Physics", 26), ("Applied Physics", 16),
             ("Engineering Physics", 14), ("Astronomy / Astrophysics", 12),
             ("Mathematics", 8),
+        ],
+        "Energy, forces, and matter": [
+            ("Physics", 24), ("Applied Physics", 18),
+            ("Engineering Physics", 14), ("Nuclear Engineering", 10),
+            ("Nuclear Science", 8),
         ],
         "Chemistry and materials": [
             ("Chemistry", 26), ("Materials Science", 18),
@@ -22763,10 +23788,11 @@ elif page == "My STEM Pathway":
             ("Ecology", 10), ("Biotechnology", 10),
             ("Biochemistry", 8),
         ],
-        "Human health and medicine": [
+        "Human body, disease, and medicine": [
             ("Medicine / Health Science", 22), ("Biomedical Science", 20),
             ("Health Science", 18), ("Public Health", 14),
             ("Biology", 12), ("Medicine / Pre-Med", 12),
+            ("Biochemistry", 10), ("Neuroscience", 10),
         ],
         "Neuroscience and the brain": [
             ("Neuroscience", 28), ("Biology", 12),
@@ -22777,6 +23803,11 @@ elif page == "My STEM Pathway":
             ("Genetics / Genomics", 26), ("Biotechnology", 22),
             ("Molecular Biology", 16), ("Bioinformatics / Computational Biology", 12),
             ("Biology", 10),
+        ],
+        "Plants, ecosystems, and the living environment": [
+            ("Ecology", 24), ("Environmental Science", 16),
+            ("Agricultural Science", 16), ("Biology", 12),
+            ("Marine Science", 10),
         ],
         "Environment and climate": [
             ("Environmental Science", 24), ("Climate Science", 20),
@@ -22921,77 +23952,93 @@ elif page == "My STEM Pathway":
         ],
     }
 
-    apply_answer_boosts(
-        preferred_work, work_mapping, preferred_work
-    )
-    apply_answer_boosts(
-        favorite_activity, activity_mapping, favorite_activity
-    )
-    apply_answer_boosts(
-        preferred_tech, tech_mapping, preferred_tech
-    )
-    apply_answer_boosts(
-        preferred_science, science_mapping, preferred_science
-    )
-    apply_answer_boosts(
-        preferred_quant, quant_mapping, preferred_quant
-    )
-    apply_answer_boosts(
-        preferred_impact, impact_mapping, preferred_impact
+    # Work style ~10%
+    apply_to_bucket(
+        work_scores, preferred_work, work_mapping, preferred_work, scale=1.0
     )
 
-    # Soft dampening: traditional STEM labels should not dominate when
-    # answers point clearly at Finance / Economics (and vice versa).
-    finance_lean = any(
-        token in str(preferred_work) + str(favorite_activity) + str(preferred_quant) + str(preferred_impact)
-        for token in [
-            "markets", "investing", "financial", "econom", "banking",
-            "business performance", "company data",
-        ]
+    # Detailed refinements ~30%
+    apply_to_bucket(
+        detail_scores, favorite_activity, activity_mapping, favorite_activity, scale=1.0
     )
-    engineering_lean = any(
-        token in str(preferred_work) + str(favorite_activity) + str(preferred_tech) + str(preferred_impact)
-        for token in [
-            "circuit", "hardware", "machines", "CAD", "robot",
-            "infrastructure", "aerospace", "embedded",
-        ]
+    apply_to_bucket(
+        detail_scores, preferred_tech, tech_mapping, preferred_tech, scale=1.0
+    )
+    apply_to_bucket(
+        detail_scores, preferred_science, science_mapping, preferred_science, scale=1.0
+    )
+    apply_to_bucket(
+        detail_scores, preferred_quant, quant_mapping, preferred_quant, scale=1.0
+    )
+    apply_to_bucket(
+        detail_scores, preferred_impact, impact_mapping, preferred_impact, scale=0.85
     )
 
-    if finance_lean and not engineering_lean:
-        for field in list(scores):
-            fl = field.lower()
-            if any(t in fl for t in ["civil", "mechanical", "robot", "biology", "chemistry"]):
-                scores[field] *= 0.72
-    if engineering_lean and not finance_lean:
-        for field in ("Finance", "Economics", "Accounting", "Business"):
-            if field in scores:
-                scores[field] *= 0.75
+    # Light profile-interest bonus (does not overpower ratings).
+    for interest in profile.get("interests") or []:
+        canonical = canonicalize_stem_field(interest)
+        target = canonical if canonical in detail_scores else interest
+        if target in detail_scores:
+            detail_scores[target] += 4
+
+    def normalize_bucket(bucket):
+        peak = max(bucket.values()) if bucket else 0.0
+        if peak <= 0:
+            return {k: 0.0 for k in bucket}
+        return {k: (v / peak) * 100.0 for k, v in bucket.items()}
+
+    primary_n = normalize_bucket(primary_scores)
+    detail_n = normalize_bucket(detail_scores)
+    work_n = normalize_bucket(work_scores)
+
+    # Weighted blend: ratings dominate.
+    W_PRIMARY, W_DETAIL, W_WORK = 0.60, 0.30, 0.10
+
+    for field in scores:
+        blended = (
+            W_PRIMARY * primary_n.get(field, 0.0)
+            + W_DETAIL * detail_n.get(field, 0.0)
+            + W_WORK * work_n.get(field, 0.0)
+        )
+        category_rating = field_category_rating.get(field, 0)
+
+        # Soft-gate: low-rated areas cannot lead unless rating is decent.
+        if category_rating <= 2:
+            blended *= 0.12
+        elif category_rating == 3:
+            blended *= 0.35
+        elif category_rating == 4:
+            blended *= 0.55
+        elif category_rating >= 1:
+            # Scale remaining fields gently by interest strength.
+            blended *= 0.55 + (category_rating / 10.0) * 0.45
+        else:
+            # Majors with no mapped category (e.g. pure Finance) rely on secondary only.
+            # Cap so they cannot overpower a clear high primary rating elsewhere.
+            blended *= 0.55
+
+        scores[field] = blended
 
     def career_rank_key(item):
         field, score = item
         signals = field_signal_counts.get(field, 0)
-        multi_signal = 1 if signals >= 2 else 0
-        return (multi_signal, score, signals)
+        cat = field_category_rating.get(field, 0)
+        # Prefer fields backed by high ratings + multiple signals.
+        return (cat >= 7, signals >= 2, score, cat, signals)
 
     def major_match_explanation(field):
-        reasons = answer_reasons.get(field, [])[:3]
-        if not reasons:
-            return (
-                "Recommended based on multiple Career Explorer answers "
-                "pointing in this direction."
-            )
-        if len(reasons) == 1:
-            joined = reasons[0]
-        elif len(reasons) == 2:
-            joined = reasons[0] + " and " + reasons[1]
-        else:
-            joined = ", ".join(reasons[:-1]) + ", and " + reasons[-1]
-        prefix = "Strong match because you chose "
-        if field in QUANTITATIVE_STEM_ADJACENT_FIELDS:
-            prefix = "Strong quantitative / business match because you chose "
-        elif field in QUANTITATIVE_STEM_MAJORS:
-            prefix = "Strong quantitative STEM match because you chose "
-        return prefix + joined + "."
+        return personalized_stem_major_explanation(
+            field,
+            profile=profile,
+            interest_ratings=interest_ratings,
+            preferred_work=preferred_work,
+            favorite_activity=favorite_activity,
+            preferred_tech=preferred_tech,
+            preferred_science=preferred_science,
+            preferred_quant=preferred_quant,
+            preferred_impact=preferred_impact,
+            skip_label=SKIP,
+        )
 
     # ========================================================
     # GENERATE RESULTS
@@ -23011,11 +24058,15 @@ elif page == "My STEM Pathway":
                 reverse=True
             )
 
+            # Ratings alone can produce recommendations; secondary answers refine.
             strong = [
                 item
                 for item in ranked
-                if field_signal_counts.get(item[0], 0) >= 2
-                and item[1] > 0
+                if item[1] > 0
+                and (
+                    field_category_rating.get(item[0], 0) >= 6
+                    or field_signal_counts.get(item[0], 0) >= 2
+                )
             ]
 
             selected = (
@@ -23035,6 +24086,7 @@ elif page == "My STEM Pathway":
                 for field, _ in selected
             }
             st.session_state.career_answer_snapshot = {
+                "ratings": dict(interest_ratings),
                 "work": preferred_work,
                 "activity": favorite_activity,
                 "tech": preferred_tech,
@@ -23053,9 +24105,9 @@ elif page == "My STEM Pathway":
         st.header("Your Potential Majors")
 
         st.caption(
-            "These recommendations use all six questionnaire answers. "
-            "Finance and economics paths are listed separately from "
-            "traditional STEM majors when your answers point that way."
+            "Your 1–10 interest ratings drive these recommendations. "
+            "Optional questions refine which major within your top-rated areas fits best. "
+            "Finance and economics paths are labeled separately when they appear."
         )
 
         def build_major_card(index, field, score, badge_label=""):
