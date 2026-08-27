@@ -20011,21 +20011,39 @@ def college_selectivity_from_acceptance_rate(rate):
     return 1, "More Accessible"
 
 
+STUDENT_DATA_RETRY_MESSAGE = (
+    "Something went wrong while saving your data. "
+    "Please try again in a moment."
+)
+
+
 def supabase_can_write():
 
     if supabase_connected:
         return True
 
-    st.error(
-        "Your data could not be saved because the database is unavailable. "
-        "Please try again in a moment."
-    )
+    st.error(STUDENT_DATA_RETRY_MESSAGE)
 
     return False
 
 
+def notify_student_data_error(message=None):
+
+    st.error(
+        message or STUDENT_DATA_RETRY_MESSAGE
+    )
+
+
+def require_user_sub(user_sub):
+
+    return bool(
+        str(user_sub or "").strip()
+    )
+
+
 def log_supabase_exception(action):
 
+    # Log server-side only. Never surface raw DB/API details to students.
     logger.exception(
         "Supabase %s failed",
         action
@@ -20137,6 +20155,9 @@ def load_profile(user_sub):
     if not supabase_connected:
         return None
 
+    if not require_user_sub(user_sub):
+        return None
+
     try:
 
         response = (
@@ -20227,8 +20248,9 @@ def load_profile(user_sub):
             "load_profile"
         )
 
-        st.error(
-            "We could not load your saved profile."
+        notify_student_data_error(
+            "We could not load your saved profile. "
+            "Please try again in a moment."
         )
 
         return None
@@ -20243,10 +20265,15 @@ def save_profile(
     if not supabase_can_write():
         return False
 
+    if not require_user_sub(user_sub):
+        notify_student_data_error()
+        return False
+
     now = datetime.now(
         timezone.utc
     ).isoformat()
 
+    # Never change user_sub or email on existing rows.
     update_data = {
         "first_name":
             profile["first_name"],
@@ -20336,10 +20363,7 @@ def save_profile(
             if mutation_row_count(upserted) > 0:
                 return True
 
-            st.error(
-                "Your profile could not be saved."
-            )
-
+            notify_student_data_error()
             return False
 
         except Exception as upsert_error:
@@ -20359,10 +20383,7 @@ def save_profile(
             if mutation_row_count(inserted) > 0:
                 return True
 
-            st.error(
-                "Your profile could not be saved."
-            )
-
+            notify_student_data_error()
             return False
 
     except Exception as error:
@@ -20384,10 +20405,7 @@ def save_profile(
             "save_profile"
         )
 
-        st.error(
-            "Your profile could not be saved."
-        )
-
+        notify_student_data_error()
         return False
 
 
@@ -20411,6 +20429,9 @@ def load_saved_opportunities(user_sub):
     if not supabase_connected:
         return []
 
+    if not require_user_sub(user_sub):
+        return []
+
     try:
 
         response = (
@@ -20430,8 +20451,9 @@ def load_saved_opportunities(user_sub):
             "load_saved_opportunities"
         )
 
-        st.error(
-            "We could not load your saved opportunities."
+        notify_student_data_error(
+            "We could not load your saved opportunities. "
+            "Please try again in a moment."
         )
 
         return []
@@ -20440,6 +20462,10 @@ def load_saved_opportunities(user_sub):
 def save_opportunity(user_sub, opportunity_name):
 
     if not supabase_can_write():
+        return False
+
+    if not require_user_sub(user_sub):
+        notify_student_data_error()
         return False
 
     now = datetime.now(
@@ -20483,14 +20509,32 @@ def save_opportunity(user_sub, opportunity_name):
 
         try:
 
-            supabase_upsert(
+            upserted = supabase_upsert(
                 "saved_opportunities",
                 payload,
                 "user_sub,opportunity_name",
                 ignore_duplicates=True
             )
 
-            return True
+            if mutation_row_count(upserted) > 0:
+                return True
+
+            # ignore_duplicates may return zero rows when the row already exists.
+            verified = (
+                supabase
+                .table("saved_opportunities")
+                .select("id")
+                .eq("user_sub", user_sub)
+                .eq("opportunity_name", opportunity_name)
+                .limit(1)
+                .execute()
+            )
+
+            if verified.data:
+                return True
+
+            notify_student_data_error()
+            return False
 
         except Exception as upsert_error:
 
@@ -20509,10 +20553,7 @@ def save_opportunity(user_sub, opportunity_name):
             if mutation_row_count(inserted) > 0:
                 return True
 
-            st.error(
-                "This opportunity could not be saved."
-            )
-
+            notify_student_data_error()
             return False
 
     except Exception as error:
@@ -20524,10 +20565,7 @@ def save_opportunity(user_sub, opportunity_name):
             "save_opportunity"
         )
 
-        st.error(
-            "This opportunity could not be saved."
-        )
-
+        notify_student_data_error()
         return False
 
 
@@ -20539,6 +20577,10 @@ def update_saved_opportunity(
 ):
 
     if not supabase_can_write():
+        return False
+
+    if not require_user_sub(user_sub):
+        notify_student_data_error()
         return False
 
     try:
@@ -20566,10 +20608,7 @@ def update_saved_opportunity(
         if mutation_row_count(updated) > 0:
             return True
 
-        st.error(
-            "Your application tracker could not be updated."
-        )
-
+        notify_student_data_error()
         return False
 
     except Exception:
@@ -20578,16 +20617,17 @@ def update_saved_opportunity(
             "update_saved_opportunity"
         )
 
-        st.error(
-            "Your application tracker could not be updated."
-        )
-
+        notify_student_data_error()
         return False
 
 
 def delete_saved_opportunity(user_sub, saved_id):
 
     if not supabase_can_write():
+        return False
+
+    if not require_user_sub(user_sub):
+        notify_student_data_error()
         return False
 
     try:
@@ -20604,10 +20644,7 @@ def delete_saved_opportunity(user_sub, saved_id):
         if mutation_row_count(deleted) > 0:
             return True
 
-        st.error(
-            "This opportunity could not be removed."
-        )
-
+        notify_student_data_error()
         return False
 
     except Exception:
@@ -20616,10 +20653,7 @@ def delete_saved_opportunity(user_sub, saved_id):
             "delete_saved_opportunity"
         )
 
-        st.error(
-            "This opportunity could not be removed."
-        )
-
+        notify_student_data_error()
         return False
 
 
@@ -20645,6 +20679,9 @@ def load_favorite_colleges(user_sub):
     if not supabase_connected:
         return []
 
+    if not require_user_sub(user_sub):
+        return []
+
     try:
 
         response = (
@@ -20664,8 +20701,9 @@ def load_favorite_colleges(user_sub):
             "load_favorite_colleges"
         )
 
-        st.error(
-            "We could not load your favorite colleges."
+        notify_student_data_error(
+            "We could not load your favorite colleges. "
+            "Please try again in a moment."
         )
 
         return []
@@ -20677,6 +20715,10 @@ def add_favorite_college(
 ):
 
     if not supabase_can_write():
+        return False
+
+    if not require_user_sub(user_sub):
+        notify_student_data_error()
         return False
 
     try:
@@ -20726,14 +20768,31 @@ def add_favorite_college(
 
         try:
 
-            supabase_upsert(
+            upserted = supabase_upsert(
                 "favorite_colleges",
                 payload,
                 "user_sub,college_name",
                 ignore_duplicates=True
             )
 
-            return True
+            if mutation_row_count(upserted) > 0:
+                return True
+
+            verified = (
+                supabase
+                .table("favorite_colleges")
+                .select("id")
+                .eq("user_sub", user_sub)
+                .eq("college_name", college_name)
+                .limit(1)
+                .execute()
+            )
+
+            if verified.data:
+                return True
+
+            notify_student_data_error()
+            return False
 
         except Exception as upsert_error:
 
@@ -20752,10 +20811,7 @@ def add_favorite_college(
             if mutation_row_count(inserted) > 0:
                 return True
 
-            st.error(
-                "This college could not be added to your favorites."
-            )
-
+            notify_student_data_error()
             return False
 
     except Exception as error:
@@ -20767,10 +20823,7 @@ def add_favorite_college(
             "add_favorite_college"
         )
 
-        st.error(
-            "This college could not be added to your favorites."
-        )
-
+        notify_student_data_error()
         return False
 
 
@@ -20781,6 +20834,10 @@ def update_favorite_college_notes(
 ):
 
     if not supabase_can_write():
+        return False
+
+    if not require_user_sub(user_sub):
+        notify_student_data_error()
         return False
 
     try:
@@ -20805,10 +20862,7 @@ def update_favorite_college_notes(
         if mutation_row_count(updated) > 0:
             return True
 
-        st.error(
-            "Your college notes could not be updated."
-        )
-
+        notify_student_data_error()
         return False
 
     except Exception:
@@ -20817,10 +20871,7 @@ def update_favorite_college_notes(
             "update_favorite_college_notes"
         )
 
-        st.error(
-            "Your college notes could not be updated."
-        )
-
+        notify_student_data_error()
         return False
 
 
@@ -20831,6 +20882,10 @@ def reorder_favorite_colleges(
 ):
 
     if not supabase_can_write():
+        return False
+
+    if not require_user_sub(user_sub):
+        notify_student_data_error()
         return False
 
     favorites = load_favorite_colleges(
@@ -20941,10 +20996,7 @@ def reorder_favorite_colleges(
         ):
             return True
 
-        st.error(
-            "Your favorite college order could not be updated."
-        )
-
+        notify_student_data_error()
         return False
 
     except Exception:
@@ -20953,10 +21005,7 @@ def reorder_favorite_colleges(
             "reorder_favorite_colleges"
         )
 
-        st.error(
-            "Your favorite college order could not be updated."
-        )
-
+        notify_student_data_error()
         return False
 
 
@@ -20966,6 +21015,10 @@ def remove_favorite_college(
 ):
 
     if not supabase_can_write():
+        return False
+
+    if not require_user_sub(user_sub):
+        notify_student_data_error()
         return False
 
     try:
@@ -20981,10 +21034,7 @@ def remove_favorite_college(
 
         if mutation_row_count(deleted) < 1:
 
-            st.error(
-                "This college could not be removed from your favorites."
-            )
-
+            notify_student_data_error()
             return False
 
         # Re-number remaining favorites so the order stays clean.
@@ -21026,10 +21076,7 @@ def remove_favorite_college(
 
                 if mutation_row_count(ranked) < 1:
 
-                    st.error(
-                        "This college could not be removed from your favorites."
-                    )
-
+                    notify_student_data_error()
                     return False
 
         return True
@@ -21040,10 +21087,7 @@ def remove_favorite_college(
             "remove_favorite_college"
         )
 
-        st.error(
-            "This college could not be removed from your favorites."
-        )
-
+        notify_student_data_error()
         return False
 
 
@@ -21055,6 +21099,9 @@ def remove_favorite_college(
 def load_user_feedback(user_sub):
 
     if not supabase_connected:
+        return None
+
+    if not require_user_sub(user_sub):
         return None
 
     try:
@@ -21091,10 +21138,15 @@ def save_user_feedback(
     if not supabase_can_write():
         return False
 
+    if not require_user_sub(user_sub):
+        notify_student_data_error()
+        return False
+
     now = datetime.now(
         timezone.utc
     ).isoformat()
 
+    # Never change user_sub or email on existing rows.
     update_data = {
         "rating":
             int(
@@ -21178,10 +21230,7 @@ def save_user_feedback(
             if mutation_row_count(upserted) > 0:
                 return True
 
-            st.error(
-                "Your feedback could not be saved."
-            )
-
+            notify_student_data_error()
             return False
 
         except Exception as upsert_error:
@@ -21201,10 +21250,7 @@ def save_user_feedback(
             if mutation_row_count(inserted) > 0:
                 return True
 
-            st.error(
-                "Your feedback could not be saved."
-            )
-
+            notify_student_data_error()
             return False
 
     except Exception as error:
@@ -21226,11 +21272,9 @@ def save_user_feedback(
             "save_user_feedback"
         )
 
-        st.error(
-            "Your feedback could not be saved."
-        )
-
+        notify_student_data_error()
         return False
+
 
 
 
