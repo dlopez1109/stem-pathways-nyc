@@ -2456,19 +2456,74 @@ st.markdown(
         box-shadow: 0 14px 28px rgba(8, 60, 93, 0.12);
     }
 
+    .sp-stem-dir-badges {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin: 0 0 0.7rem 0;
+    }
+
     .sp-stem-dir-rank {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         background: #E7F6FC;
         border: 1px solid #B9E5F5;
         color: #083C5D;
+        -webkit-text-fill-color: #083C5D;
         border-radius: 999px;
-        padding: 0.16rem 0.55rem;
-        font-size: 0.78rem;
-        font-weight: 800;
+        padding: 0.45rem 0.75rem;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
         letter-spacing: 0.02em;
         margin: 0 0 0.7rem 0;
+        box-sizing: border-box;
+        min-height: calc(1rem + 0.9rem);
+        white-space: nowrap;
     }
+
+    /* Equal-size match label + rank number pills on STEM pathway cards */
+    .sp-stem-path-grid .sp-stem-dir-badges .sp-deadline-badge,
+    .sp-stem-path-grid .sp-stem-dir-badges .sp-stem-dir-rank,
+    .sp-stem-dir-grid .sp-stem-dir-badges .sp-deadline-badge,
+    .sp-stem-dir-grid .sp-stem-dir-badges .sp-stem-dir-rank,
+    html body .stApp [data-testid="stMain"] .sp-stem-path-grid .sp-stem-dir-badges .sp-deadline-badge,
+    html body .stApp [data-testid="stMain"] .sp-stem-path-grid .sp-stem-dir-badges .sp-stem-dir-rank,
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-badges .sp-deadline-badge,
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-badges .sp-stem-dir-rank {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+        padding: 0.45rem 0.75rem !important;
+        border-radius: 999px !important;
+        border-width: 1px !important;
+        border-style: solid !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        min-height: calc(1rem + 0.9rem) !important;
+        height: auto !important;
+        letter-spacing: 0.02em !important;
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+    }
+
+    .sp-stem-path-grid .sp-stem-dir-badges .sp-stem-dir-rank,
+    .sp-stem-dir-grid .sp-stem-dir-badges .sp-stem-dir-rank,
+    html body .stApp [data-testid="stMain"] .sp-stem-path-grid .sp-stem-dir-badges .sp-stem-dir-rank,
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-badges .sp-stem-dir-rank {
+        background: #E7F6FC !important;
+        border-color: #B9E5F5 !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+
 
     .sp-stem-dir-top {
         display: flex;
@@ -9374,6 +9429,456 @@ st.markdown(
         border: none !important;
         box-shadow: none !important;
     }
+    /* ============================================================
+       Recommended Major Direction feature card
+       ============================================================ */
+    .sp-major-direction-card {
+        background: #FFFFFF;
+        border: 1px solid #D0D8E0;
+        border-radius: 15px;
+        box-shadow: 0 4px 14px rgba(8, 60, 93, 0.055);
+        padding: 1.25rem 1.35rem 1.2rem;
+        margin: 0.15rem 0 0.85rem 0;
+        box-sizing: border-box;
+        color: #083C5D;
+    }
+
+    .sp-major-direction-kicker {
+        margin: 0 0 0.55rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.05rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.01em;
+        line-height: 1.25 !important;
+    }
+
+    .sp-major-direction-pill {
+        display: inline-flex;
+        align-items: center;
+        background: #E7F6FC;
+        border: 1px solid #B5DFF0;
+        border-radius: 999px;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        padding: 0.24rem 0.72rem;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important;
+        margin: 0 0 0.55rem 0;
+    }
+
+    .sp-major-direction-name {
+        margin: 0 0 0.55rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.65rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.025em;
+        line-height: 1.15 !important;
+    }
+
+    .sp-major-direction-support {
+        margin: 0 0 0.85rem 0;
+        color: #4A6274 !important;
+        -webkit-text-fill-color: #4A6274 !important;
+        font-size: 0.94rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        max-width: 52rem;
+    }
+
+    .sp-major-direction-why-label {
+        margin: 0 0 0.4rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.84rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+    }
+
+    .sp-major-direction-why {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin: 0 0 0.9rem 0;
+    }
+
+    .sp-major-direction-why-pill {
+        display: inline-flex;
+        align-items: center;
+        background: #E7F6FC;
+        border: 1px solid #B5DFF0;
+        border-radius: 999px;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        padding: 0.28rem 0.7rem;
+        font-size: 0.8rem !important;
+        font-weight: 650 !important;
+        line-height: 1.3 !important;
+    }
+
+    .sp-major-direction-disclaimer {
+        margin: 0;
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+        border-radius: 10px;
+        padding: 0.55rem 0.75rem;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.84rem !important;
+        font-weight: 550 !important;
+        line-height: 1.4 !important;
+    }
+
+    .sp-career-explore-heading {
+        margin: 0 0 0.25rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.35rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.02em;
+        line-height: 1.2 !important;
+    }
+
+    .sp-career-explore-subtitle {
+        margin: 0 0 0.85rem 0;
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+    }
+
+    .sp-career-explore-highlight-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.55rem;
+        margin: 0 0 0.85rem 0;
+    }
+
+    .sp-career-explore-highlight {
+        background: #F7FBFD;
+        border: 1px solid #D5DEE6;
+        border-radius: 11px;
+        padding: 0.6rem 0.7rem 0.55rem;
+        box-sizing: border-box;
+        min-height: 4.4rem;
+    }
+
+    .sp-career-explore-highlight-label {
+        margin: 0 0 0.2rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.72rem !important;
+        font-weight: 750 !important;
+        line-height: 1.25 !important;
+    }
+
+    .sp-career-explore-highlight-value {
+        margin: 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.15rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.02em;
+        line-height: 1.2 !important;
+    }
+
+    .sp-career-explore-highlight-value.is-muted {
+        font-size: 0.88rem !important;
+        font-weight: 650 !important;
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+    }
+
+    .sp-pathway-section-gap {
+        height: 0.35rem;
+    }
+
+    @media (max-width: 768px) {
+        .sp-major-direction-name {
+            font-size: 1.4rem !important;
+        }
+
+        .sp-career-explore-highlight-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ============================================================
+       Specific Careers to Explore cards (My STEM Pathway)
+       Scoped via .sp-career-explore-* classes
+       ============================================================ */
+    .sp-career-explore-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 0.4rem 0 0.65rem 0;
+        align-items: stretch;
+    }
+
+    .sp-career-explore-card {
+        display: flex;
+        flex-direction: column;
+        background: #FFFFFF;
+        border: 1px solid #D0D8E0;
+        border-radius: 15px;
+        box-shadow: 0 4px 14px rgba(8, 60, 93, 0.055);
+        padding: 1.15rem 1.2rem 1.1rem;
+        box-sizing: border-box;
+        color: #083C5D;
+        height: 100%;
+        min-width: 0;
+    }
+
+    .sp-career-explore-title {
+        margin: 0 0 0.55rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.32rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.02em;
+        line-height: 1.18 !important;
+    }
+
+    .sp-career-explore-major-block {
+        margin: 0 0 0.7rem 0;
+    }
+
+    .sp-career-explore-major-label {
+        margin: 0 0 0.28rem 0;
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+        font-size: 0.72rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        line-height: 1.2 !important;
+    }
+
+    .sp-career-explore-major {
+        display: inline-flex;
+        align-items: center;
+        background: #E7F6FC;
+        border: 1px solid #B5DFF0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        border-radius: 999px;
+        padding: 0.24rem 0.72rem;
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important;
+    }
+
+    .sp-career-explore-desc {
+        margin: 0 0 0.95rem 0;
+        color: #4A6274 !important;
+        -webkit-text-fill-color: #4A6274 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+    }
+
+    .sp-career-explore-section-label {
+        margin: 0 0 0.45rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.94rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.01em;
+        line-height: 1.25 !important;
+    }
+
+    .sp-career-explore-salary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.55rem;
+        margin: 0 0 0.95rem 0;
+    }
+
+    .sp-career-explore-stat {
+        background: #F7FBFD;
+        border: 1px solid #D5DEE6;
+        border-radius: 11px;
+        padding: 0.6rem 0.7rem 0.55rem;
+        box-sizing: border-box;
+        min-height: 4.6rem;
+        box-shadow: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .sp-career-explore-stat-label {
+        margin: 0 0 0.22rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.74rem !important;
+        font-weight: 750 !important;
+        line-height: 1.25 !important;
+    }
+
+    .sp-career-explore-stat-value {
+        margin: 0 0 0.14rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.28rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.025em;
+        line-height: 1.1 !important;
+    }
+
+    .sp-career-explore-stat-note {
+        margin: auto 0 0 0;
+        padding-top: 0.15rem;
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+        font-size: 0.7rem !important;
+        font-weight: 550 !important;
+        line-height: 1.3 !important;
+    }
+
+    .sp-career-explore-edu-block {
+        margin: 0 0 0.95rem 0;
+    }
+
+    .sp-career-explore-edu-pill {
+        display: inline-flex;
+        align-items: center;
+        background: #FFFFFF;
+        border: 1px solid #C9D4DE;
+        border-radius: 999px;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        padding: 0.3rem 0.78rem;
+        font-size: 0.84rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important;
+    }
+
+    .sp-career-explore-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin: 0 0 0.35rem 0;
+    }
+
+    .sp-career-explore-skill {
+        display: inline-flex;
+        align-items: center;
+        background: #E7F6FC;
+        border: 1px solid #B5DFF0;
+        border-radius: 999px;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        padding: 0.24rem 0.68rem;
+        font-size: 0.78rem !important;
+        font-weight: 650 !important;
+        line-height: 1.3 !important;
+    }
+
+    .sp-career-explore-extra {
+        margin: 0.75rem 0 0 0;
+        padding-top: 0.7rem;
+        border-top: 1px solid #E4EBF0;
+    }
+
+    .sp-career-explore-extra + .sp-career-explore-extra {
+        margin-top: 0.55rem;
+        padding-top: 0;
+        border-top: none;
+    }
+
+    .sp-career-explore-extra-label {
+        margin: 0 0 0.3rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.8rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+    }
+
+    .sp-career-explore-extra-text {
+        margin: 0;
+        color: #4A6274 !important;
+        -webkit-text-fill-color: #4A6274 !important;
+        font-size: 0.82rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+    }
+
+    .sp-career-explore-note {
+        margin: 0.75rem 0 0 0;
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+        border-radius: 10px;
+        padding: 0.55rem 0.7rem;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.8rem !important;
+        font-weight: 550 !important;
+        line-height: 1.4 !important;
+    }
+
+    .sp-career-explore-link {
+        display: inline-flex;
+        margin-top: 0.55rem;
+        color: #018FC7 !important;
+        -webkit-text-fill-color: #018FC7 !important;
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+    }
+
+    .sp-career-explore-link:hover {
+        text-decoration: underline !important;
+    }
+
+    .sp-career-explore-empty {
+        margin: 0;
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+        font-size: 0.86rem !important;
+        font-weight: 550 !important;
+    }
+
+    .sp-career-explore-footer {
+        margin-top: auto;
+        padding-top: 0.35rem;
+    }
+
+    @media (max-width: 768px) {
+        .sp-career-explore-grid {
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+        }
+
+        .sp-career-explore-salary-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .sp-career-explore-card {
+            padding: 1rem 1rem 0.95rem;
+            border-radius: 14px;
+        }
+
+        .sp-career-explore-title {
+            font-size: 1.18rem !important;
+        }
+
+        .sp-career-explore-stat-value {
+            font-size: 1.15rem !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .sp-career-explore-salary-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
     </style>
     """,
     unsafe_allow_html=True
@@ -17559,13 +18064,286 @@ def favorite_college_card_html(
 def format_salary(value):
 
     if pd.isna(value):
-        return "Data unavailable"
+        return "Data not available"
 
     try:
         return f"${int(float(value)):,}"
 
     except Exception:
-        return "Data unavailable"
+        return "Data not available"
+
+
+
+def recommended_major_direction_html(
+    major_name,
+    supporting_sentence="",
+    why_reasons=None,
+):
+    """Feature card for Recommended Major Direction on My STEM Pathway."""
+
+    major = html_module.escape(str(major_name or "").strip() or "STEM major")
+    support = html_module.escape(str(supporting_sentence or "").strip())
+    reasons = [
+        str(item).strip()
+        for item in (why_reasons or [])
+        if str(item).strip()
+    ][:4]
+
+    why_html = ""
+    if reasons:
+        pills = "".join(
+            [
+                '<span class="sp-major-direction-why-pill">'
+                + html_module.escape(reason)
+                + "</span>"
+                for reason in reasons
+            ]
+        )
+        why_html = (
+            '<div class="sp-major-direction-why-label">Why this matches</div>'
+            f'<div class="sp-major-direction-why">{pills}</div>'
+        )
+
+    support_html = (
+        f'<p class="sp-major-direction-support">{support}</p>'
+        if support
+        else ""
+    )
+
+    return (
+        '<section class="sp-major-direction-card">'
+        '<div class="sp-major-direction-kicker">Recommended Major Direction</div>'
+        '<div class="sp-major-direction-pill">Recommended Major</div>'
+        f'<h3 class="sp-major-direction-name">{major}</h3>'
+        f"{support_html}"
+        f"{why_html}"
+        '<div class="sp-major-direction-disclaimer">'
+        "This is a starting point for exploration, not a final decision."
+        "</div>"
+        "</section>"
+    )
+
+
+def career_explore_card_html(
+    career_name,
+    recommended_major="",
+    description="",
+    early_career_salary=None,
+    median_salary=None,
+    experienced_salary=None,
+    average_salary=None,
+    education="",
+    skills="",
+    salary_mapping_note="",
+    source_url="",
+    job_outlook="",
+    industries="",
+    companies="",
+    related_majors="",
+):
+    """Compact HTML career profile card for Specific Careers to Explore."""
+
+    title = html_module.escape(str(career_name or "Career").strip() or "Career")
+    major = html_module.escape(str(recommended_major or "").strip())
+    desc = html_module.escape(str(description or "").strip())
+
+    edu_raw = str(education or "").strip()
+    if not edu_raw or edu_raw.lower() in {"nan", "none"}:
+        edu_display = "Data not available"
+        edu_is_muted = True
+    else:
+        edu_display = html_module.escape(edu_raw)
+        edu_is_muted = False
+
+    median_display = format_salary(median_salary)
+    median_muted = median_display == "Data not available"
+
+    outlook_raw = str(job_outlook or "").strip()
+    if not outlook_raw or outlook_raw.lower() in {"nan", "none"}:
+        outlook_display = "Data not available"
+        outlook_muted = True
+    else:
+        outlook_display = html_module.escape(outlook_raw)
+        outlook_muted = False
+
+    def _split_values(raw):
+        text_value = str(raw or "").strip()
+        if not text_value or text_value.lower() in {"nan", "none"}:
+            return []
+        parts = []
+        for chunk in text_value.replace("|", ";").split(";"):
+            item = chunk.strip()
+            if item and item not in parts:
+                parts.append(item)
+        return parts
+
+    def _pill_row(items, empty_text="Data not available"):
+        if not items:
+            return (
+                f'<span class="sp-career-explore-empty">{html_module.escape(empty_text)}</span>'
+            )
+        return "".join(
+            [
+                '<span class="sp-career-explore-skill">'
+                + html_module.escape(item)
+                + "</span>"
+                for item in items
+            ]
+        )
+
+    major_html = (
+        '<div class="sp-career-explore-major-block">'
+        '<div class="sp-career-explore-major-label">Recommended Major</div>'
+        + (
+            f'<span class="sp-career-explore-major">{major}</span>'
+            if major
+            else '<span class="sp-career-explore-empty">Data not available</span>'
+        )
+        + "</div>"
+    )
+
+    desc_html = (
+        f'<p class="sp-career-explore-desc">{desc}</p>'
+        if desc
+        else ""
+    )
+
+    def _highlight(label, value, muted=False):
+        muted_class = " is-muted" if muted else ""
+        return (
+            '<div class="sp-career-explore-highlight">'
+            f'<div class="sp-career-explore-highlight-label">{html_module.escape(label)}</div>'
+            f'<div class="sp-career-explore-highlight-value{muted_class}">'
+            f"{value}"
+            "</div>"
+            "</div>"
+        )
+
+    highlights_html = (
+        '<div class="sp-career-explore-highlight-grid">'
+        + _highlight("Median Salary", median_display, median_muted)
+        + _highlight("Typical Education", edu_display, edu_is_muted)
+        + _highlight("Job Outlook", outlook_display, outlook_muted)
+        + "</div>"
+    )
+
+    salary_items = [
+        (
+            "Early-Career",
+            format_salary(early_career_salary),
+            "U.S. 25th percentile",
+        ),
+        (
+            "Experienced",
+            format_salary(experienced_salary),
+            "U.S. 75th percentile",
+        ),
+        (
+            "NYC / NY Average",
+            format_salary(average_salary),
+            "Local mean annual wage",
+        ),
+    ]
+
+    # Keep additional salary fields when any have real data
+    has_extra_salary = any(
+        format_salary(val) != "Data not available"
+        for val in (early_career_salary, experienced_salary, average_salary)
+    )
+    extra_salary_html = ""
+    if has_extra_salary:
+        stats_html = "".join(
+            [
+                '<div class="sp-career-explore-stat">'
+                f'<div class="sp-career-explore-stat-label">{html_module.escape(label)}</div>'
+                f'<div class="sp-career-explore-stat-value">{html_module.escape(value)}</div>'
+                f'<div class="sp-career-explore-stat-note">{html_module.escape(note)}</div>'
+                "</div>"
+                for label, value, note in salary_items
+            ]
+        )
+        extra_salary_html = (
+            '<div class="sp-career-explore-section-label">More Salary Context</div>'
+            f'<div class="sp-career-explore-salary-grid">{stats_html}</div>'
+        )
+
+    skill_list = _split_values(skills)
+    skills_html = (
+        '<div class="sp-career-explore-section-label">Key Skills</div>'
+        f'<div class="sp-career-explore-skills">{_pill_row(skill_list)}</div>'
+    )
+
+    extras_html = ""
+
+    industry_list = _split_values(industries)
+    if industry_list:
+        extras_html += (
+            '<div class="sp-career-explore-extra">'
+            '<div class="sp-career-explore-extra-label">Industries</div>'
+            '<div class="sp-career-explore-skills">'
+            + _pill_row(industry_list)
+            + "</div></div>"
+        )
+
+    employer_list = _split_values(companies)
+    if employer_list:
+        extras_html += (
+            '<div class="sp-career-explore-extra">'
+            '<div class="sp-career-explore-extra-label">Example Employers</div>'
+            '<div class="sp-career-explore-skills">'
+            + _pill_row(employer_list)
+            + "</div></div>"
+        )
+
+    related_list = _split_values(related_majors)
+    if related_list:
+        extras_html += (
+            '<div class="sp-career-explore-extra">'
+            '<div class="sp-career-explore-extra-label">Related Fields</div>'
+            '<div class="sp-career-explore-skills">'
+            + _pill_row(related_list[:6])
+            + "</div></div>"
+        )
+
+    note_html = ""
+    note_text = str(salary_mapping_note or "").strip()
+    if note_text and note_text.lower() not in {"nan", "none"}:
+        note_html = (
+            f'<div class="sp-career-explore-note">{html_module.escape(note_text)}</div>'
+        )
+
+    link_html = ""
+    safe_url = safe_http_url(source_url)
+    if safe_url:
+        link_html = (
+            f'<a class="sp-career-explore-link" href="{html_module.escape(safe_url)}" '
+            'target="_blank" rel="noopener noreferrer">'
+            "View Official BLS Source"
+            "</a>"
+        )
+
+    footer_html = ""
+    if note_html or link_html:
+        footer_html = (
+            '<div class="sp-career-explore-footer">'
+            f"{note_html}"
+            f"{link_html}"
+            "</div>"
+        )
+
+    return (
+        '<article class="sp-career-explore-card">'
+        f'<h3 class="sp-career-explore-title">{title}</h3>'
+        f"{major_html}"
+        f"{desc_html}"
+        f"{highlights_html}"
+        f"{extra_salary_html}"
+        f"{skills_html}"
+        f"{extras_html}"
+        f"{footer_html}"
+        "</article>"
+    )
+
 
 
 def list_to_text(items):
@@ -24081,6 +24859,10 @@ elif page == "My STEM Pathway":
                 selected = selected[:5]
 
             st.session_state.career_results = selected
+            st.session_state.career_match_reasons = {
+                field: list(answer_reasons.get(field, []))
+                for field, _ in selected
+            }
             st.session_state.career_signal_counts = {
                 field: field_signal_counts.get(field, 0)
                 for field, _ in selected
@@ -24099,6 +24881,16 @@ elif page == "My STEM Pathway":
 
         top_matches = st.session_state.career_results
         max_score_value = top_matches[0][1] or 1
+        # Prefer reasons saved with the generated results; fall back to the
+        # live answer_reasons map built during this page's scoring pass.
+        reasons_lookup = st.session_state.get("career_match_reasons") or {}
+        if not isinstance(reasons_lookup, dict):
+            reasons_lookup = {}
+        if not reasons_lookup:
+            reasons_lookup = {
+                field: list(answer_reasons.get(field, []))
+                for field, _ in top_matches
+            }
 
         st.divider()
 
@@ -24135,12 +24927,23 @@ elif page == "My STEM Pathway":
                 majors=major_info.get("majors"),
             )
             if badge_label:
+                rank_html = (
+                    f'<div class="sp-stem-dir-rank">'
+                    f"{html_module.escape(f'#{index}')}"
+                    "</div>"
+                )
+                badge_html = (
+                    '<div class="sp-deadline-badge sp-deadline-badge-upcoming">'
+                    f"{html_module.escape(badge_label)}"
+                    "</div>"
+                )
                 card = card.replace(
-                    '<div class="sp-stem-dir-card">',
+                    rank_html,
                     (
-                        '<div class="sp-stem-dir-card">'
-                        f'<div class="sp-deadline-badge sp-deadline-badge-upcoming">'
-                        f"{html_module.escape(badge_label)}</div>"
+                        '<div class="sp-stem-dir-badges">'
+                        f"{badge_html}"
+                        f"{rank_html}"
+                        "</div>"
                     ),
                     1,
                 )
@@ -24190,186 +24993,109 @@ elif page == "My STEM Pathway":
                 + "</div>"
             )
 
-        st.divider()
+        st.html('<div class="sp-pathway-section-gap"></div>')
 
-        st.header("Recommended Major Direction")
-        st.subheader(top_info["majors"][0])
-        st.info(
-            "This is a starting point for exploration, not a final decision."
+        top_field_name = top_matches[0][0]
+        recommended_major_name = (
+            (top_info.get("majors") or [top_field_name])[0]
+            if isinstance(top_info, dict)
+            else top_field_name
+        )
+        why_reasons = reasons_lookup.get(top_field_name) or []
+        support_sentence = (
+            "A strong direction based on your STEM interests and questionnaire answers."
+        )
+        st.html(
+            recommended_major_direction_html(
+                recommended_major_name,
+                supporting_sentence=support_sentence,
+                why_reasons=why_reasons,
+            )
         )
 
-        st.divider()
+        st.html('<div class="sp-pathway-section-gap"></div>')
 
-        st.header("Specific Careers to Explore")
+        st.html(
+            '<div class="sp-career-explore-heading">Specific Careers to Explore</div>'
+            '<p class="sp-career-explore-subtitle">'
+            "Explore careers connected to your recommended major and interests."
+            "</p>"
+        )
 
-        career_columns = st.columns(2)
+        career_cards_html = []
 
-        for index, career_name in enumerate(top_info["careers"]):
+        for career_name in top_info["careers"]:
 
-            with career_columns[index % 2]:
+            if careers.empty:
+                career_cards_html.append(
+                    '<article class="sp-career-explore-card">'
+                    f'<h3 class="sp-career-explore-title">{html_module.escape(str(career_name))}</h3>'
+                    '<p class="sp-career-explore-empty">Career database unavailable.</p>'
+                    "</article>"
+                )
+                continue
 
-                with st.container(border=True):
+            career_match = careers[
+                careers["career"].astype(str).str.lower()
+                == career_name.lower()
+            ]
 
-                    st.subheader(career_name)
+            if career_match.empty:
+                career_cards_html.append(
+                    '<article class="sp-career-explore-card">'
+                    f'<h3 class="sp-career-explore-title">{html_module.escape(str(career_name))}</h3>'
+                    '<div class="sp-career-explore-major-block">'
+                    '<div class="sp-career-explore-major-label">Recommended Major</div>'
+                    f'<span class="sp-career-explore-major">{html_module.escape(str(recommended_major_name))}</span>'
+                    "</div>"
+                    '<p class="sp-career-explore-empty">'
+                    "Related career path based on your top major match."
+                    "</p>"
+                    "</article>"
+                )
+                continue
 
-                    if careers.empty:
+            career_data = career_match.iloc[0]
 
-                        st.info("Career database unavailable.")
-                        continue
+            def _field(name):
+                if name not in career_data.index:
+                    return ""
+                value = career_data[name]
+                try:
+                    if pd.isna(value):
+                        return ""
+                except (TypeError, ValueError):
+                    pass
+                return value
 
-                    career_match = careers[
-                        careers["career"].astype(str).str.lower()
-                        == career_name.lower()
-                    ]
+            card_major = _field("recommended_major") or recommended_major_name
 
-                    if career_match.empty:
-                        st.caption(
-                            "Related career path based on your top major match."
-                        )
-                        continue
+            career_cards_html.append(
+                career_explore_card_html(
+                    career_name,
+                    recommended_major=card_major,
+                    description=_field("description"),
+                    early_career_salary=_field("early_career_salary"),
+                    median_salary=_field("median_salary"),
+                    experienced_salary=_field("experienced_salary"),
+                    average_salary=_field("average_salary"),
+                    education=_field("education"),
+                    skills=_field("skills"),
+                    salary_mapping_note=_field("salary_mapping_note"),
+                    source_url=_field("source_url"),
+                    job_outlook=_field("job_outlook"),
+                    industries=_field("industries"),
+                    companies=_field("companies"),
+                    related_majors=_field("related_majors"),
+                )
+            )
 
-                    career_data = career_match.iloc[0]
-
-                    st.caption(
-                        f"Recommended major: "
-                        f"{career_data['recommended_major']}"
-                    )
-
-                    st.write(career_data["description"])
-
-                    st.markdown("#### Salary & Career Pay")
-
-                    salary_col1, salary_col2 = st.columns(2)
-
-                    with salary_col1:
-
-                        st.metric(
-                            "Early-Career Benchmark",
-                            format_salary(
-                                career_data["early_career_salary"]
-                            ),
-                        )
-
-                        st.caption(
-                            "U.S. 25th percentile"
-                        )
-
-                    with salary_col2:
-
-                        st.metric(
-                            "Typical Salary",
-                            format_salary(
-                                career_data[
-                                    "median_salary"
-                                ]
-                            )
-                        )
-
-                        st.caption(
-                            "U.S. median"
-                        )
-
-                    salary_col3, salary_col4 = (
-                        st.columns(2)
-                    )
-
-                    with salary_col3:
-
-                        st.metric(
-                            "Experienced Benchmark",
-                            format_salary(
-                                career_data[
-                                    "experienced_salary"
-                                ]
-                            )
-                        )
-
-                        st.caption(
-                            "U.S. 75th percentile"
-                        )
-
-                    with salary_col4:
-
-                        st.metric(
-                            "NYC / NY Average",
-                            format_salary(
-                                career_data[
-                                    "average_salary"
-                                ]
-                            )
-                        )
-
-                        st.caption(
-                            "Local mean annual wage"
-                        )
-
-                    st.markdown(
-                        "#### Typical Education"
-                    )
-
-                    st.write(
-                        career_data[
-                            "education"
-                        ]
-                    )
-
-                    st.markdown(
-                        "#### Skills to Explore"
-                    )
-
-                    for skill in str(
-                        career_data["skills"]
-                    ).split(";"):
-
-                        st.write(
-                            f"• {skill.strip()}"
-                        )
-
-                    if (
-                        "salary_mapping_note"
-                        in career_data.index
-                        and
-                        pd.notna(
-                            career_data[
-                                "salary_mapping_note"
-                            ]
-                        )
-                        and
-                        str(
-                            career_data[
-                                "salary_mapping_note"
-                            ]
-                        ).strip()
-                    ):
-
-                        st.info(
-                            career_data[
-                                "salary_mapping_note"
-                            ]
-                        )
-
-                        if (
-                            "source_url"
-                            in career_data.index
-                            and
-                            safe_http_url(
-                                career_data[
-                                    "source_url"
-                                ]
-                            )
-                        ):
-
-                            st.link_button(
-                                "View Official BLS Source",
-                                safe_http_url(
-                                    career_data[
-                                        "source_url"
-                                    ]
-                                ),
-                                use_container_width=True
-                            )
-
-        st.divider()
+        if career_cards_html:
+            st.html(
+                '<div class="sp-career-explore-grid">'
+                + "".join(career_cards_html)
+                + "</div>"
+            )
 
         st.caption(
             "Salary benchmarks represent wage distributions, not "

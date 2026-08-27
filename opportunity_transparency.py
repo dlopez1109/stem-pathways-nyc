@@ -67,7 +67,7 @@ def _arise_fields():
         "financial_aid": "Not needed — program is fully funded / full scholarship",
         "financial_aid_status": "Not needed — program is fully funded / full scholarship",
         "scholarship_availability": "Not needed — program is fully funded / full scholarship",
-        "eligibility_summary": "Rising juniors and seniors; must be a full-time NYC resident and attend an NYC school",
+        "eligibility_summary": "NYC high school students; rising juniors/seniors; full-time NYC residents; STEM interest required",
         "eligible_grades": "10;11",
         "grades": "10;11",
         "age_requirements": "Rising juniors and seniors",
@@ -91,11 +91,14 @@ def _arise_fields():
         "deadline": "February 27, 2026 at 5 PM",
         "internship_potential": "Yes — approximately 150 hours of mentored NYU lab research",
         "format": "Hybrid + in person — NYU Tandon, Brooklyn, NYC",
-        "acceptance_rate": "~4–8% estimated",
+        "acceptance_rate": "Estimated 5–10%",
         "acceptance_rate_confidence": "Estimated — Moderate confidence",
-        "acceptance_rate_source": "NYU does not publish an official acceptance rate. Unofficial estimate based on the reported 2026 cohort of about 75 students and secondary applicant reporting.",
+        "acceptance_rate_source": "Not officially reported; highly competitive research program. Unofficial estimate based on the reported ~75-student cohort and secondary applicant reporting.",
         "requirements": "Rising junior or senior; full-time NYC resident; must attend an NYC school; at least one year of high school science and one year of high school math; full 10-week commitment.",
-        "last_verified": "2026-08-21",
+        "last_verified": "2026-08-23",
+        "financial_aid": "Free program; provides support for accepted students (verify details)",
+        "financial_aid_status": "Free program; provides support for accepted students (verify details)",
+        "scholarship_availability": "Not needed — program is fully funded / full scholarship",
     }
 
 
@@ -2457,7 +2460,192 @@ ACCEPTANCE_ESTIMATES = {
         "Estimated — Low confidence",
         "First round is relatively open; advancing to later pitch rounds is more selective. Unofficial estimate; no official overall rate is published."
     ),
+    "Cooper Union Summer STEM": _est(
+        "~15–35% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Cooper FAQs say typical classes enroll about 20–25 students (some lab sections 8–10). Unofficial estimate based on small cohort size and competitive NYC STEM demand."
+    ),
+    "NYU Tandon ieSoSC": _est(
+        "~10–25% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. A 2026 NYU Tandon announcement said the program served 38 NYC high school students; applicant count was not published. Unofficial estimate for this free selective STEM enrichment program."
+    ),
+    "New York Botanical Garden Science Internship": _est(
+        "~10–25% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Seasonal paid NYBG postings are limited. Unofficial estimate based on competitiveness of NYC paid science internships."
+    ),
+    "Perimeter Institute GoPhysics!": _est(
+        "~20–40% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Perimeter’s 2024/25 report says 21 GoPhysics! and Physica Phantastica workshops reached 548 students, without applicant counts. Unofficial estimate."
+    ),
+    "Qubit by Qubit National High School Research Program": _est(
+        "~25–50% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Offers are rolling until the course reaches capacity. Unofficial estimate for a competitive online research course rather than a tiny residential cohort."
+    ),
+    "MIT PRIMES-USA": _est(
+        "~5–15% estimated",
+        "Estimated — Moderate confidence",
+        "Not officially reported. PRIMES-USA is a highly competitive remote research program with a limited cohort for students outside Greater Boston. Unofficial estimate based on MIT PRIMES selectivity."
+    ),
+    "ACS Project SEED": _est(
+        "~20–40% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. SEED placements depend on local lab capacity and income eligibility. Unofficial estimate for this national paid research fellowship."
+    ),
+    "Urban Barcode Research Program (UBRP)": _est(
+        "~15–35% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. UBRP is a competitive paid NYC DNA-barcode research program with a limited summer cohort. Unofficial estimate."
+    ),
+    "Urban Barcode Project (UBP)": _est(
+        "~30–60% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Team-based NYC-metro classroom research with free lab access for selected teams. Unofficial estimate based on capacity rather than ultra-elite admissions."
+    ),
+    "Barcode Long Island": _est(
+        "~30–60% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. School-team DNA barcoding program for Brooklyn/Queens/Long Island. Unofficial estimate based on training-slot capacity."
+    ),
+    "New York Bioforce": _est(
+        "~15–35% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Competitive NYCDOE biotech pathway with a paid summer internship via SYEP. Unofficial estimate."
+    ),
+    "Jackson Laboratory Summer Student Program": _est(
+        "~5–12% estimated",
+        "Estimated — Moderate confidence",
+        "Not officially reported. Highly competitive residential biomedical research program with stipend, room, board, and travel. Unofficial estimate based on national research-internship competitiveness."
+    ),
+    "NYU GSTEM Summer Research Program": _est(
+        "~10–25% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Selective NYU Tandon summer research program for current juniors; tuition-based with need-based aid. Unofficial estimate."
+    ),
+    "Navy Science and Engineering Apprenticeship Program (SEAP)": _est(
+        "~10–25% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Competitive DoD lab apprenticeships for U.S. citizen high school students; capacity varies by lab. Unofficial estimate."
+    ),
+    "AEOP High School Internships": _est(
+        "~10–30% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Army Educational Outreach Program placements depend on open lab slots students can commute to. Unofficial estimate."
+    ),
+    "UC Santa Cruz Science Internship Program (SIP)": _est(
+        "~10–20% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Competitive UCSC campus research internship with limited lab placements. Unofficial estimate."
+    ),
+    "Wave Hill Woodland Ecology Research Mentorship (WERM)": _est(
+        "~15–35% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Competitive paid Bronx ecology research mentorship with college credit. Unofficial estimate."
+    ),
+    "RISE Environmentor Internship": _est(
+        "~20–40% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Paid Rockaway environmental research internship with a limited local cohort. Unofficial estimate."
+    ),
+    "Genspace Biorocket Research Internship": _est(
+        "~10–25% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Competitive paid Brooklyn community-lab research internship ($2,000). Unofficial estimate."
+    ),
+    "BEYOND ALBERT High School Research Program": _est(
+        "~10–25% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Competitive paid Bronx biomedical research program with a limited summer cohort. Unofficial estimate."
+    ),
+    "Project TRUE (Teens Researching Urban Ecology)": _est(
+        "~15–35% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Bronx Zoo urban-ecology research program for Bronx sophomores/juniors. Unofficial estimate."
+    ),
+    "Bronx River EELS Internship": _est(
+        "~15–35% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Competitive paid Bronx River environmental internship with college credit. Unofficial estimate."
+    ),
+    "Hudson River Park Science Leadership Program": _est(
+        "~15–35% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Pathway-based paid science internship; eligibility depends on partner programs. Unofficial estimate."
+    ),
+    "Wave Hill Forest Project": _est(
+        "~20–45% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Paid SYEP forest ecology internship at Wave Hill with age and work-eligibility screens. Unofficial estimate."
+    ),
+    "Hk Maker Lab": _est(
+        "~15–35% estimated",
+        "Estimated — Low confidence",
+        "Not officially reported. Free Columbia biomedical engineering maker program for rising juniors/seniors. Unofficial estimate."
+    ),
+    "NYU Tandon ARISE": _est(
+        "Estimated 5–10%",
+        "Estimated — Moderate confidence",
+        "Not officially reported; highly competitive research program. Unofficial estimate based on the reported ~75-student cohort and secondary applicant reporting."
+    ),
+    "NYU ARISE": _est(
+        "Estimated 5–10%",
+        "Estimated — Moderate confidence",
+        "Not officially reported; highly competitive research program. Unofficial estimate based on the reported ~75-student cohort and secondary applicant reporting."
+    ),
 }
+
+
+def _selectivity_fallback_estimate(record):
+    """Educated acceptance-rate estimate when no program-specific figure exists."""
+
+    stars = record.get("selectivity_stars")
+    try:
+        stars = int(stars)
+    except Exception:
+        stars = None
+
+    selectivity = str(record.get("selectivity", "")).strip().lower()
+    opportunity_type = str(record.get("opportunity_type", "")).strip().lower()
+    name = str(record.get("name", "")).strip()
+
+    if opportunity_type == "competition" or "not applicable" in str(
+        record.get("acceptance_rate", "")
+    ).lower():
+        existing = str(record.get("acceptance_rate", "")).strip()
+        if existing and "not publicly reported" not in existing.lower():
+            return None
+
+    if stars == 5 or "extremely competitive" in selectivity:
+        rate = "~3–10% estimated"
+        note = "highly competitive"
+    elif stars == 4 or "highly competitive" in selectivity:
+        rate = "~10–25% estimated"
+        note = "highly selective"
+    elif stars == 3 or "moderately competitive" in selectivity:
+        rate = "~20–40% estimated"
+        note = "moderately selective"
+    elif stars == 2 or "eligibility" in selectivity:
+        rate = "~40–70% estimated"
+        note = "primarily eligibility- or capacity-based"
+    elif stars == 1 or "accessible" in selectivity or "lottery" in selectivity:
+        rate = "~50–90% estimated"
+        note = "accessible, lottery, or placement-based"
+    else:
+        rate = "~15–35% estimated"
+        note = "selective STEM program"
+
+    return _est(
+        rate,
+        "Estimated — Low confidence",
+        (
+            f"Not officially reported. Educated estimate for {name or 'this program'} "
+            f"based on published competitiveness ({note}) and typical applicant volume "
+            "for similar opportunities."
+        ),
+    )
 
 
 def apply_opportunity_transparency(records):
@@ -2474,6 +2662,17 @@ def apply_opportunity_transparency(records):
         if not text:
             return False
         return text.lower() not in PLACEHOLDER_VALUES
+
+    def rate_needs_estimate(record):
+        rate = str(record.get("acceptance_rate", "")).strip().lower()
+        confidence = str(record.get("acceptance_rate_confidence", "")).strip()
+        if confidence in ("Official", "Calculated"):
+            return False
+        if not rate:
+            return True
+        if rate == "not publicly reported" or rate.startswith("not publicly reported"):
+            return True
+        return False
 
     for record in records:
         name = str(record.get("name", "")).strip()
@@ -2498,22 +2697,14 @@ def apply_opportunity_transparency(records):
                     merged[key] = value
         record.update(merged)
 
-        confidence = str(
-            record.get(
-                "acceptance_rate_confidence",
-                ""
-            )
-        ).strip()
-
-        if confidence not in (
-            "Official",
-            "Calculated"
-        ) and name != "Cooper Union Summer STEM":
+        if rate_needs_estimate(record):
             estimate = ACCEPTANCE_ESTIMATES.get(name)
             if estimate is None:
                 alias = NAME_ALIASES.get(name)
                 if alias:
                     estimate = ACCEPTANCE_ESTIMATES.get(alias)
+            if estimate is None:
+                estimate = _selectivity_fallback_estimate(record)
             if estimate:
                 record.update(estimate)
 
@@ -2525,6 +2716,12 @@ def apply_opportunity_transparency(records):
             "NYU Tandon ARISE"
         ):
             record.update(_arise_fields())
+            # Keep the user-facing estimated rate label after ARISE overlay.
+            arise_estimate = ACCEPTANCE_ESTIMATES.get(name) or ACCEPTANCE_ESTIMATES.get(
+                "NYU Tandon ARISE"
+            )
+            if arise_estimate:
+                record.update(arise_estimate)
 
     return records
 
