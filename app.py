@@ -4671,9 +4671,9 @@ st.markdown(
     .sp-landing-lower {
         display: flex;
         flex-direction: column;
-        gap: 2.6rem;
+        gap: 2.1rem;
         margin: 0;
-        padding: 0.15rem 0 0.4rem 0;
+        padding: 0.05rem 0 0.35rem 0;
     }
 
     .sp-landing-features {
@@ -4686,7 +4686,7 @@ st.markdown(
     .sp-landing-impact {
         display: flex;
         flex-direction: column;
-        gap: 0.85rem;
+        gap: 0.7rem;
         margin: 0;
     }
 
@@ -4704,7 +4704,7 @@ st.markdown(
     .sp-landing-stats-wrap {
         display: flex;
         flex-direction: column;
-        gap: 0.7rem;
+        gap: 0.45rem;
         width: 100%;
         margin: 0;
     }
@@ -4712,9 +4712,10 @@ st.markdown(
     .sp-landing-stats {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.85rem;
+        gap: 0.7rem;
         width: 100%;
         margin: 0;
+        align-items: stretch;
     }
 
     .sp-landing-stat {
@@ -4723,64 +4724,96 @@ st.markdown(
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 0.28rem;
         background: #FFFFFF;
-        border: 1px solid #D5DEE6;
-        border-radius: 16px;
-        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06);
-        padding: 1.05rem 1rem 0.95rem;
+        border: 1px solid #D5E3EC;
+        border-radius: 14px;
+        box-shadow: 0 3px 10px rgba(8, 60, 93, 0.045);
+        padding: 0.85rem 0.8rem 0.78rem;
         text-align: center;
         box-sizing: border-box;
-        min-height: 138px;
+        min-height: 0;
         overflow: hidden;
+        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .sp-landing-stat::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #38BDF8 0%, #018FC7 55%, #0EA5A0 100%);
+        border-radius: 14px 14px 0 0;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .sp-landing-stat:hover {
+            transform: translateY(-2px);
+            border-color: #C5DCE8;
+            box-shadow: 0 8px 18px rgba(8, 60, 93, 0.09);
+        }
     }
 
     .sp-landing-stat-icon {
-        width: 1.85rem;
-        height: 1.85rem;
-        border-radius: 8px;
+        width: 2.35rem;
+        height: 2.35rem;
+        border-radius: 10px;
         background: #E7F6FC;
         color: #018FC7;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 0 0.48rem 0;
+        margin: 0.15rem 0 0.12rem 0;
         flex: 0 0 auto;
+        border: 1px solid #C9E8F5;
     }
 
     .sp-landing-stat-icon svg {
         display: block;
-        width: 1rem;
-        height: 1rem;
+        width: 1.28rem;
+        height: 1.28rem;
+        stroke-width: 1.9;
     }
 
     .sp-landing-stat-value {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.7rem !important;
+        font-size: 1.55rem !important;
         font-weight: 800 !important;
-        line-height: 1.1 !important;
-        margin: 0 0 0.28rem 0 !important;
+        line-height: 1.08 !important;
+        margin: 0 !important;
         letter-spacing: -0.03em;
+        max-width: 100%;
+    }
+
+    .sp-landing-stat-value.is-text {
+        font-size: 1.42rem !important;
+        letter-spacing: -0.02em;
     }
 
     .sp-landing-stat-label {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 0.84rem !important;
-        font-weight: 650 !important;
-        line-height: 1.3 !important;
+        color: #3F5B6C !important;
+        -webkit-text-fill-color: #3F5B6C !important;
+        font-size: 0.7rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
         margin: 0 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
     }
 
     .sp-landing-stats-note {
-        color: #5A6A78 !important;
-        -webkit-text-fill-color: #5A6A78 !important;
-        font-size: 0.78rem !important;
+        color: #7A8B98 !important;
+        -webkit-text-fill-color: #7A8B98 !important;
+        font-size: 0.7rem !important;
         font-weight: 500 !important;
-        line-height: 1.4 !important;
+        line-height: 1.35 !important;
         text-align: center;
-        margin: 0 auto !important;
-        max-width: 36rem;
+        margin: 0.05rem auto 0 !important;
+        max-width: 34rem;
+        opacity: 0.95;
     }
 
     .sp-landing-feature {
@@ -4900,11 +4933,11 @@ st.markdown(
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"],
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] {
         background: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
-        border-radius: 16px !important;
-        box-shadow: 0 10px 24px rgba(8, 60, 93, 0.08) !important;
-        padding: 2.4rem 2.55rem 2.2rem !important;
-        max-width: 820px;
+        border: 1px solid rgba(8, 60, 93, 0.12) !important;
+        border-radius: 22px !important;
+        box-shadow: 0 18px 48px rgba(8, 60, 93, 0.12) !important;
+        padding: 2.25rem 2.45rem 2.1rem !important;
+        max-width: 720px;
         margin: 0 auto !important;
         position: relative;
         z-index: 2;
@@ -4927,6 +4960,204 @@ st.markdown(
         font-weight: 700 !important;
         border-radius: 12px !important;
         width: 100% !important;
+        background: #FFFFFF !important;
+        color: #083C5D !important;
+        border: 1.5px solid #B8CAD7 !important;
+        box-shadow: 0 5px 14px rgba(8, 60, 93, 0.08) !important;
+        transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button::before {
+        content: "G";
+        display: inline-grid;
+        place-items: center;
+        width: 1.65rem;
+        height: 1.65rem;
+        margin-right: 0.65rem;
+        border-radius: 50%;
+        color: #4285F4;
+        background: #F6F9FE;
+        border: 1px solid #D7E4FA;
+        font-weight: 850;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button p {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:hover {
+        transform: translateY(-1px) !important;
+        border-color: #018FC7 !important;
+        box-shadow: 0 8px 20px rgba(8, 60, 93, 0.13) !important;
+    }
+
+    .sp-auth-divider {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0.95rem 0 0.7rem 0;
+        color: #5A7386;
+        font-size: 0.82rem;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+    }
+
+    .sp-auth-divider::before,
+    .sp-auth-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #C9D6E2;
+    }
+
+    .sp-auth-divider span {
+        white-space: nowrap;
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] {
+        margin: 0.1rem 0 0.7rem 0 !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.3rem !important;
+        padding: 0.3rem !important;
+        background: #EAF4F9 !important;
+        border: 1px solid #C9DFEA !important;
+        border-radius: 13px !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 2.65rem !important;
+        margin: 0 !important;
+        padding: 0.55rem 0.8rem !important;
+        border-radius: 9px !important;
+        color: #496777 !important;
+        font-weight: 750 !important;
+        cursor: pointer !important;
+        transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) {
+        color: #083C5D !important;
+        background: #FFFFFF !important;
+        box-shadow: 0 3px 10px rgba(8, 60, 93, 0.12) !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] input[type="radio"] {
+        position: absolute !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div {
+        width: 100% !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div {
+        justify-content: center !important;
+        width: 100% !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div > div:first-child {
+        display: none !important;
+    }
+
+    /* Landing email auth form — soft card nest (overrides global 3px navy form border) */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"]:hover {
+        background: #FFFFFF !important;
+        border: 1px solid #D5E3EC !important;
+        border-radius: 14px !important;
+        box-shadow: 0 4px 14px rgba(8, 60, 93, 0.06) !important;
+        padding: 1.15rem 1.15rem 1rem !important;
+        margin-top: 0.15rem !important;
+        outline: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-testid="stTextInput"] [data-baseweb="input"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"] > div {
+        background: #FFFFFF !important;
+        border: 1px solid #D5E3EC !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
+        min-height: 2.9rem !important;
+        transition: border-color 140ms ease, box-shadow 140ms ease !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"]:hover > div {
+        border-color: #C2D5E2 !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"]:focus-within,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"]:focus-within > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] input:focus {
+        border-color: #018FC7 !important;
+        box-shadow: 0 0 0 2px rgba(1, 143, 199, 0.14) !important;
+        outline: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] input {
+        min-height: 2.9rem !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-testid="stFormSubmitButton"] button {
+        min-height: 2.85rem !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        color: #FFFFFF !important;
+        background: linear-gradient(135deg, #018FC7 0%, #0078A8 100%) !important;
+        border: 1px solid #0078A8 !important;
+        box-shadow: 0 6px 14px rgba(1, 143, 199, 0.18) !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-testid="stFormSubmitButton"] button p {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"]:has(form),
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"]:has(form):hover {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
+    .sp-auth-trust {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        margin-top: 0.85rem;
+        color: #617887 !important;
+        font-size: 0.78rem;
+        font-weight: 560;
+        text-align: center;
+    }
+
+    .sp-auth-trust::before {
+        content: "🔒";
+        font-size: 0.8rem;
     }
 
     .sp-kicker {
@@ -5066,9 +5297,25 @@ st.markdown(
             font-size: 0.94rem !important;
         }
 
-        .sp-landing-features,
-        .sp-landing-stats {
+        .sp-landing-features {
             grid-template-columns: 1fr;
+        }
+
+        .sp-landing-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.6rem;
+        }
+
+        .sp-landing-stat {
+            padding: 0.78rem 0.7rem 0.72rem;
+        }
+
+        .sp-landing-stat-value {
+            font-size: 1.4rem !important;
+        }
+
+        .sp-landing-stat-value.is-text {
+            font-size: 1.28rem !important;
         }
 
         .sp-landing-lower {
@@ -5097,6 +5344,19 @@ st.markdown(
         [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] {
             padding: 1.7rem 1.3rem 1.55rem !important;
             max-width: 100%;
+        }
+
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"],
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"]:hover {
+            padding: 1rem 0.95rem 0.9rem !important;
+            border-radius: 12px !important;
+            border: 1px solid #D5E3EC !important;
+            box-shadow: 0 3px 12px rgba(8, 60, 93, 0.05) !important;
+        }
+
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
+            gap: 0.25rem !important;
+            padding: 0.25rem !important;
         }
 
         .sp-landing-welcome-title {
@@ -5161,6 +5421,28 @@ st.markdown(
 
         .sp-dash-direction-row {
             grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .sp-landing-stats {
+            grid-template-columns: 1fr;
+            gap: 0.55rem;
+        }
+
+        .sp-landing-stat {
+            padding: 0.8rem 0.85rem 0.75rem;
+            min-height: 0;
+        }
+
+        .sp-landing-stat-icon {
+            width: 2.2rem;
+            height: 2.2rem;
+        }
+
+        .sp-landing-stats-note {
+            font-size: 0.68rem !important;
+            max-width: 22rem;
         }
     }
 
@@ -5355,11 +5637,22 @@ st.markdown(
     html body [data-testid="stMain"] .sp-landing-purpose h2,
     html body [data-testid="stMain"] .sp-landing-purpose h2 *,
     html body [data-testid="stMain"] .sp-landing-stat-value,
-    html body [data-testid="stMain"] .sp-landing-stat-value *,
-    html body [data-testid="stMain"] .sp-landing-stat-label,
-    html body [data-testid="stMain"] .sp-landing-stat-label * {
+    html body [data-testid="stMain"] .sp-landing-stat-value * {
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-stat-label,
+    html body [data-testid="stMain"] .sp-landing-stat-label * {
+        color: #3F5B6C !important;
+        -webkit-text-fill-color: #3F5B6C !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-stats-note,
+    html body [data-testid="stMain"] .sp-landing-stats-note * {
+        color: #7A8B98 !important;
+        -webkit-text-fill-color: #7A8B98 !important;
+        font-weight: 500 !important;
     }
 
     html body [data-testid="stMain"] .sp-landing-welcome-copy,
@@ -5370,8 +5663,6 @@ st.markdown(
     html body [data-testid="stMain"] .sp-landing-purpose p *,
     html body [data-testid="stMain"] .sp-landing-contact p,
     html body [data-testid="stMain"] .sp-landing-contact p *,
-    html body [data-testid="stMain"] .sp-landing-stats-note,
-    html body [data-testid="stMain"] .sp-landing-stats-note *,
     html body [data-testid="stMain"] .sp-landing-impact-copy,
     html body [data-testid="stMain"] .sp-landing-impact-copy * {
         color: #4A5D6B !important;
@@ -9960,7 +10251,9 @@ def sidebar_nav_button(
 
 
 # ============================================================
-# SUPABASE
+# SUPABASE DATA CLIENT (service_role — server-side only)
+# Used by student-data helpers. Do not use this client for Auth.
+# Email/password Auth uses a separate per-session publishable-key client.
 # ============================================================
 
 @st.cache_resource
@@ -20126,6 +20419,7 @@ def supabase_upsert(
     )
 
 
+
 def get_google_user():
 
     try:
@@ -20148,6 +20442,468 @@ def get_google_user():
         str(email) if email else "",
         str(google_name) if google_name else ""
     )
+
+
+# ============================================================
+# EMAIL / PASSWORD AUTH (Supabase Auth)
+# - Uses publishable key only (never service_key)
+# - Per-Streamlit-session client + tokens (never cache_resource)
+# - Passwords are never stored, logged, or displayed by this app
+# ============================================================
+
+SP_EMAIL_AUTH_STATE_KEY = "sp_email_auth"
+SP_APP_USER_CACHE_KEY = "_sp_app_user_cache"
+SP_APP_USER_RUN_KEY = "_sp_app_user_run_id"
+
+AUTH_MSG_INVALID = (
+    "Those sign-in details did not work. "
+    "Check your email and password, then try again."
+)
+AUTH_MSG_UNCONFIRMED = (
+    "Please confirm your email before signing in. "
+    "Check your inbox for the confirmation link, then sign in here."
+)
+AUTH_MSG_SERVICE = (
+    "Sign-in is temporarily unavailable. Please try again in a moment."
+)
+AUTH_MSG_SIGNUP_NEUTRAL = (
+    "If this email can be registered, check your inbox for a confirmation "
+    "link. If you already have an account, sign in instead."
+)
+AUTH_MSG_PASSWORD_RULES = (
+    "Password must be at least 8 characters and include a letter and a number."
+)
+AUTH_MSG_PASSWORD_MISMATCH = (
+    "Passwords do not match."
+)
+
+
+def _auth_secret_publishable_key():
+    try:
+        value = st.secrets["supabase"].get("key", "")
+    except Exception:
+        value = ""
+    return str(value or "").strip()
+
+
+def _auth_secret_url():
+    try:
+        value = st.secrets["supabase"].get("url", "")
+    except Exception:
+        value = ""
+    return str(value or "").strip()
+
+
+def supabase_auth_configured():
+    return bool(_auth_secret_url() and _auth_secret_publishable_key())
+
+
+def create_supabase_auth_client():
+    """Fresh Auth client for this call/session — never globally cached."""
+
+    url = _auth_secret_url()
+    key = _auth_secret_publishable_key()
+    if not url or not key:
+        raise RuntimeError("Supabase Auth is not configured.")
+    return create_client(url, key)
+
+
+def clear_email_auth_session():
+    st.session_state.pop(SP_EMAIL_AUTH_STATE_KEY, None)
+    st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
+    st.session_state.pop(SP_APP_USER_RUN_KEY, None)
+
+
+def _current_script_run_id():
+    """Opaque per-rerun id for this browser session (never logged)."""
+
+    try:
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
+
+        ctx = get_script_run_ctx()
+        if ctx is not None:
+            return id(ctx)
+    except Exception:
+        pass
+    return None
+
+
+def _safe_auth_error_code(error):
+    code = getattr(error, "code", None)
+    if code is None:
+        return "unknown"
+    text = str(code).strip().lower()
+    if not text or len(text) > 80:
+        return "unknown"
+    if not all(ch.isalnum() or ch in {"_", "-", "."} for ch in text):
+        return "unknown"
+    return text
+
+
+def _safe_auth_error_status(error):
+    status = getattr(error, "status", None)
+    try:
+        status_int = int(status)
+    except (TypeError, ValueError):
+        return None
+    if 100 <= status_int <= 599:
+        return status_int
+    return None
+
+
+def log_auth_event(action, error=None):
+    """
+    Sanitized auth logging only: action name, status, safe error code.
+    Never logs passwords, tokens, emails, or raw exception/response bodies.
+    """
+
+    action_name = str(action or "auth_event").strip()[:64] or "auth_event"
+    if error is None:
+        logger.warning("auth_event action=%s", action_name)
+        return
+
+    status = _safe_auth_error_status(error)
+    code = _safe_auth_error_code(error)
+    if status is None:
+        logger.warning(
+            "auth_event action=%s code=%s",
+            action_name,
+            code,
+        )
+    else:
+        logger.warning(
+            "auth_event action=%s status=%s code=%s",
+            action_name,
+            status,
+            code,
+        )
+
+
+def _store_email_auth_session(session, user):
+    if session is None or user is None:
+        clear_email_auth_session()
+        return False
+
+    access_token = getattr(session, "access_token", None)
+    refresh_token = getattr(session, "refresh_token", None)
+    user_id = getattr(user, "id", None)
+    email = getattr(user, "email", None) or ""
+
+    if not access_token or not refresh_token or not user_id:
+        clear_email_auth_session()
+        return False
+
+    # Tokens live only in Streamlit session_state (server-side, per browser tab).
+    # They are never written to URLs, logs, source, or browser cookies.
+    st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "user_id": str(user_id),
+        "email": str(email),
+    }
+    # Force re-resolve on next get_app_user call within a later rerun.
+    st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
+    st.session_state.pop(SP_APP_USER_RUN_KEY, None)
+    return True
+
+
+def password_meets_requirements(password):
+    text = str(password or "")
+    if len(text) < 8:
+        return False
+    has_letter = any(ch.isalpha() for ch in text)
+    has_number = any(ch.isdigit() for ch in text)
+    return has_letter and has_number
+
+
+def classify_auth_error(error, *, for_signup=False):
+    """Map Auth errors to generic student-facing messages. Never echo raw details."""
+
+    code = str(getattr(error, "code", "") or "").lower()
+    message = str(getattr(error, "message", "") or "").lower()
+    status = _safe_auth_error_status(error)
+
+    duplicate_markers = (
+        "user_already_exists",
+        "already registered",
+        "already been registered",
+        "email address is already",
+        "user already exists",
+    )
+    unconfirmed_markers = (
+        "email_not_confirmed",
+        "email not confirmed",
+        "confirm your email",
+        "not confirmed",
+    )
+    invalid_markers = (
+        "invalid_credentials",
+        "invalid login credentials",
+        "invalid email or password",
+        "wrong password",
+        "user not found",
+    )
+
+    if for_signup:
+        # Never reveal whether the email is already registered.
+        if any(marker in code or marker in message for marker in duplicate_markers):
+            return AUTH_MSG_SIGNUP_NEUTRAL
+        if status in {400, 422} and any(
+            marker in code or marker in message for marker in invalid_markers
+        ):
+            return AUTH_MSG_SIGNUP_NEUTRAL
+        return AUTH_MSG_SERVICE
+
+    if any(marker in code or marker in message for marker in unconfirmed_markers):
+        return AUTH_MSG_UNCONFIRMED
+    if status in {400, 401} or any(
+        marker in code or marker in message for marker in invalid_markers
+    ):
+        return AUTH_MSG_INVALID
+    return AUTH_MSG_SERVICE
+
+
+def sign_up_with_email(email, password):
+    """Create account via Supabase Auth. Returns (ok, message)."""
+
+    email = str(email or "").strip().lower()
+    password = str(password or "")
+
+    if not email or "@" not in email:
+        return False, "Enter a valid email address."
+    if not password_meets_requirements(password):
+        return False, AUTH_MSG_PASSWORD_RULES
+    if not supabase_auth_configured():
+        return False, AUTH_MSG_SERVICE
+
+    try:
+        client = create_supabase_auth_client()
+        response = client.auth.sign_up(
+            {
+                "email": email,
+                "password": password,
+            }
+        )
+        user = getattr(response, "user", None)
+        session = getattr(response, "session", None)
+
+        # With email confirmation enabled, session is usually None until confirmed.
+        # Do not keep an unverified or signup session in the app.
+        clear_email_auth_session()
+        try:
+            client.auth.sign_out()
+        except Exception:
+            pass
+
+        # Anti-enumeration: same neutral message for new, duplicate, and
+        # empty-identities responses. Do not reveal account existence.
+        if user is None and session is None:
+            # Ambiguous Auth response — still avoid account existence leakage.
+            log_auth_event("email_sign_up_empty_response")
+            return True, AUTH_MSG_SIGNUP_NEUTRAL
+
+        return True, AUTH_MSG_SIGNUP_NEUTRAL
+
+    except Exception as error:
+        log_auth_event("email_sign_up", error)
+        message = classify_auth_error(error, for_signup=True)
+        # Duplicate / ambiguous signup errors still use the neutral copy.
+        if message == AUTH_MSG_SIGNUP_NEUTRAL:
+            return True, AUTH_MSG_SIGNUP_NEUTRAL
+        return False, message
+
+
+def sign_in_with_email(email, password):
+    """Sign in via Supabase Auth. Returns (ok, message)."""
+
+    email = str(email or "").strip().lower()
+    password = str(password or "")
+
+    if not email or not password:
+        return False, AUTH_MSG_INVALID
+    if not supabase_auth_configured():
+        return False, AUTH_MSG_SERVICE
+
+    try:
+        client = create_supabase_auth_client()
+        response = client.auth.sign_in_with_password(
+            {
+                "email": email,
+                "password": password,
+            }
+        )
+        user = getattr(response, "user", None)
+        session = getattr(response, "session", None)
+
+        email_confirmed_at = getattr(user, "email_confirmed_at", None) if user else None
+        if user is not None and not email_confirmed_at:
+            clear_email_auth_session()
+            try:
+                client.auth.sign_out()
+            except Exception:
+                pass
+            return False, AUTH_MSG_UNCONFIRMED
+
+        if not _store_email_auth_session(session, user):
+            return False, AUTH_MSG_SERVICE
+
+        return True, ""
+
+    except Exception as error:
+        log_auth_event("email_sign_in", error)
+        return False, classify_auth_error(error, for_signup=False)
+
+
+def restore_email_auth_user():
+    """
+    Restore the email Auth user for this Streamlit session only.
+    Uses a fresh client + tokens from session_state (not a shared cache).
+    """
+
+    payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
+    if not isinstance(payload, dict):
+        return None
+
+    access_token = str(payload.get("access_token") or "").strip()
+    refresh_token = str(payload.get("refresh_token") or "").strip()
+    if not access_token or not refresh_token:
+        clear_email_auth_session()
+        return None
+
+    if not supabase_auth_configured():
+        clear_email_auth_session()
+        return None
+
+    try:
+        client = create_supabase_auth_client()
+        client.auth.set_session(access_token, refresh_token)
+        user_response = client.auth.get_user()
+        user = getattr(user_response, "user", None) or user_response
+        if user is None or not getattr(user, "id", None):
+            clear_email_auth_session()
+            return None
+
+        # Refresh stored tokens if the client rotated them.
+        current = None
+        try:
+            current = client.auth.get_session()
+        except Exception:
+            current = None
+        if current is not None:
+            _store_email_auth_session(current, user)
+        else:
+            st.session_state[SP_EMAIL_AUTH_STATE_KEY]["user_id"] = str(user.id)
+            st.session_state[SP_EMAIL_AUTH_STATE_KEY]["email"] = str(
+                getattr(user, "email", "") or ""
+            )
+
+        return {
+            "user_id": str(user.id),
+            "email": str(getattr(user, "email", "") or ""),
+            "provider": "email",
+        }
+
+    except Exception as error:
+        log_auth_event("email_session_restore", error)
+        clear_email_auth_session()
+        return None
+
+
+def get_app_user():
+    """
+    Resolve the active app user once per Streamlit rerun and reuse the result.
+    Google identity is preferred when present so existing Google user_sub
+    values and saved rows stay intact.
+    """
+
+    run_id = _current_script_run_id()
+    cached_run = st.session_state.get(SP_APP_USER_RUN_KEY)
+    if (
+        run_id is not None
+        and cached_run == run_id
+        and SP_APP_USER_CACHE_KEY in st.session_state
+    ):
+        return st.session_state.get(SP_APP_USER_CACHE_KEY)
+
+    resolved = None
+
+    try:
+        google_logged_in = bool(st.user.is_logged_in)
+    except Exception:
+        google_logged_in = False
+
+    if google_logged_in:
+        user_sub, email, name = get_google_user()
+        if user_sub:
+            resolved = {
+                "user_sub": user_sub,
+                "email": email,
+                "display_name": name,
+                "provider": "google",
+            }
+
+    if resolved is None:
+        email_user = restore_email_auth_user()
+        if email_user:
+            resolved = {
+                "user_sub": email_user["user_id"],
+                "email": email_user["email"],
+                "display_name": "",
+                "provider": "email",
+            }
+
+    if run_id is not None:
+        st.session_state[SP_APP_USER_RUN_KEY] = run_id
+        st.session_state[SP_APP_USER_CACHE_KEY] = resolved
+
+    return resolved
+
+
+def is_app_authenticated():
+    return get_app_user() is not None
+
+
+def sign_out_current_user():
+    """Sign out from email Auth and/or Google OAuth."""
+
+    payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
+    if isinstance(payload, dict) and supabase_auth_configured():
+        try:
+            client = create_supabase_auth_client()
+            access_token = str(payload.get("access_token") or "").strip()
+            refresh_token = str(payload.get("refresh_token") or "").strip()
+            if access_token and refresh_token:
+                try:
+                    client.auth.set_session(access_token, refresh_token)
+                except Exception:
+                    pass
+            client.auth.sign_out()
+        except Exception as error:
+            log_auth_event("email_sign_out", error)
+
+    clear_email_auth_session()
+
+    # Reset student UI session markers so the next account starts clean locally.
+    for key in (
+        "profile_loaded",
+        "profile_completed",
+        "student_profile",
+        "career_results",
+        "career_match_reasons",
+        "career_match_meta",
+        "career_signal_counts",
+        "career_answer_snapshot",
+    ):
+        st.session_state.pop(key, None)
+
+    try:
+        if st.user.is_logged_in:
+            st.logout()
+            return
+    except Exception as error:
+        log_auth_event("google_sign_out", error)
+
+    st.rerun()
 
 
 def load_profile(user_sub):
@@ -21525,10 +22281,13 @@ def google_calendar_deadline_url(
 
 
 # ============================================================
-# GOOGLE LOGIN
+# LOGIN / CREATE ACCOUNT
+# Google OAuth remains available. Email/password uses Supabase Auth.
 # ============================================================
 
-if not st.user.is_logged_in:
+app_user = get_app_user()
+
+if not app_user:
 
     st.markdown(
         """
@@ -21558,8 +22317,9 @@ if not st.user.is_logged_in:
 
         st.markdown(
             '<div class="sp-landing-welcome-copy">'
-            'Sign in to personalize your recommendations, save programs, '
-            'track applications, and build a college list in one place.'
+            'Sign in with Google or create an email account to personalize '
+            'your recommendations, save programs, track applications, and '
+            'build a college list in one place.'
             '</div>',
             unsafe_allow_html=True
         )
@@ -21571,6 +22331,104 @@ if not st.user.is_logged_in:
             key="google_continue"
         ):
             st.login("google")
+
+        st.markdown(
+            '<div class="sp-auth-divider"><span>or continue with email</span></div>',
+            unsafe_allow_html=True,
+        )
+
+        if not supabase_auth_configured():
+            st.info(
+                "Email sign-in is not configured yet. "
+                "You can still continue with Google."
+            )
+        else:
+            auth_mode = st.radio(
+                "Account options",
+                ["Sign In", "Create Account"],
+                horizontal=True,
+                label_visibility="collapsed",
+                key="landing_auth_mode",
+            )
+
+            if auth_mode == "Sign In":
+                with st.form("email_sign_in_form", clear_on_submit=False):
+                    sign_in_email = st.text_input(
+                        "Email",
+                        key="email_sign_in_email",
+                        autocomplete="email",
+                    )
+                    sign_in_password = st.text_input(
+                        "Password",
+                        type="password",
+                        key="email_sign_in_password",
+                        autocomplete="current-password",
+                    )
+                    sign_in_submit = st.form_submit_button(
+                        "Sign In with Email",
+                        type="primary",
+                        width="stretch",
+                    )
+
+                if sign_in_submit:
+                    ok, message = sign_in_with_email(
+                        sign_in_email,
+                        sign_in_password,
+                    )
+                    if ok:
+                        st.rerun()
+                    else:
+                        st.error(message)
+
+            else:
+                with st.form("email_sign_up_form", clear_on_submit=False):
+                    sign_up_email = st.text_input(
+                        "Email",
+                        key="email_sign_up_email",
+                        autocomplete="email",
+                    )
+                    sign_up_password = st.text_input(
+                        "Password",
+                        type="password",
+                        key="email_sign_up_password",
+                        autocomplete="new-password",
+                    )
+                    sign_up_password_confirm = st.text_input(
+                        "Confirm password",
+                        type="password",
+                        key="email_sign_up_password_confirm",
+                        autocomplete="new-password",
+                    )
+                    st.caption(
+                        "Use at least 8 characters with a letter and a number. "
+                        "You will confirm your email before signing in."
+                    )
+                    sign_up_submit = st.form_submit_button(
+                        "Create Account",
+                        type="primary",
+                        width="stretch",
+                    )
+
+                if sign_up_submit:
+                    if sign_up_password != sign_up_password_confirm:
+                        st.error(AUTH_MSG_PASSWORD_MISMATCH)
+                    else:
+                        ok, message = sign_up_with_email(
+                            sign_up_email,
+                            sign_up_password,
+                        )
+                        if ok:
+                            st.success(message)
+                        else:
+                            st.error(message)
+
+            st.markdown(
+                '<div class="sp-auth-trust">'
+                'Secure authentication powered by Supabase. '
+                'STEM Pathways NYC never stores your password.'
+                '</div>',
+                unsafe_allow_html=True,
+            )
 
     landing_stats_df = pd.DataFrame()
     landing_opp_count = 0
@@ -21783,9 +22641,9 @@ if not st.user.is_logged_in:
                     <div class="sp-landing-stats">
                         <div class="sp-landing-stat">
                             <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="4" y="5" width="16" height="14" rx="2"></rect>
-                                    <path d="M8 9h8M8 13h5"></path>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3.5" y="4.5" width="17" height="15" rx="2.2"></rect>
+                                    <path d="M7.5 9h9M7.5 13h6"></path>
                                 </svg>
                             </div>
                             <div class="sp-landing-stat-value">{landing_opp_value_safe}</div>
@@ -21793,29 +22651,30 @@ if not st.user.is_logged_in:
                         </div>
                         <div class="sp-landing-stat">
                             <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M10 3h4v6l5 8H5l5-8z"></path>
-                                    <path d="M9 21h6"></path>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9.5 3.5h5v5.5l4.5 8.5h-14l4.5-8.5z"></path>
+                                    <path d="M9 20.5h6"></path>
+                                    <path d="M10.5 17.5h3"></path>
                                 </svg>
                             </div>
-                            <div class="sp-landing-stat-value">Multiple</div>
+                            <div class="sp-landing-stat-value is-text">Multiple</div>
                             <div class="sp-landing-stat-label">STEM Fields</div>
                         </div>
                         <div class="sp-landing-stat">
                             <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z"></path>
-                                    <circle cx="12" cy="10" r="2.2"></circle>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11z"></path>
+                                    <circle cx="12" cy="10" r="2.35"></circle>
                                 </svg>
                             </div>
-                            <div class="sp-landing-stat-value">NYC</div>
+                            <div class="sp-landing-stat-value is-text">NYC</div>
                             <div class="sp-landing-stat-label">Focused</div>
                         </div>
                         <div class="sp-landing-stat">
                             <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="8"></circle>
-                                    <path d="M8.5 12.2l2.3 2.3 4.7-5"></path>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="8.25"></circle>
+                                    <path d="M8.2 12.2l2.5 2.5 5.1-5.3"></path>
                                 </svg>
                             </div>
                             <div class="sp-landing-stat-value">{landing_free_value_safe}</div>
@@ -21823,9 +22682,10 @@ if not st.user.is_logged_in:
                         </div>
                         <div class="sp-landing-stat">
                             <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="8" cy="8" r="2.4"></circle>
-                                    <path d="M10 10l8 8M16.2 16.2l2.3 2.3M13.6 18.8l2.4-2.4"></path>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="8.2" cy="8.2" r="2.6"></circle>
+                                    <path d="M10.4 10.4l8 8"></path>
+                                    <path d="M16 16.3l2.5 2.5M13.7 19l2.4-2.4"></path>
                                 </svg>
                             </div>
                             <div class="sp-landing-stat-value">{landing_research_value_safe}</div>
@@ -21833,11 +22693,11 @@ if not st.user.is_logged_in:
                         </div>
                         <div class="sp-landing-stat">
                             <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="4" y="4" width="7" height="7" rx="1.4"></rect>
-                                    <rect x="13" y="4" width="7" height="7" rx="1.4"></rect>
-                                    <rect x="4" y="13" width="7" height="7" rx="1.4"></rect>
-                                    <rect x="13" y="13" width="7" height="7" rx="1.4"></rect>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3.5" y="3.5" width="7.2" height="7.2" rx="1.5"></rect>
+                                    <rect x="13.3" y="3.5" width="7.2" height="7.2" rx="1.5"></rect>
+                                    <rect x="3.5" y="13.3" width="7.2" height="7.2" rx="1.5"></rect>
+                                    <rect x="13.3" y="13.3" width="7.2" height="7.2" rx="1.5"></rect>
                                 </svg>
                             </div>
                             <div class="sp-landing-stat-value">{landing_type_value_safe}</div>
@@ -21882,26 +22742,28 @@ if not st.user.is_logged_in:
 
 # ============================================================
 # LOGGED-IN USER
+# app_user was resolved once above for this Streamlit rerun.
 # ============================================================
 
-user_sub, user_email, google_name = (
-    get_google_user()
-)
-
-
-if not user_sub:
+if not app_user or not app_user.get("user_sub"):
 
     st.error(
-        "Google login succeeded, but the app could not retrieve "
+        "Sign-in succeeded, but the app could not retrieve "
         "your account identifier."
     )
 
     if st.button(
-        "Sign Out"
+        "Sign Out",
+        key="missing_sub_sign_out",
     ):
-        st.logout()
+        sign_out_current_user()
 
     st.stop()
+
+user_sub = app_user["user_sub"]
+user_email = app_user.get("email") or ""
+google_name = app_user.get("display_name") or ""
+auth_provider = app_user.get("provider") or ""
 
 
 # ============================================================
@@ -22375,7 +23237,7 @@ if not st.session_state.profile_completed:
     if st.button(
         "Sign Out"
     ):
-        st.logout()
+        sign_out_current_user()
 
     st.stop()
 
@@ -22497,7 +23359,7 @@ with st.sidebar:
         use_container_width=True
     ):
 
-        st.logout()
+        sign_out_current_user()
 
     if is_admin_user(
         user_email
@@ -33911,7 +34773,7 @@ elif page == "My Profile":
                 width=320
             ):
 
-                st.logout()
+                sign_out_current_user()
 
 
 else:
