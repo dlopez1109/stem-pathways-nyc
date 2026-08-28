@@ -9197,21 +9197,192 @@ st.markdown(
         overflow: hidden !important;
     }
 
-    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stForm"],
-    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stForm"]:hover,
+    /* Opportunities search panel — compact, soft card (not thick navy outline) */
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] form[data-testid="stForm"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] form[data-testid="stForm"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stForm"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stForm"]:hover {
+        background: #FFFFFF !important;
+        border: 1px solid #D5E3EC !important;
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: #D5E3EC !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 16px rgba(8, 60, 93, 0.06) !important;
+        padding: 1rem 1.05rem 0.9rem !important;
+        margin-top: 0.1rem !important;
+        outline: none !important;
+    }
+
     html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stAlert"],
     html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stAlert"]:hover {
-        border: 1.5px solid #083C5D !important;
-        border-width: 1.5px !important;
+        border: 1px solid #D5E3EC !important;
+        border-width: 1px !important;
         border-style: solid !important;
-        border-color: #083C5D !important;
+        border-color: #D5E3EC !important;
+        border-radius: 14px !important;
+        box-shadow: 0 2px 10px rgba(8, 60, 93, 0.05) !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stWidgetLabel"] p,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] label,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] label p {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.84rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 0.28rem 0 !important;
+        min-height: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stElementContainer"] {
+        margin-bottom: 0.35rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="input"] > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="select"] > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stSelectbox"] > div > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stMultiSelect"] > div > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stTextInput"] [data-baseweb="input"] > div {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D5E3EC !important;
+        border-radius: 12px !important;
+        min-height: 2.65rem !important;
+        box-shadow: none !important;
+        color: #0B4568 !important;
+        -webkit-text-fill-color: #0B4568 !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="input"] > div:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="select"] > div:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stMultiSelect"] > div > div:hover {
+        border-color: #C2D5E2 !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="input"]:focus-within > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="select"]:focus-within > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stMultiSelect"] > div > div:focus-within {
+        border-color: #018FC7 !important;
+        box-shadow: 0 0 0 2px rgba(1, 143, 199, 0.14) !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] input,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]) {
+        color: #0B4568 !important;
+        -webkit-text-fill-color: #0B4568 !important;
+        font-size: 0.9rem !important;
+        background: transparent !important;
+    }
+
+    /* Multiselect value chips: teal/blue (override Streamlit default red primary tags) */
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="tag"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="tag"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] span[data-baseweb="tag"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] div[data-baseweb="tag"] {
+        background: #E7F6FC !important;
+        background-color: #E7F6FC !important;
+        border: 1px solid #B9E5F5 !important;
+        border-radius: 999px !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 650 !important;
+        font-size: 0.78rem !important;
+        line-height: 1.25 !important;
+        padding: 0.18rem 0.42rem 0.18rem 0.62rem !important;
+        margin: 0.12rem 0.18rem 0.12rem 0 !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 1.55rem !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="tag"] span,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="tag"] div {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+        max-width: 100% !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="tag"] svg,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="tag"] [role="presentation"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-baseweb="tag"] path {
+        color: #018FC7 !important;
+        fill: #018FC7 !important;
+    }
+
+    /* Keep long selections wrapping inside the control */
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stMultiSelect"] [data-baseweb="select"] > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stMultiSelect"] > div > div {
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        row-gap: 0.2rem !important;
+        min-height: 2.65rem !important;
+        height: auto !important;
+        padding-top: 0.28rem !important;
+        padding-bottom: 0.28rem !important;
+        padding-right: 2rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] {
+        margin-top: 0.35rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] button,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] button:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] button:focus,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] button:active {
+        min-height: 2.85rem !important;
+        border-radius: 12px !important;
+        font-weight: 750 !important;
+        font-size: 0.98rem !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        background: linear-gradient(135deg, #018FC7 0%, #0078A8 100%) !important;
+        background-color: #018FC7 !important;
+        border: 1px solid #0078A8 !important;
+        box-shadow: 0 6px 14px rgba(1, 143, 199, 0.2) !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] button p,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] button span {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 750 !important;
+    }
+
+    /* More Filters — visually secondary / compact */
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stExpander"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stExpander"]:hover {
+        border: 1px solid #E2EAF0 !important;
+        border-width: 1px !important;
+        box-shadow: none !important;
+        border-radius: 12px !important;
+        background: #F7FBFD !important;
+        margin-top: 0.15rem !important;
+        margin-bottom: 0.15rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stExpander"] summary,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stExpander"] summary p,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stExpander"] summary span {
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+        font-size: 0.86rem !important;
+        font-weight: 650 !important;
     }
 
     html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stExpander"],
     html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stExpander"]:hover,
     html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stExpander"],
     html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stExpander"]:hover {
-        border: 1.5px solid #0b4568 !important;
+        border: 1px solid #D5E3EC !important;
         box-shadow: none !important;
         border-radius: 14px !important;
     }
@@ -9223,6 +9394,82 @@ st.markdown(
         border: none !important;
         box-shadow: none !important;
         outline: none !important;
+    }
+
+    /* Active filter chips below the form */
+    .sp-opp-active-filters {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.7rem;
+        margin: 1rem 0 0.65rem;
+        width: 100%;
+    }
+
+    .sp-opp-filter-chip-label {
+        display: block;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.01em;
+        line-height: 1.2;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sp-opp-filter-chip-list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0.6rem 0.65rem;
+        width: 100%;
+    }
+
+    .sp-opp-filter-chip {
+        display: inline-flex;
+        align-items: center;
+        max-width: 100%;
+        box-sizing: border-box;
+        background: #E7F6FC;
+        border: 1px solid #B9E5F5;
+        border-radius: 999px;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.98rem;
+        font-weight: 700;
+        line-height: 1.35;
+        padding: 0.52rem 1rem;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .sp-opp-filter-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem 0.5rem;
+        width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stHorizontalBlock"] {
+            flex-direction: column !important;
+            gap: 0.15rem !important;
+        }
+
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+            min-width: 0 !important;
+        }
+
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] form[data-testid="stForm"],
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stForm"] {
+            padding: 0.85rem 0.85rem 0.75rem !important;
+            border-radius: 14px !important;
+        }
     }
 
     html body .stApp [data-testid="stMain"]:has(.sp-calendar-notice) [data-testid="stVerticalBlockBorderWrapper"]:has(> [data-testid="stExpander"]),
@@ -13738,6 +13985,730 @@ extra_opportunities = [
         "requirements": "DECA membership; adviser registration; event guidelines",
         "url": "https://www.deca.org/",
         "last_verified": "2026-08-23"
+    },
+    {
+        "name": "Girls Who Code Summer Programs",
+        "organization": "Girls Who Code",
+        "description": "Free virtual summer programs where high school students build projects in coding, artificial intelligence, cybersecurity, data science, web development, and game design while connecting with peers and technology professionals.",
+        "opportunity_type": "Summer Program",
+        "fields": "Computer Science;Artificial Intelligence;Cybersecurity;Data Science;Web Development;Game Design;Technology",
+        "grades": "9;10;11;12",
+        "age_range": "Current high school students; track-specific grade requirements apply",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed — program is free",
+        "application_status": "Future Cycle",
+        "deadline": "2026 summer cycle completed; check official site for 2027 dates",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "High school students interested in technology; program-specific eligibility applies",
+        "stipend_display": "Needs-based grants may be available for eligible live-program participants",
+        "internship_potential": "No — project-based computer science learning and industry exposure",
+        "format": "Online / virtual",
+        "paid_status": "Not paid — needs-based grants may be available",
+        "requirements": "Online application; reliable internet access; track-specific grade and participation requirements",
+        "url": "https://girlswhocode.com/programs/summer-immersion-program",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Google Code Next — New York City",
+        "organization": "Google",
+        "description": "Free in-person computer science community with clubs, workshops, mentoring, college and career preparation, robotics, product development, and immersive coding programs at Google Code Next labs in Chelsea and Harlem.",
+        "opportunity_type": "Technology Program",
+        "fields": "Computer Science;Engineering;Robotics;Product Development;Entrepreneurship;Technology;Leadership",
+        "grades": "9;10;11;12",
+        "age_range": "Grades 9–12; individual programs have grade-specific eligibility",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed — program is free",
+        "application_status": "Open Now",
+        "deadline": "Fall term application typically closes September 13; winter and spring cycles follow",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Students in grades 9–12 who live near the Chelsea or Harlem lab; Black and Latinx students are strongly encouraged to apply",
+        "stipend_display": "Not paid",
+        "internship_potential": "No — mentoring, technical training, product development, and career preparation",
+        "format": "In person — Chelsea and Harlem, Manhattan, NYC",
+        "paid_status": "Not paid",
+        "requirements": "Online application followed by an in-person design challenge if selected; no prior coding experience required for general membership",
+        "url": "https://codenext.withgoogle.com/",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "AMNH Science Communication Internship Program (SCIP)",
+        "organization": "American Museum of Natural History",
+        "description": "Paid six-week internship where NYC students learn to explain scientific concepts and engage Museum visitors using collections, exhibits, and hands-on interpretation stations.",
+        "opportunity_type": "Internship",
+        "fields": "Science Communication;Biology;Earth Science;Astronomy;Museum Studies;Education;Career Exploration",
+        "grades": "10",
+        "age_range": "Current 10th graders during the application year",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed — paid internship",
+        "application_status": "Future Cycle",
+        "deadline": "2026 deadline was March 1; 2027 date not yet announced",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "NYC 10th grader passing all classes for at least three semesters; must meet an AMNH, SciNetworkNYC, school, or partner-program pathway requirement",
+        "stipend_display": "$2,000 stipend upon successful completion of 2026 program requirements",
+        "internship_potential": "Yes — paid science communication and museum internship",
+        "format": "In person — American Museum of Natural History, Manhattan, NYC",
+        "paid_status": "Paid — $2,000 completion stipend in 2026",
+        "requirements": "Application; current 10th-grade standing; academic progress; qualifying prior program, partner institution, school, or community organization",
+        "url": "https://www.amnh.org/learn-teach/teens/science-communication-internship-program",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Baruch College Now STEM Research Academy",
+        "organization": "Baruch College / CUNY College Now",
+        "description": "Free spring research-methods course followed by a structured six-week summer research experience with CUNY faculty for selected NYC public high school students.",
+        "opportunity_type": "Research",
+        "fields": "Science;Research;Data Analysis;Biology;Chemistry;Environmental Science;STEM",
+        "grades": "10;11",
+        "age_range": "Current NYC public high school 10th or 11th graders",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed — program is free",
+        "application_status": "Future Cycle",
+        "deadline": "Applications generally run from mid-October through December",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "About 25 students selected; applicant count not publicly reported",
+        "eligibility_summary": "NYC public high school 10th or 11th grader with an 80+ average; priority for partner schools and students historically underrepresented in science",
+        "stipend_display": "$1,575 after successful completion of the summer research experience",
+        "internship_potential": "Yes — six-week faculty-mentored CUNY research experience",
+        "format": "In person — Baruch College and CUNY research sites, NYC",
+        "paid_status": "Paid — $1,575 completion stipend",
+        "requirements": "Application, transcript, one-page essay, academic eligibility, spring course completion with grade C or better",
+        "url": "https://collegenow.baruch.cuny.edu/stem-research-academy/",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "CUNY College Now",
+        "organization": "City University of New York / NYC Public Schools",
+        "description": "Free dual-enrollment and college-transition program offering college-credit courses, academic preparation, and career exploration across CUNY campuses, including extensive STEM options.",
+        "opportunity_type": "College Course",
+        "fields": "Engineering;Computer Science;Mathematics;Science;Health Science;Environmental Science;Architecture;Technology;STEM",
+        "grades": "10;11;12",
+        "age_range": "Primarily grades 11–12, with limited opportunities for eligible 10th graders",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed — courses are free",
+        "application_status": "Seasonal",
+        "deadline": "Campus and semester deadlines vary; Fall 2026 enrollment is listed on the official site",
+        "selectivity": "Eligibility Based",
+        "selectivity_stars": 2,
+        "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "NYC public school or eligible registered homeschool students; course eligibility depends on grade, GPA, Regents scores, and campus requirements",
+        "stipend_display": "Not paid — students may earn free college credit",
+        "internship_potential": "Varies — some campuses offer STEM research or work-based learning",
+        "format": "Online, hybrid, or in person — participating CUNY campuses and high schools",
+        "paid_status": "Not paid / Free College Credit",
+        "requirements": "Apply to a participating campus; meet course-specific grade, GPA, Regents, and prerequisite requirements",
+        "url": "https://www.cuny.edu/academics/current-initiatives/k16/college-now/",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Lehman College Now",
+        "organization": "Lehman College / CUNY College Now",
+        "description": "Free college-credit courses taught by Lehman faculty for NYC public high school students, with STEM, mathematics, college-readiness, and campus-based learning options especially accessible to Bronx students.",
+        "opportunity_type": "College Course",
+        "fields": "Science;Mathematics;Computer Science;Health Science;STEM;College Readiness",
+        "grades": "10;11;12",
+        "age_range": "Primarily juniors and seniors; some courses are open to sophomores",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed — courses are free",
+        "application_status": "Seasonal",
+        "deadline": "Semester and summer deadlines vary; check Lehman College Now for current courses",
+        "selectivity": "Eligibility Based",
+        "selectivity_stars": 2,
+        "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "NYC public high school or registered homeschool student; generally an 80+ average with course-specific academic requirements",
+        "stipend_display": "Not paid — students may earn free college credit",
+        "internship_potential": "Varies — includes college courses and a STEM Research Academy pathway",
+        "format": "Online, hybrid, or in person — Lehman College, Bronx, NYC",
+        "paid_status": "Not paid / Free College Credit",
+        "requirements": "Application and transcript; course-specific grade, GPA, Regents, or placement requirements",
+        "url": "https://www.lehman.edu/college-now/",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "NYC Parks Ranger Conservation Corps",
+        "organization": "NYC Parks Urban Park Rangers",
+        "description": "Environmental internship where high school students work with Urban Park Rangers and gain hands-on experience on restoration and conservation projects in New York City parks.",
+        "opportunity_type": "Internship",
+        "fields": "Environmental Science;Ecology;Conservation;Biology;Restoration;Outdoor Education",
+        "grades": "9;10;11;12",
+        "age_range": "High school students; confirm current-cycle requirements",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "Seasonal",
+        "deadline": "Check NYC Parks for current recruitment and application dates",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "High school students interested in urban ecology, conservation, and environmental restoration; current-cycle requirements vary",
+        "stipend_display": "Check current NYC Parks posting",
+        "internship_potential": "Yes — hands-on urban environmental restoration internship",
+        "format": "In person — NYC park sites",
+        "paid_status": "Check official current-cycle details",
+        "requirements": "Application and current-cycle age, school, schedule, and work-eligibility requirements",
+        "url": "https://www.nycgovparks.org/programs/rangers",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "NYC CTE Industry Scholars",
+        "organization": "NYC Public Schools / NYC Department of Youth and Community Development",
+        "description": "Work-readiness training, career exploration, and internship placement for students enrolled in NYC Career and Technical Education programs across engineering, healthcare, information technology, media technology, and other sectors.",
+        "opportunity_type": "Internship",
+        "fields": "Engineering;Information Technology;Healthcare;Media Technology;Design;Construction;Business;Career Exploration",
+        "grades": "9;10;11;12",
+        "age_range": "NYC high school students enrolled in participating CTE programs",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "School-Based",
+        "deadline": "Recruitment and internship timelines vary by participating CTE school",
+        "selectivity": "Eligibility Based",
+        "selectivity_stars": 2,
+        "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Must be enrolled in a participating NYC high school CTE program; placement requirements vary by school and sector",
+        "stipend_display": "Paid opportunities may be available through spring internships and SYEP partnerships",
+        "internship_potential": "Yes — sector-specific training and internship placement",
+        "format": "In person / hybrid — school training and NYC employer placements",
+        "paid_status": "Varies by internship placement",
+        "requirements": "Participating CTE enrollment; school nomination or application; work-readiness and placement requirements",
+        "url": "https://www.nyc.gov/site/youthemployment/initiatives/k-12.page",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "CareerCLUE",
+        "organization": "NYC Public Schools / DYCD / Mayor's Office of Youth Employment",
+        "description": "School-based enrichment and paid work-based learning for younger high school students, combining career exploration, academic credit, workplace skills, and projects in areas such as sustainability, coding, web development, mobile apps, and digital media.",
+        "opportunity_type": "Career Exploration",
+        "fields": "Computer Science;Web Development;Mobile App Development;Sustainability;Digital Media;Technology;Career Exploration",
+        "grades": "9;10",
+        "age_range": "Younger high school students at participating NYC schools",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed",
+        "application_status": "School-Based",
+        "deadline": "Enrollment and program schedule vary by participating school",
+        "selectivity": "Eligibility Based",
+        "selectivity_stars": 2,
+        "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Students at participating NYC Community Schools and CTE high schools; ask a school counselor or work-based-learning coordinator",
+        "stipend_display": "Paid work-based learning is part of the program model",
+        "internship_potential": "Yes — paid work-based learning and career exploration",
+        "format": "In person / hybrid — participating NYC schools and partner worksites",
+        "paid_status": "Paid work-based learning",
+        "requirements": "Enrollment at a participating school; school-specific recruitment, attendance, and work-readiness requirements",
+        "url": "https://www.nyc.gov/site/youthemployment/initiatives/k-12.page",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Sound Thinking NYC",
+        "organization": "NYC Mayor's Office of Media and Entertainment / CUNY",
+        "description": "Three-week summer program introducing high school students to music production, audio engineering, equipment, Broadway and concert technology, professional networking, and music-industry careers.",
+        "opportunity_type": "Summer Program",
+        "fields": "Audio Engineering;Music Technology;Engineering;Music Production;Digital Media;Career Exploration",
+        "grades": "10;11;12",
+        "age_range": "Students in grades 10–12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed — program is free",
+        "application_status": "Future Cycle",
+        "deadline": "Applications generally begin in February; check official site for the next summer cycle",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "High school students in grades 10–12; women are especially encouraged to apply",
+        "stipend_display": "Not paid — may connect participants with paid internship opportunities",
+        "internship_potential": "Yes — career networking and pathways to paid music-industry internships",
+        "format": "In person — New York City",
+        "paid_status": "Not paid / Free Program",
+        "requirements": "Application and commitment to the three-week summer program; current-cycle details may vary",
+        "url": "https://www.nyc.gov/employment/programs/sound-thinking-nyc",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "America On Tech — Tech Flex Leaders",
+        "organization": "America On Tech",
+        "description": "Free nine-month technology and career-development program covering artificial intelligence, software skills, professional development, and pathways to paid summer internships and jobs.",
+        "opportunity_type": "Technology Program",
+        "fields": "Computer Science;Artificial Intelligence;Software Engineering;Technology;Career Exploration",
+        "grades": "11;12", "age_range": "NYC high school juniors and seniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed — program is free", "application_status": "Seasonal",
+        "deadline": "Recruitment dates vary by cohort; check the official application page",
+        "selectivity": "Moderately Competitive", "selectivity_stars": 3, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "NYC high school juniors and seniors interested in technology; cohort-specific requirements apply",
+        "stipend_display": "Program is unpaid; qualified students may progress to paid summer opportunities",
+        "internship_potential": "Yes — paid internship and job-placement pathways",
+        "format": "Hybrid — online instruction and New York City activities", "paid_status": "Not paid / Paid placement pathways",
+        "requirements": "Application, reliable participation throughout the nine-month program, and cohort-specific eligibility",
+        "url": "https://www.americaontech.org/tech-flex-leaders.html", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "All Star Code Summer Intensive",
+        "organization": "All Star Code",
+        "description": "Free six-week intensive in web development, artificial intelligence literacy, systems thinking, leadership, entrepreneurship, and career preparation.",
+        "opportunity_type": "Summer Program", "fields": "Computer Science;Web Development;Artificial Intelligence;Entrepreneurship;Technology",
+        "grades": "9;10;11;12", "age_range": "Male-identifying rising grades 9–12 and rising college first-years",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "no",
+        "cost": "Free", "financial_aid": "Laptop and internet assistance may be available", "application_status": "Future Cycle",
+        "deadline": "2026 cohort filled; check official site for the next application cycle",
+        "selectivity": "Moderately Competitive", "selectivity_stars": 3, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "U.S.-based male-identifying students entering grades 9–12 or their first college year; no previous coding experience required",
+        "stipend_display": "Not paid — technology-access assistance may be available", "internship_potential": "No — intensive technical and career preparation",
+        "format": "Online / live virtual", "paid_status": "Not paid", "requirements": "Application and full six-week participation",
+        "url": "https://apply.allstarcode.org/si26", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Brooklyn Botanic Garden Garden Apprentice Program",
+        "organization": "Brooklyn Botanic Garden",
+        "description": "Nine-month environmental education and urban-agriculture apprenticeship combining garden work, science learning, public engagement, and leadership development.",
+        "opportunity_type": "Apprenticeship", "fields": "Environmental Science;Botany;Urban Agriculture;Ecology;Education;Leadership",
+        "grades": "9;10;11", "age_range": "Students entering grades 9–11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "no",
+        "cost": "Free", "financial_aid": "Not needed — apprentices receive reimbursement", "application_status": "Future Cycle",
+        "deadline": "2026 cycle closed; 2027 applications expected in fall 2026",
+        "selectivity": "Moderately Competitive", "selectivity_stars": 3, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Students entering grades 9–11 who can commit from March through November; tier-specific requirements apply",
+        "stipend_display": "Tier reimbursements published for 2026 ranged from $600–$800; advanced veteran tier paid hourly",
+        "internship_potential": "Yes — environmental education and garden work experience", "format": "In person — Brooklyn Botanic Garden",
+        "paid_status": "Paid / reimbursement varies by tier", "requirements": "Application and full nine-month commitment",
+        "url": "https://www.bbg.org/learn/gap", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "NYC FIRST STEM Centers",
+        "organization": "NYC FIRST",
+        "description": "Citywide robotics and engineering hubs offering fabrication equipment, workshops, open lab hours, team support, credit-bearing classes, internships, and work-based learning.",
+        "opportunity_type": "Technology Program", "fields": "Robotics;Engineering;Computer Science;Fabrication;Technology;Career Exploration",
+        "grades": "7;8;9;10;11;12", "age_range": "Most centers serve ages 12–18 or 14–18",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free / program-dependent", "financial_aid": "Many center activities are free; confirm individual program costs", "application_status": "Year-Round",
+        "deadline": "Open hours and program enrollment vary by center",
+        "selectivity": "Open Enrollment", "selectivity_stars": 1, "acceptance_rate": "Not applicable / program-dependent",
+        "eligibility_summary": "NYC students within each center's age range; some classes or internships have additional requirements",
+        "stipend_display": "Varies — internships and work-based learning may be paid", "internship_potential": "Yes — center-specific internships and work-based learning",
+        "format": "In person — STEM centers including the Andrew Freedman Home in the South Bronx",
+        "paid_status": "Varies by activity", "requirements": "Member card or program registration may be required",
+        "url": "https://www.nycfirst.org/stem-centers", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "NYSCI Science Career Ladder",
+        "organization": "New York Hall of Science",
+        "description": "Youth workforce-development pathway where high school and college students become museum Explainers, facilitate hands-on exhibits, and build STEM knowledge, communication skills, and professional confidence.",
+        "opportunity_type": "Internship", "fields": "Science Communication;Museum Studies;Engineering;Technology;Science;Education",
+        "grades": "9;10;11;12", "age_range": "High school and college-aged students; current hiring requirements apply",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "no",
+        "cost": "Free", "financial_aid": "Not needed — workforce-development pathway", "application_status": "Seasonal",
+        "deadline": "Hiring and recruitment dates vary; check NYSCI careers and youth-program pages",
+        "selectivity": "Moderately Competitive", "selectivity_stars": 3, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "High school or college-aged students interested in STEM learning and communicating with museum visitors",
+        "stipend_display": "Compensation depends on the current Explainer position", "internship_potential": "Yes — museum-based STEM employment and career development",
+        "format": "In person — New York Hall of Science, Queens", "paid_status": "Paid employment pathway; confirm current posting",
+        "requirements": "Current employment eligibility, application, and visitor-facing schedule availability",
+        "url": "https://2025annualreport.nysci.org/", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Beam Center Apprenticeship",
+        "organization": "Beam Center",
+        "description": "Credit-bearing creative engineering apprenticeship where students build collaborative projects and learn circuitry, woodworking, project design, leadership, and facilitation before entering youth employment programs.",
+        "opportunity_type": "Apprenticeship", "fields": "Engineering;Circuitry;Fabrication;Design;Technology;Career Exploration",
+        "grades": "9;10;11;12", "age_range": "Ages 15–24 from Beam partner schools",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed", "application_status": "School-Based", "deadline": "Cohort dates vary by partner school",
+        "selectivity": "Eligibility Based", "selectivity_stars": 2, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Students ages 15–24 from participating partner schools",
+        "stipend_display": "Apprentices transition into paid Beam youth-employment programs", "internship_potential": "Yes — pathway into Beam Enterprises youth employment",
+        "format": "In person — school and Beam Center program sites", "paid_status": "Credit-bearing apprenticeship / paid employment pathway",
+        "requirements": "Partner-school participation and commitment to the 54-hour apprenticeship",
+        "url": "https://www.beamcenter.org/work-readiness", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "STEM From Dance Camp",
+        "organization": "STEM From Dance",
+        "description": "Three-week summer experience where girls combine coding, technology, choreography, and performance to create a tech-powered dance showcase.",
+        "opportunity_type": "Summer Program", "fields": "Computer Science;Engineering;Dance;Creative Technology;STEAM",
+        "grades": "3;4;5;6;7;8;9;10;11;12", "age_range": "Girls ages 8–18",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "no",
+        "cost": "$100 seat deposit/showcase bundle for the published cycle", "financial_aid": "Scholarships and financial assistance available", "application_status": "Seasonal",
+        "deadline": "Summer registration is rolling while space remains", "selectivity": "Open Enrollment", "selectivity_stars": 1,
+        "acceptance_rate": "Not publicly reported", "eligibility_summary": "Girls ages 8–18 who can attend all three weeks and the final showcase; all coding and dance levels welcome",
+        "stipend_display": "Not paid", "internship_potential": "No — project-based STEAM enrichment",
+        "format": "In person — Brooklyn College or Barnard College, NYC", "paid_status": "Not paid",
+        "requirements": "Parent/guardian registration, deposit, orientation, and full attendance",
+        "url": "https://stemfromdance.org/programs/camp/", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Kode With Klossy Camps",
+        "organization": "Kode With Klossy",
+        "description": "Free two-week coding-intensive camps for students of genders traditionally underrepresented in STEM, with project-based learning and a supportive technology community.",
+        "opportunity_type": "Summer Program", "fields": "Computer Science;Web Development;Mobile App Development;Data Science;Artificial Intelligence;Technology",
+        "grades": "8;9;10;11;12", "age_range": "Teen students meeting the current camp's age requirements",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "no",
+        "cost": "Free", "financial_aid": "Not needed — camps are free", "application_status": "Seasonal",
+        "deadline": "Summer application dates vary by cycle", "selectivity": "Moderately Competitive", "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported", "eligibility_summary": "Students of genders traditionally underrepresented in STEM; current age and location requirements apply",
+        "stipend_display": "Not paid", "internship_potential": "No — intensive coding and project development",
+        "format": "Online or in person — placement options vary by cohort", "paid_status": "Not paid",
+        "requirements": "Application and full participation in the two-week camp",
+        "url": "https://www.kodewithklossy.com/camp", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Mouse AI League",
+        "organization": "Mouse",
+        "description": "Year-long career-connected learning program in which NYC students use generative AI, computer science, and UX/UI design to prototype products addressing community challenges.",
+        "opportunity_type": "Technology Program", "fields": "Artificial Intelligence;Computer Science;UX/UI Design;Product Design;Technology",
+        "grades": "6;7;8;9;10;11;12", "age_range": "NYC middle and high school students participating through an educator or school",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free / school-supported", "financial_aid": "Not needed", "application_status": "School-Based", "deadline": "Educator and school enrollment dates vary",
+        "selectivity": "Eligibility Based", "selectivity_stars": 2, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "NYC students participating through a registered educator, school, or youth organization",
+        "stipend_display": "Not paid", "internship_potential": "No — career-connected AI and product-design experience",
+        "format": "Hybrid / school-based with citywide competition activities", "paid_status": "Not paid",
+        "requirements": "Participation through an educator or partner organization",
+        "url": "https://mouse.org/aileague", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Emoti-Con NYC",
+        "organization": "Mouse and NYC youth-development partners",
+        "description": "Annual citywide showcase and competition where students present apps, games, websites, robotics, digital media, and emerging-technology projects to peers and industry professionals.",
+        "opportunity_type": "Competition", "fields": "Computer Science;Game Design;Robotics;Digital Media;Web Development;Creative Technology",
+        "grades": "6;7;8;9;10;11;12", "age_range": "NYC middle and high school students",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed", "application_status": "Seasonal", "deadline": "Annual registration and project-submission dates vary",
+        "selectivity": "Open Enrollment", "selectivity_stars": 1, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "NYC middle and high school students with a technology or digital-media project; team and partner rules vary",
+        "stipend_display": "Not paid — awards and recognition may be available", "internship_potential": "No — project showcase and competition",
+        "format": "Hybrid preparation / in-person NYC showcase", "paid_status": "Not paid",
+        "requirements": "Register and submit an eligible student-created project",
+        "url": "https://emoticon.mouse.org/", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "World Science Scholars",
+        "organization": "World Science Festival",
+        "description": "Free year-long global online program for exceptionally talented mathematical students featuring advanced courses in mathematics, physics, astrophysics, neuroscience, and computational thinking.",
+        "opportunity_type": "Online Program", "fields": "Mathematics;Physics;Astrophysics;Neuroscience;Computational Science;Research",
+        "grades": "7;8;9;10;11;12", "age_range": "High school or accelerated middle school students who can finish before university",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "no",
+        "cost": "Free", "financial_aid": "Not needed — program is free", "application_status": "Future Cycle",
+        "deadline": "2026 applications closed April 15; 2027 applications open in fall 2026",
+        "selectivity": "Extremely Competitive", "selectivity_stars": 5, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Students worldwide who demonstrate exceptional mathematical ability, deep scientific curiosity, and strong English discussion skills",
+        "stipend_display": "Not paid", "internship_potential": "No — advanced online coursework and projects",
+        "format": "Online — asynchronous courses plus live Zoom sessions", "paid_status": "Not paid",
+        "requirements": "Student application, parent/guardian recommendation, teacher/mentor recommendation, computer and reliable internet, about two hours weekly",
+        "url": "https://worldsciencescholars.com/application-details/", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "MathWorks Math Modeling Challenge",
+        "organization": "Society for Industrial and Applied Mathematics / MathWorks",
+        "description": "Free internet-based team competition where students use mathematical modeling, data, coding, and technical writing to address a real-world problem during a 14-hour challenge window.",
+        "opportunity_type": "Competition", "fields": "Mathematics;Statistics;Data Science;Computer Science;Mathematical Modeling",
+        "grades": "11;12", "age_range": "Eligible U.S. high school juniors and seniors; official geographic rules apply",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "no",
+        "cost": "Free", "financial_aid": "Not needed — competition is free", "application_status": "Future Cycle", "deadline": "2027 competition information is available; registration deadline varies",
+        "selectivity": "Competitive (award-based)", "selectivity_stars": 4, "acceptance_rate": "Open registration; awards are highly competitive",
+        "eligibility_summary": "Teams of eligible high school juniors and seniors with an adult coach; official geographic rules apply",
+        "stipend_display": "Scholarship awards available to top teams", "internship_potential": "No — applied mathematics competition",
+        "format": "Online / remote team competition", "paid_status": "Not paid / Scholarship awards",
+        "requirements": "School team, adult coach, registration, and a 14-hour modeling submission",
+        "url": "https://m3challenge.siam.org/", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Mount Sinai CEYE Summer Programs",
+        "organization": "Icahn School of Medicine at Mount Sinai — Center for Excellence in Youth Education",
+        "description": "Open-enrollment summer biomedical programs introducing NYC high school students to medicine, health care, laboratory science, and mentorship within the Mount Sinai Health System.",
+        "opportunity_type": "Summer Program", "fields": "Medicine;Healthcare;Biomedical Science;Biology;Research;Public Health",
+        "grades": "9;10;11;12", "age_range": "NYC high school students; individual summer-program requirements apply",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed — CEYE programs are offered without tuition", "application_status": "Future Cycle",
+        "deadline": "Summer 2026 applications closed; Summer 2027 information expected December 2026",
+        "selectivity": "Highly Competitive", "selectivity_stars": 4, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "All NYC high school students may apply to CEYE's designated open-enrollment summer programs; program-specific requirements apply",
+        "stipend_display": "Varies by program — confirm the 2027 announcement", "internship_potential": "Yes — biomedical learning, mentoring, and possible research exposure",
+        "format": "In person — Icahn School of Medicine at Mount Sinai, Manhattan", "paid_status": "Varies by program",
+        "requirements": "Online application and program-specific academic, age, recommendation, and attendance requirements",
+        "url": "https://icahn.mssm.edu/about/departments-offices/oped/academic-community-culture/ceye", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Fordham Finance Institute — Wall Street in the Classroom",
+        "organization": "Fordham University Gabelli School of Business",
+        "description": "One-week introduction to finance covering economic fundamentals, personal finance, stocks, bonds, monetary policy, asset allocation, risk management, private equity, hedge funds, and cryptocurrency, with finance-industry guest speakers.",
+        "opportunity_type": "Summer Program", "fields": "Finance;Investment;Economics;Business;Personal Finance;Risk Management",
+        "grades": "9;10;11;12", "age_range": "High school students interested in finance",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "$1,300 for the published 2026 program", "financial_aid": "Financial aid is not stated on the program page; contact Fordham before applying", "application_status": "Future Cycle",
+        "deadline": "Summer 2026 sections filled; next-cycle dates not yet announced",
+        "selectivity": "Moderately Competitive", "selectivity_stars": 3, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Any high school student interested in learning about finance; international students may attend remotely",
+        "stipend_display": "Not paid", "internship_potential": "No — finance education and industry exposure",
+        "format": "Hybrid choice — in person at Fordham Rose Hill in the Bronx or online",
+        "paid_status": "Not paid", "requirements": "Application, program fee, and full participation in the one-week course",
+        "url": "https://www.fordham.edu/gabelli-school-of-business/academic-programs-and-admissions/undergraduate-programs/specialty-programs/summer-business-programs/finance-institute-wall-street-in-the-classroom/",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "ACE Mentor Program of Greater New York",
+        "organization": "ACE Mentor Program of Greater New York",
+        "description": "Free school-year mentorship where high school students work with architects, civil and structural engineers, mechanical and electrical engineers, and construction managers to learn design software and complete a team design project.",
+        "opportunity_type": "Mentorship",
+        "fields": "Architecture;Civil Engineering;Structural Engineering;Mechanical Engineering;Electrical Engineering;Construction Management;Design",
+        "grades": "9;10;11;12",
+        "age_range": "All high school students in grades 9–12",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "yes",
+        "cost": "Free",
+        "financial_aid": "Not needed — program is free; qualifying seniors may apply for ACE scholarships",
+        "application_status": "Open Now",
+        "deadline": "Registration is open for 2026–27; team selection begins in September and teams fill first-come, first-served",
+        "selectivity": "Open Enrollment",
+        "selectivity_stars": 1,
+        "acceptance_rate": "All registered students are accepted into ACE GNY; preferred team placement depends on available space",
+        "acceptance_rate_confidence": "Official",
+        "eligibility_summary": "Any student in grades 9–12 may register; no prior architecture, engineering, or construction experience, grades, recommendations, or essays are required",
+        "stipend_display": "Not paid — scholarships, internships, job shadowing, and employment pathways may be available",
+        "internship_potential": "Yes — internship, job-shadowing, scholarship, and professional-networking opportunities",
+        "format": "In person or online — teams meet throughout Greater NYC, including Riverdale; remote teams are available",
+        "paid_status": "Not paid / Scholarship and internship opportunities",
+        "requirements": "Student registration, parent/guardian consent form, team selection, and regular after-school attendance from late October through May",
+        "url": "https://www.acementorny.org/students/",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Billion Oyster Project School Programs",
+        "organization": "Billion Oyster Project",
+        "description": "School-connected marine science and harbor-restoration experiences in which students monitor oysters, water quality, biodiversity, and ecosystem health and may present research at the annual student symposium.",
+        "opportunity_type": "Environmental Program", "fields": "Marine Biology;Environmental Science;Ecology;Aquaculture;Ocean Engineering;Conservation",
+        "grades": "6;7;8;9;10;11;12", "age_range": "NYC middle and high school students participating through a teacher or school group",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free / school-program dependent", "financial_aid": "Billion Oyster Project offers free curriculum and many free student experiences", "application_status": "School-Based",
+        "deadline": "Teacher, field-experience, research-station, and symposium schedules vary",
+        "selectivity": "Eligibility Based", "selectivity_stars": 2, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Students generally participate through an NYC teacher, school, Oyster Research Station or Tank program, or scheduled group experience",
+        "stipend_display": "Not paid", "internship_potential": "Varies — school pathways connect students to marine and environmental workforce development",
+        "format": "In person and school-based — classrooms, Governors Island, and NYC waterfront sites", "paid_status": "Not paid",
+        "requirements": "Teacher or school participation; individual events and volunteer activities have separate registration and age rules",
+        "url": "https://www.billionoysterproject.org/education", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "CityParks Green Girls Empowered by Science",
+        "organization": "City Parks Foundation",
+        "description": "Environmental science and leadership program using NYC parks as outdoor laboratories for studying climate change, water quality, urban forests, biodiversity, invasive species, and sustainable cities.",
+        "opportunity_type": "Environmental Program", "fields": "Environmental Science;Ecology;Climate Science;Water Quality;Urban Forestry;Leadership",
+        "grades": "6;7;8", "age_range": "Middle school girls; current cohort requirements apply",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed — program is free", "application_status": "Seasonal", "deadline": "Current recruitment dates vary by site and cycle",
+        "selectivity": "Moderately Competitive", "selectivity_stars": 3, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Middle school girls interested in environmental science and leadership; location and grade requirements vary by cohort",
+        "stipend_display": "Not paid", "internship_potential": "Yes — older participants may progress to environmental internships",
+        "format": "In person — NYC parks and program sites", "paid_status": "Not paid",
+        "requirements": "Application or partner-site enrollment and commitment to scheduled activities",
+        "url": "https://cityparksfoundation.org/play/green-girls-national-curriculum/", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Girls Inc. of NYC STEM and Data Analytics Programs",
+        "organization": "Girls Inc. of New York City",
+        "description": "School and community-based STEM programming for girls, including the year-long G3 and Pre-G3 project-based Data Analytics program focused on mathematics, critical thinking, technology, leadership, and college and career preparation.",
+        "opportunity_type": "Technology Program", "fields": "Data Science;Mathematics;Statistics;Technology;STEM;Leadership",
+        "grades": "6;7;8;9;10;11;12", "age_range": "Girls and young women served through participating NYC schools, organizations, and family referrals",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free / partner-supported", "financial_aid": "Not needed for partner-supported programming", "application_status": "School-Based", "deadline": "Enrollment varies by school, partner organization, and program cycle",
+        "selectivity": "Eligibility Based", "selectivity_stars": 2, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Girls participating through a Girls Inc. NYC school or community partner; families may contact Girls Inc. NYC about available placements",
+        "stipend_display": "Not paid", "internship_potential": "Varies — college, career, mentoring, and STEM pathways are included",
+        "format": "In person / school-based in New York City", "paid_status": "Not paid",
+        "requirements": "Partner-site enrollment or family inquiry; program-specific grade and attendance rules apply",
+        "url": "https://www.girlsincnyc.org/", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "NYU Langone Science and Technology Entry Program (STEP)",
+        "organization": "NYU Grossman School of Medicine / NYU Langone Health",
+        "description": "Precollege STEM and healthcare pathway offering foundational science and mathematics, applications in medicine, medical-specialty exposure, allied-health experiences, SAT preparation, college readiness, workshops, and mentoring.",
+        "opportunity_type": "Academic Enrichment", "fields": "Medicine;Healthcare;Biomedical Science;Mathematics;Engineering;Science;College Readiness",
+        "grades": "8;9;10;11;12", "age_range": "New York State residents in grades 8–12 for the 2026–27 academic year",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed — New York State-funded program", "application_status": "Open Now", "deadline": "Fall 2026 application is available; confirm the submission deadline in the application portal",
+        "selectivity": "Eligibility Based", "selectivity_stars": 2, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "New York State resident entering grade 8–12 who meets New York State STEP eligibility requirements",
+        "stipend_display": "Not paid", "internship_potential": "Yes — healthcare mentorship and allied-health career pathways",
+        "format": "In person / program-dependent — NYU Langone Health, Manhattan", "paid_status": "Not paid",
+        "requirements": "Two-step online application and New York State STEP academic, residency, income or underrepresentation eligibility",
+        "url": "https://med.nyu.edu/our-community/why-nyu-grossman-school-medicine/office-professional-development/science-technology-entry-program", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Manhattan University Summer Engineering Awareness Program",
+        "organization": "Manhattan University School of Engineering",
+        "description": "Free intensive summer program with laboratory experiences in chemical, civil, computer, electrical, environmental, and mechanical engineering, physics, robotics, AI, sustainable design, and college admissions.",
+        "opportunity_type": "Summer Program", "fields": "Engineering;Physics;Robotics;Artificial Intelligence;Environmental Engineering;Computer-Aided Design",
+        "grades": "11;12", "age_range": "Rising high school juniors and seniors, with emphasis on women and students from underrepresented groups",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed — sponsored program", "application_status": "Future Cycle", "deadline": "2026 sessions completed; check the official page for Summer 2027 registration",
+        "selectivity": "Highly Competitive", "selectivity_stars": 4, "acceptance_rate": "Approximately 120 selected from about 600 applicants in a recent published cycle",
+        "acceptance_rate_confidence": "Historical official program context", "eligibility_summary": "Rising juniors and seniors with strong mathematics and science skills and interest in engineering; women and minority students are especially encouraged",
+        "stipend_display": "Not paid", "internship_potential": "No — hands-on engineering and college preparation",
+        "format": "In person — Manhattan University, Riverdale, Bronx", "paid_status": "Not paid",
+        "requirements": "Registration/application and demonstrated mathematics, science, and engineering interest",
+        "url": "https://manhattan.edu/academics/engineering/high-school-programs", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Cooper Union Saturday Program",
+        "organization": "The Cooper Union",
+        "description": "Free Saturday visual arts and architecture program offering Architecture, Graphic Design, Drawing, Media Production, Painting, Sculpture, portfolio development, field trips, studio visits, and writing workshops.",
+        "opportunity_type": "Academic Enrichment", "fields": "Architecture;Design;Graphic Design;Media Production;Visual Arts;Creative Technology",
+        "grades": "9;10;11;12", "age_range": "New York City public high school students",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed — classes are free", "application_status": "Open Now", "deadline": "Fall 2026 applications close September 13, 2026",
+        "selectivity": "Moderately Competitive", "selectivity_stars": 3, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "NYC public high school students interested in art, architecture, design, media, or portfolio development",
+        "stipend_display": "Not paid", "internship_potential": "No — precollege instruction and portfolio development",
+        "format": "In person — Saturdays at The Cooper Union, Manhattan", "paid_status": "Not paid",
+        "requirements": "Online application and course-specific materials; semester attendance required",
+        "url": "https://cooper.edu/academics/outreach-and-pre-college/saturday-program", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Harlem Children Society STEM Research Internship",
+        "organization": "Harlem Children Society",
+        "description": "Paid eight-to-ten-week summer research internship connecting high school students with scientists, physicians, and engineers at research institutions, plus seminars, workshops, presentations, and possible year-round participation.",
+        "opportunity_type": "Research", "fields": "Biomedical Science;Medicine;Engineering;Science;Research;STEM",
+        "grades": "9;10;11;12", "age_range": "High school students nominated or supported by their school",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed — paid research internship", "application_status": "Seasonal", "deadline": "Current-cycle nomination and application dates are not clearly published; contact the program",
+        "selectivity": "Highly Competitive", "selectivity_stars": 4, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "High school students selected for motivation, enthusiasm, school performance, recommendations, and interview results",
+        "stipend_display": "Paid stipend; current amount not publicly stated", "internship_potential": "Yes — faculty-mentored STEM research internship",
+        "format": "In person — participating New York research institutions", "paid_status": "Paid — amount not published",
+        "requirements": "School nomination or application, principal and science-teacher recommendations, interview, and full summer commitment",
+        "url": "https://harlemchildrensociety.org/html1/join2.html", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "NAF Future Ready Lab",
+        "organization": "NAF",
+        "description": "Multi-week paid team internship where high school students complete a real project for a business or community partner, attend skill-building workshops, and receive mentoring from industry professionals.",
+        "opportunity_type": "Internship", "fields": "Technology;Engineering;Finance;Healthcare;Business;Project Management;Career Exploration",
+        "grades": "9;10;11;12", "age_range": "Students recruited through participating NAF academies, districts, schools, and local partners",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed — paid work-based learning", "application_status": "School-Based", "deadline": "Recruitment varies by participating school, academy, district, and employer partner",
+        "selectivity": "Eligibility Based", "selectivity_stars": 2, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "High school students selected through participating NAF academies or local school and employer partnerships",
+        "stipend_display": "Paid internship; wage and hours vary by local partner", "internship_potential": "Yes — structured paid project-based internship",
+        "format": "In person or hybrid — participating school and employer sites", "paid_status": "Paid",
+        "requirements": "School or academy participation, application/interview if required, and at least 120 program hours for the standard model",
+        "url": "https://naf.org/wp-content/uploads/2018/09/About_FutureReadyLabs.pdf", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Bloomberg Arts Internship — New York City",
+        "organization": "Studio in a School / Bloomberg Philanthropies",
+        "description": "Paid full-time summer internship placing NYC teens at arts and cultural nonprofits, combined with workplace training, college-application support, writing workshops, cultural visits, and career panels.",
+        "opportunity_type": "Internship", "fields": "Arts;Digital Media;Design;Technology;Business;Communications;Career Exploration",
+        "grades": "11", "age_range": "Rising high school seniors from participating NYC public high schools",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island", "bronx_priority": "yes",
+        "cost": "Free", "financial_aid": "Not needed — paid internship", "application_status": "Future Cycle", "deadline": "2026 deadline was January 11; check back for the Summer 2027 application",
+        "selectivity": "Highly Competitive", "selectivity_stars": 4, "acceptance_rate": "Not publicly reported",
+        "eligibility_summary": "Rising senior at a participating NYC public high school with interest in arts and cultural careers; current partner-school and financial-need rules apply",
+        "stipend_display": "Paid full-time internship; current NYC wage is announced with each cycle", "internship_potential": "Yes — paid placement at an NYC arts or cultural nonprofit",
+        "format": "In person — New York City cultural organizations and workshops", "paid_status": "Paid",
+        "requirements": "Application, participating-school eligibility, and full attendance at the internship, workshops, visits, and college-readiness activities",
+        "url": "https://studioinaschool.org/programs-high-school-teen/", "last_verified": "2026-08-27"
+    },
+    {
+        "name": "University of Rochester LLE Summer High School Research Program",
+        "organization": "University of Rochester Laboratory for Laser Energetics",
+        "description": "Paid eight-week research program where students work full time with an LLE scientist or engineer on projects involving high-powered lasers, plasma physics, optics, materials science, simulations, computation, chemistry, or diagnostic systems, then present their results at a symposium.",
+        "opportunity_type": "Research",
+        "fields": "Physics;Laser Physics;Plasma Physics;Optics;Materials Science;Engineering;Computer Science;Chemistry",
+        "grades": "11",
+        "age_range": "Rochester-area high school juniors entering grade 12",
+        "boroughs_served": "Outside NYC — Greater Rochester, New York only",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed — participants receive compensation",
+        "application_status": "Future Cycle",
+        "deadline": "Summer 2026 applications closed; applications typically open in early February and close in mid-March",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "About 22% in 2025 — 16 students selected from 74 applicants",
+        "acceptance_rate_confidence": "Calculated from official 2025 cohort figures",
+        "eligibility_summary": "Current high school junior in Rochester or the surrounding area with strong academic aptitude, serious STEM interest, and availability for the complete eight-week program",
+        "stipend_display": "Paid monetary stipend; current amount is not published",
+        "internship_potential": "Yes — full-time mentored laboratory research",
+        "format": "In person — Laboratory for Laser Energetics, Rochester, New York",
+        "paid_status": "Paid — amount not published",
+        "requirements": "Application, transcript, recent report card, recommendation, interest letter, essay, interview if selected, and full eight-week availability",
+        "url": "https://www.lle.rochester.edu/education/summer-high-school-research-program/",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "University of Rochester Photon Camp",
+        "organization": "University of Rochester Institute of Optics",
+        "description": "Free one-week immersion in optics and optical engineering featuring faculty lectures, hands-on Institute of Optics laboratory activities, and visits to local optics-industry organizations.",
+        "opportunity_type": "Summer Program",
+        "fields": "Optics;Physics;Optical Engineering;Photonics;Lasers;Engineering",
+        "grades": "10;11",
+        "age_range": "Rising high school juniors and seniors",
+        "boroughs_served": "Outside NYC — Rochester, New York",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed — program is free; confirm whether transportation or housing is provided",
+        "application_status": "Seasonal",
+        "deadline": "Application dates vary; check the official Photon Camp page for the next cycle",
+        "selectivity": "Moderately Competitive",
+        "selectivity_stars": 3,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Rising high school juniors and seniors interested in optics, physics, lasers, photonics, or optical engineering; current geographic and attendance rules apply",
+        "stipend_display": "Not paid",
+        "internship_potential": "No — intensive laboratory and industry-exposure program",
+        "format": "In person — University of Rochester Institute of Optics, Rochester, New York",
+        "paid_status": "Not paid",
+        "requirements": "Application and full one-week attendance; confirm current transportation, housing, and geographic requirements",
+        "url": "https://www.hajim.rochester.edu/optics/about/pre-college.html",
+        "last_verified": "2026-08-27"
+    },
+    {
+        "name": "Air Force Research Laboratory Scholars Program",
+        "organization": "Air Force Research Laboratory / Universities Space Research Association",
+        "description": "Stipend-paid summer research internships where upper-level high school students contribute to mentor-led projects with AFRL scientists and engineers across aerospace, optics, engineering, computing, materials, and other advanced-technology fields.",
+        "opportunity_type": "Internship",
+        "fields": "Aerospace Engineering;Optics;Physics;Engineering;Computer Science;Materials Science;Cybersecurity;Research",
+        "grades": "11;12",
+        "age_range": "Upper-level high school students who meet the education level listed for a specific AFRL project",
+        "boroughs_served": "Outside NYC — participating AFRL sites across the United States",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed — stipend-paid internship",
+        "application_status": "Seasonal",
+        "deadline": "Deadlines differ by AFRL site and project; check the current location pages and application portal",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "U.S. citizen enrolled at least half time in a degree- or certificate-seeking educational program; high school eligibility and minimum age depend on the selected project and site",
+        "stipend_display": "Paid stipend; rate varies by education level, site, project, and program year",
+        "internship_potential": "Yes — paid research internship with AFRL scientists and engineers",
+        "format": "In person — participating Air Force Research Laboratory sites",
+        "paid_status": "Paid",
+        "requirements": "U.S. citizenship, online application, résumé, unofficial transcript, project-specific qualifications, and recommendation strongly encouraged; some placements may require a security clearance",
+        "url": "https://afrlscholars.usra.edu/",
+        "last_verified": "2026-08-27"
     }
 ]
 
@@ -13782,6 +14753,16 @@ OPPORTUNITY_OPENS_DATES = {
     "Bronx River EELS Internship": ("January", "estimated"),
     "Hudson River Park Science Leadership Program": ("March", "estimated"),
     "Wave Hill Forest Project": ("Winter", "estimated"),
+    "Girls Who Code Summer Programs": ("Winter", "estimated"),
+    "Google Code Next — New York City": ("August 21", "estimated"),
+    "AMNH Science Communication Internship Program (SCIP)": ("Winter", "estimated"),
+    "Baruch College Now STEM Research Academy": ("Mid-October", "estimated"),
+    "CUNY College Now": ("Varies by semester", "estimated"),
+    "Lehman College Now": ("Varies by semester", "estimated"),
+    "NYC Parks Ranger Conservation Corps": ("Seasonal", "estimated"),
+    "NYC CTE Industry Scholars": ("Varies by school", "estimated"),
+    "CareerCLUE": ("Varies by school", "estimated"),
+    "Sound Thinking NYC": ("February", "estimated"),
 }
 
 
@@ -13931,6 +14912,85 @@ def merge_opportunity_fields(
     return base
 
 
+SELECTIVITY_LABEL_BY_STARS = {
+    1: "Accessible / Lottery or Placement Based",
+    2: "Eligibility Based",
+    3: "Moderately Competitive",
+    4: "Highly Competitive",
+    5: "Extremely Competitive",
+}
+
+
+def normalize_opportunity_selectivity(record):
+    """Normalize legacy numeric selectivity fields for filters and cards."""
+
+    raw_selectivity = record.get("selectivity")
+    legacy_label = str(
+        record.get("selectivity_label") or ""
+    ).strip()
+
+    stars = pd.to_numeric(
+        record.get("selectivity_stars"),
+        errors="coerce"
+    )
+
+    if pd.isna(stars) or int(stars) <= 0:
+        stars = pd.to_numeric(
+            raw_selectivity,
+            errors="coerce"
+        )
+
+    if pd.isna(stars) or int(stars) <= 0:
+        stars = pd.to_numeric(
+            record.get("academic_intensity"),
+            errors="coerce"
+        )
+
+    if pd.notna(stars) and int(stars) > 0:
+        stars = max(1, min(5, int(stars)))
+        record["selectivity_stars"] = stars
+    else:
+        stars = 0
+
+    selectivity_text = str(
+        raw_selectivity or ""
+    ).strip()
+    selectivity_is_numeric = pd.notna(
+        pd.to_numeric(
+            raw_selectivity,
+            errors="coerce"
+        )
+    )
+
+    if legacy_label:
+        record["selectivity"] = legacy_label
+    elif selectivity_is_numeric or not selectivity_text:
+        record["selectivity"] = SELECTIVITY_LABEL_BY_STARS.get(
+            stars,
+            "Not rated yet"
+        )
+
+    # Treat a published or estimated acceptance rate of 14% or lower as the
+    # highest selectivity tier. For ranges, require the upper bound to be 14%
+    # or lower so a broad range such as 5–15% is not overstated.
+    acceptance_rate = str(
+        record.get("acceptance_rate") or ""
+    )
+    percentage_values = [
+        float(value)
+        for value in re.findall(
+            r"(\d+(?:\.\d+)?)\s*%",
+            acceptance_rate
+        )
+    ]
+
+    if percentage_values and max(percentage_values) <= 14:
+        record["selectivity_stars"] = 5
+        record["selectivity"] = "Extremely Competitive"
+
+    return record
+
+
 if opportunities.empty:
     opportunities = extra_df.copy()
 else:
@@ -13988,6 +15048,10 @@ else:
     for csv_row in opportunities.to_dict(
         "records"
     ):
+
+        csv_row = normalize_opportunity_selectivity(
+            csv_row
+        )
 
         csv_name = str(
             csv_row.get(
@@ -14067,14 +15131,19 @@ else:
         + leftover_extra
     )
 
-opportunities = pd.DataFrame(
-    apply_opportunity_opens_dates(
-        apply_opportunity_transparency(
-            opportunities.to_dict(
-                "records"
-            )
+normalized_opportunity_records = apply_opportunity_opens_dates(
+    apply_opportunity_transparency(
+        opportunities.to_dict(
+            "records"
         )
     )
+)
+
+opportunities = pd.DataFrame(
+    [
+        normalize_opportunity_selectivity(record)
+        for record in normalized_opportunity_records
+    ]
 )
 
 
@@ -18915,10 +19984,16 @@ ENGINEERING_MAJORS = [
     "Aerospace Engineering",
     "Industrial Engineering",
     "Materials Science / Engineering",
+    "Nuclear Engineering",
+    "Systems Engineering",
+    "Engineering Physics",
     "Bioengineering",
+    "Robotics",
     "Mechatronics",
     "Construction Engineering",
-    "Structural Engineering"
+    "Structural Engineering",
+    "Architectural Engineering",
+    "General Engineering / Undecided Engineering",
 ]
 
 
@@ -19071,9 +20146,15 @@ STEM_FIELD_ALIASES = {
 RELATED_STEM_FIELDS = {
     "Engineering": [
         "General Engineering / Undecided Engineering",
-        "Mechanical Engineering",
-        "Electrical Engineering",
-        "Civil Engineering"
+    ] + ENGINEERING_MAJORS + [
+        "Robotics",
+        "Systems Engineering",
+        "Nuclear Engineering",
+        "Engineering Physics",
+        "Architectural Engineering",
+        "Mechatronics",
+        "Construction Engineering",
+        "Structural Engineering",
     ],
     "General Engineering / Undecided Engineering": [
         "Engineering"
@@ -19875,6 +20956,105 @@ def opportunity_scope_matches_interests(opportunity, expanded_interests):
         )
 
     return False
+
+
+
+OPPORTUNITY_STEM_AREA_ALL = "All STEM Areas"
+
+OPPORTUNITY_STEM_AREA_OPTIONS = [
+    OPPORTUNITY_STEM_AREA_ALL,
+    "Engineering & Technology",
+    "Computer Science & AI",
+    "Life & Health Sciences",
+    "Physical Sciences",
+    "Environmental & Earth Sciences",
+    "Mathematics & Statistics",
+    "Finance & Quantitative Business",
+    "Architecture & Built Environment",
+    "Interdisciplinary / General STEM",
+]
+
+
+def stem_fields_for_opportunity_area(area_name):
+    """Return the concrete STEM fields covered by a broad opportunity search area."""
+
+    area = str(area_name or "").strip()
+    if not area or area == OPPORTUNITY_STEM_AREA_ALL:
+        return []
+
+    for group_name, fields in STEM_FIELD_GROUPS:
+        if group_name == area:
+            return list(fields)
+
+    return []
+
+
+def opportunity_field_match_set(fields_value):
+    """
+    Build the expanded set of STEM labels that an opportunity can match.
+    Uses raw tags, canonical names, related fields, and research-area helpers.
+    """
+
+    raw_fields = [
+        item.strip()
+        for item in str(fields_value or "").split(";")
+        if item.strip()
+    ]
+    matched = set(raw_fields)
+    matched.update(canonicalize_stem_field_list(raw_fields))
+    matched.update(research_areas_from_fields(fields_value))
+    matched.update(expand_stem_fields(raw_fields))
+    matched.discard("")
+    return matched
+
+
+def opportunity_matches_stem_selection(fields_value, selected_fields):
+    """True when any selected STEM field (with expansion) overlaps the opportunity."""
+
+    selected = [
+        str(item).strip()
+        for item in (selected_fields or [])
+        if str(item).strip()
+    ]
+    if not selected:
+        return True
+
+    selected_expanded = expand_stem_fields(selected)
+    opportunity_expanded = opportunity_field_match_set(fields_value)
+    return bool(selected_expanded.intersection(opportunity_expanded))
+
+
+def opportunity_matches_format(format_value, selected_formats):
+    """Match one or more student-selected delivery formats using OR logic."""
+
+    selected = {
+        str(value).strip().lower()
+        for value in (selected_formats or [])
+        if str(value).strip()
+    }
+    if not selected:
+        return True
+
+    format_text = str(format_value or "").strip().lower()
+    if not format_text:
+        return False
+
+    if "hybrid" in format_text:
+        opportunity_format = "hybrid"
+    elif any(
+        token in format_text
+        for token in ["online", "virtual", "remote"]
+    ):
+        opportunity_format = "online"
+    elif any(
+        token in format_text
+        for token in ["in person", "in-person", "onsite", "on-site"]
+    ):
+        opportunity_format = "in person"
+    else:
+        return False
+
+    return opportunity_format in selected
 
 
 def expand_stem_fields(values):
@@ -22432,6 +23612,8 @@ if not app_user:
 
     landing_stats_df = pd.DataFrame()
     landing_opp_count = 0
+    landing_field_count = 0
+    landing_borough_count = 0
     landing_free_count = 0
     landing_research_count = 0
     landing_type_count = 0
@@ -22476,8 +23658,13 @@ if not app_user:
                         str
                     )
                     .str.strip()
+                    .str.replace(
+                        r"\s+",
+                        " ",
+                        regex=True,
+                    )
                 )
-                landing_valid = ~landing_names.str.lower().isin(
+                landing_valid = ~landing_names.str.casefold().isin(
                     {
                         "",
                         "nan",
@@ -22487,11 +23674,12 @@ if not app_user:
                 landing_stats_df = landing_stats_df.loc[
                     landing_valid
                 ].copy()
+                # Count each opportunity once by normalized name.
                 landing_stats_df[
                     "_landing_name"
                 ] = landing_names[
                     landing_valid
-                ]
+                ].str.casefold()
                 landing_stats_df = landing_stats_df.drop_duplicates(
                     "_landing_name",
                     keep="first"
@@ -22504,6 +23692,72 @@ if not app_user:
             )
 
             if not landing_stats_df.empty:
+
+                landing_field_tags = set()
+                if "fields" in landing_stats_df.columns:
+                    for raw_fields in (
+                        landing_stats_df[
+                            "fields"
+                        ]
+                        .fillna(
+                            ""
+                        )
+                        .astype(
+                            str
+                        )
+                    ):
+                        for part in re.split(
+                            r"[;|,]",
+                            raw_fields,
+                        ):
+                            tag = " ".join(
+                                str(
+                                    part
+                                ).strip().split()
+                            )
+                            if tag.casefold() in {
+                                "",
+                                "nan",
+                                "none",
+                            }:
+                                continue
+                            landing_field_tags.add(
+                                tag.casefold()
+                            )
+                landing_field_count = int(
+                    len(
+                        landing_field_tags
+                    )
+                )
+
+                nyc_boroughs = (
+                    "bronx",
+                    "brooklyn",
+                    "manhattan",
+                    "queens",
+                    "staten island",
+                )
+                if "boroughs_served" in landing_stats_df.columns:
+                    landing_borough_text = (
+                        landing_stats_df[
+                            "boroughs_served"
+                        ]
+                        .fillna(
+                            ""
+                        )
+                        .astype(
+                            str
+                        )
+                        .str.casefold()
+                    )
+                    landing_borough_count = int(
+                        landing_borough_text.map(
+                            lambda text: all(
+                                borough in text
+                                for borough in nyc_boroughs
+                            )
+                        ).sum()
+                    )
 
                 if "cost" in landing_stats_df.columns:
                     landing_cost = (
@@ -22610,23 +23864,60 @@ if not app_user:
     except Exception:
 
         landing_opp_count = 0
+        landing_field_count = 0
+        landing_borough_count = 0
         landing_free_count = 0
         landing_research_count = 0
         landing_type_count = 0
 
-    landing_opp_value = "100+"
+    def landing_stat_count(value, step=10):
+
+        value = max(0, int(value or 0))
+
+        if value < step:
+
+            return str(value)
+
+        return f"{(value // step) * step}+"
+
+    landing_opp_value = landing_stat_count(
+        landing_opp_count,
+        step=10,
+    )
+    landing_field_value = landing_stat_count(
+        landing_field_count,
+        step=5,
+    )
+    landing_borough_value = landing_stat_count(
+        landing_borough_count,
+        step=10,
+    )
+    landing_free_value = landing_stat_count(
+        landing_free_count,
+        step=10,
+    )
+    landing_research_value = landing_stat_count(
+        landing_research_count,
+        step=5,
+    )
 
     landing_opp_value_safe = html_module.escape(
         landing_opp_value
     )
+    landing_field_value_safe = html_module.escape(
+        landing_field_value
+    )
+    landing_borough_value_safe = html_module.escape(
+        landing_borough_value
+    )
     landing_free_value_safe = html_module.escape(
-        f"{landing_free_count}+"
+        landing_free_value
     )
     landing_research_value_safe = html_module.escape(
-        "50+"
+        landing_research_value
     )
     landing_type_value_safe = html_module.escape(
-        f"{landing_type_count}+"
+        str(landing_type_count)
     )
 
     st.markdown(
@@ -22657,8 +23948,8 @@ if not app_user:
                                     <path d="M10.5 17.5h3"></path>
                                 </svg>
                             </div>
-                            <div class="sp-landing-stat-value is-text">Multiple</div>
-                            <div class="sp-landing-stat-label">STEM Fields</div>
+                            <div class="sp-landing-stat-value">{landing_field_value_safe}</div>
+                            <div class="sp-landing-stat-label">STEM Fields &amp; Topics</div>
                         </div>
                         <div class="sp-landing-stat">
                             <div class="sp-landing-stat-icon" aria-hidden="true">
@@ -22667,8 +23958,8 @@ if not app_user:
                                     <circle cx="12" cy="10" r="2.35"></circle>
                                 </svg>
                             </div>
-                            <div class="sp-landing-stat-value is-text">NYC</div>
-                            <div class="sp-landing-stat-label">Focused</div>
+                            <div class="sp-landing-stat-value">{landing_borough_value_safe}</div>
+                            <div class="sp-landing-stat-label">Serve All 5 Boroughs</div>
                         </div>
                         <div class="sp-landing-stat">
                             <div class="sp-landing-stat-icon" aria-hidden="true">
@@ -22678,7 +23969,7 @@ if not app_user:
                                 </svg>
                             </div>
                             <div class="sp-landing-stat-value">{landing_free_value_safe}</div>
-                            <div class="sp-landing-stat-label">Free Programs</div>
+                            <div class="sp-landing-stat-label">Free or Paid Programs</div>
                         </div>
                         <div class="sp-landing-stat">
                             <div class="sp-landing-stat-icon" aria-hidden="true">
@@ -26038,72 +27329,153 @@ elif page == "Opportunities":
 
     else:
 
-        with st.form(
-            "opportunity_search_form",
-            clear_on_submit=False
-        ):
-            opportunity_types = st.multiselect(
-                "Filter by opportunity type",
-                sorted(
-                    opportunities[
-                        "opportunity_type"
-                    ]
-                    .dropna()
-                    .astype(str)
-                    .unique()
-                    .tolist()
-                ),
-                key="opportunity_filter_types"
+        # Migrate / clear obsolete per-category multiselect keys from the prior UI.
+        _obsolete_opp_filter_keys = [
+            "opportunity_filter_research_areas",
+            "opportunity_filter_research_Engineering",
+            "opportunity_filter_research_Computing & Data",
+            "opportunity_filter_research_Computing & Technology",
+            "opportunity_filter_research_Math & Physical Sciences",
+            "opportunity_filter_research_Physical Sciences",
+            "opportunity_filter_research_Life & Health Sciences",
+            "opportunity_filter_research_Mathematics",
+            "opportunity_filter_research_Earth & Environmental Sciences",
+            "opportunity_filter_research_Interdisciplinary STEM",
+            "opportunity_filter_research_Interdisciplinary / General STEM",
+            "opportunity_filter_research_Engineering & Technology",
+            "opportunity_filter_research_Computer Science & AI",
+            "opportunity_filter_research_Environmental & Earth Sciences",
+            "opportunity_filter_research_Mathematics & Statistics",
+            "opportunity_filter_research_Finance & Quantitative Business",
+            "opportunity_filter_research_Architecture & Built Environment",
+        ] + [
+            f"opportunity_filter_research_{group_name}"
+            for group_name, _
+            in STEM_FIELD_GROUPS
+        ]
+
+        if not st.session_state.get("opportunity_filters_v2_migrated"):
+            for key in _obsolete_opp_filter_keys:
+                st.session_state.pop(key, None)
+            # Drop legacy research-area lists that may silently restrict results.
+            if isinstance(st.session_state.get("opportunity_search_research_areas"), list):
+                st.session_state.pop("opportunity_search_research_areas", None)
+            st.session_state["opportunity_filters_v2_migrated"] = True
+
+        # The STEM Area control changed from a selectbox to a multiselect.
+        # Migrate saved scalar values so Streamlit receives the list shape the
+        # new widget expects. An empty list means all STEM areas.
+        saved_stem_area = st.session_state.get(
+            "opportunity_filter_stem_area"
+        )
+        if isinstance(saved_stem_area, str):
+            st.session_state["opportunity_filter_stem_area"] = (
+                []
+                if saved_stem_area == OPPORTUNITY_STEM_AREA_ALL
+                else [saved_stem_area]
             )
 
-            st.caption(
-                "Filter by STEM area. Choose from any group; programs can match more than one field."
-            )
+        with st.container(key="opportunity_search_panel"):
+            with st.form(
+                "opportunity_search_form",
+                clear_on_submit=False
+            ):
+                search_keyword = st.text_input(
+                    "Search opportunities",
+                    placeholder="Name, organization, description, field, or type",
+                    key="opportunity_filter_keyword",
+                )
 
-            research_area_filter = collect_grouped_stem_fields(
-                st.session_state.get(
-                    "opportunity_search_research_areas",
-                    []
-                ),
-                "opportunity_filter_research",
-                include_legacy_filters=True
-            )
+                filter_col_left, filter_col_right = st.columns(2)
 
-            selectivity_filter = st.multiselect(
-                "Filter by selectivity",
-                [
-                    "Accessible / Lottery or Placement Based",
-                    "Eligibility Based",
-                    "Moderately Competitive",
-                    "Highly Competitive",
-                    "Extremely Competitive"
-                ],
-                key="opportunity_filter_selectivity"
-            )
+                with filter_col_left:
+                    opportunity_types = st.multiselect(
+                        "Opportunity Type",
+                        sorted(
+                            opportunities[
+                                "opportunity_type"
+                            ]
+                            .dropna()
+                            .astype(str)
+                            .unique()
+                            .tolist()
+                        ),
+                        key="opportunity_filter_types",
+                        help=(
+                            "Leave empty to include every opportunity type. "
+                            "Selecting types uses OR logic between them."
+                        ),
+                    )
 
-            student_age = st.selectbox(
-                "Your age",
-                [
-                    "Any age",
-                    "14",
-                    "15",
-                    "16",
-                    "17",
-                    "18",
-                    "19+"
-                ],
-                help=(
-                    "Age and grade are checked separately because some programs "
-                    "require students to be a certain age even if they are in the eligible grade."
-                ),
-                key="opportunity_filter_age"
-            )
+                with filter_col_right:
+                    stem_areas = st.multiselect(
+                        "STEM Areas",
+                        [
+                            area
+                            for area in OPPORTUNITY_STEM_AREA_OPTIONS
+                            if area != OPPORTUNITY_STEM_AREA_ALL
+                        ],
+                        key="opportunity_filter_stem_area",
+                        help=(
+                            "Leave empty to include every STEM area. Selecting multiple "
+                            "areas uses OR logic. Each broad area matches any field in its group "
+                            "(for example, Engineering & Technology includes electrical, "
+                            "computer, mechanical, civil, biomedical, and related majors)."
+                        ),
+                    )
 
-            search_opportunities = st.form_submit_button(
-                "Search / Update Results",
-                use_container_width=True,
-                type="primary"
-            )
+                with st.expander("More Filters", expanded=False):
+                    more_left, more_middle, more_right = st.columns(3)
+                    with more_left:
+                        student_age = st.selectbox(
+                            "Age",
+                            [
+                                "Any age",
+                                "14",
+                                "15",
+                                "16",
+                                "17",
+                                "18",
+                                "19+"
+                            ],
+                            help=(
+                                "Age and grade are checked separately because some programs "
+                                "require students to be a certain age even if they are in the eligible grade."
+                            ),
+                            key="opportunity_filter_age"
+                        )
+                    with more_middle:
+                        selectivity_filter = st.multiselect(
+                            "Selectivity",
+                            [
+                                "Accessible / Lottery or Placement Based",
+                                "Eligibility Based",
+                                "Moderately Competitive",
+                                "Highly Competitive",
+                                "Extremely Competitive"
+                            ],
+                            key="opportunity_filter_selectivity"
+                        )
+                    with more_right:
+                        format_filter = st.multiselect(
+                            "Format",
+                            [
+                                "Online",
+                                "Hybrid",
+                                "In person",
+                            ],
+                            key="opportunity_filter_formats",
+                            help=(
+                                "Leave empty to include every format. Selecting "
+                                "multiple formats uses OR logic between them."
+                            ),
+                        )
+
+                search_opportunities = st.form_submit_button(
+                    "Show Opportunities",
+                    width="stretch",
+                    type="primary",
+                )
 
         if search_opportunities:
 
@@ -26120,12 +27492,38 @@ elif page == "Opportunities":
             ] = selectivity_filter
 
             st.session_state[
+                "opportunity_search_formats"
+            ] = format_filter
+
+            st.session_state[
                 "opportunity_search_age"
             ] = student_age
 
             st.session_state[
+                "opportunity_search_keyword"
+            ] = str(search_keyword or "").strip()
+
+            st.session_state[
+                "opportunity_search_stem_area"
+            ] = stem_areas
+
+            # Derive concrete STEM fields from every selected broad area.
+            # Areas use OR matching within the STEM category.
+            area_fields = []
+            for stem_area in stem_areas:
+                area_fields.extend(
+                    stem_fields_for_opportunity_area(stem_area)
+                )
+
+            if "Engineering & Technology" in stem_areas:
+                # Ensure broad Engineering label expands across the full group.
+                area_fields.extend(
+                    ["Engineering"] + ENGINEERING_MAJORS
+                )
+            area_fields = list(dict.fromkeys(area_fields))
+            st.session_state[
                 "opportunity_search_research_areas"
-            ] = research_area_filter
+            ] = area_fields
 
         active_types = st.session_state.get(
             "opportunity_search_types",
@@ -26137,10 +27535,34 @@ elif page == "Opportunities":
             []
         )
 
+        active_formats = st.session_state.get(
+            "opportunity_search_formats",
+            []
+        )
+
         active_age = st.session_state.get(
             "opportunity_search_age",
             "Any age"
         )
+
+        active_keyword = str(
+            st.session_state.get(
+                "opportunity_search_keyword",
+                ""
+            )
+            or ""
+        ).strip()
+
+        active_stem_areas = st.session_state.get(
+            "opportunity_search_stem_area",
+            []
+        )
+        if isinstance(active_stem_areas, str):
+            active_stem_areas = (
+                []
+                if active_stem_areas == OPPORTUNITY_STEM_AREA_ALL
+                else [active_stem_areas]
+            )
 
         active_research_areas = st.session_state.get(
             "opportunity_search_research_areas",
@@ -26549,7 +27971,7 @@ elif page == "Opportunities":
         if not search_submitted:
 
             st.info(
-                "Choose your filters above, then press **Search Opportunities**."
+                "Set your filters above, then press **Show Opportunities**."
             )
 
         else:
@@ -26558,6 +27980,7 @@ elif page == "Opportunities":
 
             for _, opportunity in opportunities.iterrows():
 
+                # Opportunity types: OR within the selected types.
                 if (
                     active_types
                     and
@@ -26572,6 +27995,7 @@ elif page == "Opportunities":
 
                     continue
 
+                # Selectivity: OR within selected selectivity labels.
                 if (
                     active_selectivity
                     and
@@ -26596,22 +28020,49 @@ elif page == "Opportunities":
 
                     continue
 
+                # Formats use OR within their category.
+                if not opportunity_matches_format(
+                    opportunity.get(
+                        "format",
+                        ""
+                    ),
+                    active_formats
+                ):
+
+                    continue
+
+                # STEM area fields: OR within the expanded group.
                 if (
                     active_research_areas
                     and
-                    not expand_stem_fields(
+                    not opportunity_matches_stem_selection(
+                        opportunity.get(
+                            "fields",
+                            ""
+                        ),
                         active_research_areas
-                    ).intersection(
-                        research_areas_from_fields(
-                            opportunity.get(
-                                "fields",
-                                ""
-                            )
-                        )
                     )
                 ):
 
                     continue
+
+                if active_keyword:
+                    haystack = " ".join(
+                        [
+                            str(opportunity.get("name", "") or ""),
+                            str(opportunity.get("organization", "") or ""),
+                            str(opportunity.get("description", "") or ""),
+                            str(opportunity.get("fields", "") or ""),
+                            str(opportunity.get("opportunity_type", "") or ""),
+                        ]
+                    ).casefold()
+                    tokens = [
+                        token
+                        for token in active_keyword.casefold().split()
+                        if token
+                    ]
+                    if tokens and not all(token in haystack for token in tokens):
+                        continue
 
                 # Use the student's profile for personalization, but do not
                 # hide a search result solely because the saved profile grade
@@ -26643,87 +28094,124 @@ elif page == "Opportunities":
                 reverse=True
             )
 
-            st.header(
-                "Search Results"
-            )
+            active_chips = []
+            if active_keyword:
+                active_chips.append(
+                    f"Search: {html_module.escape(active_keyword)}"
+                )
+            if active_types:
+                type_label = (
+                    "Type"
+                    if len(active_types) == 1
+                    else "Types"
+                )
+                active_chips.append(
+                    f"{type_label}: "
+                    + html_module.escape(", ".join(active_types))
+                )
+            if active_stem_areas:
+                stem_label = (
+                    "STEM Area"
+                    if len(active_stem_areas) == 1
+                    else "STEM Areas"
+                )
+                active_chips.append(
+                    f"{stem_label}: "
+                    + html_module.escape(", ".join(active_stem_areas))
+                )
+            if active_age and active_age != "Any age":
+                active_chips.append(
+                    "Age: " + html_module.escape(str(active_age))
+                )
+            if active_selectivity:
+                active_chips.append(
+                    "Selectivity: "
+                    + html_module.escape(", ".join(active_selectivity))
+                )
+            if active_formats:
+                format_label = (
+                    "Format"
+                    if len(active_formats) == 1
+                    else "Formats"
+                )
+                active_chips.append(
+                    f"{format_label}: "
+                    + html_module.escape(", ".join(active_formats))
+                )
 
+            if active_chips:
+                chips_html = "".join(
+                    [
+                        f'<span class="sp-opp-filter-chip">{chip}</span>'
+                        for chip in active_chips
+                    ]
+                )
+                st.html(
+                    '<div class="sp-opp-active-filters" role="status">'
+                    '<div class="sp-opp-filter-chip-label">Active filters</div>'
+                    f'<div class="sp-opp-filter-chip-list">{chips_html}</div>'
+                    "</div>"
+                )
+
+            result_count = len(search_results)
+            st.header("Search Results")
             st.caption(
-                f"{len(search_results)} "
-                f"{'opportunity' if len(search_results) == 1 else 'opportunities'} found."
+                f"{result_count} "
+                f"{'opportunity' if result_count == 1 else 'opportunities'} found."
             )
 
-            modify_col, reset_col = st.columns(2)
-
-            with modify_col:
-
+            clear_col, _ = st.columns([1, 2])
+            with clear_col:
                 if st.button(
-                    "Change My Search",
-                    key="opportunity_change_search",
-                    use_container_width=True
-                ):
-
-                    st.session_state[
-                        "opportunity_search_submitted"
-                    ] = False
-
-                    st.rerun()
-
-            with reset_col:
-
-                if st.button(
-                    "Clear Filters",
+                    "Clear All Filters",
                     key="opportunity_clear_filters",
-                    use_container_width=True
+                    width="stretch",
                 ):
-
                     for key in [
                         "opportunity_filter_types",
                         "opportunity_filter_selectivity",
+                        "opportunity_filter_formats",
                         "opportunity_filter_age",
+                        "opportunity_filter_keyword",
+                        "opportunity_filter_stem_area",
                         "opportunity_filter_research_areas",
                         "opportunity_search_types",
                         "opportunity_search_selectivity",
+                        "opportunity_search_formats",
                         "opportunity_search_age",
-                        "opportunity_search_research_areas"
-                    ] + [
-                        f"opportunity_filter_research_{group_name}"
-                        for group_name, _
-                        in STEM_FIELD_GROUPS
-                    ] + [
-                        "opportunity_filter_research_Engineering",
-                        "opportunity_filter_research_Computing & Data",
-                        "opportunity_filter_research_Computing & Technology",
-                        "opportunity_filter_research_Math & Physical Sciences",
-                        "opportunity_filter_research_Physical Sciences",
-                        "opportunity_filter_research_Life & Health Sciences",
-                        "opportunity_filter_research_Mathematics",
-                        "opportunity_filter_research_Earth & Environmental Sciences",
-                        "opportunity_filter_research_Interdisciplinary STEM",
-                        "opportunity_filter_research_Interdisciplinary / General STEM",
-                        "opportunity_filter_research_Engineering & Technology",
-                        "opportunity_filter_research_Computer Science & AI",
-                        "opportunity_filter_research_Environmental & Earth Sciences",
-                        "opportunity_filter_research_Mathematics & Statistics",
-                        "opportunity_filter_research_Finance & Quantitative Business",
-                        "opportunity_filter_research_Architecture & Built Environment"
-                    ]:
-
-                        st.session_state.pop(
-                            key,
-                            None
-                        )
-
-                    st.session_state[
-                        "opportunity_search_submitted"
-                    ] = False
-
+                        "opportunity_search_keyword",
+                        "opportunity_search_stem_area",
+                        "opportunity_search_research_areas",
+                        "opportunity_search_submitted",
+                    ] + _obsolete_opp_filter_keys:
+                        st.session_state.pop(key, None)
                     st.rerun()
+
+            active_filter_categories = sum(
+                [
+                    1 if active_keyword else 0,
+                    1 if active_types else 0,
+                    1 if active_research_areas else 0,
+                    1 if active_selectivity else 0,
+                    1 if active_formats else 0,
+                    1 if active_age and active_age != "Any age" else 0,
+                ]
+            )
+
+            if result_count and active_filter_categories >= 2 and result_count < 12:
+                st.info(
+                    "Multiple filters are active, so results are limited. "
+                    "Opportunity types and STEM areas each use OR matching inside "
+                    "their own category, but different categories are combined with AND. "
+                    "Try clearing Opportunity Type or Selectivity if this list looks too small."
+                )
 
             if not search_results:
 
                 st.warning(
-                    "No opportunities matched every filter. Try removing one "
-                    "selectivity level, opportunity type, or research area and search again."
+                    "No opportunities matched every filter. Filters across categories "
+                    "are combined with AND, so try clearing Opportunity Type, Selectivity, "
+                    "or STEM Area and search again."
                 )
 
             for (
