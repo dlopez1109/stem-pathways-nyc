@@ -1,10 +1,13 @@
 import os
 import html as html_module
+import base64
 import streamlit as st
 import pandas as pd
 import json
 import re
 from datetime import datetime, timezone
+from functools import lru_cache
+from pathlib import Path
 from urllib.parse import quote_plus
 from supabase import create_client
 import logging
@@ -13,6 +16,118 @@ from opportunity_transparency import (
     CONFIDENCE_SOURCE_LABEL,
     NAME_ALIASES,
 )
+
+APP_DIR = Path(__file__).resolve().parent
+COLLEGE_LOGO_DIR = APP_DIR / "assets" / "college_logos"
+
+# Exact college-catalog names -> local logo filenames in assets/college_logos/
+COLLEGE_LOGO_FILES = {
+    "MIT": "mit.svg",
+    "Stanford University": "stanford-university.png",
+    "Carnegie Mellon University": "carnegie-mellon-university.png",
+    "UC Berkeley": "uc-berkeley.svg",
+    "Georgia Tech": "georgia-tech.svg",
+    "University of Michigan": "university-of-michigan.svg",
+    "Purdue University": "purdue-university.svg",
+    "Cornell University": "cornell-university.svg",
+    "Columbia University": "columbia-university.svg",
+    "Princeton University": "princeton-university.svg",
+    "Harvard University": "harvard-university.svg",
+    "Duke University": "duke-university.svg",
+    "Johns Hopkins University": "johns-hopkins-university.png",
+    "Caltech": "caltech.svg",
+    "The Cooper Union": "the-cooper-union.svg",
+    "NYU Tandon": "nyu-tandon.svg",
+    "Stevens Institute of Technology": "stevens-institute-of-technology.svg",
+    "CCNY": "ccny.svg",
+    "Stony Brook University": "stony-brook-university.svg",
+    "CUNY City Tech": "cuny-city-tech.svg",
+    "UMass Lowell": "umass-lowell.png",
+    "Western New England University": "western-new-england-university.svg",
+    "UMass Boston": "umass-boston.svg",
+    "Wentworth Institute of Technology": "wentworth-institute-of-technology.svg",
+    "University of New Hampshire": "university-of-new-hampshire.svg",
+    "UMass Dartmouth": "umass-dartmouth.svg",
+    "Wilkes University": "wilkes-university.png",
+    "University of Pittsburgh at Johnstown": "university-of-pittsburgh-at-johnstown.svg"
+}
+
+
+def normalize_college_name_key(name):
+    return "".join(ch.lower() for ch in str(name or "") if ch.isalnum())
+
+
+def college_logo_slug(college_name):
+    slug = re.sub(r"[^a-z0-9]+", "-", str(college_name or "").strip().lower())
+    return slug.strip("-")
+
+
+@st.cache_data(show_spinner=False)
+def load_stem_college_catalog():
+    """Load curated Scorecard/IPEDS-backed college catalog from data/college_catalog.json."""
+
+    path = APP_DIR / "data" / "college_catalog.json"
+    if not path.is_file():
+        return []
+
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+
+    colleges = payload.get("colleges") or []
+    deduped = []
+    seen = set()
+    required = (
+        "name",
+        "location",
+        "region",
+        "setting",
+        "size",
+        "fields",
+        "rate_label",
+        "source_url",
+        "research",
+    )
+    for college in colleges:
+        if not isinstance(college, dict):
+            continue
+        name = str(college.get("name") or "").strip()
+        if not name:
+            continue
+        key = normalize_college_name_key(name)
+        if key in seen:
+            continue
+        if any(college.get(field) in (None, "", []) for field in required):
+            continue
+        seen.add(key)
+        deduped.append(college)
+    return deduped
+
+
+def favorite_details_from_college_catalog(catalog):
+    details = {}
+    for college in catalog or []:
+        name = college.get("name")
+        if not name:
+            continue
+        details[name] = {
+            "location": college.get("location"),
+            "admit_rate": college.get("admit_rate"),
+            "rate_label": college.get("rate_label"),
+            "source_url": college.get("source_url"),
+            "source_year": college.get("source_year"),
+            "cost_for_ny_student": college.get("cost_for_ny_student"),
+            "cost_label": college.get("cost_label"),
+            "tuition_in_state": college.get("tuition_in_state"),
+            "tuition_out_of_state": college.get("tuition_out_of_state"),
+            "admit_rate_scope": college.get("admit_rate_scope"),
+            "state": college.get("state"),
+            "control": college.get("control"),
+            "school_type": college.get("school_type"),
+        }
+    return details
+
 
 
 logger = logging.getLogger(__name__)
@@ -1539,15 +1654,21 @@ st.markdown(
         border-radius: 50%;
         overflow: hidden;
         border: 1px solid #D5DEE6;
-        background: #E7F6FC;
+        background: #FFFFFF;
         box-shadow: 0 2px 8px rgba(8, 60, 93, 0.08);
         flex-shrink: 0;
+        box-sizing: border-box;
+        /* Source logos already include ~12% padded content; keep only a thin CSS inset. */
+        padding: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .sp-fav-college-logo,
     .sp-fav-college-initials {
-        width: 72px;
-        height: 72px;
+        width: 100%;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1556,8 +1677,11 @@ st.markdown(
     .sp-fav-college-logo {
         border: none;
         outline: none;
-        background: #FFFFFF;
+        background: transparent;
         object-fit: contain;
+        object-position: center;
+        padding: 0;
+        box-sizing: border-box;
     }
 
     .sp-fav-college-initials {
@@ -1567,6 +1691,33 @@ st.markdown(
         font-weight: 800 !important;
         letter-spacing: 0.04em;
         background: #E7F6FC;
+        border-radius: 50%;
+    }
+
+    .sp-college-card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.85rem;
+        width: 100%;
+        margin: 0;
+    }
+
+    .sp-college-card-head-main {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    @media (max-width: 768px) {
+        .sp-fav-college-mark {
+            width: 56px;
+            height: 56px;
+            padding: 2px;
+        }
+
+        .sp-fav-college-initials {
+            font-size: 0.88rem !important;
+        }
     }
 
     .sp-fav-college-stats {
@@ -2109,6 +2260,10 @@ st.markdown(
     }
 
     .sp-college-card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.85rem;
         width: 100%;
         margin: 0;
     }
@@ -18737,6 +18892,34 @@ def college_match_card_html(
     else:
         admit_rate_value = html_module.escape("See source")
 
+    rate_scope = str(college.get("admit_rate_scope") or "overall").strip().lower()
+    rate_label_text = str(college.get("rate_label") or "").strip()
+    if college.get("admit_rate") is None:
+        admit_caption = rate_label_text or "Acceptance rate not published"
+    elif rate_scope != "overall":
+        admit_caption = rate_label_text or rate_scope
+    else:
+        # Scorecard/IPEDS and most CDS figures are overall — never invent OOS rates.
+        admit_caption = rate_label_text or "Overall acceptance rate"
+
+    cost_value = college.get("cost_for_ny_student")
+    if cost_value is not None:
+        try:
+            cost_display = f"${int(cost_value):,}"
+        except (TypeError, ValueError):
+            cost_display = "See source"
+    else:
+        cost_display = "See source"
+    cost_caption = str(
+        college.get("cost_label")
+        or (
+            "NY resident tuition & fees"
+            if str(college.get("state") or "") == "NY"
+            else "Published tuition & fees"
+        )
+    ).strip()
+    source_year = str(college.get("source_year") or "").strip()
+
     if stars is not None:
         competition_html = (
             '<span class="sp-rec-star-filled">'
@@ -18757,12 +18940,26 @@ def college_match_card_html(
             + html_module.escape(competition_note)
             + " · "
             + admit_rate_value
+            + "<br>"
+            + html_module.escape(admit_caption)
+            + (
+                "<br>" + html_module.escape(f"Source year: {source_year}")
+                if source_year
+                else ""
+            )
             + "</div>"
         )
     else:
         selectivity_note_html = (
             '<div class="sp-college-stat-note">'
             + admit_rate_value
+            + "<br>"
+            + html_module.escape(admit_caption)
+            + (
+                "<br>" + html_module.escape(f"Source year: {source_year}")
+                if source_year
+                else ""
+            )
             + "</div>"
         )
 
@@ -18906,21 +19103,6 @@ def college_match_card_html(
         for field in college_fields
     )
 
-    public_colleges = {
-        "UC Berkeley",
-        "Georgia Tech",
-        "University of Michigan",
-        "Purdue University",
-        "CCNY",
-        "Stony Brook University",
-        "CUNY City Tech",
-        "UMass Lowell",
-        "UMass Boston",
-        "University of New Hampshire",
-        "UMass Dartmouth",
-        "University of Pittsburgh at Johnstown"
-    }
-
     badges = []
 
     # Badge from the student's matched field focus, not a default Engineering label.
@@ -18943,14 +19125,23 @@ def college_match_card_html(
 
     if college.get("research"):
         badges.append("Research")
+    if college.get("hbcu"):
+        badges.append("HBCU")
+    if college.get("hispanic_serving"):
+        badges.append("HSI")
     if college.get("setting") == "City / urban":
         badges.append("City")
     if (
         aid_priority
-        and
-        college.get("name") in public_colleges
+        and (
+            str(college.get("control") or "").startswith("Public")
+            or (
+                college.get("cost_for_ny_student") is not None
+                and college.get("cost_for_ny_student") <= 15000
+            )
+        )
     ):
-        badges.append("Financial Aid")
+        badges.append("Affordable Option")
 
     badges_html = "".join(
         [
@@ -19012,11 +19203,17 @@ def college_match_card_html(
     return (
         '<div class="sp-college-card">'
         '<div class="sp-college-card-head">'
+        '<div class="sp-college-card-head-main">'
         f"<h3>{name_safe}</h3>"
         f'<p class="sp-college-meta">{location_safe}</p>'
         f'<p class="sp-college-category">{category_safe}</p>'
         f'<div class="sp-college-chips">{badges_html}</div>'
         "</div>"
+        + college_logo_mark_html(
+            college.get("name"),
+            college_list_initials(college.get("name")),
+        )
+        + "</div>"
         '<div class="sp-college-stat-grid">'
         '<div class="sp-college-stat">'
         '<div class="sp-college-stat-label">Match Percentage</div>'
@@ -19036,6 +19233,13 @@ def college_match_card_html(
         f'<div class="sp-college-stat-value">{competition_html}</div>'
         + selectivity_note_html
         + "</div>"
+        '<div class="sp-college-stat">'
+        '<div class="sp-college-stat-label">Estimated Cost</div>'
+        f'<div class="sp-college-stat-value">{html_module.escape(cost_display)}</div>'
+        '<div class="sp-college-stat-note">'
+        + html_module.escape(cost_caption)
+        + "</div>"
+        "</div>"
         "</div>"
         '<div class="sp-college-fields-block">'
         '<div class="sp-college-fields-label">Matching Fields</div>'
@@ -19109,6 +19313,124 @@ def college_list_initials(college_name):
         part[0]
         for part in parts[:3]
     ).upper()
+
+
+def college_logo_alt_text(college_name):
+
+    short_names = {
+        "NYU Tandon": "NYU",
+        "The Cooper Union": "Cooper Union",
+        "CUNY City Tech": "City Tech",
+        "UC Berkeley": "UC Berkeley",
+        "Georgia Tech": "Georgia Tech",
+        "MIT": "MIT",
+        "Caltech": "Caltech",
+        "CCNY": "CCNY",
+    }
+    label = short_names.get(
+        college_name,
+        str(college_name or "College").strip() or "College",
+    )
+    return f"{label} logo"
+
+
+def resolve_college_logo_path(college_name):
+    """Prefer explicit map, then slug-matched local files; initials used if missing."""
+
+    filename = COLLEGE_LOGO_FILES.get(college_name)
+    if filename:
+        mapped = COLLEGE_LOGO_DIR / filename
+        if mapped.is_file():
+            return mapped
+
+    slug = college_logo_slug(college_name)
+    if not slug:
+        return None
+
+    for ext in (".svg", ".png", ".webp", ".jpg", ".jpeg"):
+        candidate = COLLEGE_LOGO_DIR / f"{slug}{ext}"
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+@lru_cache(maxsize=256)
+def college_logo_data_uri(college_name, _mtime_ns=0):
+
+    path = resolve_college_logo_path(college_name)
+    if path is None:
+        return None
+
+    try:
+        raw = path.read_bytes()
+    except OSError:
+        return None
+
+    if len(raw) < 64:
+        return None
+
+    suffix = path.suffix.lower()
+    mime = {
+        ".webp": "image/webp",
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".gif": "image/gif",
+        ".svg": "image/svg+xml",
+    }.get(suffix, "application/octet-stream")
+
+    encoded = base64.b64encode(raw).decode("ascii")
+    return f"data:{mime};base64,{encoded}"
+
+
+def college_logo_mark_html(college_name, initials=None):
+
+    initials_safe = html_module.escape(
+        initials or college_list_initials(college_name) or "C"
+    )
+    alt_safe = html_module.escape(
+        college_logo_alt_text(college_name)
+    )
+    mtime_ns = 0
+    path = resolve_college_logo_path(college_name)
+    if path is not None:
+        try:
+            mtime_ns = path.stat().st_mtime_ns
+        except OSError:
+            mtime_ns = 0
+    data_uri = college_logo_data_uri(college_name, mtime_ns)
+
+    if data_uri:
+        return (
+            '<div class="sp-fav-college-mark">'
+            f'<img class="sp-fav-college-logo" src="{data_uri}" '
+            f'alt="{alt_safe}" loading="lazy" decoding="async" />'
+            "</div>"
+        )
+
+    return (
+        '<div class="sp-fav-college-mark">'
+        f'<div class="sp-fav-college-initials">{initials_safe}</div>'
+        "</div>"
+    )
+
+
+def colleges_missing_local_logos(college_names=None):
+
+    names = list(college_names or COLLEGE_LOGO_FILES.keys())
+    missing = []
+    for name in names:
+        filename = COLLEGE_LOGO_FILES.get(name)
+        mtime_ns = 0
+        if filename:
+            path = COLLEGE_LOGO_DIR / filename
+            try:
+                mtime_ns = path.stat().st_mtime_ns
+            except OSError:
+                mtime_ns = 0
+        if not college_logo_data_uri(name, mtime_ns):
+            missing.append(name)
+    return missing
 
 
 def college_list_display_meta(college_name):
@@ -19341,25 +19663,10 @@ def favorite_college_card_html(
             "</div>"
         )
 
-    if logo_domain:
-        logo_url = html_module.escape(
-            "https://logo.clearbit.com/"
-            + str(logo_domain)
-        )
-        mark_html = (
-            '<div class="sp-fav-college-mark">'
-            f'<object class="sp-fav-college-logo" data="{logo_url}" '
-            'type="image/png">'
-            f'<div class="sp-fav-college-initials">{initials_safe}</div>'
-            "</object>"
-            "</div>"
-        )
-    else:
-        mark_html = (
-            '<div class="sp-fav-college-mark">'
-            f'<div class="sp-fav-college-initials">{initials_safe}</div>'
-            "</div>"
-        )
+    mark_html = college_logo_mark_html(
+        college_name,
+        initials,
+    )
 
     rate_note_html = ""
 
@@ -29879,794 +30186,13 @@ elif page == "College Suggestions":
     # COLLEGE DATABASE
     # --------------------------------------------------------
 
-    college_catalog = [
-        {
-            "name": "MIT",
-            "location": "Cambridge, MA",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Physics",
-                "Mathematics",
-                "Robotics",
-                "Biology",
-                "Chemistry",
-                "Economics",
-                "Architecture",
-                "Business Analytics",
-                "Financial Engineering",
-                "Urban Planning"
-            ],
-            "admit_rate": 4.5,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://ir.mit.edu/projects/2024-25-common-data-set/",
-            "research": True
-        },
-        {
-            "name": "Stanford University",
-            "location": "Stanford, CA",
-            "region": "West",
-            "setting": "Traditional college campus",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Biology",
-                "Physics",
-                "Mathematics",
-                "Robotics",
-                "Chemistry",
-                "Economics",
-                "Finance",
-                "Psychology / Cognitive Science",
-                "Medicine / Health Science",
-                "Public Health"
-            ],
-            "admit_rate": 3.8,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://irds.stanford.edu/data-findings/cds",
-            "research": True
-        },
-        {
-            "name": "Carnegie Mellon University",
-            "location": "Pittsburgh, PA",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Mathematics",
-                "Robotics",
-                "Chemistry",
-                "Biology",
-                "Economics",
-                "Business Analytics",
-                "Human-Computer Interaction",
-                "Architecture",
-                "Statistics"
-            ],
-            "admit_rate": 11.1,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.cmu.edu/ira/CDS/",
-            "research": True
-        },
-        {
-            "name": "UC Berkeley",
-            "location": "Berkeley, CA",
-            "region": "West",
-            "setting": "City / urban",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Biology",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Chemistry",
-                "Economics",
-                "Finance",
-                "Public Health",
-                "Architecture",
-                "Statistics",
-                "Business Analytics"
-            ],
-            "admit_rate": 11.0,
-            "rate_label": "2026 first-year overall",
-            "source_url": "https://admissions.berkeley.edu/apply-to-berkeley/student-profile/",
-            "research": True
-        },
-        {
-            "name": "Georgia Tech",
-            "location": "Atlanta, GA",
-            "region": "South",
-            "setting": "City / urban",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Physics",
-                "Mathematics",
-                "Robotics",
-                "Chemistry",
-                "Economics",
-                "Business Analytics",
-                "Architecture",
-                "Public Health",
-                "Industrial Engineering"
-            ],
-            "admit_rate": 13.3,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://irp.gatech.edu/files/CDS/CDS_2025-2026_FINAL_R4_03JUN2026.pdf",
-            "research": True
-        },
-        {
-            "name": "University of Michigan",
-            "location": "Ann Arbor, MI",
-            "region": "Midwest",
-            "setting": "Traditional college campus",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Robotics",
-                "Chemistry",
-                "Economics",
-                "Finance",
-                "Public Health",
-                "Architecture",
-                "Statistics",
-                "Business Analytics",
-                "Medicine / Health Science"
-            ],
-            "admit_rate": 16.4,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://obp.umich.edu/wp-content/uploads/pubdata/factsfigures/firstyearsprofile_umaa_2025.pdf",
-            "research": True
-        },
-        {
-            "name": "Purdue University",
-            "location": "West Lafayette, IN",
-            "region": "Midwest",
-            "setting": "Traditional college campus",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Physics",
-                "Mathematics",
-                "Robotics",
-                "Chemistry",
-                "Economics",
-                "Architecture",
-                "Statistics"
-            ],
-            "admit_rate": 49.9,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2025/06/CDS_2024-2025.pdf",
-            "research": True
-        },
-        {
-            "name": "Cornell University",
-            "location": "Ithaca, NY",
-            "region": "Northeast",
-            "setting": "Traditional college campus",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Biology",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Robotics",
-                "Chemistry",
-                "Economics",
-                "Architecture",
-                "Public Health",
-                "Statistics",
-                "Finance"
-            ],
-            "admit_rate": 7.9,
-            "rate_label": "Fall 2023 overall",
-            "source_url": "https://irp.cornell.edu/common-data-set",
-            "research": True
-        },
-        {
-            "name": "Columbia University",
-            "location": "New York, NY",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Biology",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Chemistry",
-                "Economics",
-                "Finance",
-                "Architecture",
-                "Public Health",
-                "Statistics",
-                "Business Analytics",
-                "Urban Planning"
-            ],
-            "admit_rate": 3.9,
-            "rate_label": "Class of 2027 overall",
-            "source_url": "https://undergrad.admissions.columbia.edu/",
-            "research": True
-        },
-        {
-            "name": "Princeton University",
-            "location": "Princeton, NJ",
-            "region": "Northeast",
-            "setting": "Traditional college campus",
-            "size": "Small",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Physics",
-                "Mathematics",
-                "Biology",
-                "Environmental Science",
-                "Chemistry",
-                "Economics",
-                "Public Health",
-                "Architecture",
-                "Statistics",
-                "Finance"
-            ],
-            "admit_rate": 4.4,
-            "rate_label": "Class of 2029 overall",
-            "source_url": "https://profile.princeton.edu/admission-and-costs",
-            "research": True
-        },
-        {
-            "name": "Harvard University",
-            "location": "Cambridge, MA",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Biology",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Chemistry",
-                "Economics",
-                "Public Health",
-                "Statistics",
-                "Finance",
-                "Architecture",
-                "Medicine / Health Science",
-                "Psychology / Cognitive Science"
-            ],
-            "admit_rate": 4.2,
-            "rate_label": "Class of 2029 overall",
-            "source_url": "https://college.harvard.edu/admissions/admissions-statistics",
-            "research": True
-        },
-        {
-            "name": "Duke University",
-            "location": "Durham, NC",
-            "region": "South",
-            "setting": "Traditional college campus",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Biology",
-                "Mathematics",
-                "Chemistry",
-                "Economics",
-                "Public Health",
-                "Statistics",
-                "Medicine / Health Science",
-                "Finance"
-            ],
-            "admit_rate": 5.2,
-            "rate_label": "Class of 2029 overall",
-            "source_url": "https://admissions.duke.edu/",
-            "research": True
-        },
-        {
-            "name": "Johns Hopkins University",
-            "location": "Baltimore, MD",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Biology",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Chemistry",
-                "Public Health",
-                "Medicine / Health Science",
-                "Neuroscience",
-                "Statistics",
-                "Economics",
-                "Biomedical Science"
-            ],
-            "admit_rate": 6.4,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://oira.jhu.edu/wp-content/uploads/CDS_2024-2025_JHU-2.pdf",
-            "research": True
-        },
-        {
-            "name": "Caltech",
-            "location": "Pasadena, CA",
-            "region": "West",
-            "setting": "Small college",
-            "size": "Small",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Physics",
-                "Mathematics",
-                "Biology",
-                "Chemistry",
-                "Astronomy / Astrophysics",
-                "Geology",
-                "Economics"
-            ],
-            "admit_rate": 3.1,
-            "rate_label": "Fall 2023 overall",
-            "source_url": "https://iro.caltech.edu/",
-            "research": True
-        },
-        {
-            "name": "The Cooper Union",
-            "location": "New York, NY",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Small",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Architecture",
-                "Civil Engineering",
-                "Structural Engineering"
-            ],
-            "admit_rate": 13.0,
-            "rate_label": "2024-25 overall",
-            "source_url": "https://cooper.edu/admissions/faq",
-            "research": True
-        },
-        {
-            "name": "NYU Tandon",
-            "location": "Brooklyn, NY",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Robotics",
-                "Chemistry",
-                "Finance",
-                "Business Analytics",
-                "Urban Planning",
-                "Game Development",
-                "Cybersecurity",
-                "Economics"
-            ],
-            "admit_rate": 13.0,
-            "rate_label": "NYU university-wide",
-            "source_url": "https://bulletins.nyu.edu/nyu/enrollment-graduation-statistics/",
-            "research": True
-        },
-        {
-            "name": "Stevens Institute of Technology",
-            "location": "Hoboken, NJ",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Physics",
-                "Mathematics",
-                "Robotics",
-                "Chemistry",
-                "Finance",
-                "Business Analytics",
-                "FinTech",
-                "Cybersecurity",
-                "Quantitative Finance"
-            ],
-            "admit_rate": 51.0,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.stevens.edu/discover-stevens/stevens-by-the-numbers/facts-statistics",
-            "research": True
-        },
-        {
-            "name": "CCNY",
-            "location": "New York, NY",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Biomedical Engineering",
-                "Biology",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Chemistry",
-                "Architecture",
-                "Economics",
-                "Public Health",
-                "Urban Planning"
-            ],
-            "admit_rate": 60.0,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.ccny.cuny.edu/sites/default/files/2025-03/20250324_FINAL%20CDS-2024-2025.pdf",
-            "research": True
-        },
-        {
-            "name": "Stony Brook University",
-            "location": "Stony Brook, NY",
-            "region": "Northeast",
-            "setting": "Traditional college campus",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Biology",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Chemistry",
-                "Marine Science",
-                "Astronomy / Astrophysics",
-                "Economics",
-                "Public Health",
-                "Statistics",
-                "Medicine / Health Science"
-            ],
-            "admit_rate": 48.2,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.stonybrook.edu/irpe/factbook/common-data-set.html",
-            "research": True
-        },
-        {
-            "name": "CUNY City Tech",
-            "location": "Brooklyn, NY",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Data Science",
-                "Mathematics",
-                "Physics",
-                "Architecture",
-                "Construction Engineering",
-                "Chemistry",
-                "Health Science",
-                "Business Analytics"
-            ],
-            "admit_rate": 80.3,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.citytech.cuny.edu/consumer-info/",
-            "research": True
-        },
-        {
-            "name": "UMass Lowell",
-            "location": "Lowell, MA",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science",
-                "Biomedical Engineering",
-                "Physics",
-                "Mathematics",
-                "Robotics",
-                "Chemistry",
-                "Economics",
-                "Public Health",
-                "Business Analytics"
-            ],
-            "admit_rate": 83.0,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.uml.edu/docs/CDS_2024-2025%20Final_tcm18-403507.pdf",
-            "research": True
-        },
-        {
-            "name": "Western New England University",
-            "location": "Springfield, MA",
-            "region": "Northeast",
-            "setting": "Traditional college campus",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Data Science",
-                "Biomedical Engineering",
-                "Mathematics",
-                "Chemistry",
-                "Economics",
-                "Business Analytics",
-                "Pharmacy / Pharmaceutical Science"
-            ],
-            "admit_rate": 83.5,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://wne.edu/institutional-research/doc/WNE-CDS-2024-25-FINAL.pdf",
-            "research": True
-        },
-        {
-            "name": "UMass Boston",
-            "location": "Boston, MA",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Large",
-            "fields": [
-                "Computer Science",
-                "Data Science",
-                "Mathematics",
-                "Physics",
-                "Biology",
-                "Chemistry",
-                "Environmental Science",
-                "Economics",
-                "Public Health",
-                "Marine Science"
-            ],
-            "admit_rate": 85.5,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.umb.edu/media/umassboston/editor-uploads/institutional-research-assessment-planning/TABLE7-Undergraduate--Admissions.pdf",
-            "research": True
-        },
-        {
-            "name": "Wentworth Institute of Technology",
-            "location": "Boston, MA",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Data Science",
-                "Biomedical Engineering",
-                "Mathematics",
-                "Robotics",
-                "Architecture",
-                "Construction Engineering",
-                "Civil Engineering",
-                "Chemistry"
-            ],
-            "admit_rate": 87.8,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://wit.edu/sites/default/files/2026-02/Common%20Data%20Set%202025-2026%20%281%29.pdf",
-            "research": True
-        },
-        {
-            "name": "University of New Hampshire",
-            "location": "Durham, NH",
-            "region": "Northeast",
-            "setting": "Traditional college campus",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Data Science",
-                "Biomedical Engineering",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Chemistry",
-                "Marine Science",
-                "Economics",
-                "Ecology",
-                "Sustainability"
-            ],
-            "admit_rate": 88.2,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-07/CDS-2024-2025_7.18.25.pdf",
-            "research": True
-        },
-        {
-            "name": "UMass Dartmouth",
-            "location": "Dartmouth, MA",
-            "region": "Northeast",
-            "setting": "Traditional college campus",
-            "size": "Large",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Data Science",
-                "Biomedical Engineering",
-                "Physics",
-                "Mathematics",
-                "Chemistry",
-                "Marine Science",
-                "Economics",
-                "Business Analytics"
-            ],
-            "admit_rate": 90.6,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/Data_Book_Fall24_Final-v2_6.26.25.pdf",
-            "research": True
-        },
-        {
-            "name": "Wilkes University",
-            "location": "Wilkes-Barre, PA",
-            "region": "Northeast",
-            "setting": "City / urban",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Science",
-                "Data Science",
-                "Physics",
-                "Mathematics",
-                "Environmental Science",
-                "Biology",
-                "Chemistry",
-                "Pharmacy / Pharmaceutical Science",
-                "Economics"
-            ],
-            "admit_rate": 94.0,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.wilkes.edu/about-wilkes/offices-and-administration/institutional-research/_assets/fact-book-2025-26.pdf",
-            "research": True
-        },
-        {
-            "name": "University of Pittsburgh at Johnstown",
-            "location": "Johnstown, PA",
-            "region": "Northeast",
-            "setting": "Traditional college campus",
-            "size": "Medium",
-            "fields": [
-                "Engineering",
-                "Electrical Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Computer Science",
-                "Data Science",
-                "Mathematics",
-                "Physics",
-                "Biology",
-                "Chemistry",
-                "Economics",
-                "Civil Engineering"
-            ],
-            "admit_rate": 94.8,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://ir.pitt.edu/sites/default/files/assets/2024-2025_CDS_Johnstown.pdf",
-            "research": True
-        }
-    ]
+    college_catalog = load_stem_college_catalog()
+    if not college_catalog:
+        st.error(
+            "College catalog could not be loaded. "
+            "Please refresh or contact support."
+        )
+        st.stop()
 
     college_field_extras = {
         "MIT": [
@@ -30953,14 +30479,29 @@ elif page == "College Suggestions":
 
         # Location fit: up to 20 points
         if college_location == "NYC / close to home":
-            if college["location"] in ["New York, NY", "Brooklyn, NY", "Hoboken, NJ"]:
+            ny_near = {
+                "New York, NY",
+                "Brooklyn, NY",
+                "Bronx, NY",
+                "Queens, NY",
+                "Staten Island, NY",
+                "Hoboken, NJ",
+                "Jersey City, NJ",
+            }
+            if (
+                college.get("location") in ny_near
+                or (
+                    college.get("state") == "NY"
+                    and (college.get("distance_from_nyc_miles") or 999) <= 40
+                )
+            ):
                 score += 20
                 reasons.append("Matches your preference to stay in or near NYC.")
-            elif college["region"] == "Northeast":
+            elif college.get("region") == "Northeast":
                 score += 10
 
         elif college_location == "Northeast U.S.":
-            if college["region"] == "Northeast":
+            if college.get("region") == "Northeast":
                 score += 20
                 reasons.append("Matches your Northeast location preference.")
 
@@ -30994,12 +30535,19 @@ elif page == "College Suggestions":
         else:
             score += 5
 
-        # Affordability preference: 5 points for local public-ish option,
-        # otherwise do not pretend to know individualized net price.
+        # Affordability preference: boost lower published tuition for NY students
+        # without inventing individualized net-price awards.
         if aid_priority:
-            if college["name"] in ["CCNY", "Stony Brook University"]:
+            cost = college.get("cost_for_ny_student")
+            is_public = str(college.get("control") or "").startswith("Public")
+            if (
+                (cost is not None and cost <= 12000)
+                or (is_public and college.get("state") == "NY")
+            ):
                 score += 5
-                reasons.append("May be worth exploring as a lower-cost public option.")
+                reasons.append(
+                    "May be worth exploring as a lower-cost public or NY resident option."
+                )
         else:
             score += 5
 
@@ -31048,6 +30596,7 @@ elif page == "College Suggestions":
 
             st.session_state["college_discovery_results_v3"] = top_fields
             st.session_state["college_match_results_v3"] = results
+            st.session_state["college_matches_visible_count"] = 16
             st.rerun()
 
     discovery_results = st.session_state.get(
@@ -31100,10 +30649,10 @@ elif page == "College Suggestions":
         st.header("Best College Matches")
 
         st.write(
-            "Colleges are scored first by how well they match your STEM interests "
-            "and preferences. Your strongest matches are then grouped as "
-            "**Reach**, **Target**, or **Safety** using selectivity stars. "
-            "Within each group, schools are ranked by your personalized **match score**."
+            "Colleges are scored by how well they match your STEM interests "
+            "and preferences, then labeled **Reach**, **Target**, or **Safety** "
+            "using selectivity stars. Browse the full catalog with search and filters. "
+            "We show your top matches first, then you can load more."
         )
 
         def college_has_intended_field(result):
@@ -31227,176 +30776,230 @@ elif page == "College Suggestions":
                             width="stretch"
                         )
 
-        grouped_matches = {
-            "Reach": [],
-            "Target": [],
-            "Safety": []
-        }
+        # Rank all catalog matches. Soft-highlight strong fits, but do not
+        # hide the rest of the dataset behind hard category caps.
+        INITIAL_VISIBLE = 16
+        LOAD_MORE_STEP = 16
 
+        if "college_matches_visible_count" not in st.session_state:
+            st.session_state.college_matches_visible_count = INITIAL_VISIBLE
+
+        annotated = []
         for result in college_results:
-
-            if not is_strong_personalized_match(result):
-                continue
-
             stars, _ = competitiveness_from_rate(
                 result["college"].get("admit_rate")
             )
-            category = college_list_category(stars)
+            category = college_list_category(stars) or "Target"
+            annotated.append({
+                **result,
+                "stars": stars,
+                "category": category,
+                "strong_fit": is_strong_personalized_match(result),
+            })
 
-            if category:
-                grouped_matches[category].append(result)
+        all_majors = sorted({
+            field
+            for result in annotated
+            for field in (result["college"].get("fields") or [])
+            if field
+        })
+        all_states = sorted({
+            result["college"].get("state")
+            for result in annotated
+            if result["college"].get("state")
+        })
+        all_types = sorted({
+            result["college"].get("school_type")
+            for result in annotated
+            if result["college"].get("school_type")
+        })
 
-        category_sections = [
-            (
-                "Reach",
-                "reach",
-                "Reach Schools",
-                "More selective STEM options with 4–5 selectivity stars.",
-                7,
-                None
-            ),
-            (
-                "Target",
-                "target",
-                "Target Schools",
-                "Strong-fit colleges with 2–3 selectivity stars.",
-                7,
-                None
-            ),
-            (
-                "Safety",
-                "safety",
-                "Safety Schools",
-                "More accessible options with 1 selectivity star.",
-                6,
-                (
-                    "We need more colleges in our database that match "
-                    "your interests and have higher admission rates."
+        with st.container(key="college_match_filters"):
+            st.subheader("Search & Filters")
+            search_q = st.text_input(
+                "Search colleges",
+                key="college_match_search_q",
+                placeholder="Name, city, or program keyword",
+            )
+            f1, f2, f3 = st.columns(3)
+            with f1:
+                state_filter = st.multiselect(
+                    "State",
+                    options=all_states,
+                    key="college_match_state_filter",
                 )
+                control_filter = st.multiselect(
+                    "Public / Private",
+                    options=["Public", "Private", "Private for-profit"],
+                    key="college_match_control_filter",
+                )
+            with f2:
+                type_filter = st.multiselect(
+                    "School type",
+                    options=all_types,
+                    key="college_match_type_filter",
+                )
+                category_filter = st.multiselect(
+                    "Match category",
+                    options=["Reach", "Target", "Safety"],
+                    key="college_match_category_filter",
+                )
+            with f3:
+                distance_filter = st.selectbox(
+                    "Distance from NYC",
+                    options=[
+                        "Any distance",
+                        "Within 50 miles",
+                        "Within 150 miles",
+                        "Within 300 miles",
+                        "Northeast only",
+                    ],
+                    key="college_match_distance_filter",
+                )
+                cost_filter = st.selectbox(
+                    "Estimated cost (for NY student)",
+                    options=[
+                        "Any cost",
+                        "Under $10,000",
+                        "Under $25,000",
+                        "Under $45,000",
+                        "$45,000+",
+                    ],
+                    key="college_match_cost_filter",
+                )
+            major_filter = st.multiselect(
+                "Major / STEM field",
+                options=all_majors,
+                key="college_match_major_filter",
             )
-        ]
-
-        category_counts = {
-            category: len(grouped_matches[category][:max_schools])
-            for category, _, _, _, max_schools, _
-            in category_sections
-        }
-
-        default_category = "Reach"
-
-        for category, _, _, _, max_schools, _ in category_sections:
-            if grouped_matches[category][:max_schools]:
-                default_category = category
-                break
-
-        if st.session_state.get("college_match_view_category") not in {
-            "Reach",
-            "Target",
-            "Safety"
-        }:
-            st.session_state.college_match_view_category = default_category
-
-        with st.container(
-            key="college_match_category_tabs"
-        ):
-
-            tab_cols = st.columns(3)
-
-            for tab_col, (
-                category,
-                _,
-                section_title,
-                section_caption,
-                _,
-                _
-            ) in zip(tab_cols, category_sections):
-
-                with tab_col:
-
-                    selected = (
-                        st.session_state.college_match_view_category
-                        ==
-                        category
-                    )
-
-                    if st.button(
-                        f"{section_title} · {category_counts[category]}",
-                        key=f"college_view_{category.lower()}",
-                        type=(
-                            "primary"
-                            if selected
-                            else "secondary"
-                        ),
-                        use_container_width=True
-                    ):
-
-                        st.session_state.college_match_view_category = (
-                            category
-                        )
-                        st.rerun()
-
-                    st.caption(
-                        section_caption
-                    )
-
-        for (
-            category,
-            category_key,
-            section_title,
-            section_caption,
-            max_schools,
-            empty_message
-        ) in category_sections:
-
-            if (
-                category
-                !=
-                st.session_state.college_match_view_category
-            ):
-                continue
-
-            section_results = grouped_matches[category][
-                :max_schools
-            ]
-
-            st.subheader(
-                section_title
+            strong_only = st.checkbox(
+                "Show strongest personalized matches first (score ≥ 40 with field overlap)",
+                value=False,
+                key="college_match_strong_only",
             )
 
-            if section_results:
-
-                for rank, result in enumerate(
-                    section_results,
-                    start=1
+        def passes_filters(item):
+            college = item["college"]
+            name = str(college.get("name") or "")
+            hay = " ".join(
+                [
+                    name,
+                    str(college.get("location") or ""),
+                    str(college.get("official_name") or ""),
+                    " ".join(college.get("fields") or []),
+                ]
+            ).lower()
+            if search_q and search_q.strip().lower() not in hay:
+                return False
+            if state_filter and college.get("state") not in state_filter:
+                return False
+            if control_filter:
+                control = str(college.get("control") or "")
+                if not any(control.startswith(option) for option in control_filter):
+                    return False
+            if type_filter and college.get("school_type") not in type_filter:
+                return False
+            if category_filter and item.get("category") not in category_filter:
+                return False
+            if major_filter:
+                college_fields = set(college.get("fields") or [])
+                if not any(
+                    major in college_fields
+                    or expand_stem_fields([major]).intersection(college_fields)
+                    for major in major_filter
                 ):
+                    return False
+            distance = college.get("distance_from_nyc_miles")
+            if distance_filter == "Within 50 miles" and (
+                distance is None or distance > 50
+            ):
+                return False
+            if distance_filter == "Within 150 miles" and (
+                distance is None or distance > 150
+            ):
+                return False
+            if distance_filter == "Within 300 miles" and (
+                distance is None or distance > 300
+            ):
+                return False
+            if distance_filter == "Northeast only" and college.get("region") != "Northeast":
+                return False
+            cost = college.get("cost_for_ny_student")
+            if cost_filter == "Under $10,000" and (cost is None or cost >= 10000):
+                return False
+            if cost_filter == "Under $25,000" and (cost is None or cost >= 25000):
+                return False
+            if cost_filter == "Under $45,000" and (cost is None or cost >= 45000):
+                return False
+            if cost_filter == "$45,000+" and (cost is None or cost < 45000):
+                return False
+            if strong_only and not item.get("strong_fit"):
+                return False
+            return True
 
-                    render_college_match_card(
-                        result,
-                        rank,
-                        category,
-                        category_key
-                    )
+        filtered = [item for item in annotated if passes_filters(item)]
+        filtered.sort(
+            key=lambda item: (
+                0 if item.get("strong_fit") else 1,
+                -int(item.get("match_score") or 0),
+            )
+        )
 
-            elif empty_message:
+        reach_n = sum(1 for item in filtered if item.get("category") == "Reach")
+        target_n = sum(1 for item in filtered if item.get("category") == "Target")
+        safety_n = sum(1 for item in filtered if item.get("category") == "Safety")
 
-                st.info(empty_message)
+        st.caption(
+            f"Showing matches from **{len(college_catalog)}** colleges in the catalog. "
+            f"Filtered results: **{len(filtered)}** "
+            f"(Reach {reach_n} · Target {target_n} · Safety {safety_n})."
+        )
 
-            else:
+        visible_count = int(st.session_state.college_matches_visible_count or INITIAL_VISIBLE)
+        visible_count = max(INITIAL_VISIBLE, visible_count)
+        visible = filtered[:visible_count]
 
-                st.write(
-                    "No strong matches in this category for your "
-                    "current interests and preferences."
+        if not filtered:
+            st.info(
+                "No colleges match your current filters. Clear a filter or broaden "
+                "distance/cost settings to see more of the catalog."
+            )
+        else:
+            for rank, result in enumerate(visible, start=1):
+                render_college_match_card(
+                    result,
+                    rank,
+                    result.get("category") or "Target",
+                    str(result.get("category") or "target").lower(),
                 )
+
+            if len(filtered) > len(visible):
+                remaining = len(filtered) - len(visible)
+                if st.button(
+                    f"Load more colleges ({remaining} remaining)",
+                    key="college_load_more_matches",
+                    use_container_width=True,
+                ):
+                    st.session_state.college_matches_visible_count = (
+                        visible_count + LOAD_MORE_STEP
+                    )
+                    st.rerun()
+            elif len(filtered) > INITIAL_VISIBLE:
+                st.caption("You are viewing every college that matches your current filters.")
 
         st.divider()
 
         st.caption(
             "Important: admit rates are recent institution- or school-level figures "
-            "where official data was available. Some colleges admit by school or residency, "
-            "so a single percentage may not describe every applicant. Competitiveness stars "
-            "are a STEM Pathways NYC category based on the displayed admit rate. "
-            "Match score reflects your interests and preferences only — it is not an admission chance."
+            "where official data was available. When a separate out-of-state acceptance "
+            "rate is not published, the overall acceptance rate is shown and labeled. "
+            "Costs use College Scorecard/IPEDS published tuition (NY resident tuition for "
+            "New York colleges; out-of-state or published tuition otherwise). "
+            "Competitiveness stars are a STEM Pathways NYC category based on the displayed "
+            "admit rate. Match score reflects your interests and preferences only — it is "
+            "not an admission chance."
         )
+
 
 
 # ============================================================
@@ -31425,176 +31028,9 @@ elif page == "My Favorite Colleges":
     # COLLEGE DETAILS USED IN FAVORITES
     # --------------------------------------------------------
 
-    favorite_college_catalog = {
-        "MIT": {
-            "location": "Cambridge, MA",
-            "admit_rate": 4.5,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://ir.mit.edu/projects/2024-25-common-data-set/"
-        },
-        "Stanford University": {
-            "location": "Stanford, CA",
-            "admit_rate": 3.8,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://irds.stanford.edu/data-findings/cds"
-        },
-        "Carnegie Mellon University": {
-            "location": "Pittsburgh, PA",
-            "admit_rate": 11.1,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.cmu.edu/ira/CDS/"
-        },
-        "UC Berkeley": {
-            "location": "Berkeley, CA",
-            "admit_rate": 11.0,
-            "rate_label": "2026 first-year overall",
-            "source_url": "https://admissions.berkeley.edu/apply-to-berkeley/student-profile/"
-        },
-        "Georgia Tech": {
-            "location": "Atlanta, GA",
-            "admit_rate": 13.3,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://irp.gatech.edu/files/CDS/CDS_2025-2026_FINAL_R4_03JUN2026.pdf"
-        },
-        "University of Michigan": {
-            "location": "Ann Arbor, MI",
-            "admit_rate": 16.4,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://obp.umich.edu/wp-content/uploads/pubdata/factsfigures/firstyearsprofile_umaa_2025.pdf"
-        },
-        "Purdue University": {
-            "location": "West Lafayette, IN",
-            "admit_rate": 49.9,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.purdue.edu/idata/wp-content/uploads/2025/06/CDS_2024-2025.pdf"
-        },
-        "Cornell University": {
-            "location": "Ithaca, NY",
-            "admit_rate": 7.9,
-            "rate_label": "Fall 2023 overall",
-            "source_url": "https://irp.cornell.edu/common-data-set"
-        },
-        "Columbia University": {
-            "location": "New York, NY",
-            "admit_rate": 3.9,
-            "rate_label": "Class of 2027 overall",
-            "source_url": "https://undergrad.admissions.columbia.edu/"
-        },
-        "Princeton University": {
-            "location": "Princeton, NJ",
-            "admit_rate": 4.4,
-            "rate_label": "Class of 2029 overall",
-            "source_url": "https://profile.princeton.edu/admission-and-costs"
-        },
-        "Harvard University": {
-            "location": "Cambridge, MA",
-            "admit_rate": 4.2,
-            "rate_label": "Class of 2029 overall",
-            "source_url": "https://college.harvard.edu/admissions/admissions-statistics"
-        },
-        "Duke University": {
-            "location": "Durham, NC",
-            "admit_rate": 5.2,
-            "rate_label": "Class of 2029 overall",
-            "source_url": "https://admissions.duke.edu/"
-        },
-        "Johns Hopkins University": {
-            "location": "Baltimore, MD",
-            "admit_rate": 6.4,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://oira.jhu.edu/wp-content/uploads/CDS_2024-2025_JHU-2.pdf"
-        },
-        "Caltech": {
-            "location": "Pasadena, CA",
-            "admit_rate": 3.1,
-            "rate_label": "Fall 2023 overall",
-            "source_url": "https://iro.caltech.edu/"
-        },
-        "The Cooper Union": {
-            "location": "New York, NY",
-            "admit_rate": 13.0,
-            "rate_label": "2024-25 overall",
-            "source_url": "https://cooper.edu/admissions/faq"
-        },
-        "NYU Tandon": {
-            "location": "Brooklyn, NY",
-            "admit_rate": 13.0,
-            "rate_label": "NYU university-wide",
-            "source_url": "https://bulletins.nyu.edu/nyu/enrollment-graduation-statistics/"
-        },
-        "Stevens Institute of Technology": {
-            "location": "Hoboken, NJ",
-            "admit_rate": 51.0,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.stevens.edu/discover-stevens/stevens-by-the-numbers/facts-statistics"
-        },
-        "CCNY": {
-            "location": "New York, NY",
-            "admit_rate": 60.0,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.ccny.cuny.edu/sites/default/files/2025-03/20250324_FINAL%20CDS-2024-2025.pdf"
-        },
-        "Stony Brook University": {
-            "location": "Stony Brook, NY",
-            "admit_rate": 48.2,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.stonybrook.edu/irpe/factbook/common-data-set.html"
-        },
-        "CUNY City Tech": {
-            "location": "Brooklyn, NY",
-            "admit_rate": 80.3,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.citytech.cuny.edu/consumer-info/"
-        },
-        "UMass Lowell": {
-            "location": "Lowell, MA",
-            "admit_rate": 83.0,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.uml.edu/docs/CDS_2024-2025%20Final_tcm18-403507.pdf"
-        },
-        "Western New England University": {
-            "location": "Springfield, MA",
-            "admit_rate": 83.5,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://wne.edu/institutional-research/doc/WNE-CDS-2024-25-FINAL.pdf"
-        },
-        "UMass Boston": {
-            "location": "Boston, MA",
-            "admit_rate": 85.5,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.umb.edu/media/umassboston/editor-uploads/institutional-research-assessment-planning/TABLE7-Undergraduate--Admissions.pdf"
-        },
-        "Wentworth Institute of Technology": {
-            "location": "Boston, MA",
-            "admit_rate": 87.8,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://wit.edu/sites/default/files/2026-02/Common%20Data%20Set%202025-2026%20%281%29.pdf"
-        },
-        "University of New Hampshire": {
-            "location": "Durham, NH",
-            "admit_rate": 88.2,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.unh.edu/institutional-research/sites/default/files/media/2025-07/CDS-2024-2025_7.18.25.pdf"
-        },
-        "UMass Dartmouth": {
-            "location": "Dartmouth, MA",
-            "admit_rate": 90.6,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://www.umassd.edu/media/umassdartmouth/institutional-research/Data_Book_Fall24_Final-v2_6.26.25.pdf"
-        },
-        "Wilkes University": {
-            "location": "Wilkes-Barre, PA",
-            "admit_rate": 94.0,
-            "rate_label": "Fall 2025 overall",
-            "source_url": "https://www.wilkes.edu/about-wilkes/offices-and-administration/institutional-research/_assets/fact-book-2025-26.pdf"
-        },
-        "University of Pittsburgh at Johnstown": {
-            "location": "Johnstown, PA",
-            "admit_rate": 94.8,
-            "rate_label": "Fall 2024 overall",
-            "source_url": "https://ir.pitt.edu/sites/default/files/assets/2024-2025_CDS_Johnstown.pdf"
-        }
-    }
+    favorite_college_catalog = favorite_details_from_college_catalog(
+        load_stem_college_catalog()
+    )
 
     def favorite_competitiveness(rate):
         return college_selectivity_from_acceptance_rate(rate)

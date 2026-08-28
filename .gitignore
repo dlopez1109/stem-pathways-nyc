@@ -5,3 +5,5 @@
 __pycache__/
 *.pyc
 .DS_Store
+# Large federal Scorecard extract (rebuild catalog from scripts)
+data/scorecard_raw/
