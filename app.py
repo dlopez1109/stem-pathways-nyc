@@ -5315,6 +5315,66 @@ st.markdown(
         font-size: 0.8rem;
     }
 
+    .sp-signup-confirm {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.7rem;
+        width: 100%;
+        max-width: 100%;
+        margin: 0.75rem auto 0;
+        padding: 0.85rem 1rem 0.9rem 0.95rem;
+        background: #ffffff;
+        border: 1px solid #e2e8ee;
+        border-left: 3px solid #2f9e6f;
+        border-radius: 13px;
+        box-shadow: 0 1px 3px rgba(15, 45, 70, 0.06);
+        box-sizing: border-box;
+        text-align: left;
+    }
+
+    .sp-signup-confirm-icon {
+        flex: 0 0 auto;
+        width: 1.15rem;
+        height: 1.15rem;
+        margin-top: 0.12rem;
+        border-radius: 999px;
+        background: #e8f7ef;
+        color: #2f9e6f;
+        font-size: 0.72rem;
+        font-weight: 800;
+        line-height: 1.15rem;
+        text-align: center;
+    }
+
+    .sp-signup-confirm-body {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .sp-signup-confirm-title {
+        margin: 0 0 0.28rem;
+        color: #083C5D;
+        font-size: 1.02rem;
+        font-weight: 800;
+        line-height: 1.25;
+    }
+
+    .sp-signup-confirm-text {
+        margin: 0;
+        color: #243b4a;
+        font-size: 0.9rem;
+        font-weight: 500;
+        line-height: 1.45;
+    }
+
+    .sp-signup-confirm-secondary {
+        margin: 0.45rem 0 0;
+        color: #6b7f8d;
+        font-size: 0.8rem;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
     .sp-kicker {
         color: #BDEBFA !important;
         -webkit-text-fill-color: #BDEBFA !important;
@@ -21954,8 +22014,8 @@ AUTH_MSG_SERVICE = (
     "Sign-in is temporarily unavailable. Please try again in a moment."
 )
 AUTH_MSG_SIGNUP_NEUTRAL = (
-    "If this email can be registered, check your inbox for a confirmation "
-    "link. If you already have an account, sign in instead."
+    "If this email can be registered, we sent a confirmation link. "
+    "Open the email and confirm your account before signing in."
 )
 AUTH_MSG_PASSWORD_RULES = (
     "Password must be at least 8 characters and include a letter and a number."
@@ -23905,7 +23965,22 @@ if not app_user:
                             sign_up_password,
                         )
                         if ok:
-                            st.success(message)
+                            st.markdown(
+                                '<div class="sp-signup-confirm" role="status">'
+                                '<div class="sp-signup-confirm-icon" aria-hidden="true">✓</div>'
+                                '<div class="sp-signup-confirm-body">'
+                                '<p class="sp-signup-confirm-title">Check your inbox</p>'
+                                '<p class="sp-signup-confirm-text">'
+                                "If this email can be registered, we sent a confirmation link. "
+                                "Open the email and confirm your account before signing in."
+                                "</p>"
+                                '<p class="sp-signup-confirm-secondary">'
+                                "Already have an account? Sign in instead."
+                                "</p>"
+                                "</div>"
+                                "</div>",
+                                unsafe_allow_html=True,
+                            )
                         else:
                             st.error(message)
 
