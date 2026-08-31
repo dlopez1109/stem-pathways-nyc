@@ -3783,7 +3783,7 @@ st.markdown(
         gap: 1rem;
         width: 100%;
         align-items: stretch;
-        margin: 0;
+        margin: 16px 0 28px 0;
     }
 
     .sp-dash-card {
@@ -3870,14 +3870,45 @@ st.markdown(
     }
 
     .sp-dash-interests-card {
-        margin: 0;
+        margin: 16px 0 0 0;
+    }
+
+    /* Dashboard section rhythm: divider → heading (~20–24px) → card (~16px) */
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_current_direction_heading"],
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_current_direction_heading"][data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-dash_current_direction_heading"]),
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-stem_interests_heading_wrapper"],
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-stem_interests_heading_wrapper"][data-testid="stVerticalBlockBorderWrapper"],
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-stem_interests_heading_wrapper"]) {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-dash_current_direction_heading"]),
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_current_direction_heading"] {
+        margin: 22px 0 0 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-stem_interests_heading_wrapper"]),
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-stem_interests_heading_wrapper"] {
+        margin: 24px 0 0 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(.sp-dash-direction-row) {
+        margin: 0 0 8px 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(.sp-dash-interests-card) {
+        margin: 0 !important;
     }
 
     .stem-interests-heading-wrapper,
     [data-testid="stMain"] .st-key-stem_interests_heading_wrapper,
     [data-testid="stMain"] [data-testid="stElementContainer"]:has(> .st-key-stem_interests_heading_wrapper) {
-        margin-top: 28px !important;
-        margin-bottom: 24px !important;
+        margin-top: 24px !important;
+        margin-bottom: 0 !important;
     }
 
     .update-profile-button-wrapper,
@@ -4398,7 +4429,7 @@ st.markdown(
         margin: 0 0 3.75rem 0 !important;
     }
 
-    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [data-testid="stHeading"]),
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [data-testid="stHeading"]):not(:has([class*="st-key-dash_current_direction_heading"])):not(:has([class*="st-key-stem_interests_heading_wrapper"])),
     html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([class*="st-key-dash_continue_heading"]) {
         margin: 0 !important;
     }
@@ -4460,11 +4491,12 @@ st.markdown(
     }
 
     html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([data-testid="stDivider"]) {
-        margin: 64px 0 !important;
+        margin: 36px 0 0 0 !important;
     }
 
+    /* Extra air between action cards and the first profile divider */
     html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([class*="st-key-dash_continue_journey"]) + [data-testid="stElementContainer"]:has([data-testid="stDivider"]) {
-        margin: 72px 0 56px 0 !important;
+        margin: 88px 0 0 0 !important;
     }
 
     html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stDivider"] {
@@ -4473,6 +4505,26 @@ st.markdown(
 
     html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stDivider"] hr {
         margin: 0 !important;
+    }
+
+    /* Section headings under dividers (~20–24px) and cards under headings (~14–16px) */
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-dash_current_direction_heading"]),
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_current_direction_heading"] {
+        margin: 22px 0 0 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-stem_interests_heading_wrapper"]),
+    html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-stem_interests_heading_wrapper"] {
+        margin: 24px 0 0 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-dash_current_direction_heading"]) + [data-testid="stElementContainer"]:has(.sp-dash-direction-row),
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-stem_interests_heading_wrapper"]) + [data-testid="stElementContainer"]:has(.sp-dash-interests-card) {
+        margin-top: 16px !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(.sp-dash-direction-row) {
+        margin-bottom: 12px !important;
     }
 
     html body [data-testid="stMain"]:has(.sp-hero) button:focus-visible,
@@ -5375,6 +5427,177 @@ st.markdown(
         line-height: 1.4;
     }
 
+    .sp-auth-error {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.7rem;
+        width: 100%;
+        margin: 0.75rem auto 0;
+        padding: 0.8rem 0.95rem;
+        background: #FFF8F6;
+        border: 1px solid #F1CEC5;
+        border-left: 3px solid #D9654F;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(91, 42, 33, 0.06);
+        box-sizing: border-box;
+        text-align: left;
+    }
+
+    .sp-auth-error-icon {
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 auto;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-top: 0.02rem;
+        border-radius: 999px;
+        background: #FBE5DF;
+        color: #B94432;
+        font-size: 0.78rem;
+        font-weight: 850;
+        line-height: 1;
+    }
+
+    .sp-auth-error-text {
+        margin: 0;
+        color: #71372D;
+        font-size: 0.88rem;
+        font-weight: 650;
+        line-height: 1.45;
+    }
+
+    /* Recommendation disclaimer — My STEM Pathway only */
+    .sp-rec-disclaimer {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.65rem;
+        width: 100%;
+        max-width: min(40rem, 100%);
+        margin: 0.85rem 0 1.15rem;
+        padding: 0.7rem 0.9rem;
+        background: #F7FBFD;
+        border: 1px solid #D5E8F2;
+        border-left: 3px solid #018FC7;
+        border-radius: 13px;
+        box-shadow: 0 1px 3px rgba(8, 60, 93, 0.05);
+        box-sizing: border-box;
+        text-align: left;
+    }
+
+    .sp-rec-disclaimer-icon {
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 auto;
+        width: 1.2rem;
+        height: 1.2rem;
+        margin-top: 0.06rem;
+        border-radius: 999px;
+        background: #E3F3FB;
+        color: #0175A3;
+        font-size: 0.72rem;
+        font-weight: 850;
+        font-style: italic;
+        line-height: 1;
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .sp-rec-disclaimer-text {
+        margin: 0;
+        color: #2F4A5C;
+        font-size: 0.88rem;
+        font-weight: 550;
+        line-height: 1.45;
+    }
+
+    .sp-rec-disclaimer-emphasis {
+        font-weight: 700;
+        color: #083C5D;
+    }
+
+    html body [data-testid="stMain"] [data-testid="stElementContainer"]:has(.sp-rec-disclaimer) {
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: min(40rem, 100%) !important;
+    }
+
+    @media (max-width: 768px) {
+        .sp-rec-disclaimer {
+            max-width: 100%;
+            margin: 0.75rem 0 1rem;
+            padding: 0.65rem 0.8rem;
+            border-radius: 12px;
+        }
+    }
+
+    /* Profile-form validation alerts — scoped to profile setup only */
+    html body [data-testid="stMain"]:has(.sp-profile-setup-page) .sp-profile-validation {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.65rem;
+        width: 100%;
+        max-width: min(42rem, 100%);
+        margin: 0.85rem 0 0.15rem;
+        padding: 0.72rem 0.9rem;
+        background: #FFF8F6;
+        border: 1px solid #F1CEC5;
+        border-left: 3px solid #D9654F;
+        border-radius: 13px;
+        box-shadow: 0 1px 3px rgba(91, 42, 33, 0.05);
+        box-sizing: border-box;
+        text-align: left;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-profile-setup-page) .sp-profile-validation-icon {
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 auto;
+        width: 1.2rem;
+        height: 1.2rem;
+        margin-top: 0.05rem;
+        border-radius: 999px;
+        background: #FBE5DF;
+        color: #B94432;
+        font-size: 0.75rem;
+        font-weight: 850;
+        line-height: 1;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-profile-setup-page) .sp-profile-validation-text {
+        margin: 0;
+        color: #71372D;
+        font-size: 0.88rem;
+        font-weight: 650;
+        line-height: 1.4;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-profile-setup-page) [data-testid="stElementContainer"]:has(.sp-profile-validation) {
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: min(42rem, 100%) !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-profile-setup-page) [class*="st-key-profile_save_section"],
+    html body [data-testid="stMain"]:has(.sp-profile-setup-page) [class*="st-key-profile_save_section"][data-testid="stVerticalBlockBorderWrapper"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0.15rem 0 0.35rem 0 !important;
+    }
+
+    html body [data-testid="stMain"]:has(.sp-profile-setup-page) [class*="st-key-profile_save_section"] [data-testid="stElementContainer"]:has(.stButton) {
+        margin-bottom: 0 !important;
+    }
+
+    @media (max-width: 768px) {
+        html body [data-testid="stMain"]:has(.sp-profile-setup-page) .sp-profile-validation {
+            max-width: 100%;
+            margin-top: 0.75rem;
+            padding: 0.68rem 0.8rem;
+            border-radius: 12px;
+        }
+    }
+
     .sp-kicker {
         color: #BDEBFA !important;
         -webkit-text-fill-color: #BDEBFA !important;
@@ -5470,11 +5693,30 @@ st.markdown(
         }
 
         html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([data-testid="stDivider"]) {
-            margin: 64px 0 !important;
+            margin: 32px 0 0 0 !important;
         }
 
         html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has([class*="st-key-dash_continue_journey"]) + [data-testid="stElementContainer"]:has([data-testid="stDivider"]) {
-            margin: 72px 0 56px 0 !important;
+            margin: 72px 0 0 0 !important;
+        }
+
+        html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-dash_current_direction_heading"]),
+        html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_current_direction_heading"] {
+            margin: 20px 0 0 0 !important;
+        }
+
+        html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-stem_interests_heading_wrapper"]),
+        html body [data-testid="stMain"]:has(.sp-hero) [class*="st-key-stem_interests_heading_wrapper"] {
+            margin: 22px 0 0 0 !important;
+        }
+
+        html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-dash_current_direction_heading"]) + [data-testid="stElementContainer"]:has(.sp-dash-direction-row),
+        html body [data-testid="stMain"]:has(.sp-hero) [data-testid="stElementContainer"]:has(> [class*="st-key-stem_interests_heading_wrapper"]) + [data-testid="stElementContainer"]:has(.sp-dash-interests-card) {
+            margin-top: 14px !important;
+        }
+
+        .sp-dash-direction-row {
+            margin: 14px 0 24px 0;
         }
 
         .sp-page-header {
@@ -22210,6 +22452,34 @@ def classify_auth_error(error, *, for_signup=False):
     return AUTH_MSG_SERVICE
 
 
+def render_auth_error(message):
+    """Render a compact, accessible validation message on the landing page."""
+
+    safe_message = html_module.escape(str(message or AUTH_MSG_SERVICE))
+    st.markdown(
+        '<div class="sp-auth-error" role="alert">'
+        '<span class="sp-auth-error-icon" aria-hidden="true">!</span>'
+        f'<p class="sp-auth-error-text">{safe_message}</p>'
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+
+def render_profile_validation_alert(message):
+    """Compact inline validation alert for the STEM profile form."""
+
+    safe_message = html_module.escape(
+        str(message or "Please complete the required fields.")
+    )
+    st.markdown(
+        '<div class="sp-profile-validation" role="alert">'
+        '<span class="sp-profile-validation-icon" aria-hidden="true">!</span>'
+        f'<p class="sp-profile-validation-text">{safe_message}</p>'
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+
 def sign_up_with_email(email, password):
     """Create account via Supabase Auth. Returns (ok, message)."""
 
@@ -23925,7 +24195,7 @@ if not app_user:
                     if ok:
                         st.rerun()
                     else:
-                        st.error(message)
+                        render_auth_error(message)
 
             else:
                 with st.form("email_sign_up_form", clear_on_submit=False):
@@ -23958,7 +24228,7 @@ if not app_user:
 
                 if sign_up_submit:
                     if sign_up_password != sign_up_password_confirm:
-                        st.error(AUTH_MSG_PASSWORD_MISMATCH)
+                        render_auth_error(AUTH_MSG_PASSWORD_MISMATCH)
                     else:
                         ok, message = sign_up_with_email(
                             sign_up_email,
@@ -23982,7 +24252,7 @@ if not app_user:
                                 unsafe_allow_html=True,
                             )
                         else:
-                            st.error(message)
+                            render_auth_error(message)
 
             st.markdown(
                 '<div class="sp-auth-trust">'
@@ -24507,6 +24777,10 @@ if not st.session_state.profile_completed:
         kicker="Profile Setup"
     )
 
+    st.html(
+        '<div class="sp-profile-setup-page" hidden aria-hidden="true"></div>'
+    )
+
     st.write(
         f"Signed in as **{user_email}**"
     )
@@ -24805,105 +25079,107 @@ if not st.session_state.profile_completed:
 
     st.divider()
 
-    if st.button(
-        "Save My STEM Profile",
-        type="primary",
-        use_container_width=True
-    ):
+    with st.container(key="profile_save_section"):
 
-        if not first_name.strip():
+        if st.button(
+            "Save My STEM Profile",
+            type="primary",
+            use_container_width=True
+        ):
 
-            st.warning(
-                "Please enter your first name."
-            )
+            if not first_name.strip():
 
-        elif not last_name.strip():
+                render_profile_validation_alert(
+                    "Please enter your first name."
+                )
 
-            st.warning(
-                "Please enter your last name."
-            )
+            elif not last_name.strip():
 
-        elif not interests:
+                render_profile_validation_alert(
+                    "Please enter your last name."
+                )
 
-            st.warning(
-                "Please choose at least one STEM interest."
-            )
+            elif not interests:
 
-        elif not goals:
+                render_profile_validation_alert(
+                    "Please choose at least one STEM interest."
+                )
 
-            st.warning(
-                "Please choose at least one goal."
-            )
+            elif not goals:
 
-        else:
+                render_profile_validation_alert(
+                    "Please choose at least one goal."
+                )
 
-            profile = {
+            else:
 
-                "first_name":
-                    first_name.strip(),
+                profile = {
 
-                "middle_name":
-                    middle_name.strip(),
+                    "first_name":
+                        first_name.strip(),
 
-                "last_name":
-                    last_name.strip(),
+                    "middle_name":
+                        middle_name.strip(),
 
-                "age":
-                    age,
+                    "last_name":
+                        last_name.strip(),
 
-                "grade":
-                    grade,
+                    "age":
+                        age,
 
-                "borough":
-                    borough,
+                    "grade":
+                        grade,
 
-                "interests":
-                    interests,
+                    "borough":
+                        borough,
 
-                "experience_areas":
-                    experience_areas,
+                    "interests":
+                        interests,
 
-                "goals":
-                    goals,
+                    "experience_areas":
+                        experience_areas,
 
-                "exploration_stage":
-                    exploration_stage,
+                    "goals":
+                        goals,
 
-                "confidence":
-                    confidence,
+                    "exploration_stage":
+                        exploration_stage,
 
-                "weekly_time":
-                    weekly_time,
+                    "confidence":
+                        confidence,
 
-                "financial_support":
-                    financial_support
-            }
+                    "weekly_time":
+                        weekly_time,
 
-            saved = save_profile(
-                user_sub,
-                user_email,
-                profile
-            )
+                    "financial_support":
+                        financial_support
+                }
 
-            if saved:
-
-                st.session_state.student_profile = (
+                saved = save_profile(
+                    user_sub,
+                    user_email,
                     profile
                 )
 
-                st.session_state.profile_completed = (
-                    True
-                )
+                if saved:
 
-                st.session_state.current_page = (
-                    "Dashboard"
-                )
+                    st.session_state.student_profile = (
+                        profile
+                    )
 
-                st.success(
-                    "Your STEM profile has been saved."
-                )
+                    st.session_state.profile_completed = (
+                        True
+                    )
 
-                st.rerun()
+                    st.session_state.current_page = (
+                        "Dashboard"
+                    )
+
+                    st.success(
+                        "Your STEM profile has been saved."
+                    )
+
+                    st.rerun()
 
     st.divider()
 
@@ -25541,9 +25817,11 @@ if page == "Dashboard":
     # YOUR CURRENT DIRECTION
     # --------------------------------------------------------
 
-    st.header(
-        "Your Current Direction"
-    )
+    with st.container(key="dash_current_direction_heading"):
+
+        st.header(
+            "Your Current Direction"
+        )
 
     direction_title = html_module.escape(
         str(
@@ -25725,9 +26003,16 @@ elif page == "My STEM Pathway":
         )
     )
 
-    st.info(
-        "These recommendations are designed to support exploration, "
-        "not determine what you must study or become."
+    st.markdown(
+        '<div class="sp-rec-disclaimer" role="note">'
+        '<span class="sp-rec-disclaimer-icon" aria-hidden="true">i</span>'
+        '<p class="sp-rec-disclaimer-text">'
+        'These recommendations are designed to '
+        '<span class="sp-rec-disclaimer-emphasis">support exploration</span>, '
+        'not determine what you must study or become.'
+        '</p>'
+        '</div>',
+        unsafe_allow_html=True,
     )
 
     with st.container(key="stemq_form"):
