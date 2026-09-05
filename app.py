@@ -12861,6 +12861,401 @@ st.markdown(
         -webkit-text-fill-color: #083B5C !important;
     }
 
+
+    /* ============================================================
+       SP_PROFILE_SETUP_DARK_V1
+       Create Your STEM Explorer Profile only
+       (:has(.sp-profile-setup-page)). Landing + other pages untouched.
+       Runs before sp-app-shell exists, so do not require that marker.
+       ============================================================ */
+
+    html body .stApp:has(.sp-profile-setup-page),
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stAppViewContainer"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMainBlockContainer"],
+    html body .stApp:has(.sp-profile-setup-page) section[data-testid="stMain"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stHeader"],
+    html body .stApp:has(.sp-profile-setup-page) header[data-testid="stHeader"] {
+        background: linear-gradient(180deg, #041E33 0%, #063250 48%, #0A3550 100%) !important;
+        background-color: #041E33 !important;
+        color: #BFD3DF !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMainBlockContainer"] {
+        max-width: 1080px !important;
+        padding-top: 1.35rem !important;
+        padding-bottom: 2.75rem !important;
+        padding-left: clamp(0.9rem, 3vw, 1.5rem) !important;
+        padding-right: clamp(0.9rem, 3vw, 1.5rem) !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Blue-to-cyan header banner — keep gradient, refine chrome */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header {
+        background: linear-gradient(135deg, rgba(0, 63, 92, 0.98), rgba(1, 143, 199, 0.92)) !important;
+        border: 1px solid rgba(56, 189, 248, 0.35) !important;
+        border-radius: 16px !important;
+        padding: 1.2rem 1.35rem !important;
+        margin: 0.1rem 0 1.05rem 0 !important;
+        box-shadow: 0 12px 28px rgba(0, 12, 28, 0.28) !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header h1,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header h1 * {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header p,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header p * {
+        color: #D1E2EC !important;
+        -webkit-text-fill-color: #D1E2EC !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header .sp-kicker,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header .sp-kicker * {
+        color: #BDEBFA !important;
+        -webkit-text-fill-color: #BDEBFA !important;
+    }
+
+    /* Signed in as… — subtle */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-setup-signed-in,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-setup-signed-in *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.sp-profile-setup-signed-in) .sp-profile-setup-signed-in {
+        color: #8FA8B8 !important;
+        -webkit-text-fill-color: #8FA8B8 !important;
+        font-size: 0.86rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 1rem 0 !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-setup-signed-in strong {
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+        font-weight: 650 !important;
+    }
+
+    /* Hide leftover page dividers if any */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stDivider"] {
+        display: none !important;
+    }
+
+    /* Dark navy section cards */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"]:hover,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]),
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]):hover {
+        background: #0A4563 !important;
+        background-color: #0A4563 !important;
+        border: 1px solid rgba(56, 189, 248, 0.28) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(0, 12, 28, 0.22) !important;
+        padding: 1.15rem 1.2rem 1.05rem !important;
+        margin: 0 0 1.1rem 0 !important;
+        transform: none !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] > [data-testid="stVerticalBlock"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stVerticalBlock"] {
+        background: transparent !important;
+        gap: 0.85rem !important;
+    }
+
+    /* Section titles white; captions / instructions light blue-gray */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h1,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h2,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h3,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h1 *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h2 *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h3 *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stHeading"] h2,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stHeading"] h2 * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stCaptionContainer"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stCaptionContainer"] *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stCaptionContainer"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stCaptionContainer"] * {
+        color: #BFD3DF !important;
+        -webkit-text-fill-color: #BFD3DF !important;
+    }
+
+    /* Form labels — light and readable on dark cards */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stWidgetLabel"] p,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stWidgetLabel"] *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] label p,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stWidgetLabel"] p,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stWidgetLabel"] *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stRadio"] label p,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stCheckbox"] label p {
+        color: #D8EAF3 !important;
+        -webkit-text-fill-color: #D8EAF3 !important;
+        font-weight: 600 !important;
+        opacity: 1 !important;
+    }
+
+    /* Light inputs with dark entered text */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="input"] > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="select"] > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stSelectbox"] > div > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stMultiSelect"] > div > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stNumberInput"] [data-baseweb="input"] > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="input"] > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="select"] > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stMultiSelect"] > div > div {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #C5D0D9 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        min-height: 2.55rem !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="input"]:focus-within > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="select"]:focus-within > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stSelectbox"] > div > div:focus-within,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stMultiSelect"] > div > div:focus-within,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="input"]:focus-within > div,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="select"]:focus-within > div {
+        border-color: #38BDF8 !important;
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22) !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] input,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="input"] input,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]),
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="select"] [aria-selected],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stSelectbox"] input,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stMultiSelect"] input,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) input,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]) {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        background: transparent !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] input::placeholder,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] input::-webkit-input-placeholder,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="select"] [data-baseweb="placeholder"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="select"] span[class*="Placeholder"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) input::placeholder,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="select"] [data-baseweb="placeholder"] {
+        color: #667788 !important;
+        -webkit-text-fill-color: #667788 !important;
+        opacity: 1 !important;
+    }
+
+    /* Multiselect tags — cyan accent chips */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="tag"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="tag"] {
+        background: #E7F6FC !important;
+        border: 1px solid #B9E5F5 !important;
+        border-radius: 999px !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="tag"] span,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="tag"] span {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    /* Radio / checkbox accents */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stRadio"] [role="radiogroup"] label,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stCheckbox"] label,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stRadio"] label,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stCheckbox"] label {
+        color: #D8EAF3 !important;
+        -webkit-text-fill-color: #D8EAF3 !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] input[type="radio"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] input[type="checkbox"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) input[type="radio"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) input[type="checkbox"] {
+        accent-color: #38BDF8 !important;
+    }
+
+    /* Slider track / thumb — cyan system */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stSlider"] [role="slider"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stSlider"] [role="slider"] {
+        background: #38BDF8 !important;
+        border-color: #38BDF8 !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stSliderThumbValue"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stSliderThumbValue"] *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stSliderThumbValue"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stSliderThumbValue"] * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    /* Primary save button — cyan-to-teal gradient */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button:focus,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button:active,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] button[kind="primary"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] button[data-testid^="stBaseButton-primary"] {
+        background: linear-gradient(90deg, #38BDF8 0%, #14B8A6 100%) !important;
+        background-color: #38BDF8 !important;
+        border: 1px solid transparent !important;
+        border-radius: 12px !important;
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+        font-weight: 750 !important;
+        min-height: 2.85rem !important;
+        box-shadow: 0 6px 18px rgba(0, 12, 28, 0.28) !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button:hover,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] button[kind="primary"]:hover {
+        background: linear-gradient(90deg, #5EC8F2 0%, #2DD4BF 100%) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button p,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button span {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+        font-weight: 750 !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_save_section"][data-testid="stVerticalBlockBorderWrapper"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0.15rem 0 0.5rem 0 !important;
+        margin: 0.15rem 0 0.5rem 0 !important;
+    }
+
+    /* Sign out — subtle secondary on dark */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_signout"] .stButton > button,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_signout"] .stButton > button:focus,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_signout"] .stButton > button:active {
+        background: transparent !important;
+        border: 1px solid rgba(148, 185, 208, 0.35) !important;
+        border-radius: 10px !important;
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_signout"] .stButton > button:hover {
+        background: rgba(10, 69, 99, 0.55) !important;
+        border-color: #38BDF8 !important;
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_signout"] .stButton > button *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_signout"] .stButton > button p {
+        color: inherit !important;
+        -webkit-text-fill-color: inherit !important;
+    }
+
+    /* Validation messages — thin border, readable on dark */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-validation {
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 0.65rem !important;
+        width: 100% !important;
+        max-width: min(42rem, 100%) !important;
+        margin: 0.85rem 0 0.15rem !important;
+        padding: 0.72rem 0.9rem !important;
+        background: #123A4F !important;
+        border: 1px solid #F0A090 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-validation-icon {
+        background: rgba(240, 160, 144, 0.2) !important;
+        color: #FFC9BC !important;
+        -webkit-text-fill-color: #FFC9BC !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-validation-text,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-validation-text * {
+        color: #FFE8E2 !important;
+        -webkit-text-fill-color: #FFE8E2 !important;
+    }
+
+    /* Dropdown menus (portaled) while Profile Setup is open */
+    html:has(.sp-profile-setup-page) [data-baseweb="popover"],
+    html:has(.sp-profile-setup-page) [data-baseweb="menu"],
+    html:has(.sp-profile-setup-page) [role="listbox"] {
+        background: #FFFFFF !important;
+        border: 1px solid #C5D0D9 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 28px rgba(0, 12, 28, 0.22) !important;
+    }
+
+    html:has(.sp-profile-setup-page) [data-baseweb="popover"] li,
+    html:has(.sp-profile-setup-page) [role="option"] {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    html:has(.sp-profile-setup-page) [role="option"]:hover,
+    html:has(.sp-profile-setup-page) [role="option"][aria-selected="true"] {
+        background: #E7F6FC !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    /* Success / info alerts on this page */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stAlert"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stAlert"]:hover {
+        background: #0A4563 !important;
+        border: 1px solid #38C7E8 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        color: #D8EAF3 !important;
+        -webkit-text-fill-color: #D8EAF3 !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stAlert"] *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stAlert"] p {
+        color: #D8EAF3 !important;
+        -webkit-text-fill-color: #D8EAF3 !important;
+    }
+
+    /* Responsive: no horizontal overflow */
+    @media (max-width: 768px) {
+        html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"],
+        html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) {
+            padding: 0.95rem 0.9rem 0.9rem !important;
+            margin-bottom: 0.95rem !important;
+            border-radius: 14px !important;
+        }
+
+        html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header {
+            padding: 1.05rem 1.05rem !important;
+        }
+
+        html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stHorizontalBlock"] {
+            gap: 0.65rem !important;
+        }
+    }
+
     </style>
     """,
     unsafe_allow_html=True
@@ -26674,306 +27069,308 @@ if not st.session_state.profile_completed:
     )
 
     st.html(
-        '<div class="sp-profile-setup-page" hidden aria-hidden="true"></div>'
+        '<div class="sp-profile-setup-page" aria-hidden="true"></div>'
     )
 
-    st.write(
-        f"Signed in as **{user_email}**"
+    signed_in_email = html_module.escape(str(user_email or ""))
+    st.markdown(
+        f'<p class="sp-profile-setup-signed-in">'
+        f"Signed in as <strong>{signed_in_email}</strong>"
+        "</p>",
+        unsafe_allow_html=True,
     )
-
-    st.divider()
 
     # --------------------------------------------------------
     # ABOUT YOU
     # --------------------------------------------------------
 
-    st.header(
-        "1. About You"
-    )
+    with st.container(key="profile_setup_section_about", border=True):
 
-    col1, col2 = st.columns(2)
+        st.header(
+            "1. About You"
+        )
 
-    with col1:
+        col1, col2 = st.columns(2)
 
-        first_name = st.text_input(
-            "First name",
+        with col1:
+
+            first_name = st.text_input(
+                "First name",
+                value=existing_profile.get(
+                    "first_name",
+                    ""
+                )
+            )
+
+        with col2:
+
+            last_name = st.text_input(
+                "Last name",
+                value=existing_profile.get(
+                    "last_name",
+                    ""
+                )
+            )
+
+        middle_name = st.text_input(
+            "Middle name (optional)",
             value=existing_profile.get(
-                "first_name",
+                "middle_name",
                 ""
             )
         )
 
-    with col2:
+        col1, col2, col3 = st.columns(3)
 
-        last_name = st.text_input(
-            "Last name",
-            value=existing_profile.get(
-                "last_name",
-                ""
-            )
-        )
+        with col1:
 
-    middle_name = st.text_input(
-        "Middle name (optional)",
-        value=existing_profile.get(
-            "middle_name",
-            ""
-        )
-    )
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-
-        age = st.number_input(
-            "Age",
-            min_value=13,
-            max_value=19,
-            value=safe_int(
-                existing_profile.get(
-                    "age",
-                    15
+            age = st.number_input(
+                "Age",
+                min_value=13,
+                max_value=19,
+                value=safe_int(
+                    existing_profile.get(
+                        "age",
+                        15
+                    ),
+                    15,
+                    13,
+                    19
                 ),
-                15,
-                13,
-                19
-            ),
-            step=1
-        )
+                step=1
+            )
 
-    grade_options = [
-        "9",
-        "10",
-        "11",
-        "12"
-    ]
+        grade_options = [
+            "9",
+            "10",
+            "11",
+            "12"
+        ]
 
-    current_grade = str(
-        existing_profile.get(
-            "grade",
-            "9"
-        )
-    )
-
-    with col2:
-
-        grade = st.selectbox(
-            "Grade",
-            grade_options,
-            index=(
-                grade_options.index(
-                    current_grade
-                )
-                if current_grade
-                in grade_options
-                else 0
+        current_grade = str(
+            existing_profile.get(
+                "grade",
+                "9"
             )
         )
 
-    borough_options = [
-        "Bronx",
-        "Manhattan",
-        "Brooklyn",
-        "Queens",
-        "Staten Island"
-    ]
+        with col2:
 
-    current_borough = (
-        existing_profile.get(
-            "borough",
-            "Bronx"
-        )
-    )
-
-    with col3:
-
-        borough = st.selectbox(
-            "Borough",
-            borough_options,
-            index=(
-                borough_options.index(
-                    current_borough
+            grade = st.selectbox(
+                "Grade",
+                grade_options,
+                index=(
+                    grade_options.index(
+                        current_grade
+                    )
+                    if current_grade
+                    in grade_options
+                    else 0
                 )
-                if current_borough
-                in borough_options
-                else 0
+            )
+
+        borough_options = [
+            "Bronx",
+            "Manhattan",
+            "Brooklyn",
+            "Queens",
+            "Staten Island"
+        ]
+
+        current_borough = (
+            existing_profile.get(
+                "borough",
+                "Bronx"
             )
         )
 
-    st.divider()
+        with col3:
+
+            borough = st.selectbox(
+                "Borough",
+                borough_options,
+                index=(
+                    borough_options.index(
+                        current_borough
+                    )
+                    if current_borough
+                    in borough_options
+                    else 0
+                )
+            )
 
     # --------------------------------------------------------
     # INTERESTS
     # --------------------------------------------------------
 
-    st.header(
-        "2. Your STEM Interests"
-    )
+    with st.container(key="profile_setup_section_interests", border=True):
 
-    st.caption(
-        "Choose any STEM or quantitative areas that interest you. "
-        "You can select from more than one group, including engineering, "
-        "computing, life sciences, physical sciences, environment, math, "
-        "finance/quant pathways, and architecture."
-    )
+        st.header(
+            "2. Your STEM Interests"
+        )
 
-    interests = collect_grouped_stem_fields(
-        existing_profile.get(
-            "interests",
-            []
-        ),
-        "profile_interests",
-        include_unsure=True,
-        unsure_label="Not sure yet"
-    )
+        st.caption(
+            "Choose any STEM or quantitative areas that interest you. "
+            "You can select from more than one group, including engineering, "
+            "computing, life sciences, physical sciences, environment, math, "
+            "finance/quant pathways, and architecture."
+        )
 
-    experience_options = [
-        "Coding",
-        "Electronics",
-        "Circuit Design",
-        "CAD / 3D Design",
-        "3D Printing",
-        "Robotics",
-        "Scientific Research",
-        "Engineering Projects",
-        "Lab Experiments",
-        "Data Analysis",
-        "Math Competitions",
-        "Science Competitions",
-        "Biology / Life Science Projects",
-        "Environmental or Field Research",
-        "Finance / Economics Projects",
-        "Architecture or Design Projects",
-        "None yet"
-    ]
-
-    experience_areas = st.multiselect(
-        "Which STEM activities have you tried?",
-        experience_options,
-        default=valid_choice_defaults(
+        interests = collect_grouped_stem_fields(
             existing_profile.get(
-                "experience_areas",
+                "interests",
                 []
             ),
-            experience_options
+            "profile_interests",
+            include_unsure=True,
+            unsure_label="Not sure yet"
         )
-    )
 
-    st.divider()
+        experience_options = [
+            "Coding",
+            "Electronics",
+            "Circuit Design",
+            "CAD / 3D Design",
+            "3D Printing",
+            "Robotics",
+            "Scientific Research",
+            "Engineering Projects",
+            "Lab Experiments",
+            "Data Analysis",
+            "Math Competitions",
+            "Science Competitions",
+            "Biology / Life Science Projects",
+            "Environmental or Field Research",
+            "Finance / Economics Projects",
+            "Architecture or Design Projects",
+            "None yet"
+        ]
+
+        experience_areas = st.multiselect(
+            "Which STEM activities have you tried?",
+            experience_options,
+            default=valid_choice_defaults(
+                existing_profile.get(
+                    "experience_areas",
+                    []
+                ),
+                experience_options
+            )
+        )
 
     # --------------------------------------------------------
     # GOALS
     # --------------------------------------------------------
 
-    st.header(
-        "3. Your Goals"
-    )
+    with st.container(key="profile_setup_section_goals", border=True):
 
-    goal_options = [
-        "Build STEM projects",
-        "Learn technical skills",
-        "Explore STEM careers",
-        "Find summer programs",
-        "Find internships",
-        "Participate in research",
-        "Take college courses",
-        "Enter competitions",
-        "Prepare for a STEM major"
-    ]
-
-    goals = st.multiselect(
-        "What would you like to do next?",
-        goal_options,
-        default=valid_choice_defaults(
-            existing_profile.get(
-                "goals",
-                []
-            ),
-            goal_options
+        st.header(
+            "3. Your Goals"
         )
-    )
 
-    stage_options = [
-        "I am just starting to explore STEM.",
-        "I have a few STEM interests but I am still exploring.",
-        "I know which STEM fields interest me.",
-        "I have experience and want to develop more advanced skills.",
-        "I already have a specific STEM career or major in mind."
-    ]
+        goal_options = [
+            "Build STEM projects",
+            "Learn technical skills",
+            "Explore STEM careers",
+            "Find summer programs",
+            "Find internships",
+            "Participate in research",
+            "Take college courses",
+            "Enter competitions",
+            "Prepare for a STEM major"
+        ]
 
-    current_stage = (
-        existing_profile.get(
-            "exploration_stage",
-            stage_options[0]
-        )
-    )
-
-    exploration_stage = st.radio(
-        "Where are you currently in your STEM journey?",
-        stage_options,
-        index=(
-            stage_options.index(
-                current_stage
+        goals = st.multiselect(
+            "What would you like to do next?",
+            goal_options,
+            default=valid_choice_defaults(
+                existing_profile.get(
+                    "goals",
+                    []
+                ),
+                goal_options
             )
-            if current_stage
-            in stage_options
-            else 0
         )
-    )
 
-    confidence = st.slider(
-        "How confident are you about your current STEM interests?",
-        1,
-        10,
-        safe_int(
+        stage_options = [
+            "I am just starting to explore STEM.",
+            "I have a few STEM interests but I am still exploring.",
+            "I know which STEM fields interest me.",
+            "I have experience and want to develop more advanced skills.",
+            "I already have a specific STEM career or major in mind."
+        ]
+
+        current_stage = (
             existing_profile.get(
-                "confidence",
-                5
-            ),
-            5,
+                "exploration_stage",
+                stage_options[0]
+            )
+        )
+
+        exploration_stage = st.radio(
+            "Where are you currently in your STEM journey?",
+            stage_options,
+            index=(
+                stage_options.index(
+                    current_stage
+                )
+                if current_stage
+                in stage_options
+                else 0
+            )
+        )
+
+        confidence = st.slider(
+            "How confident are you about your current STEM interests?",
             1,
-            10
-        )
-    )
-
-    weekly_options = [
-        "Less than 2 hours",
-        "2–5 hours",
-        "5–10 hours",
-        "10+ hours"
-    ]
-
-    current_weekly = (
-        existing_profile.get(
-            "weekly_time",
-            "2–5 hours"
-        )
-    )
-
-    weekly_time = st.selectbox(
-        "How much time would you like to spend exploring STEM each week?",
-        weekly_options,
-        index=(
-            weekly_options.index(
-                current_weekly
+            10,
+            safe_int(
+                existing_profile.get(
+                    "confidence",
+                    5
+                ),
+                5,
+                1,
+                10
             )
-            if current_weekly
-            in weekly_options
-            else 1
         )
-    )
 
-    financial_support = st.checkbox(
-        "Prioritize free opportunities or programs offering financial aid",
-        value=bool(
+        weekly_options = [
+            "Less than 2 hours",
+            "2–5 hours",
+            "5–10 hours",
+            "10+ hours"
+        ]
+
+        current_weekly = (
             existing_profile.get(
-                "financial_support",
-                False
+                "weekly_time",
+                "2–5 hours"
             )
         )
-    )
 
-    st.divider()
+        weekly_time = st.selectbox(
+            "How much time would you like to spend exploring STEM each week?",
+            weekly_options,
+            index=(
+                weekly_options.index(
+                    current_weekly
+                )
+                if current_weekly
+                in weekly_options
+                else 1
+            )
+        )
+
+        financial_support = st.checkbox(
+            "Prioritize free opportunities or programs offering financial aid",
+            value=bool(
+                existing_profile.get(
+                    "financial_support",
+                    False
+                )
+            )
+        )
 
     with st.container(key="profile_save_section"):
 
@@ -27077,12 +27474,11 @@ if not st.session_state.profile_completed:
 
                     st.rerun()
 
-    st.divider()
-
-    if st.button(
-        "Sign Out"
-    ):
-        sign_out_current_user()
+    with st.container(key="profile_setup_signout"):
+        if st.button(
+            "Sign Out"
+        ):
+            sign_out_current_user()
 
     st.stop()
 
