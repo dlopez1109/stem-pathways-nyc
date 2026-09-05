@@ -13061,17 +13061,17 @@ st.markdown(
     /* Multiselect tags — cyan accent chips */
     html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="tag"],
     html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="tag"] {
-        background: #E7F6FC !important;
-        border: 1px solid #B9E5F5 !important;
+        background: #0E5A78 !important;
+        border: 1px solid rgba(56, 189, 248, 0.55) !important;
         border-radius: 999px !important;
-        color: #083B5C !important;
-        -webkit-text-fill-color: #083B5C !important;
+        color: #E8F7FC !important;
+        -webkit-text-fill-color: #E8F7FC !important;
     }
 
     html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="tag"] span,
     html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="tag"] span {
-        color: #083B5C !important;
-        -webkit-text-fill-color: #083B5C !important;
+        color: #E8F7FC !important;
+        -webkit-text-fill-color: #E8F7FC !important;
     }
 
     /* Radio / checkbox accents */
@@ -13253,6 +13253,341 @@ st.markdown(
 
         html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stHorizontalBlock"] {
             gap: 0.65rem !important;
+        }
+    }
+
+
+    /* ============================================================
+       SP_PROFILE_SETUP_FINISH_V1
+       Finish Profile Setup dark redesign: full-page navy, force
+       section cards past global white wrappers, cyan accents,
+       hide Streamlit Deploy toolbar. Scoped via profile markers.
+       ============================================================ */
+
+    /* Scope aliases — any of these mean Profile Setup is active */
+    /* Use html:has for reliability across Streamlit DOM nesting */
+
+    html:has(.sp-profile-setup-page),
+    html:has(.sp-profile-setup-page) body,
+    html:has([class*="st-key-profile_setup_shell"]),
+    html:has([class*="st-key-profile_setup_shell"]) body,
+    html:has([class*="st-key-profile_setup_section_about"]),
+    html:has([class*="st-key-profile_setup_section_about"]) body,
+    html:has(.sp-profile-setup-page) .stApp,
+    html:has([class*="st-key-profile_setup_shell"]) .stApp,
+    html:has([class*="st-key-profile_setup_section_about"]) .stApp,
+    html:has(.sp-profile-setup-page) [data-testid="stAppViewContainer"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stAppViewContainer"],
+    html:has(.sp-profile-setup-page) [data-testid="stMain"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"],
+    html:has(.sp-profile-setup-page) [data-testid="stMainBlockContainer"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMainBlockContainer"],
+    html:has(.sp-profile-setup-page) section[data-testid="stMain"],
+    html:has([class*="st-key-profile_setup_section_about"]) section[data-testid="stMain"],
+    html:has(.sp-profile-setup-page) .main,
+    html:has([class*="st-key-profile_setup_section_about"]) .main,
+    html:has(.sp-profile-setup-page) .block-container,
+    html:has([class*="st-key-profile_setup_section_about"]) .block-container,
+    html:has(.sp-profile-setup-page) [data-testid="stAppViewBlockContainer"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stAppViewBlockContainer"] {
+        background: linear-gradient(180deg, #041E33 0%, #063250 48%, #0A3550 100%) !important;
+        background-color: #041E33 !important;
+        background-image: linear-gradient(180deg, #041E33 0%, #063250 48%, #0A3550 100%) !important;
+    }
+
+    /* Kill residual light-blue fills on nested layout chrome */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlock"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stHorizontalBlock"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stElementContainer"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stMarkdownContainer"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="element-container"] {
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+
+    /* Hide Streamlit header / Deploy / ⋮ toolbar and collapse empty space */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stHeader"],
+    html:has([class*="st-key-profile_setup_section_about"]) header[data-testid="stHeader"],
+    html:has(.sp-profile-setup-page) [data-testid="stHeader"],
+    html:has(.sp-profile-setup-page) header[data-testid="stHeader"] {
+        background: transparent !important;
+        background-image: none !important;
+        backdrop-filter: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 0 !important;
+        pointer-events: none !important;
+        opacity: 0 !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stToolbar"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stDecoration"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stStatusWidget"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stHeaderDecoration"],
+    html:has([class*="st-key-profile_setup_section_about"]) .stAppToolbar,
+    html:has([class*="st-key-profile_setup_section_about"]) [class*="stToolbar"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stAppDeployButton"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMainMenu"],
+    html:has(.sp-profile-setup-page) [data-testid="stToolbar"],
+    html:has(.sp-profile-setup-page) [data-testid="stDecoration"],
+    html:has(.sp-profile-setup-page) [data-testid="stStatusWidget"],
+    html:has(.sp-profile-setup-page) .stAppToolbar,
+    html:has(.sp-profile-setup-page) [class*="stToolbar"],
+    html:has(.sp-profile-setup-page) [data-testid="stAppDeployButton"],
+    html:has(.sp-profile-setup-page) [data-testid="stMainMenu"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stAppViewContainer"] > section,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stAppViewContainer"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] > div,
+    html:has([class*="st-key-profile_setup_section_about"]) section[data-testid="stMain"],
+    html:has(.sp-profile-setup-page) [data-testid="stAppViewContainer"] > section,
+    html:has(.sp-profile-setup-page) [data-testid="stMain"] {
+        margin-top: 0 !important;
+        top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMainBlockContainer"],
+    html:has(.sp-profile-setup-page) [data-testid="stMainBlockContainer"] {
+        max-width: 1080px !important;
+        padding-top: 1.15rem !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Force ALL profile bordered section cards dark navy
+       (beats global white VerticalBlockBorderWrapper rules) */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_about"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_goals"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_about"]:hover,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"]:hover,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_goals"]:hover,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]),
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]):hover,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_about"]),
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]),
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_goals"]) {
+        background: #0A4563 !important;
+        background-color: #0A4563 !important;
+        background-image: none !important;
+        border: 1px solid rgba(56, 189, 248, 0.28) !important;
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: rgba(56, 189, 248, 0.28) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(0, 12, 28, 0.22) !important;
+        padding: 1.15rem 1.2rem 1.05rem !important;
+        margin: 0 0 1.1rem 0 !important;
+        transform: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        cursor: default !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Save / signout wrappers stay transparent (not white cards) */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_save_section"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_signout"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_shell"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_save_section"]),
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_signout"]),
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_shell"]) {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        border-width: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 0 0.55rem 0 !important;
+        height: auto !important;
+    }
+
+    /* Headings white; labels light blue-gray */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h1,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h2,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h3,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h1 *,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h2 *,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h3 *,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stHeading"] h2,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stHeading"] h2 * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stWidgetLabel"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stWidgetLabel"] *,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stWidgetLabel"] p,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] label,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] label p,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stWidgetLabel"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stWidgetLabel"] *,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stCaptionContainer"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stCaptionContainer"] *,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stRadio"] label,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stRadio"] label p,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stCheckbox"] label,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stCheckbox"] label p {
+        color: #BFD3DF !important;
+        -webkit-text-fill-color: #BFD3DF !important;
+        opacity: 1 !important;
+    }
+
+    /* Multiselect tags — cyan/teal instead of bright red primary */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-baseweb="tag"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] span[data-baseweb="tag"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] div[data-baseweb="tag"] {
+        background: linear-gradient(90deg, rgba(56, 189, 248, 0.22) 0%, rgba(20, 184, 166, 0.22) 100%) !important;
+        background-color: #0E5A78 !important;
+        border: 1px solid rgba(56, 189, 248, 0.55) !important;
+        border-radius: 999px !important;
+        color: #E8F7FC !important;
+        -webkit-text-fill-color: #E8F7FC !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-baseweb="tag"] span,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-baseweb="tag"] div {
+        color: #E8F7FC !important;
+        -webkit-text-fill-color: #E8F7FC !important;
+        background: transparent !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-baseweb="tag"] svg,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-baseweb="tag"] path {
+        fill: #7DD3FC !important;
+        color: #7DD3FC !important;
+        stroke: #7DD3FC !important;
+    }
+
+    /* Radio / checkbox — cyan accents (override Streamlit primary red) */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stRadio"] input[type="radio"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stCheckbox"] input[type="checkbox"] {
+        accent-color: #38BDF8 !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stRadio"] svg,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stCheckbox"] svg {
+        fill: #38BDF8 !important;
+        color: #38BDF8 !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stRadio"] [data-testid="stWidgetLabel"] ~ div label span[data-checked],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stRadio"] label [data-testid="stMarkdownContainer"] {
+        color: #BFD3DF !important;
+        -webkit-text-fill-color: #BFD3DF !important;
+    }
+
+    /* Slider track + thumb cyan/teal */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-baseweb="slider"] > div > div,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-baseweb="slider"] div[role="slider"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stSlider"] [role="slider"] {
+        background: #38BDF8 !important;
+        background-color: #38BDF8 !important;
+        border-color: #38BDF8 !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-baseweb="slider"] > div > div:first-child,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stSlider"] [data-baseweb="slider"] > div {
+        background: rgba(148, 185, 208, 0.35) !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stSliderThumbValue"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stSliderThumbValue"] * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+        background: #0E5A78 !important;
+        border: 1px solid #38BDF8 !important;
+    }
+
+    /* Inputs stay light with dark typed text */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="input"] > div,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="select"] > div,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="input"] > div,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="select"] > div,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-testid="stMultiSelect"] > div > div {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #C5D0D9 !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] input,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) input,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]) [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]) {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    /* Save button gradient */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_save_section"] button[kind="primary"],
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_save_section"] button[data-testid^="stBaseButton-primary"] {
+        background: linear-gradient(90deg, #38BDF8 0%, #14B8A6 100%) !important;
+        background-color: #38BDF8 !important;
+        border: 1px solid transparent !important;
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+        font-weight: 750 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 6px 18px rgba(0, 12, 28, 0.28) !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button *,
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button p {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+        font-weight: 750 !important;
+    }
+
+    /* Sign Out secondary */
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_signout"] .stButton > button {
+        background: transparent !important;
+        border: 1px solid rgba(148, 185, 208, 0.35) !important;
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+        box-shadow: none !important;
+    }
+
+    html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMain"] [class*="st-key-profile_setup_signout"] .stButton > button:hover {
+        border-color: #38BDF8 !important;
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+        background: rgba(10, 69, 99, 0.55) !important;
+    }
+
+    @media (max-width: 768px) {
+        html:has([class*="st-key-profile_setup_section_about"]) [data-testid="stMainBlockContainer"] {
+            padding-left: 0.85rem !important;
+            padding-right: 0.85rem !important;
+            overflow-x: hidden !important;
         }
     }
 
@@ -27059,6 +27394,115 @@ if not st.session_state.profile_completed:
         st.session_state.student_profile
     )
 
+    # Reliable DOM markers + late CSS (st.html keeps <style>; beats legacy cascade).
+    st.html(
+        """
+<div class="sp-profile-setup-page" id="sp-profile-setup-dark-root" aria-hidden="true"></div>
+<style id="sp-profile-setup-dark-late">
+html:has(.sp-profile-setup-page),
+html:has([class*="st-key-profile_setup_section_about"]) {
+  --primary-color: #38BDF8 !important;
+  --primary-color-rgb: 56, 189, 248 !important;
+}
+html:has(.sp-profile-setup-page) body .stApp,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stAppViewContainer"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMainBlockContainer"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp,
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stAppViewContainer"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stMain"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stMainBlockContainer"] {
+  background: #041E33 !important;
+  background-color: #041E33 !important;
+  background-image: linear-gradient(180deg, #041E33 0%, #063250 48%, #0A3550 100%) !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stHeader"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stHeader"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stToolbar"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stAppDeployButton"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMainMenu"],
+html:has(.sp-profile-setup-page) body .stApp .stAppToolbar,
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stToolbar"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stAppDeployButton"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stMainMenu"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp .stAppToolbar {
+  display: none !important; visibility: hidden !important;
+  height: 0 !important; min-height: 0 !important; max-height: 0 !important;
+  opacity: 0 !important; pointer-events: none !important; overflow: hidden !important;
+  padding: 0 !important; margin: 0 !important; border: none !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stMain"] {
+  margin-top: 0 !important; padding-top: 0 !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"]:hover,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_"]),
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_about"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_goals"] {
+  background: #0A4563 !important; background-color: #0A4563 !important;
+  border: 1px solid rgba(56,189,248,.35) !important; border-radius: 16px !important;
+  box-shadow: 0 8px 22px rgba(0,12,28,.25) !important; padding: 1.15rem 1.2rem !important;
+  margin: 0 0 1.1rem 0 !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h2,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h2 *,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stWidgetLabel"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stWidgetLabel"] *,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stRadio"] label,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stRadio"] p,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stCheckbox"] label p {
+  color: #BFD3DF !important; -webkit-text-fill-color: #BFD3DF !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHeading"] h2 {
+  color: #F8FBFF !important; -webkit-text-fill-color: #F8FBFF !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] input,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="select"] span {
+  color: #083B5C !important; -webkit-text-fill-color: #083B5C !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="input"] > div,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="select"] > div,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stMultiSelect"] > div > div {
+  background: #FFFFFF !important; border: 1px solid #C5D0D9 !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="tag"] {
+  background: #0E5A78 !important; background-color: #0E5A78 !important; background-image: none !important;
+  border: 1px solid rgba(56,189,248,.55) !important;
+  color: #E8F7FC !important; -webkit-text-fill-color: #E8F7FC !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="tag"] span {
+  color: #E8F7FC !important; -webkit-text-fill-color: #E8F7FC !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] input[type="radio"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] input[type="checkbox"] {
+  accent-color: #38BDF8 !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stRadio"] svg,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stCheckbox"] svg {
+  fill: #38BDF8 !important; color: #38BDF8 !important; stroke: #38BDF8 !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [role="slider"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-baseweb="slider"] > div > div {
+  background: #38BDF8 !important; background-color: #38BDF8 !important; border-color: #38BDF8 !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_save_section"] button[kind="primary"] {
+  background: linear-gradient(90deg, #38BDF8, #14B8A6) !important;
+  color: #041E33 !important; -webkit-text-fill-color: #041E33 !important; border: none !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button * {
+  color: #041E33 !important; -webkit-text-fill-color: #041E33 !important;
+}
+</style>
+        """
+    )
+    with st.container(key="profile_setup_shell"):
+        st.html(
+            '<div class="sp-profile-setup-shell-mark" aria-hidden="true"></div>'
+        )
+
     render_page_header(
         "Create Your STEM Explorer Profile",
         (
@@ -27066,10 +27510,6 @@ if not st.session_state.profile_completed:
             "your career, major, project, and opportunity recommendations."
         ),
         kicker="Profile Setup"
-    )
-
-    st.html(
-        '<div class="sp-profile-setup-page" aria-hidden="true"></div>'
     )
 
     signed_in_email = html_module.escape(str(user_email or ""))
