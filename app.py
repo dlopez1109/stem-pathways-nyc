@@ -4775,6 +4775,24 @@ st.markdown(
         margin-bottom: 0.45rem;
     }
 
+    html,
+    body,
+    [data-testid="stAppViewContainer"],
+    [data-testid="stMain"],
+    section.main {
+        scroll-behavior: smooth !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html,
+        body,
+        [data-testid="stAppViewContainer"],
+        [data-testid="stMain"],
+        section.main {
+            scroll-behavior: auto !important;
+        }
+    }
+
     .sp-landing-shell {
         width: 100%;
         margin: 0;
@@ -24952,8 +24970,8 @@ if not app_user:
                   <span class="sp-landing-brand-name">STEM PATHWAYS NYC</span>
                 </div>
                 <div class="sp-landing-nav-actions">
-                  <a class="sp-landing-nav-link" href="?auth=signin#sp-landing-auth">Sign In</a>
-                  <a class="sp-landing-nav-cta" href="?auth=create#sp-landing-auth">Create Account</a>
+                  <a class="sp-landing-nav-link" href="#sp-landing-auth" target="_self">Sign In</a>
+                  <a class="sp-landing-nav-cta" href="#sp-landing-auth" target="_self">Create Account</a>
                 </div>
               </nav>
               <div class="sp-landing-hero-copy">
@@ -24972,7 +24990,7 @@ if not app_user:
                 </p>
                 <div class="sp-landing-cta-row">
                   <a class="sp-landing-btn-primary" href="#sp-landing-features">Explore Opportunities</a>
-                  <a class="sp-landing-btn-secondary" href="?auth=signin#sp-landing-auth">Sign In / Create Account</a>
+                  <a class="sp-landing-btn-secondary" href="#sp-landing-auth" target="_self">Sign In / Create Account</a>
                 </div>
               </div>
               <div class="sp-landing-evidence" role="group" aria-label="Current database snapshot">
@@ -25038,7 +25056,7 @@ if not app_user:
     ):
 
         st.markdown(
-            '<div id="sp-landing-auth" class="sp-landing-auth-anchor"></div>'
+            '<div id="sp-landing-auth" style="scroll-margin-top: 40px;"></div>'
             '<div class="sp-landing-welcome-title">'
             'Sign in to personalize your pathway</div>',
             unsafe_allow_html=True
