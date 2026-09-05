@@ -4775,327 +4775,477 @@ st.markdown(
         margin-bottom: 0.45rem;
     }
 
+    .sp-landing-shell {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
     .sp-landing-hero {
-        background: linear-gradient(135deg, rgba(0,63,92,0.99), rgba(1,143,199,0.94));
-        border-radius: 20px;
-        padding: 2.95rem 2.5rem 3.1rem;
-        box-shadow: 0 14px 32px rgba(0, 63, 92, 0.16);
+        background: linear-gradient(165deg, #041E33 0%, #063250 42%, #0A4A6E 100%);
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
         margin: 0;
         position: relative;
         overflow: hidden;
+        width: 100%;
     }
 
     .sp-landing-hero::before {
         content: "";
         position: absolute;
-        width: 170px;
-        height: 170px;
-        left: -55px;
-        bottom: -75px;
+        width: 420px;
+        height: 420px;
+        right: -140px;
+        top: -180px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.06);
+        background: radial-gradient(circle, rgba(56,189,248,0.16) 0%, rgba(56,189,248,0) 70%);
+        pointer-events: none;
     }
 
     .sp-landing-hero::after {
         content: "";
         position: absolute;
-        width: 240px;
-        height: 240px;
-        right: -70px;
-        top: -90px;
+        width: 360px;
+        height: 360px;
+        left: -120px;
+        bottom: -160px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
+        background: radial-gradient(circle, rgba(45,212,191,0.12) 0%, rgba(45,212,191,0) 70%);
+        pointer-events: none;
+    }
+
+    .sp-landing-hero-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 1.35rem 1.75rem 2.75rem;
+    }
+
+    .sp-landing-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 0 0 2.6rem 0;
+        flex-wrap: wrap;
+    }
+
+    .sp-landing-brand {
+        display: block;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        gap: 0;
+    }
+
+    .sp-landing-brand-name {
+        display: block;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 1.02rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.04em;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        white-space: nowrap;
+    }
+
+    .sp-landing-nav-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        flex-wrap: wrap;
+    }
+
+    .sp-landing-nav-link,
+    .sp-landing-nav-link:visited {
+        color: #D7ECF7 !important;
+        -webkit-text-fill-color: #D7ECF7 !important;
+        text-decoration: none !important;
+        font-size: 0.92rem !important;
+        font-weight: 650 !important;
+        padding: 0.55rem 0.85rem;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        transition: color 140ms ease, background 140ms ease, border-color 140ms ease;
+    }
+
+    .sp-landing-nav-link:hover {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        background: rgba(255,255,255,0.06);
+        border-color: rgba(255,255,255,0.12);
+    }
+
+    .sp-landing-nav-cta,
+    .sp-landing-nav-cta:visited {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+        background: #FFFFFF;
+        text-decoration: none !important;
+        font-size: 0.92rem !important;
+        font-weight: 750 !important;
+        padding: 0.55rem 0.95rem;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.85);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .sp-landing-nav-cta:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+    }
+
+    .sp-landing-hero-copy {
+        max-width: 720px;
+        margin: 0 0 2.1rem 0;
     }
 
     .sp-landing-kicker {
-        color: #BDEBFA !important;
-        -webkit-text-fill-color: #BDEBFA !important;
+        color: #9AD8F0 !important;
+        -webkit-text-fill-color: #9AD8F0 !important;
         text-transform: uppercase;
-        letter-spacing: 0.12em;
-        font-size: 0.74rem !important;
-        font-weight: 800 !important;
-        margin: 0 0 0.7rem 0 !important;
-        position: relative;
-        z-index: 1;
+        letter-spacing: 0.11em;
+        font-size: 0.72rem !important;
+        font-weight: 750 !important;
+        margin: 0 0 0.85rem 0 !important;
     }
 
-    .sp-landing-hero h1 {
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-        margin: 0 0 0.7rem 0 !important;
-        font-size: 2.2rem !important;
-        font-weight: 800 !important;
-        line-height: 1.12 !important;
-        position: relative;
-        z-index: 1;
-    }
-
-    .sp-landing-headline {
+    .sp-landing-title,
+    .sp-landing-hero h1,
+    .sp-landing-hero h1.sp-landing-title {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
         margin: 0 0 0.85rem 0 !important;
-        font-size: 1.38rem !important;
+        font-size: clamp(2rem, 4.2vw, 2.85rem) !important;
+        font-weight: 800 !important;
+        line-height: 1.12 !important;
+        letter-spacing: -0.03em;
+        max-width: 16ch;
+    }
+
+    .sp-landing-gradient-line {
+        color: #E8F4FB !important;
+        -webkit-text-fill-color: #E8F4FB !important;
+        margin: 0 0 1rem 0 !important;
+        font-size: clamp(1.15rem, 2.4vw, 1.45rem) !important;
         font-weight: 650 !important;
         line-height: 1.35 !important;
-        position: relative;
-        z-index: 1;
-        max-width: 780px;
+    }
+
+    .sp-landing-gradient-text {
+        background: linear-gradient(90deg, #5EC8F2 0%, #2DD4BF 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent !important;
+        -webkit-text-fill-color: transparent !important;
+        font-weight: 750 !important;
+    }
+
+    @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+        .sp-landing-gradient-text {
+            color: #7DD3FC !important;
+            -webkit-text-fill-color: #7DD3FC !important;
+            background: none;
+        }
     }
 
     .sp-landing-desc {
-        color: #EAF6FC !important;
-        -webkit-text-fill-color: #EAF6FC !important;
-        margin: 0 !important;
-        font-size: 1rem !important;
+        color: #D5E8F4 !important;
+        -webkit-text-fill-color: #D5E8F4 !important;
+        margin: 0 0 1.55rem 0 !important;
+        font-size: 1.05rem !important;
         font-weight: 500 !important;
-        line-height: 1.55 !important;
-        max-width: 760px;
-        position: relative;
-        z-index: 1;
+        line-height: 1.6 !important;
+        max-width: 38rem;
     }
 
-    .sp-landing-welcome-title {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.7rem !important;
-        font-weight: 800 !important;
-        line-height: 1.2 !important;
-        margin: 0 0 0.65rem 0 !important;
-        text-align: center;
+    .sp-landing-cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+        margin: 0;
     }
 
-    .sp-landing-welcome-copy {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 1rem !important;
-        font-weight: 500 !important;
-        line-height: 1.55 !important;
-        margin: 0 auto 1.35rem auto !important;
-        max-width: 560px;
-        text-align: center;
+    .sp-landing-btn-primary,
+    .sp-landing-btn-primary:visited {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.85rem;
+        padding: 0.7rem 1.25rem;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #38BDF8 0%, #14B8A6 100%);
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+        font-size: 0.98rem !important;
+        font-weight: 750 !important;
+        text-decoration: none !important;
+        border: 1px solid rgba(255,255,255,0.25);
+        box-shadow: 0 8px 22px rgba(20, 184, 166, 0.22);
+        transition: transform 140ms ease, box-shadow 140ms ease;
     }
 
-    .sp-landing-lower {
+    .sp-landing-btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 26px rgba(20, 184, 166, 0.28);
+    }
+
+    .sp-landing-btn-secondary,
+    .sp-landing-btn-secondary:visited {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.85rem;
+        padding: 0.7rem 1.25rem;
+        border-radius: 12px;
+        background: transparent;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 0.98rem !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+        border: 1px solid rgba(255,255,255,0.32);
+        transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .sp-landing-btn-secondary:hover {
+        background: rgba(255,255,255,0.08);
+        border-color: rgba(255,255,255,0.5);
+    }
+
+    .sp-landing-evidence {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0;
+        width: 100%;
+        margin: 0 0 0.7rem 0;
+        padding: 1rem 0.35rem;
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 14px;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .sp-landing-evidence-item {
         display: flex;
         flex-direction: column;
-        gap: 2.1rem;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 0.22rem;
+        padding: 0.55rem 0.75rem;
+        border-right: 1px solid rgba(255,255,255,0.12);
+        min-width: 0;
+    }
+
+    .sp-landing-evidence-item:last-child {
+        border-right: none;
+    }
+
+    .sp-landing-evidence-value {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 1.55rem !important;
+        font-weight: 800 !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.03em;
+        margin: 0 !important;
+    }
+
+    .sp-landing-evidence-label {
+        color: #A9CBDC !important;
+        -webkit-text-fill-color: #A9CBDC !important;
+        font-size: 0.72rem !important;
+        font-weight: 650 !important;
+        line-height: 1.3 !important;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin: 0 !important;
+    }
+
+    .sp-landing-evidence-note {
+        color: #8FB4C8 !important;
+        -webkit-text-fill-color: #8FB4C8 !important;
+        font-size: 0.74rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+        text-align: center;
+        max-width: 40rem;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .sp-landing-body {
+        background: linear-gradient(180deg, #0A3552 0%, #0C4568 48%, #0B3D5C 100%);
+        width: 100%;
         margin: 0;
-        padding: 0.05rem 0 0.35rem 0;
+        padding: 0;
+        position: relative;
+    }
+
+    .sp-landing-body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(56,189,248,0.10) 0%, rgba(56,189,248,0) 65%);
+        pointer-events: none;
+    }
+
+    .sp-landing-body-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 3.1rem 1.75rem 1.85rem;
+    }
+
+    .sp-landing-section-intro {
+        text-align: center;
+        max-width: 640px;
+        margin: 0 auto 2.15rem auto;
+    }
+
+    .sp-landing-section-intro h2 {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: clamp(1.35rem, 2.5vw, 1.72rem) !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin: 0 0 0.7rem 0 !important;
+        letter-spacing: -0.02em;
+    }
+
+    .sp-landing-section-intro p {
+        color: #B7D4E6 !important;
+        -webkit-text-fill-color: #B7D4E6 !important;
+        font-size: 1.02rem !important;
+        font-weight: 500 !important;
+        line-height: 1.55 !important;
+        margin: 0 !important;
     }
 
     .sp-landing-features {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1rem;
+        gap: 1.2rem;
         margin: 0;
-    }
-
-    .sp-landing-impact {
-        display: flex;
-        flex-direction: column;
-        gap: 0.7rem;
-        margin: 0;
-    }
-
-    .sp-landing-impact-copy {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.94rem !important;
-        font-weight: 500 !important;
-        line-height: 1.5 !important;
-        margin: 0 auto !important;
-        text-align: center;
-        max-width: 720px;
-    }
-
-    .sp-landing-stats-wrap {
-        display: flex;
-        flex-direction: column;
-        gap: 0.45rem;
-        width: 100%;
-        margin: 0;
-    }
-
-    .sp-landing-stats {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.7rem;
-        width: 100%;
-        margin: 0;
-        align-items: stretch;
-    }
-
-    .sp-landing-stat {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.28rem;
-        background: #FFFFFF;
-        border: 1px solid #D5E3EC;
-        border-radius: 14px;
-        box-shadow: 0 3px 10px rgba(8, 60, 93, 0.045);
-        padding: 0.85rem 0.8rem 0.78rem;
-        text-align: center;
-        box-sizing: border-box;
-        min-height: 0;
-        overflow: hidden;
-        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-    }
-
-    .sp-landing-stat::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #38BDF8 0%, #018FC7 55%, #0EA5A0 100%);
-        border-radius: 14px 14px 0 0;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        .sp-landing-stat:hover {
-            transform: translateY(-2px);
-            border-color: #C5DCE8;
-            box-shadow: 0 8px 18px rgba(8, 60, 93, 0.09);
-        }
-    }
-
-    .sp-landing-stat-icon {
-        width: 2.35rem;
-        height: 2.35rem;
-        border-radius: 10px;
-        background: #E7F6FC;
-        color: #018FC7;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0.15rem 0 0.12rem 0;
-        flex: 0 0 auto;
-        border: 1px solid #C9E8F5;
-    }
-
-    .sp-landing-stat-icon svg {
-        display: block;
-        width: 1.28rem;
-        height: 1.28rem;
-        stroke-width: 1.9;
-    }
-
-    .sp-landing-stat-value {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.55rem !important;
-        font-weight: 800 !important;
-        line-height: 1.08 !important;
-        margin: 0 !important;
-        letter-spacing: -0.03em;
-        max-width: 100%;
-    }
-
-    .sp-landing-stat-value.is-text {
-        font-size: 1.42rem !important;
-        letter-spacing: -0.02em;
-    }
-
-    .sp-landing-stat-label {
-        color: #3F5B6C !important;
-        -webkit-text-fill-color: #3F5B6C !important;
-        font-size: 0.7rem !important;
-        font-weight: 700 !important;
-        line-height: 1.25 !important;
-        margin: 0 !important;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-    }
-
-    .sp-landing-stats-note {
-        color: #7A8B98 !important;
-        -webkit-text-fill-color: #7A8B98 !important;
-        font-size: 0.7rem !important;
-        font-weight: 500 !important;
-        line-height: 1.35 !important;
-        text-align: center;
-        margin: 0.05rem auto 0 !important;
-        max-width: 34rem;
-        opacity: 0.95;
     }
 
     .sp-landing-feature {
-        background: #FFFFFF;
-        border: 1px solid #D5DEE6;
+        background: rgba(6, 28, 46, 0.42);
+        border: 1px solid rgba(148, 185, 208, 0.28);
         border-radius: 16px;
-        box-shadow: 0 6px 16px rgba(8, 60, 93, 0.06);
-        padding: 1.5rem 1.35rem 1.55rem;
+        box-shadow: 0 8px 24px rgba(0, 12, 28, 0.18);
+        padding: 1.65rem 1.4rem 1.7rem;
+        min-height: 100%;
+        box-sizing: border-box;
+        backdrop-filter: blur(8px);
+    }
+
+    .sp-landing-feature-icon {
+        width: 2.35rem;
+        height: 2.35rem;
+        border-radius: 11px;
+        display: inline-grid;
+        place-items: center;
+        margin: 0 0 0.95rem 0;
+        color: #5EEAD4;
+        background: linear-gradient(135deg, rgba(56,189,248,0.18) 0%, rgba(45,212,191,0.16) 100%);
+        border: 1px solid rgba(94, 234, 212, 0.28);
+    }
+
+    .sp-landing-feature-icon svg {
+        width: 1.2rem;
+        height: 1.2rem;
+        display: block;
     }
 
     .sp-landing-feature h3 {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.06rem !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 1.12rem !important;
         font-weight: 750 !important;
         line-height: 1.3 !important;
-        margin: 0 0 0.5rem 0 !important;
-        min-height: 0 !important;
+        margin: 0 0 0.55rem 0 !important;
     }
 
     .sp-landing-feature p {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
-        font-size: 0.92rem !important;
-        font-weight: 500 !important;
-        line-height: 1.5 !important;
-        margin: 0 !important;
-    }
-
-    .sp-landing-purpose {
-        text-align: center;
-        max-width: 680px;
-        margin: 0 auto;
-        padding: 0.85rem 0.75rem 0.35rem;
-    }
-
-    .sp-landing-purpose h2 {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.18rem !important;
-        font-weight: 750 !important;
-        line-height: 1.35 !important;
-        margin: 0 0 0.5rem 0 !important;
-        margin-top: 0 !important;
-    }
-
-    .sp-landing-purpose p {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
+        color: #AFCADF !important;
+        -webkit-text-fill-color: #AFCADF !important;
         font-size: 0.95rem !important;
         font-weight: 500 !important;
         line-height: 1.55 !important;
         margin: 0 !important;
     }
 
+    .sp-landing-auth-anchor {
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        scroll-margin-top: 1.5rem;
+    }
+
+    .sp-landing-welcome-title {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 1.55rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        margin: 0 0 1.15rem 0 !important;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .sp-landing-welcome-copy {
+        color: #B7D4E6 !important;
+        -webkit-text-fill-color: #B7D4E6 !important;
+        font-size: 0.98rem !important;
+        font-weight: 500 !important;
+        line-height: 1.55 !important;
+        margin: 0 0 2.75rem 0 !important;
+        max-width: none;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .sp-landing-footer-wrap {
+        background: linear-gradient(180deg, #0A3550 0%, #082B42 100%);
+        width: 100%;
+        padding: 0.75rem 0 1.1rem;
+    }
+
     .sp-landing-footer {
         display: flex;
         justify-content: flex-end;
         width: 100%;
-        padding: 0.15rem 0 0.1rem 0;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0.35rem 1.75rem 0.5rem;
     }
 
     .sp-landing-contact {
-        background: #FFFFFF;
-        border: 1px solid #D5DEE6;
+        background: rgba(6, 28, 46, 0.45);
+        border: 1px solid rgba(148, 185, 208, 0.26);
         border-radius: 14px;
-        box-shadow: 0 4px 12px rgba(8, 60, 93, 0.05);
-        padding: 0.95rem 1.15rem 1rem;
+        box-shadow: 0 6px 18px rgba(0, 12, 28, 0.16);
+        padding: 1rem 1.2rem 1.05rem;
         max-width: 390px;
         width: 100%;
     }
 
     .sp-landing-contact-title {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
         font-size: 0.92rem !important;
         font-weight: 700 !important;
         line-height: 1.35 !important;
@@ -5103,8 +5253,8 @@ st.markdown(
     }
 
     .sp-landing-contact p {
-        color: #5A6A78 !important;
-        -webkit-text-fill-color: #5A6A78 !important;
+        color: #A8C4D6 !important;
+        -webkit-text-fill-color: #A8C4D6 !important;
         font-size: 0.84rem !important;
         font-weight: 500 !important;
         line-height: 1.45 !important;
@@ -5113,8 +5263,8 @@ st.markdown(
 
     .sp-landing-contact a,
     .sp-landing-contact a:visited {
-        color: #018FC7 !important;
-        -webkit-text-fill-color: #018FC7 !important;
+        color: #5EC8F2 !important;
+        -webkit-text-fill-color: #5EC8F2 !important;
         font-size: 0.88rem !important;
         font-weight: 650 !important;
         text-decoration: none !important;
@@ -5122,55 +5272,193 @@ st.markdown(
     }
 
     .sp-landing-contact a:hover {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
+        color: #A5E4F8 !important;
+        -webkit-text-fill-color: #A5E4F8 !important;
         text-decoration: underline !important;
     }
 
+    [data-testid="stMain"]:has(.sp-landing-hero) {
+        background: #0A3550 !important;
+    }
+
+    /* Landing only: collapse Streamlit top chrome so navy hero starts at page top */
+    html body .stApp:has(.sp-landing-hero),
+    html body .stApp:has(.sp-landing-hero) [data-testid="stAppViewContainer"],
+    html body .stApp:has(.sp-landing-hero) [data-testid="stAppViewBlockContainer"],
+    html body .stApp:has(.sp-landing-hero) [data-testid="stMain"],
+    html body .stApp:has(.sp-landing-hero) section[data-testid="stMain"] {
+        background: #041E33 !important;
+    }
+
+    html body .stApp:has(.sp-landing-hero) [data-testid="stHeader"],
+    html body .stApp:has(.sp-landing-hero) header[data-testid="stHeader"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    html body .stApp:has(.sp-landing-hero) [data-testid="stToolbar"],
+    html body .stApp:has(.sp-landing-hero) [data-testid="stDecoration"],
+    html body .stApp:has(.sp-landing-hero) [data-testid="stStatusWidget"],
+    html body .stApp:has(.sp-landing-hero) [data-testid="stHeaderDecoration"],
+    html body .stApp:has(.sp-landing-hero) .stAppToolbar,
+    html body .stApp:has(.sp-landing-hero) [class*="stToolbar"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    html body .stApp:has(.sp-landing-hero) [data-testid="stAppViewContainer"] > section,
+    html body .stApp:has(.sp-landing-hero) [data-testid="stAppViewContainer"],
+    html body .stApp:has(.sp-landing-hero) [data-testid="stMain"],
+    html body .stApp:has(.sp-landing-hero) [data-testid="stMain"] > div,
+    html body .stApp:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        top: 0 !important;
+    }
+
+    html body .stApp:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] {
+        padding-top: 0 !important;
+    }
+
+    html body .stApp:has(.sp-landing-hero) [data-testid="stElementContainer"]:has(.sp-landing-hero),
+    html body .stApp:has(.sp-landing-hero) [data-testid="stElementContainer"]:has(.sp-landing-shell) {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    html body .stApp:has(.sp-landing-hero) .sp-landing-hero {
+        margin-top: 0 !important;
+        border-top: none !important;
+    }
+
     [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] {
-        padding-top: 1.45rem !important;
-        padding-bottom: 2.6rem !important;
+        padding-top: 0 !important;
+        padding-bottom: 2.4rem !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        max-width: 100% !important;
         min-height: calc(100vh - 1.5rem);
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] {
-        gap: 2.35rem !important;
+        gap: 0 !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stElementContainer"]:has(.sp-landing-shell),
+    [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stElementContainer"]:has(.sp-landing-footer-wrap) {
+        width: 100% !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stElementContainer"]:has([class*="st-key-landing_welcome"]) {
+        width: min(1180px, calc(100vw - 64px)) !important;
+        max-width: min(1180px, calc(100vw - 64px)) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"],
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(8, 60, 93, 0.12) !important;
-        border-radius: 22px !important;
-        box-shadow: 0 18px 48px rgba(8, 60, 93, 0.12) !important;
-        padding: 2.25rem 2.45rem 2.1rem !important;
-        max-width: 720px;
-        margin: 0 auto !important;
+        background: linear-gradient(165deg, #0A3C5C 0%, #083250 100%) !important;
+        border: 1px solid rgba(148, 185, 208, 0.28) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 14px 36px rgba(0, 10, 24, 0.28) !important;
+        padding: 3rem 3.25rem 2.85rem !important;
+        max-width: min(1180px, calc(100vw - 64px)) !important;
+        margin: 5.5rem auto 2.35rem auto !important;
         position: relative;
         z-index: 2;
+        width: min(1180px, calc(100vw - 64px)) !important;
+        box-sizing: border-box !important;
+        min-height: 36rem;
+    }
+
+    /* Outer welcome stack only — do NOT force gap:0 into nested auth form blocks */
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"][data-testid="stVerticalBlock"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] > [data-testid="stVerticalBlockBorderWrapper"] > [data-testid="stVerticalBlock"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] > [data-testid="stVerticalBlock"] {
+        background: transparent !important;
+        gap: 0 !important;
+        row-gap: 0 !important;
+        max-width: none !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        align-items: stretch !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlock"] {
         background: transparent !important;
-        gap: 0.2rem !important;
+        max-width: none !important;
+        width: 100% !important;
+        align-items: stretch !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stElementContainer"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stButton"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stRadio"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stMarkdown"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stMarkdownContainer"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [class*="st-key-google_continue"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [class*="st-key-landing_auth_mode"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] label p,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stWidgetLabel"] p {
+        color: #B7D4E6 !important;
+        -webkit-text-fill-color: #B7D4E6 !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stWidgetLabel"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stWidgetLabel"] {
+        margin-top: 0 !important;
+        margin-bottom: 0.5rem !important;
+        padding-bottom: 0 !important;
+        line-height: 1.3 !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] {
-        margin-top: 0.2rem !important;
-        max-width: 100%;
+        margin-top: 0.45rem !important;
+        margin-bottom: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button {
-        min-height: 3.2rem !important;
-        padding: 0.8rem 1.5rem !important;
+        min-height: 3.35rem !important;
+        height: 3.35rem !important;
+        padding: 0.85rem 1.5rem !important;
         font-size: 1.05rem !important;
         font-weight: 700 !important;
         border-radius: 12px !important;
         width: 100% !important;
         background: #FFFFFF !important;
         color: #083C5D !important;
-        border: 1.5px solid #B8CAD7 !important;
-        box-shadow: 0 5px 14px rgba(8, 60, 93, 0.08) !important;
+        border: 1px solid rgba(255,255,255,0.92) !important;
+        box-shadow: 0 6px 18px rgba(0, 12, 28, 0.18) !important;
         transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease !important;
     }
 
@@ -5195,19 +5483,21 @@ st.markdown(
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:hover {
         transform: translateY(-1px) !important;
-        border-color: #018FC7 !important;
-        box-shadow: 0 8px 20px rgba(8, 60, 93, 0.13) !important;
+        border-color: #5EC8F2 !important;
+        box-shadow: 0 10px 22px rgba(0, 12, 28, 0.24) !important;
     }
 
     .sp-auth-divider {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        margin: 0.95rem 0 0.7rem 0;
-        color: #5A7386;
+        margin: 2.55rem 0 2.4rem 0;
+        color: #8FB4C8;
         font-size: 0.82rem;
         font-weight: 650;
         letter-spacing: 0.01em;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .sp-auth-divider::before,
@@ -5215,27 +5505,39 @@ st.markdown(
         content: "";
         flex: 1;
         height: 1px;
-        background: #C9D6E2;
+        background: rgba(148, 185, 208, 0.28);
     }
 
     .sp-auth-divider span {
         white-space: nowrap;
-        color: #5A7386 !important;
-        -webkit-text-fill-color: #5A7386 !important;
+        color: #8FB4C8 !important;
+        -webkit-text-fill-color: #8FB4C8 !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] {
-        margin: 0.1rem 0 0.7rem 0 !important;
+        margin: 0 0 2.35rem 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadio"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] > div {
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 0.3rem !important;
-        padding: 0.3rem !important;
-        background: #EAF4F9 !important;
-        border: 1px solid #C9DFEA !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 0.35rem !important;
+        padding: 0.35rem !important;
+        background: rgba(4, 24, 40, 0.45) !important;
+        border: 1px solid rgba(148, 185, 208, 0.24) !important;
         border-radius: 13px !important;
+        box-sizing: border-box !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label {
@@ -5243,103 +5545,296 @@ st.markdown(
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        min-height: 2.65rem !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 3.1rem !important;
+        min-height: 3.1rem !important;
+        max-height: 3.1rem !important;
         margin: 0 !important;
-        padding: 0.55rem 0.8rem !important;
+        padding: 0 !important;
         border-radius: 9px !important;
-        color: #496777 !important;
+        color: #A8C4D6 !important;
         font-weight: 750 !important;
         cursor: pointer !important;
         transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) {
-        color: #083C5D !important;
-        background: #FFFFFF !important;
-        box-shadow: 0 3px 10px rgba(8, 60, 93, 0.12) !important;
+        color: #041E33 !important;
+        background: linear-gradient(135deg, #5EC8F2 0%, #2DD4BF 100%) !important;
+        box-shadow: 0 4px 12px rgba(45, 212, 191, 0.22) !important;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) p,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) span {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] input[type="radio"] {
         position: absolute !important;
         opacity: 0 !important;
         pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div {
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div > div {
         width: 100% !important;
-    }
-
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
         justify-content: center !important;
-        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div > div:first-child {
         display: none !important;
     }
 
-    /* Landing email auth form — soft card nest (overrides global 3px navy form border) */
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"],
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"]:hover,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label p,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label span {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 0.75rem !important;
+        text-align: center !important;
+        display: block !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Landing email auth form — nested dark panel fields */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"]:hover,
     html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"],
     html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"]:hover {
-        background: #FFFFFF !important;
-        border: 1px solid #D5E3EC !important;
+        background: rgba(4, 24, 40, 0.35) !important;
+        border: 1px solid rgba(148, 185, 208, 0.22) !important;
         border-radius: 14px !important;
-        box-shadow: 0 4px 14px rgba(8, 60, 93, 0.06) !important;
-        padding: 1.15rem 1.15rem 1rem !important;
-        margin-top: 0.15rem !important;
+        box-shadow: none !important;
+        padding: 2rem 1.85rem 1.85rem !important;
+        margin-top: 0 !important;
+        margin-bottom: 0.15rem !important;
         outline: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-testid="stTextInput"] [data-baseweb="input"],
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"],
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"] > div {
-        background: #FFFFFF !important;
-        border: 1px solid #D5E3EC !important;
-        border-radius: 10px !important;
+    /* Auth form container spacing — target Streamlit stForm (div or form) VerticalBlock children */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] > [data-testid="stVerticalBlockBorderWrapper"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stVerticalBlockBorderWrapper"] > [data-testid="stVerticalBlock"] {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        gap: 1.75rem !important;
+        row-gap: 1.75rem !important;
+        column-gap: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stElementContainer"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stTextInput"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stFormSubmitButton"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaption"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaptionContainer"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        position: static !important;
+        top: auto !important;
+        bottom: auto !important;
+    }
+
+    /* Direct form children: neutralize collapsing / negative offsets; let gap own vertical rhythm */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stVerticalBlock"] > [data-testid="stElementContainer"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stVerticalBlock"] > div {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        position: static !important;
+        transform: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stTextInput"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stWidgetLabel"] {
+        margin: 0 0 0.5rem 0 !important;
+        padding: 0 !important;
+        line-height: 1.3 !important;
+    }
+
+    /* Helper caption: high-contrast light text + same vertical rhythm as field gaps */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stCaption"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stCaptionContainer"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaption"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaptionContainer"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        color: #F4FBFF !important;
+        -webkit-text-fill-color: #F4FBFF !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stCaption"] p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stCaptionContainer"] p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stCaption"] *,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stCaptionContainer"] *,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaption"] p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaptionContainer"] p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaption"] *,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaptionContainer"] * {
+        color: #F4FBFF !important;
+        -webkit-text-fill-color: #F4FBFF !important;
+        opacity: 1 !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stTextInput"] [data-baseweb="input"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-baseweb="input"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-baseweb="input"] > div {
+        background: rgba(255,255,255,0.06) !important;
+        border: 1px solid rgba(148, 185, 208, 0.32) !important;
+        border-radius: 12px !important;
         box-shadow: none !important;
-        min-height: 2.9rem !important;
+        min-height: 3.35rem !important;
+        height: 3.35rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
         transition: border-color 140ms ease, box-shadow 140ms ease !important;
+        box-sizing: border-box !important;
     }
 
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"]:hover,
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"]:hover > div {
-        border-color: #C2D5E2 !important;
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-baseweb="input"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-baseweb="input"]:hover > div {
+        border-color: rgba(94, 200, 242, 0.55) !important;
         box-shadow: none !important;
     }
 
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"]:focus-within,
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-baseweb="input"]:focus-within > div,
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] input:focus {
-        border-color: #018FC7 !important;
-        box-shadow: 0 0 0 2px rgba(1, 143, 199, 0.14) !important;
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-baseweb="input"]:focus-within,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-baseweb="input"]:focus-within > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] input:focus {
+        border-color: #2DD4BF !important;
+        box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.22) !important;
         outline: none !important;
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        caret-color: #111827 !important;
     }
 
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] input {
-        min-height: 2.9rem !important;
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] input,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] input {
+        min-height: 3.35rem !important;
+        height: 3.35rem !important;
+        width: 100% !important;
         background: transparent !important;
         border: none !important;
-        border-radius: 10px !important;
+        border-radius: 12px !important;
         box-shadow: none !important;
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        caret-color: #111827 !important;
+        box-sizing: border-box !important;
     }
 
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-testid="stFormSubmitButton"] button {
-        min-height: 2.85rem !important;
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] input:focus,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] input:active,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] input:focus,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] input:active {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        caret-color: #111827 !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] input::placeholder,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] input::placeholder {
+        color: #8FB4C8 !important;
+        -webkit-text-fill-color: #8FB4C8 !important;
+        opacity: 1 !important;
+    }
+
+    /* Keep autofilled typed values dark/readable without changing intentional empty-field look */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] input:-webkit-autofill,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] input:-webkit-autofill:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] input:-webkit-autofill:focus,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] input:-webkit-autofill:active,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] input:-webkit-autofill,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] input:-webkit-autofill:focus {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        caret-color: #111827 !important;
+        transition: background-color 99999s ease-out 0s !important;
+    }
+
+    /* Password show/hide control stays visible on dark translucent fields */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-baseweb="input"] button,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-baseweb="input"] svg,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-baseweb="input"] [data-testid="stIconMaterial"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-baseweb="input"] button,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-baseweb="input"] svg {
+        color: #E5EEF5 !important;
+        fill: #E5EEF5 !important;
+        opacity: 1 !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stElementContainer"]:has([data-testid="stFormSubmitButton"]),
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stFormSubmitButton"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stFormSubmitButton"] button {
+        min-height: 3.35rem !important;
+        height: 3.35rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
         border-radius: 12px !important;
         font-weight: 700 !important;
-        color: #FFFFFF !important;
-        background: linear-gradient(135deg, #018FC7 0%, #0078A8 100%) !important;
-        border: 1px solid #0078A8 !important;
-        box-shadow: 0 6px 14px rgba(1, 143, 199, 0.18) !important;
+        color: #041E33 !important;
+        background: linear-gradient(135deg, #5EC8F2 0%, #2DD4BF 100%) !important;
+        border: 1px solid rgba(255,255,255,0.18) !important;
+        box-shadow: 0 8px 18px rgba(45, 212, 191, 0.22) !important;
+        margin: 0 !important;
+        padding: 0 1.25rem !important;
+        box-sizing: border-box !important;
     }
 
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"] [data-testid="stFormSubmitButton"] button p {
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"] [data-testid="stFormSubmitButton"] button p {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
     }
 
     html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"]:has(form),
@@ -5355,16 +5850,37 @@ st.markdown(
         align-items: center;
         justify-content: center;
         gap: 0.4rem;
-        margin-top: 0.85rem;
-        color: #617887 !important;
+        margin-top: 1.75rem;
+        margin-bottom: 0.2rem;
+        color: #8FB4C8 !important;
         font-size: 0.78rem;
         font-weight: 560;
         text-align: center;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .sp-auth-trust::before {
         content: "🔒";
         font-size: 0.8rem;
+    }
+
+    [data-testid="stMain"]:has(.sp-landing-hero) .sp-auth-trust {
+        color: #8FB4C8 !important;
+        -webkit-text-fill-color: #8FB4C8 !important;
+    }
+
+    /* Final: signup helper caption must stay high-contrast on navy */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaption"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaptionContainer"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaption"] p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaptionContainer"] p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaption"] *,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stForm"] [data-testid="stCaptionContainer"] *,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stForm"] [data-testid="stCaptionContainer"] p {
+        color: #F4FBFF !important;
+        -webkit-text-fill-color: #F4FBFF !important;
+        opacity: 1 !important;
     }
 
     .sp-signup-confirm {
@@ -5375,11 +5891,11 @@ st.markdown(
         max-width: 100%;
         margin: 0.75rem auto 0;
         padding: 0.85rem 1rem 0.9rem 0.95rem;
-        background: #ffffff;
-        border: 1px solid #e2e8ee;
-        border-left: 3px solid #2f9e6f;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(148, 185, 208, 0.28);
+        border-left: 3px solid #2DD4BF;
         border-radius: 13px;
-        box-shadow: 0 1px 3px rgba(15, 45, 70, 0.06);
+        box-shadow: 0 4px 14px rgba(0, 12, 28, 0.16);
         box-sizing: border-box;
         text-align: left;
     }
@@ -5405,7 +5921,7 @@ st.markdown(
 
     .sp-signup-confirm-title {
         margin: 0 0 0.28rem;
-        color: #083C5D;
+        color: #FFFFFF;
         font-size: 1.02rem;
         font-weight: 800;
         line-height: 1.25;
@@ -5413,7 +5929,7 @@ st.markdown(
 
     .sp-signup-confirm-text {
         margin: 0;
-        color: #243b4a;
+        color: #D5E8F4;
         font-size: 0.9rem;
         font-weight: 500;
         line-height: 1.45;
@@ -5421,7 +5937,7 @@ st.markdown(
 
     .sp-signup-confirm-secondary {
         margin: 0.45rem 0 0;
-        color: #6b7f8d;
+        color: #8FB4C8;
         font-size: 0.8rem;
         font-weight: 500;
         line-height: 1.4;
@@ -5655,8 +6171,29 @@ st.markdown(
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         }
 
-        .sp-landing-stats {
+        .sp-landing-features {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stElementContainer"]:has([class*="st-key-landing_welcome"]),
+        [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"],
+        [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] {
+            max-width: min(1180px, calc(100vw - 48px)) !important;
+            width: min(1180px, calc(100vw - 48px)) !important;
+            padding: 2.45rem 2.25rem 2.35rem !important;
+            min-height: 0;
+        }
+
+        .sp-landing-evidence {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .sp-landing-evidence-item {
+            border-right: none;
+        }
+
+        .sp-landing-evidence-item:nth-child(odd) {
+            border-right: 1px solid rgba(255,255,255,0.12);
         }
     }
 
@@ -5737,46 +6274,78 @@ st.markdown(
             font-size: 1.55rem !important;
         }
 
-        .sp-landing-hero {
-            padding: 2.1rem 1.4rem 2.2rem;
-            border-radius: 16px;
+        .sp-landing-hero-inner,
+        .sp-landing-body-inner,
+        .sp-landing-footer {
+            padding-left: 1.15rem;
+            padding-right: 1.15rem;
         }
 
+        .sp-landing-hero-inner {
+            padding-top: 1.1rem;
+            padding-bottom: 2.15rem;
+        }
+
+        .sp-landing-nav {
+            margin-bottom: 1.85rem;
+        }
+
+        .sp-landing-title,
         .sp-landing-hero h1 {
-            font-size: 1.75rem !important;
+            font-size: 1.85rem !important;
+            max-width: none;
         }
 
-        .sp-landing-headline {
+        .sp-landing-gradient-line {
             font-size: 1.12rem !important;
         }
 
         .sp-landing-desc {
-            font-size: 0.94rem !important;
+            font-size: 0.96rem !important;
+        }
+
+        .sp-landing-cta-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .sp-landing-btn-primary,
+        .sp-landing-btn-secondary {
+            width: 100%;
+            text-align: center;
+        }
+
+        .sp-landing-evidence {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.15rem 0;
+            padding: 0.85rem 0.4rem;
+        }
+
+        .sp-landing-evidence-item {
+            border-right: none;
+            padding: 0.65rem 0.45rem;
+        }
+
+        .sp-landing-evidence-item:nth-child(odd) {
+            border-right: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .sp-landing-evidence-value {
+            font-size: 1.35rem !important;
+        }
+
+        .sp-landing-body-inner {
+            padding-top: 2.15rem;
+            padding-bottom: 0.75rem;
         }
 
         .sp-landing-features {
             grid-template-columns: 1fr;
+            gap: 0.95rem;
         }
 
-        .sp-landing-stats {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.6rem;
-        }
-
-        .sp-landing-stat {
-            padding: 0.78rem 0.7rem 0.72rem;
-        }
-
-        .sp-landing-stat-value {
-            font-size: 1.4rem !important;
-        }
-
-        .sp-landing-stat-value.is-text {
-            font-size: 1.28rem !important;
-        }
-
-        .sp-landing-lower {
-            gap: 1.85rem;
+        .sp-landing-feature {
+            padding: 1.4rem 1.2rem 1.45rem;
         }
 
         .sp-landing-footer {
@@ -5788,32 +6357,63 @@ st.markdown(
         }
 
         [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] {
-            padding-top: 1.1rem !important;
-            padding-bottom: 2rem !important;
+            padding-top: 0 !important;
+            padding-bottom: 1.75rem !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
             min-height: 0;
         }
 
         [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] {
-            gap: 1.65rem !important;
+            gap: 0 !important;
         }
 
+        [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stElementContainer"]:has([class*="st-key-landing_welcome"]),
         [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"],
         [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] {
-            padding: 1.7rem 1.3rem 1.55rem !important;
-            max-width: 100%;
+            padding: 1.85rem 1.15rem 1.75rem !important;
+            max-width: calc(100vw - 32px) !important;
+            width: calc(100vw - 32px) !important;
+            min-height: 0 !important;
+            margin: 3.85rem auto 1.5rem auto !important;
+            border-radius: 16px !important;
+            box-shadow: 0 12px 28px rgba(0, 10, 24, 0.26) !important;
+            background: linear-gradient(165deg, #0A3C5C 0%, #083250 100%) !important;
+            border: 1px solid rgba(148, 185, 208, 0.28) !important;
         }
 
-        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"],
-        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) form[data-testid="stForm"]:hover {
-            padding: 1rem 0.95rem 0.9rem !important;
+        [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlock"] {
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"],
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stForm"]:hover {
+            padding: 1.45rem 1.15rem 1.35rem !important;
             border-radius: 12px !important;
-            border: 1px solid #D5E3EC !important;
-            box-shadow: 0 3px 12px rgba(8, 60, 93, 0.05) !important;
+            border: 1px solid rgba(148, 185, 208, 0.22) !important;
+            box-shadow: none !important;
         }
 
         html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
-            gap: 0.25rem !important;
-            padding: 0.25rem !important;
+            width: 100% !important;
+            gap: 0.3rem !important;
+            padding: 0.3rem !important;
+        }
+
+        .sp-auth-divider {
+            margin: 2rem 0 1.75rem 0;
+            width: 100%;
+        }
+
+        [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] {
+            margin: 0 0 1.75rem 0 !important;
+            width: 100% !important;
+        }
+
+        .sp-auth-trust {
+            margin-top: 1.45rem;
+            width: 100%;
         }
 
         .sp-landing-welcome-title {
@@ -5882,24 +6482,25 @@ st.markdown(
     }
 
     @media (max-width: 480px) {
-        .sp-landing-stats {
-            grid-template-columns: 1fr;
-            gap: 0.55rem;
+        .sp-landing-brand-name {
+            font-size: clamp(0.78rem, 3.6vw, 0.92rem) !important;
+            letter-spacing: 0.03em;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            max-width: 100%;
         }
 
-        .sp-landing-stat {
-            padding: 0.8rem 0.85rem 0.75rem;
-            min-height: 0;
+        .sp-landing-nav-actions {
+            width: 100%;
+            justify-content: flex-start;
         }
 
-        .sp-landing-stat-icon {
-            width: 2.2rem;
-            height: 2.2rem;
+        .sp-landing-evidence-note {
+            font-size: 0.7rem !important;
         }
 
-        .sp-landing-stats-note {
-            font-size: 0.68rem !important;
-            max-width: 22rem;
+        .sp-landing-welcome-title {
+            font-size: 1.32rem !important;
         }
     }
 
@@ -6057,33 +6658,56 @@ st.markdown(
     html body [data-testid="stMain"] .sp-hero h1 *,
     html body [data-testid="stMain"] .sp-landing-hero h1,
     html body [data-testid="stMain"] .sp-landing-hero h1 *,
-    html body [data-testid="stMain"] .sp-landing-kicker,
-    html body [data-testid="stMain"] .sp-landing-kicker * {
+    html body [data-testid="stMain"] .sp-landing-title,
+    html body [data-testid="stMain"] .sp-landing-title *,
+    html body [data-testid="stMain"] .sp-landing-brand-name,
+    html body [data-testid="stMain"] .sp-landing-brand-name * {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
     }
 
     html body [data-testid="stMain"] .sp-landing-kicker,
     html body [data-testid="stMain"] .sp-landing-kicker * {
-        color: #BDEBFA !important;
-        -webkit-text-fill-color: #BDEBFA !important;
+        color: #9AD8F0 !important;
+        -webkit-text-fill-color: #9AD8F0 !important;
     }
 
     html body [data-testid="stMain"] .sp-hero p,
     html body [data-testid="stMain"] .sp-hero p *,
-    html body [data-testid="stMain"] .sp-landing-headline,
-    html body [data-testid="stMain"] .sp-landing-headline *,
     html body [data-testid="stMain"] .sp-landing-desc,
     html body [data-testid="stMain"] .sp-landing-desc * {
-        color: #EAF6FC !important;
-        -webkit-text-fill-color: #EAF6FC !important;
+        color: #D5E8F4 !important;
+        -webkit-text-fill-color: #D5E8F4 !important;
         font-weight: 500 !important;
     }
 
-    html body [data-testid="stMain"] .sp-landing-headline,
-    html body [data-testid="stMain"] .sp-landing-headline * {
+    html body [data-testid="stMain"] .sp-landing-gradient-line {
+        color: #E8F4FB !important;
+        -webkit-text-fill-color: #E8F4FB !important;
+        font-weight: 650 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-gradient-text {
+        background: linear-gradient(90deg, #5EC8F2 0%, #2DD4BF 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent !important;
+        -webkit-text-fill-color: transparent !important;
+        font-weight: 750 !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-evidence-value,
+    html body [data-testid="stMain"] .sp-landing-evidence-value * {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    html body [data-testid="stMain"] .sp-landing-evidence-label,
+    html body [data-testid="stMain"] .sp-landing-evidence-label *,
+    html body [data-testid="stMain"] .sp-landing-evidence-note,
+    html body [data-testid="stMain"] .sp-landing-evidence-note * {
+        color: #A9CBDC !important;
+        -webkit-text-fill-color: #A9CBDC !important;
         font-weight: 650 !important;
     }
 
@@ -6091,53 +6715,31 @@ st.markdown(
     html body [data-testid="stMain"] .sp-landing-welcome-title *,
     html body [data-testid="stMain"] .sp-landing-feature h3,
     html body [data-testid="stMain"] .sp-landing-feature h3 *,
-    html body [data-testid="stMain"] .sp-landing-purpose h2,
-    html body [data-testid="stMain"] .sp-landing-purpose h2 *,
-    html body [data-testid="stMain"] .sp-landing-stat-value,
-    html body [data-testid="stMain"] .sp-landing-stat-value * {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-    }
-
-    html body [data-testid="stMain"] .sp-landing-stat-label,
-    html body [data-testid="stMain"] .sp-landing-stat-label * {
-        color: #3F5B6C !important;
-        -webkit-text-fill-color: #3F5B6C !important;
-    }
-
-    html body [data-testid="stMain"] .sp-landing-stats-note,
-    html body [data-testid="stMain"] .sp-landing-stats-note * {
-        color: #7A8B98 !important;
-        -webkit-text-fill-color: #7A8B98 !important;
-        font-weight: 500 !important;
+    html body [data-testid="stMain"] .sp-landing-section-intro h2,
+    html body [data-testid="stMain"] .sp-landing-section-intro h2 *,
+    html body [data-testid="stMain"] .sp-landing-contact-title,
+    html body [data-testid="stMain"] .sp-landing-contact-title * {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
     }
 
     html body [data-testid="stMain"] .sp-landing-welcome-copy,
     html body [data-testid="stMain"] .sp-landing-welcome-copy *,
     html body [data-testid="stMain"] .sp-landing-feature p,
     html body [data-testid="stMain"] .sp-landing-feature p *,
-    html body [data-testid="stMain"] .sp-landing-purpose p,
-    html body [data-testid="stMain"] .sp-landing-purpose p *,
+    html body [data-testid="stMain"] .sp-landing-section-intro p,
+    html body [data-testid="stMain"] .sp-landing-section-intro p *,
     html body [data-testid="stMain"] .sp-landing-contact p,
-    html body [data-testid="stMain"] .sp-landing-contact p *,
-    html body [data-testid="stMain"] .sp-landing-impact-copy,
-    html body [data-testid="stMain"] .sp-landing-impact-copy * {
-        color: #4A5D6B !important;
-        -webkit-text-fill-color: #4A5D6B !important;
+    html body [data-testid="stMain"] .sp-landing-contact p * {
+        color: #B7D4E6 !important;
+        -webkit-text-fill-color: #B7D4E6 !important;
         font-weight: 500 !important;
-    }
-
-    html body [data-testid="stMain"] .sp-landing-contact-title,
-    html body [data-testid="stMain"] .sp-landing-contact-title * {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-weight: 700 !important;
     }
 
     html body [data-testid="stMain"] .sp-landing-contact a,
     html body [data-testid="stMain"] .sp-landing-contact a:visited {
-        color: #018FC7 !important;
-        -webkit-text-fill-color: #018FC7 !important;
+        color: #5EC8F2 !important;
+        -webkit-text-fill-color: #5EC8F2 !important;
         font-weight: 650 !important;
         text-decoration: none !important;
     }
@@ -6311,15 +6913,13 @@ st.markdown(
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
-    html body [data-testid="stMain"] .sp-landing-purpose h2,
-    html body [data-testid="stMain"] .sp-landing-purpose h2 * {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.18rem !important;
-        font-weight: 750 !important;
+    html body [data-testid="stMain"] .sp-landing-section-intro h2,
+    html body [data-testid="stMain"] .sp-landing-section-intro h2 * {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 800 !important;
         margin-top: 0 !important;
-        margin-bottom: 0.5rem !important;
-        line-height: 1.35 !important;
+        line-height: 1.25 !important;
     }
 
     html body [data-testid="stMain"] .sp-profile-summary > h2,
@@ -24106,17 +24706,328 @@ app_user = get_app_user()
 
 if not app_user:
 
+    # --------------------------------------------------------
+    # Landing metrics (real data only; never invent counts)
+    # --------------------------------------------------------
+    landing_stats_df = pd.DataFrame()
+    landing_opp_count = 0
+    landing_field_count = 0
+    landing_borough_count = 0
+    landing_free_count = 0
+    landing_research_count = 0
+    landing_type_count = 0
+    landing_college_count = 0
+
+    try:
+        landing_college_count = len(load_stem_college_catalog() or [])
+    except Exception:
+        landing_college_count = 0
+
+    try:
+
+        if extra_opportunities:
+
+            landing_stats_df = pd.DataFrame(
+                extra_opportunities
+            )
+
+        elif (
+            isinstance(
+                opportunities,
+                pd.DataFrame
+            )
+            and
+            not opportunities.empty
+        ):
+
+            landing_stats_df = opportunities.copy()
+
+        if (
+            isinstance(
+                landing_stats_df,
+                pd.DataFrame
+            )
+            and
+            not landing_stats_df.empty
+        ):
+
+            landing_stats_df = landing_stats_df.copy()
+
+            if "name" in landing_stats_df.columns:
+
+                landing_names = (
+                    landing_stats_df[
+                        "name"
+                    ]
+                    .astype(
+                        str
+                    )
+                    .str.strip()
+                    .str.replace(
+                        r"\s+",
+                        " ",
+                        regex=True,
+                    )
+                )
+                landing_valid = ~landing_names.str.casefold().isin(
+                    {
+                        "",
+                        "nan",
+                        "none",
+                        "null",
+                    }
+                )
+                landing_stats_df = landing_stats_df.loc[
+                    landing_valid
+                ].copy()
+                landing_stats_df[
+                    "_landing_name_key"
+                ] = landing_names.loc[
+                    landing_valid
+                ].str.casefold()
+                landing_stats_df = landing_stats_df.drop_duplicates(
+                    subset=["_landing_name_key"]
+                )
+
+            landing_opp_count = int(
+                len(
+                    landing_stats_df
+                )
+            )
+
+            if not landing_stats_df.empty:
+
+                if "fields" in landing_stats_df.columns:
+                    field_series = (
+                        landing_stats_df[
+                            "fields"
+                        ]
+                    )
+                    field_values = set()
+                    for raw in field_series.tolist():
+                        if isinstance(raw, list):
+                            parts = raw
+                        else:
+                            parts = str(raw or "").split(",")
+                        for part in parts:
+                            cleaned = str(part or "").strip()
+                            if cleaned and cleaned.casefold() not in {
+                                "nan",
+                                "none",
+                                "null",
+                            }:
+                                field_values.add(cleaned.casefold())
+                    landing_field_count = len(field_values)
+
+                if "boroughs_served" in landing_stats_df.columns:
+                    borough_series = (
+                        landing_stats_df[
+                            "boroughs_served"
+                        ]
+                    )
+                    borough_values = set()
+                    for raw in borough_series.tolist():
+                        if isinstance(raw, list):
+                            parts = raw
+                        else:
+                            parts = str(raw or "").replace(";", ",").split(",")
+                        for part in parts:
+                            cleaned = str(part or "").strip()
+                            if cleaned and cleaned.casefold() not in {
+                                "nan",
+                                "none",
+                                "null",
+                                "all",
+                                "nyc",
+                            }:
+                                borough_values.add(cleaned.casefold())
+                    landing_borough_count = len(borough_values)
+
+                free_mask = pd.Series(
+                    False,
+                    index=landing_stats_df.index
+                )
+                if "cost" in landing_stats_df.columns:
+                    cost_series = (
+                        landing_stats_df[
+                            "cost"
+                        ]
+                        .astype(str)
+                        .str.casefold()
+                        .str.strip()
+                    )
+                    free_mask = free_mask | cost_series.str.contains(
+                        r"\bfree\b",
+                        regex=True,
+                        na=False,
+                    )
+                if "cost_category" in landing_stats_df.columns:
+                    cost_cat = (
+                        landing_stats_df[
+                            "cost_category"
+                        ]
+                        .astype(str)
+                        .str.casefold()
+                        .str.strip()
+                    )
+                    free_mask = free_mask | cost_cat.eq("free")
+                landing_free_count = int(free_mask.sum())
+
+                if "opportunity_type" in landing_stats_df.columns:
+                    landing_types = (
+                        landing_stats_df[
+                            "opportunity_type"
+                        ]
+                        .astype(str)
+                        .str.strip()
+                    )
+                    landing_research_count = int(
+                        landing_types.str.casefold().eq(
+                            "research"
+                        ).sum()
+                    )
+                    landing_type_count = int(
+                        landing_types[
+                            landing_types
+                            !=
+                            ""
+                        ].nunique()
+                    )
+
+    except Exception:
+
+        landing_opp_count = 0
+        landing_field_count = 0
+        landing_borough_count = 0
+        landing_free_count = 0
+        landing_research_count = 0
+        landing_type_count = 0
+
+    def landing_stat_count(value, step=10):
+
+        value = max(0, int(value or 0))
+
+        if value < step:
+
+            return str(value)
+
+        return f"{(value // step) * step}+"
+
+    landing_opp_value = landing_stat_count(
+        landing_opp_count,
+        step=10,
+    )
+    landing_field_value = landing_stat_count(
+        landing_field_count,
+        step=5,
+    )
+    landing_college_value = landing_stat_count(
+        landing_college_count,
+        step=5,
+    )
+    landing_free_value = landing_stat_count(
+        landing_free_count,
+        step=10,
+    )
+
+    landing_opp_value_safe = html_module.escape(landing_opp_value)
+    landing_field_value_safe = html_module.escape(landing_field_value)
+    landing_college_value_safe = html_module.escape(landing_college_value)
+    landing_free_value_safe = html_module.escape(landing_free_value)
+
+    # Honor top-nav deep links without changing auth behavior.
+    auth_query = str(st.query_params.get("auth", "") or "").strip().lower()
+    if auth_query in {"create", "signup", "register"}:
+        st.session_state["landing_auth_mode"] = "Create Account"
+    elif auth_query in {"signin", "login", "sign-in"}:
+        st.session_state["landing_auth_mode"] = "Sign In"
+
     st.markdown(
-        """
-        <div class="sp-landing-hero">
-            <div class="sp-landing-kicker">For NYC High School Students</div>
-            <h1>STEM Pathways NYC</h1>
-            <p class="sp-landing-headline">Find your path. Build your future.</p>
-            <p class="sp-landing-desc">
-                STEM Pathways NYC helps New York City high school students discover STEM careers,
-                colleges, research programs, internships, projects, and opportunities
-                — then turn those interests into a clear next step.
-            </p>
+        f"""
+        <div class="sp-landing-shell">
+          <section class="sp-landing-hero" aria-label="STEM Pathways NYC welcome">
+            <div class="sp-landing-hero-inner">
+              <nav class="sp-landing-nav" aria-label="Landing">
+                <div class="sp-landing-brand">
+                  <span class="sp-landing-brand-name">STEM PATHWAYS NYC</span>
+                </div>
+                <div class="sp-landing-nav-actions">
+                  <a class="sp-landing-nav-link" href="?auth=signin#sp-landing-auth">Sign In</a>
+                  <a class="sp-landing-nav-cta" href="?auth=create#sp-landing-auth">Create Account</a>
+                </div>
+              </nav>
+              <div class="sp-landing-hero-copy">
+                <p class="sp-landing-kicker">Built for NYC high school students</p>
+                <h1 class="sp-landing-title">
+                  Your pathway to what's next in STEM.
+                </h1>
+                <p class="sp-landing-gradient-line">
+                  Discover
+                  <span class="sp-landing-gradient-text">research, colleges, and careers.</span>
+                </p>
+                <p class="sp-landing-desc">
+                  STEM Pathways NYC helps New York City high school students find
+                  real opportunities, compare colleges, and build a personalized
+                  STEM pathway—from first interests to concrete next steps.
+                </p>
+                <div class="sp-landing-cta-row">
+                  <a class="sp-landing-btn-primary" href="#sp-landing-features">Explore Opportunities</a>
+                  <a class="sp-landing-btn-secondary" href="?auth=signin#sp-landing-auth">Sign In / Create Account</a>
+                </div>
+              </div>
+              <div class="sp-landing-evidence" role="group" aria-label="Current database snapshot">
+                <div class="sp-landing-evidence-item">
+                  <div class="sp-landing-evidence-value">{landing_opp_value_safe}</div>
+                  <div class="sp-landing-evidence-label">Opportunities</div>
+                </div>
+                <div class="sp-landing-evidence-item">
+                  <div class="sp-landing-evidence-value">{landing_college_value_safe}</div>
+                  <div class="sp-landing-evidence-label">Colleges</div>
+                </div>
+                <div class="sp-landing-evidence-item">
+                  <div class="sp-landing-evidence-value">{landing_field_value_safe}</div>
+                  <div class="sp-landing-evidence-label">STEM fields &amp; topics</div>
+                </div>
+                <div class="sp-landing-evidence-item">
+                  <div class="sp-landing-evidence-value">{landing_free_value_safe}</div>
+                  <div class="sp-landing-evidence-label">Free access</div>
+                </div>
+              </div>
+              <p class="sp-landing-evidence-note">Counts come from the live opportunity and college data in this app and update as listings change.</p>
+            </div>
+          </section>
+
+          <section class="sp-landing-body" id="sp-landing-features">
+            <div class="sp-landing-body-inner">
+              <div class="sp-landing-section-intro">
+                <h2>Everything you need to explore STEM with confidence</h2>
+                <p>Start with opportunities, colleges, and a path that fits how you learn—then sign in when you are ready to save your progress.</p>
+              </div>
+              <div class="sp-landing-features">
+                <article class="sp-landing-feature">
+                  <div class="sp-landing-feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                  </div>
+                  <h3>Discover Opportunities</h3>
+                  <p>Browse research programs, internships, scholarships, and STEM experiences available to students across New York City.</p>
+                </article>
+                <article class="sp-landing-feature">
+                  <div class="sp-landing-feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/><path d="M9 10h.01M15 10h.01"/></svg>
+                  </div>
+                  <h3>Compare Colleges</h3>
+                  <p>Explore colleges with clear admissions context, costs where available, and matches tied to your interests and goals.</p>
+                </article>
+                <article class="sp-landing-feature">
+                  <div class="sp-landing-feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17c3-6 5-9 8-9s5 3 8 9"/><circle cx="12" cy="8" r="2.2"/><path d="M12 10v4"/></svg>
+                  </div>
+                  <h3>Build Your Path</h3>
+                  <p>Connect interests, projects, applications, and next steps into one student-friendly STEM pathway you can keep updating.</p>
+                </article>
+              </div>
+            </div>
+          </section>
         </div>
         """,
         unsafe_allow_html=True
@@ -24127,16 +25038,16 @@ if not app_user:
     ):
 
         st.markdown(
+            '<div id="sp-landing-auth" class="sp-landing-auth-anchor"></div>'
             '<div class="sp-landing-welcome-title">'
-            'Start building your STEM pathway</div>',
+            'Sign in to personalize your pathway</div>',
             unsafe_allow_html=True
         )
 
         st.markdown(
             '<div class="sp-landing-welcome-copy">'
-            'Sign in with Google or create an email account to personalize '
-            'your recommendations, save programs, track applications, and '
-            'build a college list in one place.'
+            'Use Google or email to save programs, track applications, '
+            'build a college list, and keep your STEM progress in one place.'
             '</div>',
             unsafe_allow_html=True
         )
@@ -24262,425 +25173,23 @@ if not app_user:
                 unsafe_allow_html=True,
             )
 
-    landing_stats_df = pd.DataFrame()
-    landing_opp_count = 0
-    landing_field_count = 0
-    landing_borough_count = 0
-    landing_free_count = 0
-    landing_research_count = 0
-    landing_type_count = 0
-
-    try:
-
-        if extra_opportunities:
-
-            landing_stats_df = pd.DataFrame(
-                extra_opportunities
-            )
-
-        elif (
-            isinstance(
-                opportunities,
-                pd.DataFrame
-            )
-            and
-            not opportunities.empty
-        ):
-
-            landing_stats_df = opportunities.copy()
-
-        if (
-            isinstance(
-                landing_stats_df,
-                pd.DataFrame
-            )
-            and
-            not landing_stats_df.empty
-        ):
-
-            landing_stats_df = landing_stats_df.copy()
-
-            if "name" in landing_stats_df.columns:
-
-                landing_names = (
-                    landing_stats_df[
-                        "name"
-                    ]
-                    .astype(
-                        str
-                    )
-                    .str.strip()
-                    .str.replace(
-                        r"\s+",
-                        " ",
-                        regex=True,
-                    )
-                )
-                landing_valid = ~landing_names.str.casefold().isin(
-                    {
-                        "",
-                        "nan",
-                        "none"
-                    }
-                )
-                landing_stats_df = landing_stats_df.loc[
-                    landing_valid
-                ].copy()
-                # Count each opportunity once by normalized name.
-                landing_stats_df[
-                    "_landing_name"
-                ] = landing_names[
-                    landing_valid
-                ].str.casefold()
-                landing_stats_df = landing_stats_df.drop_duplicates(
-                    "_landing_name",
-                    keep="first"
-                )
-
-            landing_opp_count = int(
-                len(
-                    landing_stats_df
-                )
-            )
-
-            if not landing_stats_df.empty:
-
-                landing_field_tags = set()
-                if "fields" in landing_stats_df.columns:
-                    for raw_fields in (
-                        landing_stats_df[
-                            "fields"
-                        ]
-                        .fillna(
-                            ""
-                        )
-                        .astype(
-                            str
-                        )
-                    ):
-                        for part in re.split(
-                            r"[;|,]",
-                            raw_fields,
-                        ):
-                            tag = " ".join(
-                                str(
-                                    part
-                                ).strip().split()
-                            )
-                            if tag.casefold() in {
-                                "",
-                                "nan",
-                                "none",
-                            }:
-                                continue
-                            landing_field_tags.add(
-                                tag.casefold()
-                            )
-                landing_field_count = int(
-                    len(
-                        landing_field_tags
-                    )
-                )
-
-                nyc_boroughs = (
-                    "bronx",
-                    "brooklyn",
-                    "manhattan",
-                    "queens",
-                    "staten island",
-                )
-                if "boroughs_served" in landing_stats_df.columns:
-                    landing_borough_text = (
-                        landing_stats_df[
-                            "boroughs_served"
-                        ]
-                        .fillna(
-                            ""
-                        )
-                        .astype(
-                            str
-                        )
-                        .str.casefold()
-                    )
-                    landing_borough_count = int(
-                        landing_borough_text.map(
-                            lambda text: all(
-                                borough in text
-                                for borough in nyc_boroughs
-                            )
-                        ).sum()
-                    )
-
-                if "cost" in landing_stats_df.columns:
-                    landing_cost = (
-                        landing_stats_df[
-                            "cost"
-                        ]
-                        .fillna(
-                            ""
-                        )
-                        .astype(
-                            str
-                        )
-                        .str.strip()
-                    )
-                else:
-                    landing_cost = pd.Series(
-                        [""]
-                        * len(
-                            landing_stats_df
-                        ),
-                        index=landing_stats_df.index
-                    )
-
-                if "cost_category" in landing_stats_df.columns:
-                    landing_cost_category = (
-                        landing_stats_df[
-                            "cost_category"
-                        ]
-                        .fillna(
-                            ""
-                        )
-                        .astype(
-                            str
-                        )
-                        .str.strip()
-                    )
-                else:
-                    landing_cost_category = pd.Series(
-                        [""]
-                        * len(
-                            landing_stats_df
-                        ),
-                        index=landing_stats_df.index
-                    )
-
-                landing_cost_norm = landing_cost.str.casefold()
-                landing_cost_cat_norm = landing_cost_category.str.casefold()
-                landing_fee_or_aid = landing_cost_cat_norm.isin(
-                    {
-                        "financial aid available",
-                        "fee required"
-                    }
-                )
-                landing_free_count = int(
-                    (
-                        (
-                            landing_cost_cat_norm.eq(
-                                "free"
-                            )
-                            |
-                            landing_cost_cat_norm.eq(
-                                "paid/stipend"
-                            )
-                            |
-                            (
-                                landing_cost_norm.eq(
-                                    "free"
-                                )
-                                &
-                                ~landing_fee_or_aid
-                            )
-                        )
-                        &
-                        ~landing_fee_or_aid
-                    ).sum()
-                )
-
-                if "opportunity_type" in landing_stats_df.columns:
-                    landing_types = (
-                        landing_stats_df[
-                            "opportunity_type"
-                        ]
-                        .fillna(
-                            ""
-                        )
-                        .astype(
-                            str
-                        )
-                        .str.strip()
-                    )
-                    landing_research_count = int(
-                        landing_types.str.casefold().eq(
-                            "research"
-                        ).sum()
-                    )
-                    landing_type_count = int(
-                        landing_types[
-                            landing_types
-                            !=
-                            ""
-                        ].nunique()
-                    )
-
-    except Exception:
-
-        landing_opp_count = 0
-        landing_field_count = 0
-        landing_borough_count = 0
-        landing_free_count = 0
-        landing_research_count = 0
-        landing_type_count = 0
-
-    def landing_stat_count(value, step=10):
-
-        value = max(0, int(value or 0))
-
-        if value < step:
-
-            return str(value)
-
-        return f"{(value // step) * step}+"
-
-    landing_opp_value = landing_stat_count(
-        landing_opp_count,
-        step=10,
-    )
-    landing_field_value = landing_stat_count(
-        landing_field_count,
-        step=5,
-    )
-    landing_borough_value = landing_stat_count(
-        landing_borough_count,
-        step=10,
-    )
-    landing_free_value = landing_stat_count(
-        landing_free_count,
-        step=10,
-    )
-    landing_research_value = landing_stat_count(
-        landing_research_count,
-        step=5,
-    )
-
-    landing_opp_value_safe = html_module.escape(
-        landing_opp_value
-    )
-    landing_field_value_safe = html_module.escape(
-        landing_field_value
-    )
-    landing_borough_value_safe = html_module.escape(
-        landing_borough_value
-    )
-    landing_free_value_safe = html_module.escape(
-        landing_free_value
-    )
-    landing_research_value_safe = html_module.escape(
-        landing_research_value
-    )
-    landing_type_value_safe = html_module.escape(
-        str(landing_type_count)
-    )
-
     st.markdown(
-        f"""
-        <div class="sp-landing-lower">
-            <div class="sp-landing-impact">
-                <p class="sp-landing-impact-copy">
-                    Explore research programs, internships, scholarships, competitions,
-                    and other STEM opportunities for NYC high school students.
-                </p>
-                <div class="sp-landing-stats-wrap">
-                    <div class="sp-landing-stats">
-                        <div class="sp-landing-stat">
-                            <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3.5" y="4.5" width="17" height="15" rx="2.2"></rect>
-                                    <path d="M7.5 9h9M7.5 13h6"></path>
-                                </svg>
-                            </div>
-                            <div class="sp-landing-stat-value">{landing_opp_value_safe}</div>
-                            <div class="sp-landing-stat-label">STEM Opportunities</div>
-                        </div>
-                        <div class="sp-landing-stat">
-                            <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M9.5 3.5h5v5.5l4.5 8.5h-14l4.5-8.5z"></path>
-                                    <path d="M9 20.5h6"></path>
-                                    <path d="M10.5 17.5h3"></path>
-                                </svg>
-                            </div>
-                            <div class="sp-landing-stat-value">{landing_field_value_safe}</div>
-                            <div class="sp-landing-stat-label">STEM Fields &amp; Topics</div>
-                        </div>
-                        <div class="sp-landing-stat">
-                            <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11z"></path>
-                                    <circle cx="12" cy="10" r="2.35"></circle>
-                                </svg>
-                            </div>
-                            <div class="sp-landing-stat-value">{landing_borough_value_safe}</div>
-                            <div class="sp-landing-stat-label">Serve All 5 Boroughs</div>
-                        </div>
-                        <div class="sp-landing-stat">
-                            <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="8.25"></circle>
-                                    <path d="M8.2 12.2l2.5 2.5 5.1-5.3"></path>
-                                </svg>
-                            </div>
-                            <div class="sp-landing-stat-value">{landing_free_value_safe}</div>
-                            <div class="sp-landing-stat-label">Free or Paid Programs</div>
-                        </div>
-                        <div class="sp-landing-stat">
-                            <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="8.2" cy="8.2" r="2.6"></circle>
-                                    <path d="M10.4 10.4l8 8"></path>
-                                    <path d="M16 16.3l2.5 2.5M13.7 19l2.4-2.4"></path>
-                                </svg>
-                            </div>
-                            <div class="sp-landing-stat-value">{landing_research_value_safe}</div>
-                            <div class="sp-landing-stat-label">Research Programs</div>
-                        </div>
-                        <div class="sp-landing-stat">
-                            <div class="sp-landing-stat-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3.5" y="3.5" width="7.2" height="7.2" rx="1.5"></rect>
-                                    <rect x="13.3" y="3.5" width="7.2" height="7.2" rx="1.5"></rect>
-                                    <rect x="3.5" y="13.3" width="7.2" height="7.2" rx="1.5"></rect>
-                                    <rect x="13.3" y="13.3" width="7.2" height="7.2" rx="1.5"></rect>
-                                </svg>
-                            </div>
-                            <div class="sp-landing-stat-value">{landing_type_value_safe}</div>
-                            <div class="sp-landing-stat-label">Opportunity Types</div>
-                        </div>
-                    </div>
-                    <p class="sp-landing-stats-note">Statistics are based on the current opportunity database and may change as listings are updated.</p>
-                </div>
+        """
+        <div class="sp-landing-footer-wrap">
+          <div class="sp-landing-footer">
+            <div class="sp-landing-contact">
+              <div class="sp-landing-contact-title">Questions or feedback?</div>
+              <p>Have a suggestion, found a problem, or want to share feedback about STEM Pathways NYC? I’d love to hear from you.</p>
+              <a href="mailto:danlopez0911@gmail.com">danlopez0911@gmail.com</a>
             </div>
-            <div class="sp-landing-features">
-                <div class="sp-landing-feature">
-                    <h3>Discover Opportunities</h3>
-                    <p>Find research programs, internships, scholarships, and STEM experiences available to students across New York City.</p>
-                </div>
-                <div class="sp-landing-feature">
-                    <h3>Explore Colleges</h3>
-                    <p>Discover colleges, majors, and programs that fit your goals and preferences.</p>
-                </div>
-                <div class="sp-landing-feature">
-                    <h3>Build Your Path</h3>
-                    <p>Track projects, applications, favorites, deadlines, and your STEM progress.</p>
-                </div>
-            </div>
-            <div class="sp-landing-purpose">
-                <h2>Built for NYC students who want more access to STEM opportunities.</h2>
-                <p>STEM Pathways NYC was created to make it easier for New York City high school students to find programs, explore careers, and plan their next steps.</p>
-            </div>
-            <div class="sp-landing-footer">
-                <div class="sp-landing-contact">
-                    <div class="sp-landing-contact-title">✉️ Questions or feedback?</div>
-                    <p>Have a suggestion, found a problem, or want to share feedback about STEM Pathways NYC? I'd love to hear from you.</p>
-                    <a href="mailto:danlopez0911@gmail.com">danlopez0911@gmail.com</a>
-                </div>
-            </div>
+          </div>
         </div>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     st.stop()
+
 
 
 # ============================================================
