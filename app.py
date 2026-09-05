@@ -32677,6 +32677,20 @@ elif page == "Projects":
         {
             "title": "Budget Optimization Tool",
             "fields": ["Industrial Engineering", "Data Science", "Mathematics", "Computer Science", "Statistics", "Operations Research", "Business Analytics"],
+            "create": [
+                "Something with data",
+                "Something that solves an optimization problem",
+                "Something related to finance or economics",
+                "A website or app",
+                "Something useful for school or my future"
+            ],
+            "level": "Intermediate",
+            "time": "2–4 weeks",
+            "hours": "10–20 hours",
+            "style": ["Coding", "Working with data", "Solving logic problems"],
+            "equipment": ["Computer"],
+            "cost": "Free",
+            "description": "Build a small optimization tool that allocates a limited budget across categories under constraints, then compare scenarios with clear tradeoffs.",
             "skills": ["Optimization", "Python", "Linear programming", "Data modeling", "UI design"],
             "materials": ["Computer", "Python", "Optimization library"],
             "steps": [
@@ -33105,6 +33119,106 @@ elif page == "Projects":
         }
     ]
 
+    PROJECT_REQUIRED_FIELDS = (
+        "title",
+        "fields",
+        "create",
+        "level",
+        "time",
+        "hours",
+        "style",
+        "equipment",
+        "cost",
+        "description",
+        "skills",
+        "materials",
+        "steps",
+        "portfolio",
+    )
+    PROJECT_LIST_FIELDS = (
+        "fields",
+        "create",
+        "style",
+        "equipment",
+        "skills",
+        "materials",
+        "steps",
+    )
+    PROJECT_FIELD_DEFAULTS = {
+        "create": [],
+        "level": "Beginner",
+        "time": "1–2 weeks",
+        "hours": "5–10 hours",
+        "style": [],
+        "equipment": ["Computer"],
+        "cost": "Free",
+        "description": "",
+        "skills": [],
+        "materials": [],
+        "steps": [],
+        "portfolio": "",
+        "fields": [],
+    }
+
+    def normalize_project_record(project):
+        """Return a safe copy with defaults, or None if the project cannot be shown."""
+
+        if not isinstance(project, dict):
+            logger.warning(
+                "Skipping malformed project record with missing title; fields=%s",
+                ["<not a dict>"],
+            )
+            return None
+
+        title = str(project.get("title") or "").strip()
+        missing = []
+        for field in PROJECT_REQUIRED_FIELDS:
+            value = project.get(field)
+            if value is None or value == "" or value == []:
+                missing.append(field)
+
+        if missing:
+            logger.warning(
+                "Project catalog issue title=%r missing_fields=%s",
+                title or "<untitled>",
+                missing,
+            )
+
+        if not title:
+            return None
+
+        normalized = dict(project)
+        normalized["title"] = title
+        for field, default in PROJECT_FIELD_DEFAULTS.items():
+            value = normalized.get(field)
+            if value is None or value == "" or value == []:
+                normalized[field] = (
+                    list(default) if isinstance(default, list) else default
+                )
+            elif field in PROJECT_LIST_FIELDS and not isinstance(value, list):
+                normalized[field] = [value]
+
+        # Still unusable if core match fields cannot be recovered.
+        if not normalized.get("fields"):
+            return None
+        return normalized
+
+    validated_projects = []
+    skipped_project_count = 0
+    for raw_project in project_catalog:
+        normalized_project = normalize_project_record(raw_project)
+        if normalized_project is None:
+            skipped_project_count += 1
+            continue
+        validated_projects.append(normalized_project)
+
+    project_catalog = validated_projects
+    if skipped_project_count:
+        st.caption(
+            "Some project ideas could not be loaded right now. "
+            "You can still explore the available matches below."
+        )
+
     # --------------------------------------------------------
     # DISCOVERY QUESTIONS
     # --------------------------------------------------------
@@ -33253,11 +33367,32 @@ elif page == "Projects":
         score = 0
         reasons = []
 
+        project_create = project.get("create") or []
+        if not isinstance(project_create, list):
+            project_create = [project_create]
+
+        project_fields = project.get("fields") or []
+        if not isinstance(project_fields, list):
+            project_fields = [project_fields]
+
+        project_styles = project.get("style") or []
+        if not isinstance(project_styles, list):
+            project_styles = [project_styles]
+
+        project_level_value = (
+            str(project.get("level") or "Beginner").strip()
+            or "Beginner"
+        )
+        project_time_value = str(project.get("time") or "").strip()
+        project_equipment = project.get("equipment") or []
+        if not isinstance(project_equipment, list):
+            project_equipment = [project_equipment]
+
         if create_choices:
             overlap = len(
                 set(create_choices)
                 &
-                set(project["create"])
+                set(project_create)
             )
 
             score += min(
@@ -33287,9 +33422,9 @@ elif page == "Projects":
                 &
                 set(
                     canonicalize_stem_field_list(
-                        project["fields"]
+                        project_fields
                     )
-                    + project["fields"]
+                    + project_fields
                 )
             )
 
@@ -33307,7 +33442,7 @@ elif page == "Projects":
             overlap = len(
                 set(project_style)
                 &
-                set(project["style"])
+                set(project_styles)
             )
 
             score += min(
@@ -33322,7 +33457,7 @@ elif page == "Projects":
 
         if (
             project_level == "Any level"
-            or project_level == project["level"]
+            or project_level == project_level_value
         ):
             score += 12
 
@@ -33348,7 +33483,7 @@ elif page == "Projects":
         )
 
         project_rank = level_rank.get(
-            project["level"],
+            project_level_value,
             1
         )
 
@@ -33369,13 +33504,13 @@ elif page == "Projects":
 
         if (
             project_time == "Any amount of time"
-            or project_time == project["time"]
+            or project_time == project_time_value
         ):
             score += 10
 
         if equipment:
             required = set(
-                project["equipment"]
+                project_equipment
             )
 
             available = set(
@@ -33419,9 +33554,17 @@ elif page == "Projects":
 
         for project in project_catalog:
 
-            score, reasons = project_match(
-                project
-            )
+            try:
+                score, reasons = project_match(
+                    project
+                )
+            except Exception:
+                logger.warning(
+                    "Project match failed title=%r",
+                    str(project.get("title") or "<untitled>"),
+                    exc_info=True,
+                )
+                continue
 
             ranked_projects.append(
                 {
@@ -33491,7 +33634,7 @@ elif page == "Projects":
                 st.html(
                     project_recommendation_card_html(
                         rank=rank,
-                        title=project["title"],
+                        title=project.get("title", "Project"),
                         fields=project.get("fields", []),
                         description=project.get("description", ""),
                         level=project.get("level", ""),
@@ -33511,9 +33654,7 @@ elif page == "Projects":
                         "**What you'll need**"
                     )
 
-                    for material in project[
-                        "materials"
-                    ]:
+                    for material in (project.get("materials") or []):
                         st.write(
                             f"• {material}"
                         )
@@ -33523,7 +33664,7 @@ elif page == "Projects":
                     )
 
                     for step_number, step in enumerate(
-                        project["steps"],
+                        project.get("steps") or [],
                         start=1
                     ):
                         st.write(
@@ -33535,7 +33676,7 @@ elif page == "Projects":
                     )
 
                     st.write(
-                        project["portfolio"]
+                        project.get("portfolio") or ""
                     )
 
         st.divider()
