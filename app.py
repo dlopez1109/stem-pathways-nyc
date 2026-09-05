@@ -8284,8 +8284,8 @@ st.markdown(
 
     html body .stApp [data-testid="stMain"] .sp-calendar-find h2,
     html body .stApp [data-testid="stMain"] .sp-calendar-find h2 * {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
         font-size: 1.32rem !important;
         font-weight: 800 !important;
         line-height: 1.2 !important;
@@ -8295,8 +8295,8 @@ st.markdown(
 
     html body .stApp [data-testid="stMain"] .sp-calendar-find p,
     html body .stApp [data-testid="stMain"] .sp-calendar-find p * {
-        color: #5A6A78 !important;
-        -webkit-text-fill-color: #5A6A78 !important;
+        color: #BFD3DF !important;
+        -webkit-text-fill-color: #BFD3DF !important;
         font-size: 0.88rem !important;
         font-weight: 500 !important;
         line-height: 1.4 !important;
@@ -9756,11 +9756,12 @@ st.markdown(
         border-right: none !important;
     }
 
+    /* Feedback rating: gold stars (#F5B82E) + dark navy wording */
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(1) [data-testid="stRadioOption"]::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label::after {
-        content: "★ Poor";
+        content: "Poor";
         color: #083C5D !important;
         -webkit-text-fill-color: #083C5D !important;
         font-size: 0.78rem !important;
@@ -9768,34 +9769,73 @@ st.markdown(
         line-height: 1.2 !important;
         letter-spacing: -0.01em;
         white-space: nowrap !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-position: 0.00em center !important;
+        background-size: 0.78em 0.78em !important;
+        padding-left: 1.10em !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:nth-child(2)::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:nth-child(2)::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(2) [data-testid="stRadioOption"]::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:nth-child(2)::after {
-        content: "★★ Fair";
+        content: "Fair";
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-position: 0.00em center, 0.82em center !important;
+        background-size: 0.78em 0.78em !important;
+        padding-left: 1.92em !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:nth-child(3)::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:nth-child(3)::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(3) [data-testid="stRadioOption"]::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:nth-child(3)::after {
-        content: "★★★ Good";
+        content: "Good";
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-position: 0.00em center, 0.82em center, 1.64em center !important;
+        background-size: 0.78em 0.78em !important;
+        padding-left: 2.74em !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:nth-child(4)::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:nth-child(4)::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(4) [data-testid="stRadioOption"]::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:nth-child(4)::after {
-        content: "★★★★ Very Good";
+        content: "Very Good";
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-position: 0.00em center, 0.82em center, 1.64em center, 2.46em center !important;
+        background-size: 0.78em 0.78em !important;
+        padding-left: 3.56em !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:nth-child(5)::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:nth-child(5)::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > *:nth-child(5) [data-testid="stRadioOption"]::after,
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:nth-child(5)::after {
-        content: "★★★★★ Excellent";
+        content: "Excellent";
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F5B82E' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-position: 0.00em center, 0.82em center, 1.64em center, 2.46em center, 3.28em center !important;
+        background-size: 0.78em 0.78em !important;
+        padding-left: 4.38em !important;
+    }
+
+    /* Keep star gold + navy wording in all interaction states */
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:hover::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:has(input:checked)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:has(input:focus-visible)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:hover::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioGroup"] > label:has(input:checked)::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:hover::after,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadio"] [role="radiogroup"] > label:has(input:checked)::after {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        filter: none !important;
+        opacity: 1 !important;
     }
 
     html body .stApp [data-testid="stMain"] [class*="st-key-feedback_overall"] [data-testid="stRadioOption"]:hover:not(:has(input:checked)),
@@ -11491,6 +11531,1335 @@ st.markdown(
         }
     }
 
+
+
+    /* ============================================================
+       SP_AUTH_DESIGN_SYSTEM_V1 — landing-aligned authenticated UI
+       Scoped with :has(.sp-app-shell); does not affect landing.
+       ============================================================ */
+
+    .stApp:has(.sp-app-shell) {
+        --sp-app-bg: #041E33;
+        --sp-app-bg-mid: #063250;
+        --sp-app-surface: rgba(8, 42, 68, 0.92);
+        --sp-app-border: rgba(148, 185, 208, 0.28);
+        --sp-app-text: #FFFFFF;
+        --sp-app-text-muted: #B7D4E6;
+        --sp-app-text-soft: #A9CBDC;
+        --sp-app-cyan: #38BDF8;
+        --sp-app-teal: #14B8A6;
+        --sp-app-gradient: linear-gradient(90deg, #38BDF8 0%, #14B8A6 100%);
+        --sp-app-shadow: 0 10px 28px rgba(0, 12, 28, 0.28);
+        --sp-app-content-max: 1080px;
+    }
+
+    html body .stApp:has(.sp-app-shell),
+    html body .stApp:has(.sp-app-shell) [data-testid="stAppViewContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMainBlockContainer"],
+    html body .stApp:has(.sp-app-shell) section[data-testid="stMain"] {
+        background: linear-gradient(180deg, #041E33 0%, #063250 48%, #0A3550 100%) !important;
+        color: var(--sp-app-text-muted) !important;
+    }
+
+    /* SP_AUTH_HEADER_COLLAPSE_V1 — remove empty top chrome; keep sidebar toggle */
+    html body .stApp:has(.sp-app-shell) [data-testid="stHeader"],
+    html body .stApp:has(.sp-app-shell) header[data-testid="stHeader"] {
+        background: transparent !important;
+        background-image: none !important;
+        backdrop-filter: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 1000 !important;
+        pointer-events: none !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stToolbar"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stDecoration"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stStatusWidget"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stHeaderDecoration"],
+    html body .stApp:has(.sp-app-shell) .stAppToolbar,
+    html body .stApp:has(.sp-app-shell) [class*="stToolbar"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stAppViewContainer"] > section,
+    html body .stApp:has(.sp-app-shell) [data-testid="stAppViewContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] > div,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stMain"] {
+        margin-top: 0 !important;
+        top: 0 !important;
+    }
+
+    /* Keep open/collapse controls clickable above collapsed header */
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapsedControl"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapsedControl"] button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapsedControl"] [role="button"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapseButton"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapseButton"] button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stHeader"] [data-testid="stSidebarCollapsedControl"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stHeader"] [data-testid="stSidebarCollapseButton"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stHeader"] button:first-of-type {
+        pointer-events: auto !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 2147483647 !important;
+    }
+
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMainBlockContainer"] {
+        max-width: var(--sp-app-content-max) !important;
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding-top: 1.25rem !important;
+        padding-bottom: 2.75rem !important;
+        padding-left: clamp(1rem, 3vw, 1.75rem) !important;
+        padding-right: clamp(1rem, 3vw, 1.75rem) !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stAppViewContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] {
+        overflow-x: hidden !important;
+    }
+
+    .sp-app-hero,
+    .sp-app-card,
+    .sp-app-metric,
+    .sp-app-info,
+    .sp-app-metric-grid {
+        box-sizing: border-box;
+        max-width: 100%;
+    }
+
+    /* Sidebar */
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #041E33 0%, #052B45 55%, #063250 100%) !important;
+        border-right: 1px solid rgba(148, 185, 208, 0.22) !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-sidebar-brand {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.35rem 0.15rem 0.55rem !important;
+        margin: 0 0 0.35rem 0 !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+        overflow: visible !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-sidebar-brand-name,
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-sidebar-title.sp-sidebar-brand-name {
+        display: block !important;
+        width: 100% !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: clamp(0.92rem, 0.84rem + 0.45vw, 1.05rem) !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.04em !important;
+        line-height: 1.25 !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        text-align: left !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-sidebar-accent {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 3px !important;
+        margin: 0.55rem 0 0 0 !important;
+        margin-left: 0 !important;
+        border-radius: 999px !important;
+        background: var(--sp-app-gradient) !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] h3 {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 1.12rem !important;
+        font-weight: 750 !important;
+        margin: 0.35rem 0 0.2rem 0 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-sidebar-meta {
+        color: #A9CBDC !important;
+        -webkit-text-fill-color: #A9CBDC !important;
+        font-size: 0.78rem !important;
+        letter-spacing: 0.05em !important;
+        text-transform: uppercase !important;
+        font-weight: 650 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] a {
+        color: #7DD3FC !important;
+        font-size: 0.78rem !important;
+        font-weight: 600 !important;
+        word-break: break-word !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-nav-section {
+        color: #8FB4C8 !important;
+        letter-spacing: 0.1em !important;
+        font-size: 0.7rem !important;
+        margin: 0.7rem 0 0.3rem 0 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] hr,
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] [data-testid="stDivider"] hr {
+        border-top: 1px solid rgba(148, 185, 208, 0.22) !important;
+        margin: 0.65rem 0 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton {
+        margin: 0 0 0.22rem 0 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button:active,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button:focus,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] button[kind="secondary"],
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] button[data-testid^="stBaseButton-secondary"] {
+        background: rgba(255,255,255,0.05) !important;
+        color: #E8F4FB !important;
+        border: 1px solid rgba(148, 185, 208, 0.18) !important;
+        border-radius: 10px !important;
+        min-height: 2.2rem !important;
+        height: auto !important;
+        max-height: none !important;
+        padding: 0.45rem 0.7rem !important;
+        font-size: 0.88rem !important;
+        font-weight: 650 !important;
+        box-shadow: none !important;
+        transition: background 140ms ease, border-color 140ms ease, color 140ms ease !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button *,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button p,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button span {
+        color: #E8F4FB !important;
+        -webkit-text-fill-color: #E8F4FB !important;
+        font-size: 0.88rem !important;
+        font-weight: 650 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button:hover,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] button[kind="secondary"]:hover {
+        background: rgba(56, 189, 248, 0.12) !important;
+        border-color: rgba(56, 189, 248, 0.35) !important;
+        color: #FFFFFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button:hover *,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button:hover p,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button:hover span {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button[kind="primary"],
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button[data-testid^="stBaseButton-primary"],
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button[data-testid^="stBaseButton-primary"]:hover {
+        background: rgba(255,255,255,0.96) !important;
+        border: 1px solid rgba(255,255,255,0.96) !important;
+        color: #041E33 !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16) !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button[kind="primary"] *,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button[kind="primary"] p,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button[kind="primary"] span,
+    html body .stApp:has(.sp-app-shell) section[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover * {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-contact-card {
+        background: rgba(8, 42, 68, 0.55) !important;
+        border: 1px solid rgba(148, 185, 208, 0.26) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 6px 16px rgba(0, 12, 28, 0.18) !important;
+        padding: 0.85rem 0.9rem !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-contact-title {
+        color: #FFFFFF !important;
+        font-weight: 750 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-contact-text {
+        color: #A9CBDC !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-contact-email {
+        color: #7DD3FC !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] [data-testid="stCaptionContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] [data-testid="stCaptionContainer"] * {
+        color: #8FB4C8 !important;
+    }
+
+    /* Dashboard */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-app-hero {
+        background: linear-gradient(165deg, #041E33 0%, #063250 42%, #0A4A6E 100%) !important;
+        border: 1px solid rgba(148, 185, 208, 0.28) !important;
+        border-radius: 20px !important;
+        box-shadow: var(--sp-app-shadow) !important;
+        padding: 1.45rem 1.55rem 1.5rem !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero::before {
+        content: "";
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        right: -100px;
+        top: -120px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(56,189,248,0.16) 0%, rgba(56,189,248,0) 70%);
+        pointer-events: none;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        left: -80px;
+        bottom: -110px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(45,212,191,0.12) 0%, rgba(45,212,191,0) 70%);
+        pointer-events: none;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero .sp-kicker {
+        color: #9AD8F0 !important;
+        -webkit-text-fill-color: #9AD8F0 !important;
+        letter-spacing: 0.11em !important;
+        font-size: 0.72rem !important;
+        font-weight: 750 !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero h1 {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: clamp(1.55rem, 2.2vw, 1.95rem) !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.03em !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero p {
+        color: #D5E8F4 !important;
+        -webkit-text-fill-color: #D5E8F4 !important;
+        font-size: 0.98rem !important;
+        line-height: 1.55 !important;
+        max-width: 40rem !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stHeading"] h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stHeading"] h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stHeading"] h3 {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-section-subtitle {
+        color: #A9CBDC !important;
+        -webkit-text-fill-color: #A9CBDC !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stDivider"] hr {
+        border-color: rgba(148, 185, 208, 0.28) !important;
+        background: rgba(148, 185, 208, 0.28) !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-metric,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-app-metric {
+        background: rgba(8, 42, 68, 0.92) !important;
+        border: 1px solid rgba(148, 185, 208, 0.28) !important;
+        border-radius: 14px !important;
+        box-shadow: 0 8px 20px rgba(0, 12, 28, 0.2) !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-metric::before,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-app-metric::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        height: 2px;
+        background: var(--sp-app-gradient);
+        pointer-events: none;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-metric-value {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 1.28rem !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-metric-label {
+        color: #A9CBDC !important;
+        -webkit-text-fill-color: #A9CBDC !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-empty,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-app-info {
+        background: rgba(8, 42, 68, 0.72) !important;
+        border: 1px solid rgba(148, 185, 208, 0.28) !important;
+        box-shadow: 0 6px 16px rgba(0, 12, 28, 0.16) !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-empty p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-app-info p {
+        color: #D5E8F4 !important;
+        -webkit-text-fill-color: #D5E8F4 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-card {
+        background: rgba(8, 42, 68, 0.92) !important;
+        border: 1px solid rgba(148, 185, 208, 0.28) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 22px rgba(0, 12, 28, 0.22) !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-card h3,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-card-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-stat-value {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-card-copy {
+        color: #B7D4E6 !important;
+        -webkit-text-fill-color: #B7D4E6 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-tag,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-deadline-pill {
+        background: rgba(56, 189, 248, 0.12) !important;
+        border: 1px solid rgba(56, 189, 248, 0.28) !important;
+        color: #E8F4FB !important;
+        -webkit-text-fill-color: #E8F4FB !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-action-title {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-action-copy {
+        color: #B7D4E6 !important;
+        -webkit-text-fill-color: #B7D4E6 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) {
+        background: rgba(8, 42, 68, 0.92) !important;
+        background-color: rgba(8, 42, 68, 0.92) !important;
+        border: 1px solid rgba(148, 185, 208, 0.28) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 20px rgba(0, 12, 28, 0.2) !important;
+        padding: 1.35rem 1.35rem 1.25rem !important;
+        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease !important;
+        height: 100% !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"]:hover,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"][data-testid="stVerticalBlockBorderWrapper"]:hover,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]):hover {
+        background: rgba(10, 52, 82, 0.98) !important;
+        background-color: rgba(10, 52, 82, 0.98) !important;
+        border-color: rgba(56, 189, 248, 0.4) !important;
+        box-shadow: 0 14px 28px rgba(0, 12, 28, 0.32) !important;
+        transform: translateY(-3px) !important;
+        filter: none !important;
+        cursor: default !important;
+        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button:focus,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button:active {
+        background: linear-gradient(90deg, #38BDF8 0%, #14B8A6 100%) !important;
+        background-color: #38BDF8 !important;
+        border: 1px solid transparent !important;
+        border-radius: 10px !important;
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+        font-weight: 750 !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16) !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button:hover {
+        background: linear-gradient(90deg, #5EC8F2 0%, #2DD4BF 100%) !important;
+        background-color: #5EC8F2 !important;
+        border-color: transparent !important;
+        transform: translateY(-1px) !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button div {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+        font-weight: 750 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:not(:has([class*="st-key-dash_journey_card_"])):not(:has([class*="st-key-dash_continue_journey"])):not(:has([class*="st-key-dash_continue_heading"])):not(:has([class*="st-key-dash_current_direction_heading"])):not(:has([class*="st-key-stem_interests_heading_wrapper"])):not(:has([class*="st-key-dash_journey_metrics"])) {
+        background: rgba(8, 42, 68, 0.92) !important;
+        border: 1px solid rgba(148, 185, 208, 0.28) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 20px rgba(0, 12, 28, 0.18) !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:not(:has([class*="st-key-dash_journey_card_"])):hover {
+        background: rgba(8, 42, 68, 0.92) !important;
+        border: 1px solid rgba(148, 185, 208, 0.28) !important;
+        box-shadow: 0 8px 20px rgba(0, 12, 28, 0.18) !important;
+        transform: none !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] div,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"] p {
+        color: #D5E8F4 !important;
+        -webkit-text-fill-color: #D5E8F4 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-update_profile_button_wrapper"] .stButton > button {
+        background: linear-gradient(90deg, #38BDF8 0%, #14B8A6 100%) !important;
+        border: 1px solid transparent !important;
+        color: #041E33 !important;
+        font-weight: 750 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-update_profile_button_wrapper"] .stButton > button * {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+    }
+
+    @media (max-width: 960px) {
+        html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-metric-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+
+        html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-dash_continue_journey"][data-testid="stVerticalBlock"],
+        html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-dash_continue_journey"] > [data-testid="stVerticalBlock"] {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1.15rem !important;
+            row-gap: 1.15rem !important;
+        }
+    }
+
+    @media (max-width: 640px) {
+        html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-metric-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-dash_continue_journey"][data-testid="stVerticalBlock"],
+        html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-dash_continue_journey"] > [data-testid="stVerticalBlock"] {
+            grid-template-columns: 1fr !important;
+        }
+
+        html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-direction-row {
+            grid-template-columns: 1fr !important;
+        }
+
+        html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] .sp-sidebar-brand-name {
+            font-size: 0.88rem !important;
+            letter-spacing: 0.03em !important;
+        }
+    }
+
+
+    /* ============================================================
+       SP_AUTH_TEXT_CONTRAST_V1
+       Light text on dark authenticated backgrounds; dark text in
+       light cards/inputs. Landing (:not .sp-app-shell) untouched.
+       ============================================================ */
+
+    /* --- Page-level headings on dark navy --- */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeading"] h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeading"] h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeading"] h3,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeading"] h4,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeading"] h1 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeading"] h2 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeading"] h3 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeading"] h4 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeadingWithActionElements"] h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeadingWithActionElements"] h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeadingWithActionElements"] h3,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeadingWithActionElements"] h1 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeadingWithActionElements"] h2 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stHeadingWithActionElements"] h3 * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    /* --- Supporting copy on dark navy (captions, markdown, labels) --- */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stCaptionContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stCaptionContainer"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stCaptionContainer"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > ul,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > ol,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > ul > li,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > ol > li,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > div > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-section-subtitle,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-section-subtitle *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stWidgetLabel"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stWidgetLabel"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] label p {
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+    }
+
+    /* Markdown headings rendered outside light cards */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > h3,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > h4,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > h1 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > h2 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > h3 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] > h4 * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    /* Links on dark backgrounds */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] a,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] a:visited,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] a,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] a:visited {
+        color: #55D6F2 !important;
+        -webkit-text-fill-color: #55D6F2 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] a:hover,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"] a:hover {
+        color: #9AE8F8 !important;
+        -webkit-text-fill-color: #9AE8F8 !important;
+    }
+
+    /* Tabs on dark shell */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stTabs"] [role="tab"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stTabs"] [role="tab"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stTabs"] [role="tab"] span {
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stTabs"] [role="tab"][aria-selected="true"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stTabs"] [role="tab"][aria-selected="true"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stTabs"] [role="tab"][aria-selected="true"] span {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    /* --- Light surfaces: restore dark navy text ---
+       Dashboard (.sp-hero) uses dark cards — exclude its border wrappers here. */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"] *:not(a):not(button):not([kind]):not(svg):not(path):not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stForm"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stForm"] *:not(a):not(button):not([kind]):not(svg):not(path):not(input):not(textarea):not([data-testid="stIconMaterial"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stExpander"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stExpander"] *:not(a):not(button):not([kind]):not(svg):not(path):not([data-testid="stIconMaterial"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stAlert"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stAlert"] *:not(a):not(svg):not(path):not([data-testid="stIconMaterial"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMetric"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMetric"] *:not(svg):not(path):not([data-testid="stIconMaterial"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stDataFrame"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stDataFrame"] *:not(svg):not(path) {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    /* Dashboard dark bordered cards — light text (not the light-surface navy) */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] div,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] li,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"] * {
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] h3,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] h4,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stHeading"] h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stHeading"] h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stHeading"] h3 {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stWidgetLabel"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stForm"] [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stForm"] [data-testid="stWidgetLabel"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stForm"] [data-testid="stCaptionContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stForm"] [data-testid="stCaptionContainer"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stExpander"] [data-testid="stCaptionContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stExpander"] [data-testid="stCaptionContainer"] * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    /* Links inside light cards stay readable navy/cyan-on-light */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"] a,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"] a:visited,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stForm"] a,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stForm"] a:visited,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stExpander"] a,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stExpander"] a:visited,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stAlert"] a,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stAlert"] a:visited {
+        color: #0179A8 !important;
+        -webkit-text-fill-color: #0179A8 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"] a:hover,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stForm"] a:hover,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stExpander"] a:hover {
+        color: #055F86 !important;
+        -webkit-text-fill-color: #055F86 !important;
+    }
+
+    /* Typed input text stays dark/black on white fields */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] textarea,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-baseweb="input"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-baseweb="textarea"] textarea,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-baseweb="select"] [data-testid="stMarkdownContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-baseweb="select"] input {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        caret-color: #111827 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] input::placeholder,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] textarea::placeholder {
+        color: #6B7280 !important;
+        -webkit-text-fill-color: #6B7280 !important;
+        opacity: 1 !important;
+    }
+
+    /* Custom white/light HTML cards — keep dark navy (reassert after page-level rules) */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-summary > h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-summary > h2 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-summary-card,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-summary-card *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-metric,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-metric *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-metric-value,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-metric-value *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-stage,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-stage * {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-summary-subtitle,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-summary-subtitle *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-metric-label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-profile-metric-label * {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+    }
+
+    /* Dashboard dark cards already use light text — protect them from light-surface restore */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-metric-value,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-action-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-card-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-card h3,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-stat-value,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero h1 * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-metric-label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-action-copy,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-card-copy,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-dash-empty p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-section-subtitle,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) .sp-hero p * {
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .sp-dash-action-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .sp-dash-action-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .sp-dash-action-title * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .sp-dash-action-copy,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .sp-dash-action-copy,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .sp-dash-action-copy * {
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-dash-card) .sp-dash-card-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-dash-card) .sp-dash-card h3,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-dash-card) .sp-dash-label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-dash-card) .sp-dash-stat-value {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-dash-card) .sp-dash-card-copy,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-dash-card) p {
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+    }
+
+    /* Page headers (gradient banners) stay bright */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-page-header h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-page-header h1 * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-page-header p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-page-header p * {
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-page-header .sp-kicker,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-page-header .sp-kicker * {
+        color: #9AD8F0 !important;
+        -webkit-text-fill-color: #9AD8F0 !important;
+    }
+
+    /* Keep gradient/action button labels dark on cyan-teal fills */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .stButton > button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .stButton > button *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-update_profile_button_wrapper"] .stButton > button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-update_profile_button_wrapper"] .stButton > button * {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+    }
+
+
+    /* ============================================================
+       SP_STEM_PATHWAY_CONTRAST_V1
+       Scoped to My STEM Pathway (.sp-stemq-*). Dark bg → light text;
+       light cards/sliders → dark navy. Does not affect landing.
+       ============================================================ */
+
+    /* Page-level title + paragraph on dark navy */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-page-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-page-title * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-page-sub,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-page-sub * {
+        color: #B8CAD8 !important;
+        -webkit-text-fill-color: #B8CAD8 !important;
+    }
+
+    /* Informational disclaimer on light background — readable dark text */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-rec-disclaimer,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.sp-rec-disclaimer) .sp-rec-disclaimer {
+        background: #F7FBFD !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-rec-disclaimer-text,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-rec-disclaimer-text *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.sp-rec-disclaimer) .sp-rec-disclaimer-text,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.sp-rec-disclaimer) .sp-rec-disclaimer-text *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.sp-rec-disclaimer) > div > p.sp-rec-disclaimer-text {
+        color: #2F4A5C !important;
+        -webkit-text-fill-color: #2F4A5C !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-rec-disclaimer-emphasis,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-rec-disclaimer-emphasis * {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-rec-disclaimer-icon {
+        color: #0175A3 !important;
+        -webkit-text-fill-color: #0175A3 !important;
+    }
+
+    /* White/light questionnaire cards */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-card-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-card-title *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_major"] .sp-stemq-card-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_major"] .sp-stemq-card-title * {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-card-hint,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-card-hint *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_major"] .sp-stemq-card-hint,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_major"] .sp-stemq-card-hint * {
+        color: #5F7485 !important;
+        -webkit-text-fill-color: #5F7485 !important;
+    }
+
+    /* Labels / selects inside white section cards */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_major"] [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_major"] [data-testid="stWidgetLabel"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_major"] [data-testid="stWidgetLabel"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_form"] [class*="st-key-stemq_major"] label p {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    /* STEM category names inside light slider cards — dark navy, not pale gray */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stWidgetLabel"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stWidgetLabel"] label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stWidgetLabel"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stWidgetLabel"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] label p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stMarkdownContainer"] p {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        opacity: 1 !important;
+    }
+
+    /* Slider end captions stay readable on light cards */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-slider-ends,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-stemq-slider-ends span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] .sp-stemq-slider-ends,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] .sp-stemq-slider-ends span {
+        color: #5F7485 !important;
+        -webkit-text-fill-color: #5F7485 !important;
+    }
+
+    /* Preserve slider track/thumb colors; keep value bubble white-on-cyan */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] [data-testid="stMarkdownContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-stemq_s_"] [data-testid="stSliderThumbValue"] [data-testid="stMarkdownContainer"] p {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    /* Direction / result cards on this page stay dark-navy text on white */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-stemq-page-title) .sp-stem-dir-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-stemq-page-title) .sp-stem-dir-title *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-stemq-page-title) .sp-stem-dir-score-value,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-stemq-page-title) .sp-stem-dir-majors-label {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-stemq-page-title) .sp-stem-dir-why,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-stemq-page-title) .sp-stem-dir-why *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-stemq-page-title) .sp-stem-dir-score-label {
+        color: #5F7485 !important;
+        -webkit-text-fill-color: #5F7485 !important;
+    }
+
+
+    /* ============================================================
+       SP_FAV_COLLEGES_CONTRAST_V1
+       Favorite Colleges only — scoped via .sp-fav-info-notice /
+       .sp-fav-college / .sp-fav-rank-hint. Landing untouched.
+       ============================================================ */
+
+    /* Banner description */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-fav-info-notice) .sp-page-header h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-fav-info-notice) .sp-page-header h1 * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-fav-info-notice) .sp-page-header p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-fav-info-notice) .sp-page-header p * {
+        color: #D1E2EC !important;
+        -webkit-text-fill-color: #D1E2EC !important;
+    }
+
+    /* Informational notice under banner */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-info-notice {
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 0.65rem !important;
+        width: 100% !important;
+        max-width: min(48rem, 100%) !important;
+        margin: 0.35rem 0 0.85rem 0 !important;
+        padding: 0.72rem 0.95rem !important;
+        background: #0A4563 !important;
+        border: 1px solid #38C7E8 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-info-notice-icon {
+        display: inline-grid !important;
+        place-items: center !important;
+        flex: 0 0 auto !important;
+        width: 1.2rem !important;
+        height: 1.2rem !important;
+        margin-top: 0.08rem !important;
+        border-radius: 999px !important;
+        background: rgba(56, 199, 232, 0.18) !important;
+        color: #38C7E8 !important;
+        -webkit-text-fill-color: #38C7E8 !important;
+        font-size: 0.72rem !important;
+        font-weight: 850 !important;
+        font-style: italic !important;
+        line-height: 1 !important;
+        font-family: Georgia, "Times New Roman", serif !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-info-notice-text,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-info-notice-text *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.sp-fav-info-notice) .sp-fav-info-notice-text,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.sp-fav-info-notice) > div > p.sp-fav-info-notice-text {
+        margin: 0 !important;
+        color: #D8EAF3 !important;
+        -webkit-text-fill-color: #D8EAF3 !important;
+        font-size: 0.9rem !important;
+        font-weight: 550 !important;
+        line-height: 1.45 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stElementContainer"]:has(.sp-fav-info-notice) {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Ranked list heading + instruction on dark navy */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-fav-info-notice) [data-testid="stHeading"] h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-fav-info-notice) [data-testid="stHeading"] h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-fav-info-notice) [data-testid="stHeading"] h1 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-fav-info-notice) [data-testid="stHeading"] h2 * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-rank-hint,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-rank-hint *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.sp-fav-rank-hint) > p.sp-fav-rank-hint {
+        color: #BFD3DF !important;
+        -webkit-text-fill-color: #BFD3DF !important;
+        font-size: 0.88rem !important;
+        font-weight: 550 !important;
+        line-height: 1.4 !important;
+        margin: 0 0 0.85rem 0 !important;
+    }
+
+    /* White college cards — keep dark navy text */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-identity h3,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-identity h3 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-stat-value,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-why-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-match,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-initials,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-rank {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-location,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-stat-label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-stat-note,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] .sp-fav-college-why-list li {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+    }
+
+
+    /* ============================================================
+       SP_OPP_GUIDE_NOTICE_V1
+       Opportunities instructional notices only (.sp-opp-guide-notice).
+       Does not restyle other alerts, filters, or results.
+       ============================================================ */
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) .sp-opp-guide-notice {
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 0.65rem !important;
+        width: 100% !important;
+        max-width: min(48rem, 100%) !important;
+        margin: 0.35rem 0 0.85rem 0 !important;
+        padding: 0.72rem 0.95rem !important;
+        background: #0A4563 !important;
+        border: 1px solid #38C7E8 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) .sp-opp-guide-notice-icon {
+        display: inline-grid !important;
+        place-items: center !important;
+        flex: 0 0 auto !important;
+        width: 1.2rem !important;
+        height: 1.2rem !important;
+        margin-top: 0.08rem !important;
+        border-radius: 999px !important;
+        background: rgba(56, 199, 232, 0.18) !important;
+        color: #38C7E8 !important;
+        -webkit-text-fill-color: #38C7E8 !important;
+        font-size: 0.72rem !important;
+        font-weight: 850 !important;
+        font-style: italic !important;
+        line-height: 1 !important;
+        font-family: Georgia, "Times New Roman", serif !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) .sp-opp-guide-notice-text,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) .sp-opp-guide-notice-text *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stMarkdownContainer"]:has(.sp-opp-guide-notice) .sp-opp-guide-notice-text,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stMarkdownContainer"]:has(.sp-opp-guide-notice) > div > p.sp-opp-guide-notice-text {
+        margin: 0 !important;
+        color: #D8EAF3 !important;
+        -webkit-text-fill-color: #D8EAF3 !important;
+        font-size: 0.9rem !important;
+        font-weight: 550 !important;
+        line-height: 1.45 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) .sp-opp-guide-emphasis,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) .sp-opp-guide-notice-text .sp-opp-guide-emphasis {
+        color: #F0FAFE !important;
+        -webkit-text-fill-color: #F0FAFE !important;
+        font-weight: 750 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stElementContainer"]:has(.sp-opp-guide-notice) {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    /* ============================================================
+       SP_DEADLINE_CALENDAR_CONTRAST_V1
+       Deadline Calendar only — scoped via .sp-deadline-calendar-page /
+       .sp-calendar-find / deadline_calendar_filters|snapshot keys.
+       ============================================================ */
+
+    /* Dark navy page headings + instructions */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-page-header h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-page-header h1 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-find h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-find h2 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [data-testid="stHeading"] h1,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [data-testid="stHeading"] h2,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [data-testid="stHeading"] h3,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [data-testid="stHeading"] h1 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [data-testid="stHeading"] h2 *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [data-testid="stHeading"] h3 * {
+        color: #F8FBFF !important;
+        -webkit-text-fill-color: #F8FBFF !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-page-header p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-page-header p *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-find p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-find p *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [data-testid="stCaptionContainer"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [data-testid="stCaptionContainer"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [data-testid="stCaptionContainer"] p {
+        color: #BFD3DF !important;
+        -webkit-text-fill-color: #BFD3DF !important;
+    }
+
+    /* White filter panel — dark navy labels (beat auth pale-gray labels) */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-testid="stWidgetLabel"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-testid="stWidgetLabel] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] label p {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    /* Entered / selected values stay dark and readable */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="input"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] [data-baseweb="tag"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] [aria-selected],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-testid="stSelectbox"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-testid="stMultiSelect"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-testid="stTextInput"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="tag"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="tag"] span {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    /* Placeholders: medium gray, still readable */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] input::placeholder,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] input::-webkit-input-placeholder,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] [data-baseweb="placeholder"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] [class*="placeholder"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] div[class*="Placeholder"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_filters"] [data-baseweb="select"] span[class*="Placeholder"] {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        opacity: 1 !important;
+    }
+
+    /* White statistics cards — keep dark navy text */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-stat-label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-stat-label *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-stat-value,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-stat-value *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_snapshot"] .sp-calendar-stat-label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_snapshot"] .sp-calendar-stat-label *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_snapshot"] .sp-calendar-stat-value,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) [class*="st-key-deadline_calendar_snapshot"] .sp-calendar-stat-value * {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-stat-note,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-deadline-calendar-page) .sp-calendar-stat-note * {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+    }
+
+
+    /* ============================================================
+       SP_MATCHER_STEP1_CONTRAST_V1
+       "Explore What You Might Like" white card only
+       (st-key-college_matcher_step1). Does not restyle page-level
+       dark-navy background text.
+       ============================================================ */
+
+    /* Question labels — dark navy, medium-bold */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] label p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] .sp-matcher-slider-label,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] .sp-matcher-slider-label * {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 650 !important;
+        opacity: 1 !important;
+    }
+
+    /* Selected dropdown / multiselect values */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] [aria-selected],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stSelectbox"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stMultiSelect"] input,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="tag"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="tag"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="tag"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="tag"] span {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    /* Placeholders — medium gray-blue, distinct but readable */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] input::placeholder,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] input::-webkit-input-placeholder,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] [data-baseweb="placeholder"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] [class*="placeholder"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] div[class*="Placeholder"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] span[class*="Placeholder"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="select"] [data-baseweb="placeholder"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="select"] span[class*="Placeholder"] {
+        color: #667788 !important;
+        -webkit-text-fill-color: #667788 !important;
+        opacity: 1 !important;
+    }
+
+    /* Answer-choice text on the math slider (incl. "It's okay") */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] div,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] span,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] span {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
 
     </style>
     """,
@@ -25749,14 +27118,10 @@ with st.sidebar:
 
     st.markdown(
         '<div class="sp-sidebar-brand">'
-        '<div class="sp-sidebar-title">'
-        '<div class="sp-title-line">'
-        '<span class="sp-title-blue">STEM</span>'
-        '<span class="sp-title-yellow">PATHWAYS</span>'
+        '<div class="sp-sidebar-title sp-sidebar-brand-name">'
+        'STEM PATHWAYS NYC'
         '</div>'
-        '<div class="sp-title-nyc">NYC</div>'
         '<div class="sp-sidebar-accent"></div>'
-        '</div>'
         '</div>',
         unsafe_allow_html=True
     )
@@ -25871,6 +27236,12 @@ with st.sidebar:
         "Explore • Build • Discover"
     )
 
+
+# Marker for authenticated design-system CSS (never rendered on landing).
+st.markdown(
+    '<div class="sp-app-shell" aria-hidden="true" style="display:none"></div>',
+    unsafe_allow_html=True,
+)
 
 page = st.session_state.current_page
 
@@ -26046,7 +27417,7 @@ if page == "Dashboard":
 
     st.markdown(
         f"""
-        <div class="sp-hero">
+        <div class="sp-hero sp-app-hero">
             <div class="sp-kicker">Your personalized STEM workspace</div>
             <h1>Welcome back, {profile['first_name']} 👋</h1>
             <p>
@@ -26074,26 +27445,26 @@ if page == "Dashboard":
     with st.container(key="dash_journey_metrics"):
 
         st.html(
-            '<div class="sp-dash-metric-grid">'
-            '<article class="sp-dash-metric">'
+            '<div class="sp-dash-metric-grid sp-app-metric-grid">'
+            '<article class="sp-dash-metric sp-app-metric">'
             '<div class="sp-dash-metric-value">'
             + html_module.escape(str(primary_interest))
             + "</div>"
             '<div class="sp-dash-metric-label">Primary Interest</div>'
             "</article>"
-            '<article class="sp-dash-metric">'
+            '<article class="sp-dash-metric sp-app-metric">'
             '<div class="sp-dash-metric-value">'
             + html_module.escape(str(len(dashboard_saved_apps)))
             + "</div>"
             '<div class="sp-dash-metric-label">Saved Programs</div>'
             "</article>"
-            '<article class="sp-dash-metric">'
+            '<article class="sp-dash-metric sp-app-metric">'
             '<div class="sp-dash-metric-value">'
             + html_module.escape(str(len(dashboard_favorites)))
             + "</div>"
             '<div class="sp-dash-metric-label">Favorite Colleges</div>'
             "</article>"
-            '<article class="sp-dash-metric">'
+            '<article class="sp-dash-metric sp-app-metric">'
             '<div class="sp-dash-metric-value">'
             + html_module.escape(str(submitted_applications))
             + "</div>"
@@ -26187,7 +27558,7 @@ if page == "Dashboard":
     elif dashboard_saved_apps:
 
         st.html(
-            '<div class="sp-dash-empty" role="status">'
+            '<div class="sp-dash-empty sp-app-info" role="status">'
             "<p>You have saved opportunities, but none currently have a "
             "specific upcoming deadline in the database.</p>"
             "</div>"
@@ -26196,7 +27567,7 @@ if page == "Dashboard":
     else:
 
         st.html(
-            '<div class="sp-dash-empty" role="status">'
+            '<div class="sp-dash-empty sp-app-info" role="status">'
             "<p>Save opportunities you care about and their upcoming deadlines "
             "will appear here automatically.</p>"
             "</div>"
@@ -29164,8 +30535,15 @@ elif page == "Opportunities":
 
         if not search_submitted:
 
-            st.info(
-                "Set your filters above, then press **Show Opportunities**."
+            st.markdown(
+                '<div class="sp-opp-guide-notice" role="note">'
+                '<span class="sp-opp-guide-notice-icon" aria-hidden="true">i</span>'
+                '<p class="sp-opp-guide-notice-text">'
+                "Set your filters above, then press "
+                '<strong class="sp-opp-guide-emphasis">Show Opportunities</strong>.'
+                "</p>"
+                "</div>",
+                unsafe_allow_html=True,
             )
 
         else:
@@ -29393,11 +30771,17 @@ elif page == "Opportunities":
             )
 
             if result_count and active_filter_categories >= 2 and result_count < 12:
-                st.info(
+                st.markdown(
+                    '<div class="sp-opp-guide-notice" role="note">'
+                    '<span class="sp-opp-guide-notice-icon" aria-hidden="true">i</span>'
+                    '<p class="sp-opp-guide-notice-text">'
                     "Multiple filters are active, so results are limited. "
                     "Opportunity types and STEM areas each use OR matching inside "
                     "their own category, but different categories are combined with AND. "
                     "Try clearing Opportunity Type or Selectivity if this list looks too small."
+                    "</p>"
+                    "</div>",
+                    unsafe_allow_html=True,
                 )
 
             if not search_results:
@@ -29757,6 +31141,10 @@ elif page == "Opportunities":
 
 elif page == "Deadline Calendar":
 
+    st.html(
+        '<div class="sp-deadline-calendar-page" aria-hidden="true"></div>'
+    )
+
     render_page_header(
         "Deadline Calendar",
         "Track upcoming STEM program and application deadlines in one place."
@@ -30035,11 +31423,11 @@ elif page == "Deadline Calendar":
 
         st.html(
             '<div class="sp-calendar-find" style="margin:0.05rem 0 0.7rem 0;">'
-            '<h2 style="color:#083C5D;font-size:1.32rem;font-weight:800;'
+            '<h2 style="color:#F8FBFF;font-size:1.32rem;font-weight:800;'
             'line-height:1.2;margin:0 0 0.22rem 0;letter-spacing:-0.01em;">'
             "Find Upcoming Deadlines"
             "</h2>"
-            '<p style="color:#5A6A78;font-size:0.88rem;font-weight:500;'
+            '<p style="color:#BFD3DF;font-size:0.88rem;font-weight:500;'
             'line-height:1.4;margin:0;">'
             "Filter programs by status, type, or field to quickly find what matters most."
             "</p>"
@@ -31903,10 +33291,16 @@ elif page == "My Favorite Colleges":
         )
     )
 
-    st.info(
+    st.markdown(
+        '<div class="sp-fav-info-notice" role="note">'
+        '<span class="sp-fav-info-notice-icon" aria-hidden="true">i</span>'
+        '<p class="sp-fav-info-notice-text">'
         "Your favorite order is based on your personal preferences. "
         "The competitiveness rating and admission data are informational "
         "and do not predict your individual chance of admission."
+        "</p>"
+        "</div>",
+        unsafe_allow_html=True,
     )
 
     st.divider()
@@ -31989,9 +33383,12 @@ elif page == "My Favorite Colleges":
             "Your Ranked College List"
         )
 
-        st.caption(
+        st.markdown(
+            '<p class="sp-fav-rank-hint">'
             "Use the arrows to move schools up or down. "
             "#1 is currently your favorite."
+            "</p>",
+            unsafe_allow_html=True,
         )
 
         for index, favorite in enumerate(
