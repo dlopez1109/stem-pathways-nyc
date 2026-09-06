@@ -63,7 +63,7 @@ def college_logo_slug(college_name):
 
 
 @st.cache_data(show_spinner=False)
-def load_stem_college_catalog():
+def load_stem_college_catalog(): 
     """Load curated Scorecard/IPEDS-backed college catalog from data/college_catalog.json."""
 
     path = APP_DIR / "data" / "college_catalog.json"
@@ -2595,6 +2595,8 @@ st.markdown(
     }
 
     .sp-stem-dir-card {
+        display: flex;
+        flex-direction: column;
         background: #FFFFFF;
         border: 1px solid #D5DEE6;
         border-radius: 20px;
@@ -2603,6 +2605,7 @@ st.markdown(
         min-height: 0;
         height: 100%;
         box-sizing: border-box;
+        overflow: hidden;
         transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
@@ -2681,11 +2684,14 @@ st.markdown(
 
 
     .sp-stem-dir-top {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 0.7rem;
-        margin: 0 0 0.55rem 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: start;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0 0 1rem 0;
+        min-height: calc(1.18rem * 1.25 * 2);
     }
 
     .sp-stem-dir-title {
@@ -2696,8 +2702,10 @@ st.markdown(
         line-height: 1.25 !important;
         margin: 0 !important;
         letter-spacing: -0.02em;
-        flex: 1 1 auto;
         min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .sp-stem-dir-score {
@@ -2705,9 +2713,13 @@ st.markdown(
         border: 1px solid #D7EEF7;
         border-radius: 12px;
         padding: 0.38rem 0.55rem 0.4rem;
-        min-width: 4.6rem;
+        width: 125px;
+        min-width: 125px;
+        max-width: 125px;
+        flex-shrink: 0;
         text-align: right;
-        flex: 0 0 auto;
+        box-sizing: border-box;
+        justify-self: end;
     }
 
     .sp-stem-dir-score-label {
@@ -2736,6 +2748,7 @@ st.markdown(
         font-weight: 500 !important;
         line-height: 1.45 !important;
         margin: 0 0 0.8rem 0 !important;
+        flex: 1 1 auto;
     }
 
     .sp-stem-dir-bar {
@@ -2744,6 +2757,8 @@ st.markdown(
         border-radius: 999px;
         background: #E7F6FC;
         overflow: hidden;
+        margin-top: auto;
+        flex-shrink: 0;
     }
 
     .sp-stem-dir-bar-fill {
@@ -11208,6 +11223,8 @@ st.markdown(
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 0.55rem;
         margin: 0 0 0.85rem 0;
+        width: 100%;
+        min-width: 0;
     }
 
     .sp-career-explore-highlight {
@@ -11217,6 +11234,9 @@ st.markdown(
         padding: 0.6rem 0.7rem 0.55rem;
         box-sizing: border-box;
         min-height: 4.4rem;
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
     }
 
     .sp-career-explore-highlight-label {
@@ -11226,6 +11246,10 @@ st.markdown(
         font-size: 0.72rem !important;
         font-weight: 750 !important;
         line-height: 1.25 !important;
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .sp-career-explore-highlight-value {
@@ -11236,6 +11260,10 @@ st.markdown(
         font-weight: 800 !important;
         letter-spacing: -0.02em;
         line-height: 1.2 !important;
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .sp-career-explore-highlight-value.is-muted {
@@ -11249,7 +11277,7 @@ st.markdown(
         height: 0.35rem;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 750px) {
         .sp-major-direction-name {
             font-size: 1.4rem !important;
         }
@@ -11282,7 +11310,10 @@ st.markdown(
         box-sizing: border-box;
         color: #083C5D;
         height: 100%;
+        width: 100%;
+        max-width: 100%;
         min-width: 0;
+        overflow: hidden;
     }
 
     .sp-career-explore-title {
@@ -11293,6 +11324,10 @@ st.markdown(
         font-weight: 800 !important;
         letter-spacing: -0.02em;
         line-height: 1.18 !important;
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .sp-career-explore-major-block {
@@ -11501,14 +11536,20 @@ st.markdown(
         padding-top: 0.35rem;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1400px) {
         .sp-career-explore-grid {
             grid-template-columns: 1fr;
-            gap: 0.8rem;
+            gap: 0.9rem;
+        }
+    }
+
+    @media (max-width: 750px) {
+        .sp-career-explore-highlight-grid {
+            grid-template-columns: 1fr !important;
         }
 
         .sp-career-explore-salary-grid {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
         }
 
         .sp-career-explore-card {
@@ -11523,11 +11564,9 @@ st.markdown(
         .sp-career-explore-stat-value {
             font-size: 1.15rem !important;
         }
-    }
 
-    @media (max-width: 480px) {
-        .sp-career-explore-salary-grid {
-            grid-template-columns: 1fr;
+        .sp-career-explore-highlight-value {
+            font-size: 1.05rem !important;
         }
     }
 
@@ -12846,22 +12885,112 @@ st.markdown(
         -webkit-text-fill-color: #BDEBFA !important;
     }
 
-    /* Signed in as… — subtle */
-    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-setup-signed-in,
-    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-setup-signed-in *,
-    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.sp-profile-setup-signed-in) .sp-profile-setup-signed-in {
-        color: #8FA8B8 !important;
-        -webkit-text-fill-color: #8FA8B8 !important;
+    /* Signed in as… — pure white; beat global dark p/a rules */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in),
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) p,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) p *,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:link,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:visited,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:hover,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:focus,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:active,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in a,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in a:link,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in a:visited,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in a:hover,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in a:focus,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in a:active,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in strong {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        text-decoration-color: #FFFFFF !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in {
         font-size: 0.86rem !important;
         font-weight: 500 !important;
         line-height: 1.4 !important;
         margin: 0 0 1rem 0 !important;
+        max-width: 100% !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+        white-space: normal !important;
     }
 
-    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-profile-setup-signed-in strong {
-        color: #B8CAD8 !important;
-        -webkit-text-fill-color: #B8CAD8 !important;
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in a,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] p.sp-profile-setup-signed-in strong {
         font-weight: 650 !important;
+    }
+
+    /* Header description wraps inside the banner */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header * {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header p,
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] .sp-page-header p * {
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+        max-width: 100% !important;
+    }
+
+    /* Prevent horizontal overflow on Profile Setup */
+    html body .stApp:has(.sp-profile-setup-page),
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stAppViewContainer"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] > div {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stVerticalBlock"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stElementContainer"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stColumn"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stHorizontalBlock"],
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [data-testid="stHorizontalBlock"] > div {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Name / field rows: 2–3 cols with minmax(0,1fr); stack on narrow */
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(2):last-child) {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        column-gap: 1rem !important;
+        row-gap: 0.85rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        column-gap: 1rem !important;
+        row-gap: 0.85rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 0 !important;
+    }
+
+    html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"] > div {
+        min-width: 0 !important;
+        width: auto !important;
+        max-width: 100% !important;
+        flex: 1 1 0 !important;
+    }
+
+    @media (max-width: 720px) {
+        html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(2):last-child),
+        html body .stApp:has(.sp-profile-setup-page) [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) {
+            grid-template-columns: minmax(0, 1fr) !important;
+        }
     }
 
     /* Hide leftover page dividers if any */
@@ -13832,6 +13961,119 @@ st.markdown(
         opacity: 1 !important;
         font-weight: 700 !important;
         background: transparent !important;
+    }
+
+
+
+    /* ============================================================
+       SP_STEM_DIR_HEADER_V1
+       Keep Match Score badge inside Top STEM Directions cards
+       ============================================================ */
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-card,
+    html body .stApp [data-testid="stMain"] .sp-stem-path-grid .sp-stem-dir-card {
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        height: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-top,
+    html body .stApp [data-testid="stMain"] .sp-stem-path-grid .sp-stem-dir-top {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        gap: 12px !important;
+        align-items: start !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 0 0 1rem 0 !important;
+        min-height: calc(1.18rem * 1.25 * 2) !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-title,
+    html body .stApp [data-testid="stMain"] .sp-stem-path-grid .sp-stem-dir-title {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-score,
+    html body .stApp [data-testid="stMain"] .sp-stem-path-grid .sp-stem-dir-score {
+        width: 125px !important;
+        min-width: 125px !important;
+        max-width: 125px !important;
+        flex-shrink: 0 !important;
+        justify-self: end !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-why,
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-why-block {
+        flex: 1 1 auto !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-stem-dir-grid .sp-stem-dir-bar {
+        margin-top: auto !important;
+        flex-shrink: 0 !important;
+    }
+
+
+
+    /* ============================================================
+       SP_CAREER_EXPLORE_RESPONSIVE_V1
+       My STEM Pathway career cards stay contained on narrow screens
+       ============================================================ */
+    html body .stApp [data-testid="stMain"] .sp-career-explore-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-career-explore-card {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-career-explore-highlight-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-career-explore-highlight,
+    html body .stApp [data-testid="stMain"] .sp-career-explore-title,
+    html body .stApp [data-testid="stMain"] .sp-career-explore-desc,
+    html body .stApp [data-testid="stMain"] .sp-career-explore-highlight-label,
+    html body .stApp [data-testid="stMain"] .sp-career-explore-highlight-value,
+    html body .stApp [data-testid="stMain"] .sp-career-explore-stat,
+    html body .stApp [data-testid="stMain"] .sp-career-explore-stat-label,
+    html body .stApp [data-testid="stMain"] .sp-career-explore-stat-value,
+    html body .stApp [data-testid="stMain"] .sp-career-explore-stat-note {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+        box-sizing: border-box !important;
+    }
+
+    @media (max-width: 1400px) {
+        html body .stApp [data-testid="stMain"] .sp-career-explore-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    @media (max-width: 750px) {
+        html body .stApp [data-testid="stMain"] .sp-career-explore-highlight-grid {
+            grid-template-columns: 1fr !important;
+        }
     }
 
 
@@ -18570,6 +18812,70 @@ try:
     careers = pd.read_csv("data/careers.csv")
 except Exception:
     careers = pd.DataFrame()
+
+
+def career_database_stat_counts(careers_df=None):
+    """Count unique careers and primary majors from the careers DataFrame.
+
+    Blank / null-like values and duplicate career names are ignored.
+    Returns (career_count, major_count). Safe fallback is (0, 0).
+    """
+
+    career_count = 0
+    major_count = 0
+
+    try:
+
+        if careers_df is None:
+            careers_df = careers
+
+        if (
+            not isinstance(careers_df, pd.DataFrame)
+            or careers_df.empty
+        ):
+            return 0, 0
+
+        invalid = {
+            "",
+            "nan",
+            "none",
+            "null",
+        }
+
+        if "career" in careers_df.columns:
+            career_names = (
+                careers_df["career"]
+                .astype(str)
+                .str.strip()
+            )
+            career_valid = ~career_names.str.casefold().isin(
+                invalid
+            )
+            career_count = int(
+                career_names.loc[career_valid]
+                .str.casefold()
+                .nunique()
+            )
+
+        if "recommended_major" in careers_df.columns:
+            major_names = (
+                careers_df["recommended_major"]
+                .astype(str)
+                .str.strip()
+            )
+            major_valid = ~major_names.str.casefold().isin(
+                invalid
+            )
+            major_count = int(
+                major_names.loc[major_valid]
+                .str.casefold()
+                .nunique()
+            )
+
+    except Exception:
+        return 0, 0
+
+    return career_count, major_count
 
 
 # ============================================================
@@ -27576,11 +27882,21 @@ if not app_user:
     landing_research_count = 0
     landing_type_count = 0
     landing_college_count = 0
+    landing_career_count = 0
+    landing_major_count = 0
 
     try:
         landing_college_count = len(load_stem_college_catalog() or [])
     except Exception:
         landing_college_count = 0
+
+    try:
+        landing_career_count, landing_major_count = (
+            career_database_stat_counts(careers)
+        )
+    except Exception:
+        landing_career_count = 0
+        landing_major_count = 0
 
     try:
 
@@ -27776,23 +28092,14 @@ if not app_user:
         landing_opp_count,
         step=10,
     )
-    landing_field_value = landing_stat_count(
-        landing_field_count,
-        step=5,
-    )
-    landing_college_value = landing_stat_count(
-        landing_college_count,
-        step=5,
-    )
-    landing_free_value = landing_stat_count(
-        landing_free_count,
-        step=10,
-    )
+    landing_career_value = "400+"
+    landing_college_value = "100+"
+    landing_major_value = "100+"
 
     landing_opp_value_safe = html_module.escape(landing_opp_value)
-    landing_field_value_safe = html_module.escape(landing_field_value)
+    landing_career_value_safe = html_module.escape(landing_career_value)
     landing_college_value_safe = html_module.escape(landing_college_value)
-    landing_free_value_safe = html_module.escape(landing_free_value)
+    landing_major_value_safe = html_module.escape(landing_major_value)
 
     # Honor top-nav deep links without changing auth behavior.
     auth_query = str(st.query_params.get("auth", "") or "").strip().lower()
@@ -27844,15 +28151,15 @@ if not app_user:
                   <div class="sp-landing-evidence-label">Colleges</div>
                 </div>
                 <div class="sp-landing-evidence-item">
-                  <div class="sp-landing-evidence-value">{landing_field_value_safe}</div>
-                  <div class="sp-landing-evidence-label">STEM fields &amp; topics</div>
+                  <div class="sp-landing-evidence-value">{landing_career_value_safe}</div>
+                  <div class="sp-landing-evidence-label">Career Paths</div>
                 </div>
                 <div class="sp-landing-evidence-item">
-                  <div class="sp-landing-evidence-value">{landing_free_value_safe}</div>
-                  <div class="sp-landing-evidence-label">Free access</div>
+                  <div class="sp-landing-evidence-value">{landing_major_value_safe}</div>
+                  <div class="sp-landing-evidence-label">Majors Represented</div>
                 </div>
               </div>
-              <p class="sp-landing-evidence-note">Counts come from the live opportunity and college data in this app and update as listings change.</p>
+              <p class="sp-landing-evidence-note">Counts come from the live opportunity, college, and career data in this app and update as listings change.</p>
             </div>
           </section>
 
@@ -27939,6 +28246,9 @@ if not app_user:
             )
 
             if auth_mode == "Sign In":
+                if "email_keep_signed_in" not in st.session_state:
+                    st.session_state["email_keep_signed_in"] = True
+
                 with st.form("email_sign_in_form", clear_on_submit=False):
                     sign_in_email = st.text_input(
                         "Email",
@@ -27950,6 +28260,11 @@ if not app_user:
                         type="password",
                         key="email_sign_in_password",
                         autocomplete="current-password",
+                    )
+                    # Preference only in session state — does not enable 30-day persistence.
+                    keep_signed_in = st.checkbox(
+                        "Keep me signed in for 30 days.",
+                        key="email_keep_signed_in",
                     )
                     sign_in_submit = st.form_submit_button(
                         "Sign In with Email",
@@ -28237,6 +28552,71 @@ html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-
 html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button * {
   color: #041E33 !important; -webkit-text-fill-color: #041E33 !important;
 }
+/* Late overrides: white signed-in line + no horizontal overflow */
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] p.sp-profile-setup-signed-in,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] p.sp-profile-setup-signed-in *,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) p,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) p *,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] p.sp-profile-setup-signed-in a,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] p.sp-profile-setup-signed-in a:link,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] p.sp-profile-setup-signed-in a:visited,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] p.sp-profile-setup-signed-in a:hover,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] p.sp-profile-setup-signed-in a:focus,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] p.sp-profile-setup-signed-in a:active,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:link,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:visited,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:hover,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:focus,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(p.sp-profile-setup-signed-in) a:active {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  text-decoration-color: #FFFFFF !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMainBlockContainer"],
+html:has([class*="st-key-profile_setup_section_about"]) body .stApp [data-testid="stMainBlockContainer"] {
+  width: 100% !important;
+  max-width: min(1080px, 100%) !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] .sp-page-header,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] .sp-page-header p,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] .sp-page-header p * {
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  box-sizing: border-box !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(2):last-child) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  column-gap: 1rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  column-gap: 1rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-bottom: 0 !important;
+}
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"] > div,
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stColumn"],
+html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stElementContainer"] {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 720px) {
+  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(2):last-child),
+  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
 </style>
         """
     )
@@ -28257,7 +28637,8 @@ html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-
     signed_in_email = html_module.escape(str(user_email or ""))
     st.markdown(
         f'<p class="sp-profile-setup-signed-in">'
-        f"Signed in as <strong>{signed_in_email}</strong>"
+        f"Signed in as "
+        f'<a href="mailto:{signed_in_email}">{signed_in_email}</a>'
         "</p>",
         unsafe_allow_html=True,
     )
