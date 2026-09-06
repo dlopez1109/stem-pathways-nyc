@@ -13643,6 +13643,199 @@ st.markdown(
     }
 
 
+    /* ============================================================
+       SP_RESOURCES_CARDS_V1
+       Learning Resources white category cards. Placed after AUTH
+       contrast rules so st-key-resource_*_card chrome wins.
+       ============================================================ */
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_programming_card"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_research_card"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_engineering_card"]),
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_careers_card"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_programming_card"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_research_card"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_engineering_card"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_careers_card"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_programming_card"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_research_card"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_engineering_card"]),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_careers_card"]) {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D6E4EE !important;
+        border-top: 4px solid #35C5EA !important;
+        border-radius: 22px !important;
+        box-shadow: 0 10px 28px rgba(8, 59, 92, 0.08) !important;
+        padding: 32px !important;
+        margin: 0 0 1.35rem 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        transform: none !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_programming_card"]) > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_research_card"]) > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_engineering_card"]) > [data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_careers_card"]) > [data-testid="stVerticalBlock"] {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 0.85rem !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-title,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-title *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-title,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-title *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-title,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-title *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-title,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-title *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-title *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-title *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-title *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-title * {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        opacity: 1 !important;
+        font-weight: 800 !important;
+        background: none !important;
+        -webkit-background-clip: initial !important;
+        background-clip: initial !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-desc,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-desc *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-desc,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-desc *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-desc,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-desc *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-desc,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-desc *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-desc,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-desc *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-desc,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-desc *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-desc,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-desc *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-desc,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-desc * {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+        opacity: 1 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-deadline-pill,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-deadline-pill *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-deadline-pill,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-deadline-pill *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-deadline-pill,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-deadline-pill *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-deadline-pill,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-deadline-pill * {
+        background: #E7F6FC !important;
+        background-color: #E7F6FC !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        opacity: 1 !important;
+        border: 1px solid #B9E5F5 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] [data-testid="stBaseButton-secondary"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] [data-testid="stBaseButton-secondary"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] [data-testid="stBaseButton-secondary"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] [data-testid="stBaseButton-secondary"] {
+        width: 100% !important;
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #018FC7 !important;
+        border-radius: 12px !important;
+        color: #0098D4 !important;
+        -webkit-text-fill-color: #0098D4 !important;
+        opacity: 1 !important;
+        font-weight: 700 !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button span {
+        color: #0098D4 !important;
+        -webkit-text-fill-color: #0098D4 !important;
+        opacity: 1 !important;
+        font-weight: 700 !important;
+        background: transparent !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] [data-testid="stBaseButton-secondary"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] [data-testid="stBaseButton-secondary"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] [data-testid="stBaseButton-secondary"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] [data-testid="stBaseButton-secondary"]:hover {
+        background: #E7F6FC !important;
+        background-color: #E7F6FC !important;
+        border-color: #018FC7 !important;
+        color: #0098D4 !important;
+        -webkit-text-fill-color: #0098D4 !important;
+        opacity: 1 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button:hover *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button:hover *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button:hover *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button:hover * {
+        color: #0098D4 !important;
+        -webkit-text-fill-color: #0098D4 !important;
+        opacity: 1 !important;
+        font-weight: 700 !important;
+        background: transparent !important;
+    }
+
+
+
     </style>
     """,
     unsafe_allow_html=True
@@ -20371,6 +20564,614 @@ def college_explorer_explanations(
     return best_fit_because, unique_reasons[:5]
 
 
+STEM_DIRECTION_INTEREST_MAP = {
+    "Building or fixing things": "building",
+    "Computers and technology": "technology",
+    "Coding or making apps": "coding",
+    "Robots and electronics": "electronics",
+    "Math and solving puzzles": "math",
+    "Science and experiments": "science",
+    "Medicine and the human body": "medicine",
+    "Nature, climate, and the environment": "environment",
+    "Working with data and patterns": "data",
+    "Designing or creating new things": "design",
+    "Business, finance, or economics": "business",
+    "Architecture or city design": "architecture",
+}
+
+STEM_DIRECTION_INTEREST_PHRASE = {
+    "building": "hands-on building",
+    "technology": "technology",
+    "coding": "coding",
+    "electronics": "electronics",
+    "math": "math and problem-solving",
+    "science": "science and experiments",
+    "medicine": "medicine and the human body",
+    "environment": "climate and the environment",
+    "data": "working with data",
+    "design": "designing new things",
+    "business": "business and finance",
+    "architecture": "architecture and city design",
+}
+
+# What students commonly study or build in each major (unique phrasing).
+STEM_DIRECTION_FOCUS = {
+    "Electrical Engineering":
+        "circuits, signals, power systems, and electronic hardware",
+    "Computer Engineering":
+        "computer hardware, circuits, and software",
+    "Mechanical Engineering":
+        "machines, mechanical systems, energy conversion, and physical product design",
+    "Civil Engineering":
+        "bridges, buildings, transportation networks, and resilient infrastructure",
+    "Biomedical Engineering":
+        "medical devices, diagnostics, and technologies that support healthcare",
+    "Chemical Engineering":
+        "chemical processes, materials production, energy systems, and manufacturing scale-up",
+    "Aerospace Engineering":
+        "aircraft, spacecraft, propulsion, and flight systems",
+    "Environmental Engineering":
+        "clean water, air quality, waste treatment, and environmental protection systems",
+    "Industrial Engineering":
+        "efficient workflows, factories, logistics, and human-centered process design",
+    "Robotics":
+        "robots and other automated systems that sense, decide, and act",
+    "Mechatronics":
+        "smart machines that combine mechanical parts, electronics, and control software",
+    "Materials Science / Engineering":
+        "the structure and performance of metals, polymers, ceramics, and advanced materials",
+    "Nuclear Engineering":
+        "nuclear energy systems, radiation applications, and reactor technology",
+    "Systems Engineering":
+        "large technical systems that integrate hardware, software, people, and processes",
+    "Engineering Physics":
+        "advanced physics applied to electronics, optics, materials, and instrumentation",
+    "Bioengineering":
+        "biological systems engineered into devices, therapies, and living technologies",
+    "General Engineering / Undecided Engineering":
+        "core engineering problem-solving across multiple technical disciplines",
+    "Engineering":
+        "designing, testing, and improving real-world technical systems",
+    "Computer Science":
+        "algorithms, software development, data, and computational problem-solving",
+    "Software Engineering":
+        "large software systems through design, testing, collaboration, and maintenance",
+    "Artificial Intelligence":
+        "creating systems that learn, recognize patterns, and solve complex problems",
+    "Machine Learning":
+        "statistical models and algorithms that improve as they learn from data",
+    "Cybersecurity":
+        "protecting networks, software, and digital systems from threats",
+    "Data Science":
+        "collecting, analyzing, and interpreting data to reveal patterns and support decisions",
+    "Information Technology / Information Science":
+        "organizational computing systems, networks, and digital information tools",
+    "Information Systems":
+        "business technology systems that store, share, and manage information",
+    "Management Information Systems":
+        "technology solutions that help organizations operate and make decisions",
+    "Game Development":
+        "interactive games through programming, design, graphics, and player experience",
+    "Human-Computer Interaction":
+        "usable interfaces that connect people with digital products and services",
+    "Web Development":
+        "websites and web applications people use every day",
+    "Computational Science":
+        "scientific problems solved with modeling, simulation, and high-performance computing",
+    "Biology":
+        "living systems, from cells and genetics to organisms and ecosystems",
+    "Molecular Biology":
+        "molecules, genes, and cellular processes that drive life",
+    "Biomedical Science":
+        "human biology, disease mechanisms, and laboratory approaches to health",
+    "Neuroscience":
+        "the brain and nervous system through biology, psychology, and data analysis",
+    "Medicine / Pre-Med":
+        "human health, disease, and the scientific foundations of medical care",
+    "Medicine / Health Science":
+        "health science concepts used to understand the body and support patient care",
+    "Public Health":
+        "community health, disease prevention, and population-level wellness strategies",
+    "Genetics / Genomics":
+        "DNA, inheritance, and genome analysis used in research and medicine",
+    "Biotechnology":
+        "biological tools and processes for medicine, agriculture, and industry",
+    "Bioinformatics / Computational Biology":
+        "biological data analyzed with computing, algorithms, and statistical models",
+    "Psychology / Cognitive Science":
+        "how people think, learn, and behave using scientific methods",
+    "Cognitive Science":
+        "mind and intelligence across psychology, computing, linguistics, and neuroscience",
+    "Pharmacy / Pharmaceutical Science":
+        "medicines, drug development, and how treatments interact with the body",
+    "Biochemistry":
+        "chemical processes inside living systems that support health and biotechnology",
+    "Health Science":
+        "scientific approaches to health, wellness, and healthcare practice",
+    "Cancer Research":
+        "cancer biology, detection, treatment strategies, and related laboratory research",
+    "Physics":
+        "energy, matter, forces, and the principles behind technology and the universe",
+    "Applied Physics":
+        "physics concepts turned into practical tools in electronics, optics, and materials",
+    "Chemistry":
+        "how substances interact and transform in materials, medicines, and energy systems",
+    "Astronomy / Astrophysics":
+        "stars, planets, galaxies, and the physical laws that shape the universe",
+    "Materials Science":
+        "how material structure affects strength, conductivity, durability, and performance",
+    "Nuclear Science":
+        "nuclear processes, radiation, and their scientific and technological applications",
+    "Space Science":
+        "space environments, planetary systems, and technologies used to explore beyond Earth",
+    "Meteorology / Atmospheric Science":
+        "weather, climate dynamics, and the physics of Earth's atmosphere",
+    "Oceanography":
+        "ocean systems, marine environments, and the physical and biological processes within them",
+    "Environmental Science":
+        "ecosystems, climate, pollution, and solutions for a healthier planet",
+    "Climate Science":
+        "Earth's climate system using physics, data, and environmental analysis",
+    "Ecology":
+        "relationships among organisms and their environments across habitats and scales",
+    "Earth Science":
+        "Earth's structure, history, and natural processes from rocks to climate systems",
+    "Geology":
+        "rocks, minerals, Earth history, and the processes that shape landscapes",
+    "Sustainability":
+        "environmental, social, and technical approaches to long-term resource stewardship",
+    "Environmental Studies / Sustainability":
+        "human-environment interactions and strategies for sustainable communities",
+    "Marine Science":
+        "ocean life, coastal systems, and marine environments",
+    "Agricultural Science":
+        "food production, plant and soil systems, and sustainable farming methods",
+    "Food Science":
+        "food chemistry, safety, processing, and nutrition across the food system",
+    "Mathematics":
+        "abstract reasoning, proofs, and models that support science, engineering, and computing",
+    "Applied Mathematics":
+        "mathematical modeling used to solve problems in science, engineering, and industry",
+    "Statistics":
+        "data collection, uncertainty, and evidence-based conclusions",
+    "Actuarial Science":
+        "probability and statistics applied to risk in insurance, finance, and planning",
+    "Operations Research":
+        "optimization and mathematical models that improve complex decisions and logistics",
+    "Financial Engineering":
+        "advanced math, statistics, and computing for pricing, risk, and financial models",
+    "Quantitative Finance":
+        "markets and investments analyzed with mathematics, data, and programming",
+    "FinTech":
+        "financial products and services built with software, data, and digital platforms",
+    "Business Analytics":
+        "business decisions improved with data analysis, statistics, and modeling",
+    "Quantitative Economics":
+        "economic behavior analyzed with mathematical models, data, and statistical tools",
+    "Finance":
+        "investing, markets, corporate finance, and how money and risk are managed",
+    "Business":
+        "organizations, strategy, and how companies create and deliver value",
+    "Economics":
+        "how people, firms, and markets make decisions within economic systems",
+    "Accounting":
+        "financial reporting, auditing, and how organizations track performance",
+    "Entrepreneurship":
+        "turning ideas into products, ventures, and growing businesses",
+    "Supply Chain Management":
+        "moving products and information efficiently across suppliers, factories, and customers",
+    "Operations Management":
+        "day-to-day processes, productivity, and service delivery inside organizations",
+    "Architecture":
+        "designed spaces that blend creativity, structure, and human needs",
+    "Architectural Engineering":
+        "building systems—structural, mechanical, and electrical—that make designs work",
+    "Urban Planning":
+        "cities and communities through land use, transportation, housing, and public space",
+    "Construction Engineering":
+        "methods and systems used to plan and build large construction projects",
+    "Construction Management":
+        "project planning, budgeting, and coordination for building and infrastructure work",
+    "Structural Engineering":
+        "safe, efficient structures that carry loads in buildings, bridges, and frameworks",
+    "Industrial Design":
+        "useful, human-centered products that combine form, function, and usability",
+    "STEM / General Science":
+        "foundational science and quantitative skills across multiple STEM areas",
+    "Undecided STEM":
+        "exploring science, technology, engineering, and math before specializing",
+}
+
+# Which quiz interests matter most for each major (ordered).
+STEM_DIRECTION_INTEREST_PRIORITY = {
+    "Electrical Engineering": ["electronics", "building", "math", "technology", "design"],
+    "Computer Engineering": ["building", "electronics", "coding", "technology", "design"],
+    "Mechanical Engineering": ["building", "design", "math", "electronics", "science"],
+    "Civil Engineering": ["building", "architecture", "design", "math", "environment"],
+    "Biomedical Engineering": ["medicine", "building", "design", "science", "electronics", "coding"],
+    "Chemical Engineering": ["science", "math", "environment", "design", "medicine"],
+    "Aerospace Engineering": ["building", "math", "design", "science", "electronics"],
+    "Environmental Engineering": ["environment", "building", "science", "math", "design"],
+    "Industrial Engineering": ["math", "data", "business", "design", "building"],
+    "Robotics": ["building", "electronics", "coding", "design", "technology"],
+    "Mechatronics": ["building", "electronics", "coding", "design", "technology"],
+    "Materials Science / Engineering": ["science", "building", "design", "math", "electronics"],
+    "Nuclear Engineering": ["science", "math", "building", "electronics"],
+    "Systems Engineering": ["technology", "coding", "math", "design", "data"],
+    "Engineering Physics": ["math", "science", "electronics", "building", "technology"],
+    "Bioengineering": ["medicine", "science", "building", "design", "coding"],
+    "General Engineering / Undecided Engineering": ["building", "design", "math", "science", "technology"],
+    "Engineering": ["building", "design", "math", "science", "technology"],
+    "Computer Science": ["coding", "technology", "data", "math", "design"],
+    "Software Engineering": ["coding", "technology", "design", "data", "math"],
+    "Artificial Intelligence": ["coding", "technology", "data", "math", "science"],
+    "Machine Learning": ["data", "coding", "math", "technology", "science"],
+    "Cybersecurity": ["coding", "technology", "math", "data"],
+    "Data Science": ["data", "math", "coding", "technology", "science"],
+    "Information Technology / Information Science": ["technology", "coding", "data", "business"],
+    "Information Systems": ["technology", "business", "data", "coding"],
+    "Management Information Systems": ["business", "technology", "data", "coding"],
+    "Game Development": ["coding", "design", "technology", "math"],
+    "Human-Computer Interaction": ["design", "coding", "technology", "data"],
+    "Web Development": ["coding", "design", "technology"],
+    "Computational Science": ["coding", "math", "science", "data", "technology"],
+    "Biology": ["science", "medicine", "environment"],
+    "Molecular Biology": ["science", "medicine", "data"],
+    "Biomedical Science": ["medicine", "science"],
+    "Neuroscience": ["medicine", "science", "data", "math"],
+    "Medicine / Pre-Med": ["medicine", "science"],
+    "Medicine / Health Science": ["medicine", "science"],
+    "Public Health": ["medicine", "data", "science", "environment"],
+    "Genetics / Genomics": ["science", "medicine", "data", "coding"],
+    "Biotechnology": ["science", "medicine", "design"],
+    "Bioinformatics / Computational Biology": ["coding", "data", "science", "medicine", "math"],
+    "Psychology / Cognitive Science": ["science", "data", "medicine"],
+    "Cognitive Science": ["science", "data", "coding", "medicine"],
+    "Pharmacy / Pharmaceutical Science": ["medicine", "science"],
+    "Biochemistry": ["science", "medicine"],
+    "Health Science": ["medicine", "science"],
+    "Cancer Research": ["medicine", "science", "data"],
+    "Physics": ["math", "science", "electronics", "technology"],
+    "Applied Physics": ["science", "math", "electronics", "technology", "building"],
+    "Chemistry": ["science", "math", "medicine", "environment"],
+    "Astronomy / Astrophysics": ["science", "math", "technology", "data"],
+    "Materials Science": ["science", "math", "building", "design"],
+    "Nuclear Science": ["science", "math"],
+    "Space Science": ["science", "math", "technology", "building"],
+    "Meteorology / Atmospheric Science": ["science", "environment", "data", "math"],
+    "Oceanography": ["science", "environment", "data"],
+    "Environmental Science": ["environment", "science", "data"],
+    "Climate Science": ["environment", "science", "data", "math"],
+    "Ecology": ["environment", "science"],
+    "Earth Science": ["environment", "science"],
+    "Geology": ["environment", "science", "building"],
+    "Sustainability": ["environment", "science", "design", "business"],
+    "Environmental Studies / Sustainability": ["environment", "science", "design"],
+    "Marine Science": ["environment", "science"],
+    "Agricultural Science": ["environment", "science", "building"],
+    "Food Science": ["science", "medicine", "environment"],
+    "Mathematics": ["math", "data", "science"],
+    "Applied Mathematics": ["math", "data", "coding", "science"],
+    "Statistics": ["data", "math", "coding"],
+    "Actuarial Science": ["math", "data", "business"],
+    "Operations Research": ["math", "data", "business", "coding"],
+    "Financial Engineering": ["math", "data", "coding", "business"],
+    "Quantitative Finance": ["math", "data", "coding", "business"],
+    "FinTech": ["coding", "business", "data", "technology", "math"],
+    "Business Analytics": ["data", "business", "math", "coding"],
+    "Quantitative Economics": ["math", "data", "business"],
+    "Finance": ["business", "math", "data"],
+    "Business": ["business", "data", "design"],
+    "Economics": ["business", "math", "data"],
+    "Accounting": ["business", "math", "data"],
+    "Entrepreneurship": ["business", "design", "building", "technology"],
+    "Supply Chain Management": ["business", "data", "math"],
+    "Operations Management": ["business", "data", "math"],
+    "Architecture": ["architecture", "design", "building"],
+    "Architectural Engineering": ["architecture", "building", "design", "math"],
+    "Urban Planning": ["architecture", "environment", "design", "business"],
+    "Construction Engineering": ["building", "architecture", "math", "design"],
+    "Construction Management": ["building", "architecture", "business"],
+    "Structural Engineering": ["building", "architecture", "math", "design"],
+    "Industrial Design": ["design", "building", "technology", "architecture"],
+    "STEM / General Science": ["science", "math", "technology", "building"],
+    "Undecided STEM": ["science", "math", "technology", "building", "design"],
+}
+
+
+def _stem_direction_selected_interests(interests):
+    selected = []
+    selected_keys = []
+    for item in interests or []:
+        key = STEM_DIRECTION_INTEREST_MAP.get(str(item).strip())
+        if not key or key in selected_keys:
+            continue
+        selected_keys.append(key)
+        selected.append(key)
+    return selected
+
+
+def _stem_direction_relevant_interests(field, selected_keys, limit=3):
+    priority = list(
+        STEM_DIRECTION_INTEREST_PRIORITY.get(field, [])
+    )
+    if not priority:
+        field_lower = str(field or "").lower()
+        if "robot" in field_lower or "mechatronic" in field_lower:
+            priority = ["building", "electronics", "coding", "design"]
+        elif "engineering" in field_lower:
+            priority = ["building", "design", "electronics", "math", "coding"]
+        elif any(
+            token in field_lower
+            for token in ["computer", "software", "cyber", "data", "artificial", "machine learning", "web", "game"]
+        ):
+            priority = ["coding", "technology", "data", "math"]
+        elif any(
+            token in field_lower
+            for token in ["bio", "health", "medicine", "neuro", "pharm", "genetic"]
+        ):
+            priority = ["medicine", "science", "data"]
+        elif any(
+            token in field_lower
+            for token in ["environment", "climate", "earth", "ecology", "marine", "geo"]
+        ):
+            priority = ["environment", "science", "data"]
+        elif any(
+            token in field_lower
+            for token in ["math", "stat", "actuar", "operations research"]
+        ):
+            priority = ["math", "data", "coding"]
+        elif any(
+            token in field_lower
+            for token in ["finance", "econom", "business", "account"]
+        ):
+            priority = ["business", "math", "data"]
+        elif any(
+            token in field_lower
+            for token in ["architect", "urban", "construction", "structural", "industrial design"]
+        ):
+            priority = ["architecture", "design", "building"]
+        else:
+            priority = list(selected_keys)
+
+    ranked = [key for key in priority if key in selected_keys]
+    # Only use interests that meaningfully relate to this major.
+    # Unrelated selections fall through to subject / focus-only copy.
+    return ranked[:limit]
+
+
+def _stem_direction_interest_text(keys, phrase_overrides=None):
+    overrides = phrase_overrides or {}
+    phrases = []
+    for key in keys:
+        phrase = overrides.get(key) or STEM_DIRECTION_INTEREST_PHRASE.get(key)
+        if phrase and phrase not in phrases:
+            phrases.append(phrase)
+    return _join_english(phrases)
+
+
+def _stem_direction_focus_text(field):
+    focus = STEM_DIRECTION_FOCUS.get(field)
+    if focus:
+        return focus
+
+    field_lower = str(field or "").lower()
+    name = _field_sentence_name(field) or "this STEM area"
+
+    if "engineering" in field_lower:
+        return (
+            f"technical problem-solving used to design and improve systems in {name}"
+        )
+    if any(token in field_lower for token in ["computer", "software", "cyber", "data", "web"]):
+        return (
+            f"computing, software, and digital problem-solving in {name}"
+        )
+    if any(token in field_lower for token in ["bio", "health", "medicine", "neuro"]):
+        return (
+            f"living systems, health questions, and scientific investigation in {name}"
+        )
+    if any(token in field_lower for token in ["environment", "climate", "earth", "ecology"]):
+        return (
+            f"environmental systems and sustainability challenges in {name}"
+        )
+    if any(token in field_lower for token in ["math", "stat", "actuar"]):
+        return (
+            f"mathematical reasoning and quantitative models in {name}"
+        )
+    if any(token in field_lower for token in ["finance", "econom", "business"]):
+        return (
+            f"quantitative thinking applied to markets, organizations, and decisions in {name}"
+        )
+    return (
+        f"hands-on STEM learning and problem-solving in {name}"
+    )
+
+
+def _stem_direction_custom_reason(field, relevant_keys):
+    """Major-specific templates when the student's interests align."""
+
+    if not relevant_keys:
+        return None
+
+    if field == "Artificial Intelligence":
+        keys = _stem_direction_relevant_interests(
+            field,
+            relevant_keys,
+            limit=2
+        )
+        # Prefer coding + technology wording from the quiz examples.
+        ordered = []
+        for key in ["coding", "technology", "data", "math"]:
+            if key in keys and key not in ordered:
+                ordered.append(key)
+        for key in keys:
+            if key not in ordered:
+                ordered.append(key)
+        ordered = ordered[:2]
+        interest_text = _stem_direction_interest_text(
+            ordered,
+            {"technology": "technology", "coding": "coding"}
+        )
+        if interest_text:
+            return (
+                f"Your interest in {interest_text} aligns with a field focused on "
+                "creating systems that learn, recognize patterns, and solve complex problems."
+            )
+
+    if field == "Computer Engineering":
+        ordered = []
+        for key in ["building", "electronics", "coding", "technology", "design"]:
+            if key in relevant_keys and key not in ordered:
+                ordered.append(key)
+        ordered = ordered[:3]
+        interest_text = _stem_direction_interest_text(ordered)
+        if interest_text:
+            return (
+                f"Your interest in {interest_text} fits a major that combines "
+                "computer hardware, circuits, and software."
+            )
+
+    if field == "Robotics":
+        ordered = []
+        for key in ["building", "electronics", "coding", "design", "technology"]:
+            if key in relevant_keys and key not in ordered:
+                ordered.append(key)
+        ordered = ordered[:3]
+        interest_text = _stem_direction_interest_text(
+            ordered,
+            {
+                "building": "building",
+                "coding": "programming",
+            }
+        )
+        if interest_text:
+            if len(ordered) >= 3:
+                return (
+                    f"You enjoy {interest_text}—three skills used to design and "
+                    "control robots and other automated systems."
+                )
+            return (
+                f"You enjoy {interest_text}—skills used to design and control "
+                "robots and other automated systems."
+            )
+
+    if field == "Computer Science":
+        ordered = []
+        for key in ["coding", "technology", "data", "math"]:
+            if key in relevant_keys and key not in ordered:
+                ordered.append(key)
+        ordered = ordered[:2]
+        interest_text = _stem_direction_interest_text(
+            ordered,
+            {"technology": "computers", "coding": "coding"}
+        )
+        if interest_text:
+            return (
+                f"Your interest in {interest_text} connects well with studying "
+                "algorithms, software development, data, and computational problem-solving."
+            )
+
+    return None
+
+
+def _stem_direction_generic_reason(field, relevant_keys):
+    focus = _stem_direction_focus_text(field)
+    interest_text = _stem_direction_interest_text(relevant_keys)
+    if not interest_text:
+        return None
+
+    field_lower = str(field or "").lower()
+
+    # Vary connectors so related majors do not sound identical.
+    if any(token in field_lower for token in ["artificial", "machine learning", "data science"]):
+        return (
+            f"Your interest in {interest_text} aligns with a field focused on {focus}."
+        )
+    if "engineering" in field_lower or field in {"Robotics", "Mechatronics"}:
+        return (
+            f"Your interest in {interest_text} fits a major centered on {focus}."
+        )
+    if any(token in field_lower for token in ["computer", "software", "cyber", "web", "game"]):
+        return (
+            f"Your interest in {interest_text} connects well with studying {focus}."
+        )
+    if any(token in field_lower for token in ["bio", "health", "medicine", "neuro", "pharm"]):
+        return (
+            f"Your curiosity about {interest_text} lines up with coursework and research on {focus}."
+        )
+    if any(token in field_lower for token in ["environment", "climate", "earth", "ecology", "marine"]):
+        return (
+            f"Your interest in {interest_text} points toward exploring {focus}."
+        )
+    if any(token in field_lower for token in ["math", "stat", "actuar", "operations research"]):
+        return (
+            f"Your interest in {interest_text} supports a path focused on {focus}."
+        )
+    if any(token in field_lower for token in ["finance", "econom", "business", "account", "fintech"]):
+        return (
+            f"Your interest in {interest_text} connects with learning about {focus}."
+        )
+    if any(token in field_lower for token in ["architect", "urban", "construction", "structural", "industrial design"]):
+        return (
+            f"Your interest in {interest_text} fits work that involves {focus}."
+        )
+    return (
+        f"Your interest in {interest_text} connects with studying {focus}."
+    )
+
+
+def generate_stem_direction_reason(
+    field,
+    interests=None,
+    favorite_subject="",
+    work_style="",
+    work_environment=""
+):
+    """Build a unique 1–2 sentence explanation for a recommended STEM major."""
+
+    canonical = canonicalize_stem_field(field) if field else ""
+    major = canonical or str(field or "").strip() or "STEM"
+
+    selected_keys = _stem_direction_selected_interests(interests)
+    relevant_keys = _stem_direction_relevant_interests(
+        major,
+        selected_keys,
+        limit=3
+    )
+
+    custom = _stem_direction_custom_reason(major, relevant_keys)
+    if custom:
+        return custom
+
+    generic = _stem_direction_generic_reason(major, relevant_keys)
+    if generic:
+        return generic
+
+    focus = _stem_direction_focus_text(major)
+
+    subject = str(favorite_subject or "").strip()
+    if subject and subject not in {"I'm not sure", "I'm not sure yet"}:
+        return (
+            f"Your enjoyment of {subject.lower()} connects with studying {focus}."
+        )
+
+    style = str(work_style or "").strip()
+    if style and style not in {"I'm not sure", "I'm not sure yet"}:
+        return (
+            f"Wanting to spend more time {style.lower()} fits a path focused on {focus}."
+        )
+
+    environment = str(work_environment or "").strip()
+    if environment and environment not in {"I'm not sure", "I'm not sure yet"}:
+        return (
+            f"Preferring to work with {environment.lower()} aligns with learning about {focus}."
+        )
+
+    return (
+        f"Based on your STEM interest answers, this direction focuses on {focus}."
+    )
+
+
 def stem_direction_explanation(
     field,
     interests=None,
@@ -20378,116 +21179,12 @@ def stem_direction_explanation(
     work_style="",
     work_environment=""
 ):
-
-    field_lower = str(field or "").lower()
-    selected = []
-
-    interest_labels = {
-        "Building or fixing things": "hands-on building",
-        "Computers and technology": "computers and technology",
-        "Coding or making apps": "coding",
-        "Robots and electronics": "electronics",
-        "Math and solving puzzles": "math and problem-solving",
-        "Science and experiments": "science and experiments",
-        "Medicine and the human body": "medicine and the human body",
-        "Nature, climate, and the environment": "climate and the environment",
-        "Working with data and patterns": "working with data",
-        "Designing or creating new things": "designing new things"
-    }
-
-    for item in interests or []:
-        label = interest_labels.get(item)
-        if label and label not in selected:
-            selected.append(label)
-
-    if (
-        "engineering" in field_lower
-        or
-        field in [
-            "Robotics",
-            "Mechanical Engineering",
-            "Electrical Engineering",
-            "Computer Engineering"
-        ]
-    ):
-        preferred = [
-            "hands-on building",
-            "electronics",
-            "coding",
-            "designing new things"
-        ]
-    elif any(
-        token in field_lower
-        for token in ["computer", "data", "artificial", "cyber"]
-    ):
-        preferred = [
-            "coding",
-            "computers and technology",
-            "working with data"
-        ]
-    elif any(
-        token in field_lower
-        for token in ["bio", "health", "neuro", "medicine"]
-    ):
-        preferred = [
-            "medicine and the human body",
-            "science and experiments"
-        ]
-    elif any(
-        token in field_lower
-        for token in ["environment", "climate", "earth"]
-    ):
-        preferred = [
-            "climate and the environment",
-            "science and experiments"
-        ]
-    elif any(
-        token in field_lower
-        for token in ["math", "physics", "stat"]
-    ):
-        preferred = [
-            "math and problem-solving",
-            "working with data"
-        ]
-    else:
-        preferred = selected[:4]
-
-    relevant = [
-        item
-        for item in preferred
-        if item in selected
-    ] or selected[:4]
-
-    if relevant:
-        return (
-            "Recommended because you selected "
-            + _join_english(relevant)
-            + "."
-        )
-
-    if favorite_subject and favorite_subject != "I'm not sure":
-        return (
-            "Recommended because you enjoy "
-            + favorite_subject.lower()
-            + "."
-        )
-
-    if work_style and work_style != "I'm not sure":
-        return (
-            "Recommended because you want to spend more time "
-            + work_style.lower()
-            + "."
-        )
-
-    if work_environment and work_environment != "I'm not sure":
-        return (
-            "Recommended because you prefer working with "
-            + work_environment.lower()
-            + "."
-        )
-
-    return (
-        "Recommended based on your current STEM interest answers."
+    return generate_stem_direction_reason(
+        field,
+        interests=interests,
+        favorite_subject=favorite_subject,
+        work_style=work_style,
+        work_environment=work_environment
     )
 
 
@@ -20686,7 +21383,7 @@ def resource_track_card_html(
     button_page=""
 ):
 
-    title_safe = html_module.escape(title or "")
+    title_html = html_module.escape(title or "")
     desc_safe = html_module.escape(description or "")
 
     skill_labels = []
@@ -20712,21 +21409,14 @@ def resource_track_card_html(
             "</div>"
         )
 
-    action_html = ""
-    if button_label and button_page:
-        action_html = (
-            '<a class="sp-resource-card-action" '
-            f'href="?resource_go={quote_plus(str(button_page))}">'
-            + html_module.escape(button_label)
-            + "</a>"
-        )
-
+    # Content uses original Learning Resources typography/tag classes.
+    # Card chrome + action button live on the Streamlit track container
+    # so navigation can use current_page + st.rerun without links.
     return (
-        '<div class="sp-resource-card">'
-        f'<h3 class="sp-resource-card-title">{title_safe}</h3>'
+        '<div class="sp-resource-card-inner">'
+        f'<h3 class="sp-resource-card-title">{title_html}</h3>'
         f'<p class="sp-resource-card-desc">{desc_safe}</p>'
         f"{tags_html}"
-        f"{action_html}"
         "</div>"
     )
 
@@ -36724,21 +37414,9 @@ elif page == "Projects":
 
 elif page == "Resources":
 
-    resource_go = st.query_params.get("resource_go")
-    allowed_resource_pages = {
-        "Projects",
-        "Opportunities",
-        "My STEM Pathway"
-    }
-
-    if resource_go in allowed_resource_pages:
-        st.session_state.current_page = resource_go
-        if "resource_go" in st.query_params:
-            del st.query_params["resource_go"]
-        st.rerun()
-
     resource_tracks = [
         {
+            "card_key": "resource_programming_card",
             "id": "programming",
             "title": "Programming",
             "description": (
@@ -36756,6 +37434,7 @@ elif page == "Resources":
             "key": "resource_btn_programming"
         },
         {
+            "card_key": "resource_research_card",
             "id": "research",
             "title": "Research & Innovation",
             "description": (
@@ -36773,6 +37452,7 @@ elif page == "Resources":
             "key": "resource_btn_research"
         },
         {
+            "card_key": "resource_engineering_card",
             "id": "engineering",
             "title": "Engineering & Design",
             "description": (
@@ -36791,6 +37471,7 @@ elif page == "Resources":
             "key": "resource_btn_engineering"
         },
         {
+            "card_key": "resource_careers_card",
             "id": "careers",
             "title": "STEM Careers",
             "description": (
@@ -36821,21 +37502,107 @@ elif page == "Resources":
         )
 
         st.html(
-            '<div class="sp-resource-grid">'
-            + "".join(
-                [
+            """
+<style id="sp-resources-cards-v1">
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"],
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"],
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"],
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"],
+html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_programming_card"]),
+html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_research_card"]),
+html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_engineering_card"]),
+html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-resource_careers_card"]) {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid #D6E4EE !important;
+  border-top: 4px solid #35C5EA !important;
+  border-radius: 22px !important;
+  box-shadow: 0 10px 28px rgba(8, 59, 92, 0.08) !important;
+  padding: 32px !important;
+  margin: 0 0 1.35rem 0 !important;
+}
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-title,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-title *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-title,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-title *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-title,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-title *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-title,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-title * {
+  color: #083B5C !important;
+  -webkit-text-fill-color: #083B5C !important;
+  opacity: 1 !important;
+  font-weight: 800 !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+}
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-desc,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] .sp-resource-card-desc *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-desc,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] .sp-resource-card-desc *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-desc,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] .sp-resource-card-desc *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-desc,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] .sp-resource-card-desc * {
+  color: #5A6A78 !important;
+  -webkit-text-fill-color: #5A6A78 !important;
+  opacity: 1 !important;
+}
+
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button * {
+  color: #0098D4 !important;
+  -webkit-text-fill-color: #0098D4 !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
+}
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button:hover,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button:hover,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button:hover,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button:hover {
+  background: #E7F6FC !important;
+  background-color: #E7F6FC !important;
+  border-color: #018FC7 !important;
+  color: #0098D4 !important;
+  -webkit-text-fill-color: #0098D4 !important;
+}
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_programming_card"] [class*="st-key-resource_btn_"] button:hover *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_research_card"] [class*="st-key-resource_btn_"] button:hover *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_engineering_card"] [class*="st-key-resource_btn_"] button:hover *,
+html body .stApp [data-testid="stMain"] [class*="st-key-resource_careers_card"] [class*="st-key-resource_btn_"] button:hover * {
+  color: #0098D4 !important;
+  -webkit-text-fill-color: #0098D4 !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
+}
+</style>
+            """
+        )
+
+        for track in resource_tracks:
+            with st.container(border=True, key=track["card_key"]):
+                st.html(
                     resource_track_card_html(
                         track["title"],
                         track["description"],
-                        track["skills"],
-                        track["button"],
-                        track["page"]
+                        track["skills"]
                     )
-                    for track in resource_tracks
-                ]
-            )
-            + "</div>"
-        )
+                )
+
+                if st.button(
+                    track["button"],
+                    key=track["key"],
+                    width="stretch"
+                ):
+                    st.session_state.current_page = track["page"]
+                    st.rerun()
 
 
 # ============================================================
