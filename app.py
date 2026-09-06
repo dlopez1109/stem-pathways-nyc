@@ -7,6 +7,7 @@ import json
 import re
 from datetime import datetime, timezone
 from functools import lru_cache
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.parse import quote_plus
 from supabase import create_client
@@ -11040,6 +11041,98 @@ st.markdown(
         font-weight: 500 !important;
         line-height: 1.4 !important;
         margin: 1rem 0 0.25rem 0 !important;
+    }
+
+    .sp-admin-pathway-meta {
+        color: #5A7080 !important;
+        -webkit-text-fill-color: #5A7080 !important;
+        font-size: 0.82rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0.15rem 0 0 0 !important;
+    }
+
+    .sp-admin-pathway-badge {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 0.18rem 0.55rem;
+        font-size: 0.74rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important;
+        margin: 0 0.25rem 0.25rem 0;
+    }
+
+    .sp-admin-pathway-badge-ok {
+        background: #E7F6EC;
+        border: 1px solid #9FD7AE;
+        color: #174C2C !important;
+        -webkit-text-fill-color: #174C2C !important;
+    }
+
+    .sp-admin-pathway-badge-missing {
+        background: #FFF4E8;
+        border: 1px solid #F0C9A0;
+        color: #8A4B12 !important;
+        -webkit-text-fill-color: #8A4B12 !important;
+    }
+
+    .sp-admin-pathway-list {
+        margin: 0.35rem 0 0.55rem 0;
+        padding-left: 1.1rem;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.88rem !important;
+        line-height: 1.45 !important;
+    }
+
+    .sp-admin-pathway-list li {
+        margin: 0 0 0.35rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+    }
+
+    .sp-admin-pathway-reason {
+        color: #5A7080 !important;
+        -webkit-text-fill-color: #5A7080 !important;
+        font-size: 0.82rem !important;
+        font-weight: 500 !important;
+    }
+
+    .sp-admin-pathway-subtitle {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.86rem !important;
+        font-weight: 700 !important;
+        margin: 0.65rem 0 0.2rem 0 !important;
+    }
+
+    .sp-admin-private-banner {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.55rem;
+        background: #123A4F;
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        border-radius: 12px;
+        padding: 0.7rem 0.9rem;
+        margin: 0 0 1rem 0;
+        box-sizing: border-box;
+    }
+
+    .sp-admin-private-banner p {
+        color: #D8EAF3 !important;
+        -webkit-text-fill-color: #D8EAF3 !important;
+        font-size: 0.84rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    @media (max-width: 720px) {
+        .sp-admin-metric-grid,
+        .sp-admin-metric-grid.sp-admin-metric-grid-2,
+        .sp-admin-metric-grid.sp-admin-metric-grid-3 {
+            grid-template-columns: minmax(0, 1fr) !important;
+        }
     }
 
     .sp-college-saved-toast {
@@ -27759,6 +27852,7 @@ def is_admin_user(email):
     )
 
 
+@st.cache_data(show_spinner=False)
 def load_admin_metrics():
 
     if not supabase_connected:
@@ -27819,6 +27913,331 @@ def load_admin_metrics():
             ] = []
 
     return data
+
+
+
+def clear_admin_accounts_caches():
+    """Clear only admin Auth account and student-activity data caches."""
+
+    load_admin_metrics.clear()
+    list_all_auth_users_admin.clear()
+
+
+def admin_browser_timezone():
+    """Administrator browser timezone for refresh timestamps."""
+
+    tz_name = getattr(st.context, "timezone", None) or "UTC"
+
+    try:
+        return ZoneInfo(str(tz_name))
+    except Exception:
+        return timezone.utc
+
+
+def format_admin_last_refresh(value):
+    if value is None:
+        return "Not refreshed yet"
+
+    try:
+        if isinstance(value, str):
+            value = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if value.tzinfo is None:
+            value = value.replace(tzinfo=timezone.utc)
+        local_dt = value.astimezone(admin_browser_timezone())
+        return local_dt.strftime("%b %d, %Y · %I:%M %p %Z").lstrip()
+    except Exception:
+        return "Unknown"
+
+
+def _admin_safe_display_name(user_metadata):
+    """Pull a display name from auth metadata without exposing secrets."""
+
+    if not isinstance(user_metadata, dict):
+        return ""
+
+    for key in (
+        "full_name",
+        "name",
+        "display_name",
+        "preferred_username",
+    ):
+        value = str(user_metadata.get(key) or "").strip()
+        if value and "token" not in key.lower():
+            return value
+
+    return ""
+
+
+def _admin_format_created_at(value):
+    if value is None:
+        return "Unknown"
+
+    try:
+        if hasattr(value, "isoformat"):
+            return value.strftime("%b %d, %Y")
+    except Exception:
+        pass
+
+    text = str(value).strip()
+    if not text:
+        return "Unknown"
+
+    # ISO-ish: 2024-01-15T...
+    if "T" in text:
+        text = text.split("T", 1)[0]
+
+    try:
+        dt = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        return dt.strftime("%b %d, %Y")
+    except Exception:
+        return text[:16]
+
+
+@st.cache_data(show_spinner=False)
+def list_all_auth_users_admin():
+    """
+    Server-side only: paginate Supabase Auth Admin list_users with the
+    service-role client. Returns (users, error_message).
+    Never returns passwords, tokens, or provider secrets.
+    """
+
+    if not supabase_connected or supabase is None:
+        return [], "Supabase is not connected."
+
+    auth_api = getattr(supabase, "auth", None)
+    admin_api = getattr(auth_api, "admin", None) if auth_api is not None else None
+
+    if admin_api is None:
+        return [], (
+            "Auth Admin API is unavailable on the current Supabase client "
+            "(missing auth.admin). Student Accounts cannot be counted from "
+            "Authentication until the service-role Auth Admin API is available."
+        )
+
+    if not hasattr(admin_api, "list_users"):
+        return [], (
+            "Auth Admin API is unavailable: list_users is not supported by "
+            "this Supabase client version. Student Accounts cannot be counted "
+            "from Authentication with the current client."
+        )
+
+    users = []
+    page = 1
+    per_page = 100
+
+    try:
+        while page <= 200:
+            batch = admin_api.list_users(page=page, per_page=per_page) or []
+            if not batch:
+                break
+
+            for user in batch:
+                user_sub = str(getattr(user, "id", "") or "").strip()
+                if not user_sub:
+                    continue
+
+                metadata = getattr(user, "user_metadata", None) or {}
+                created_at = getattr(user, "created_at", None)
+                if created_at is not None and hasattr(created_at, "isoformat"):
+                    created_at = created_at.isoformat()
+                else:
+                    created_at = str(created_at or "").strip() or None
+
+                users.append(
+                    {
+                        "user_sub": user_sub,
+                        "email": str(getattr(user, "email", "") or "").strip(),
+                        "created_at": created_at,
+                        "display_name": _admin_safe_display_name(metadata),
+                    }
+                )
+
+            if len(batch) < per_page:
+                break
+
+            page += 1
+
+    except Exception as exc:
+        log_supabase_exception("list_all_auth_users_admin")
+        return [], (
+            "Auth Admin list_users failed "
+            f"({type(exc).__name__}). Student Accounts cannot be counted "
+            "from Authentication until this error is resolved."
+        )
+
+    # Newest accounts first
+    users.sort(
+        key=lambda row: str(row.get("created_at") or ""),
+        reverse=True,
+    )
+
+    return users, None
+
+
+def admin_reproducible_major_recommendations(profile, limit=5):
+    """
+    Reproduce ranked potential majors from stored profile answers only.
+    Quiz session ratings are not persisted; profile interests/goals/experience
+    are used with the shared explanation helper.
+    """
+
+    if not profile:
+        return []
+
+    interests = [
+        str(item).strip()
+        for item in (profile.get("interests") or [])
+        if str(item).strip()
+    ]
+
+    if not interests:
+        return []
+
+    ranked = []
+    seen = set()
+
+    for interest in interests:
+        canonical = canonicalize_stem_field(interest) or interest
+        key = canonical.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+
+        reason = personalized_stem_major_explanation(
+            canonical,
+            profile=profile,
+        )
+        if not str(reason or "").strip():
+            reason = (
+                f"Selected as a STEM interest in the student profile "
+                f"({canonical})."
+            )
+
+        ranked.append(
+            {
+                "major": canonical,
+                "reason": str(reason).strip(),
+            }
+        )
+
+        if len(ranked) >= limit:
+            break
+
+    return ranked
+
+
+def build_admin_student_pathways(auth_users, admin_data):
+    """Join Auth users to student data by user_sub (UUID), never by email."""
+
+    profiles_by_sub = {}
+    for row in admin_data.get("profiles") or []:
+        user_sub = str(row.get("user_sub") or "").strip()
+        if user_sub:
+            profiles_by_sub[user_sub] = row
+
+    saved_by_sub = {}
+    for row in admin_data.get("saved_opportunities") or []:
+        user_sub = str(row.get("user_sub") or "").strip()
+        if not user_sub:
+            continue
+        saved_by_sub.setdefault(user_sub, []).append(row)
+
+    favorites_by_sub = {}
+    for row in admin_data.get("favorite_colleges") or []:
+        user_sub = str(row.get("user_sub") or "").strip()
+        if not user_sub:
+            continue
+        favorites_by_sub.setdefault(user_sub, []).append(row)
+
+    pathways = []
+
+    for auth_user in auth_users:
+        user_sub = str(auth_user.get("user_sub") or "").strip()
+        if not user_sub:
+            continue
+
+        profile_row = profiles_by_sub.get(user_sub)
+        profile_complete = bool(profile_row)
+
+        if profile_row:
+            first = str(profile_row.get("first_name") or "").strip()
+            middle = str(profile_row.get("middle_name") or "").strip()
+            last = str(profile_row.get("last_name") or "").strip()
+            name_parts = [part for part in (first, middle, last) if part]
+            student_name = " ".join(name_parts).strip()
+            grade = str(profile_row.get("grade") or "").strip()
+            borough = str(profile_row.get("borough") or "").strip()
+            profile = {
+                "first_name": first,
+                "middle_name": middle,
+                "last_name": last,
+                "grade": grade,
+                "borough": borough,
+                "interests": text_to_list(profile_row.get("interests")),
+                "experience_areas": text_to_list(
+                    profile_row.get("experience_areas")
+                ),
+                "goals": text_to_list(profile_row.get("goals")),
+                "exploration_stage": profile_row.get("exploration_stage"),
+                "confidence": profile_row.get("confidence"),
+                "weekly_time": profile_row.get("weekly_time"),
+                "financial_support": profile_row.get("financial_support"),
+            }
+        else:
+            student_name = str(auth_user.get("display_name") or "").strip()
+            grade = ""
+            borough = ""
+            profile = None
+
+        majors = admin_reproducible_major_recommendations(profile)
+
+        saved_rows = saved_by_sub.get(user_sub, [])
+        saved_programs = []
+        for row in saved_rows:
+            saved_programs.append(
+                {
+                    "name": str(row.get("opportunity_name") or "").strip()
+                    or "Untitled program",
+                    "status": str(row.get("status") or "Saved").strip()
+                    or "Saved",
+                }
+            )
+        saved_programs.sort(key=lambda item: item["name"].lower())
+
+        favorite_rows = favorites_by_sub.get(user_sub, [])
+        favorite_colleges = sorted(
+            {
+                str(row.get("college_name") or "").strip()
+                for row in favorite_rows
+                if str(row.get("college_name") or "").strip()
+            },
+            key=str.lower,
+        )
+
+        pathways.append(
+            {
+                "user_sub": user_sub,
+                "email": str(auth_user.get("email") or "").strip(),
+                "student_name": student_name,
+                "grade": grade,
+                "borough": borough,
+                "created_at": auth_user.get("created_at"),
+                "created_at_label": _admin_format_created_at(
+                    auth_user.get("created_at")
+                ),
+                "profile_complete": profile_complete,
+                "majors": majors,
+                "saved_programs": saved_programs,
+                "favorite_colleges": favorite_colleges,
+            }
+        )
+
+    pathways.sort(
+        key=lambda row: str(row.get("created_at") or ""),
+        reverse=True,
+    )
+
+    return pathways
 
 
 
@@ -38905,22 +39324,122 @@ elif page == "Admin Dashboard":
     render_page_header(
         "Admin Dashboard",
         (
-            "Review platform activity, student engagement, feedback, "
-            "and early usage trends for STEM Pathways NYC."
+            "Private administrator overview of registered accounts and each "
+            "student's STEM pathway activity."
         )
     )
 
     st.html(
         '<div class="sp-admin-page">'
+        '<div class="sp-admin-private-banner" role="note">'
+        '<p><strong>Private, administrator-only data.</strong> '
+        'This section shows account and pathway information for STEM Pathways NYC '
+        'admins only. Do not share, export, or download student account details. '
+        'Passwords, tokens, and authentication secrets are never shown here.</p>'
+        '</div>'
         '<div class="sp-admin-privacy" role="note">'
         '<div class="sp-admin-privacy-icon" aria-hidden="true">ℹ</div>'
-        '<p>This dashboard contains user-submitted information. '
-        'Use it only to improve the platform and avoid sharing personally identifiable data publicly.</p>'
+        '<p>Use this dashboard only to support students and improve the platform. '
+        'Join keys are authenticated user UUIDs, not email addresses.</p>'
         '</div>'
         '</div>'
     )
 
-    admin_data = load_admin_metrics()
+    admin_snapshot_key = "admin_accounts_snapshot"
+    admin_refresh_at_key = "admin_accounts_last_refresh_at"
+    admin_refresh_error_key = "admin_accounts_refresh_error"
+
+    # --------------------------------------------------------
+    # PLATFORM OVERVIEW (title + refresh control near accounts)
+    # --------------------------------------------------------
+
+    st.html(
+        '<div class="sp-admin-section" style="margin-bottom:0.45rem;">'
+        '<div class="sp-admin-section-title">Platform Overview</div>'
+        '<p class="sp-admin-section-sub">'
+        'Registered Authentication accounts, completed profiles, and early engagement.'
+        '</p>'
+        '</div>'
+    )
+
+    refresh_col, refresh_meta_col = st.columns([1.15, 2.85])
+
+    with refresh_col:
+        refresh_accounts_clicked = st.button(
+            "Refresh Accounts",
+            key="admin_refresh_accounts",
+            width="stretch",
+            help=(
+                "Reload every Supabase Auth account and student pathway activity. "
+                "Administrator only."
+            ),
+        )
+
+    with refresh_meta_col:
+        st.caption(
+            "Last successful refresh: "
+            + format_admin_last_refresh(
+                st.session_state.get(admin_refresh_at_key)
+            )
+        )
+
+    if refresh_accounts_clicked:
+        clear_admin_accounts_caches()
+        try:
+            if not supabase_connected:
+                raise RuntimeError("Supabase is not connected.")
+
+            refreshed_admin_data = load_admin_metrics()
+            refreshed_auth_users, refreshed_auth_error = (
+                list_all_auth_users_admin()
+            )
+
+            if refreshed_auth_error:
+                raise RuntimeError(refreshed_auth_error)
+
+            st.session_state[admin_snapshot_key] = {
+                "admin_data": refreshed_admin_data,
+                "auth_users": refreshed_auth_users,
+                "auth_users_error": None,
+            }
+            st.session_state[admin_refresh_at_key] = datetime.now(
+                timezone.utc
+            )
+            st.session_state[admin_refresh_error_key] = None
+        except Exception as refresh_exc:
+            st.session_state[admin_refresh_error_key] = (
+                "Account refresh failed. Showing the last successfully "
+                "loaded results. "
+                f"({type(refresh_exc).__name__}: {refresh_exc})"
+            )
+        st.rerun()
+
+    refresh_error_message = st.session_state.get(admin_refresh_error_key)
+    if refresh_error_message:
+        st.error(refresh_error_message)
+
+    if admin_snapshot_key not in st.session_state:
+        initial_admin_data = load_admin_metrics()
+        initial_auth_users, initial_auth_error = list_all_auth_users_admin()
+        st.session_state[admin_snapshot_key] = {
+            "admin_data": initial_admin_data,
+            "auth_users": initial_auth_users,
+            "auth_users_error": initial_auth_error,
+        }
+        if not initial_auth_error:
+            st.session_state[admin_refresh_at_key] = datetime.now(
+                timezone.utc
+            )
+
+    admin_snapshot = st.session_state.get(admin_snapshot_key) or {}
+    admin_data = admin_snapshot.get("admin_data") or {
+        "profiles": [],
+        "feedback": [],
+        "saved_opportunities": [],
+        "favorite_colleges": [],
+    }
+    auth_users = admin_snapshot.get("auth_users") or []
+    auth_users_error = admin_snapshot.get("auth_users_error")
 
     profiles = admin_data[
         "profiles"
@@ -38938,8 +39457,16 @@ elif page == "Admin Dashboard":
         "favorite_colleges"
     ]
 
+    if auth_users_error:
+        st.warning(auth_users_error)
+
+    student_pathways = build_admin_student_pathways(
+        auth_users,
+        admin_data,
+    )
+
     # --------------------------------------------------------
-    # PLATFORM OVERVIEW
+    # PLATFORM OVERVIEW METRICS
     # --------------------------------------------------------
 
     review_count = len(
@@ -39003,8 +39530,20 @@ elif page == "Admin Dashboard":
         else 0
     )
 
+    account_count = len(
+        auth_users
+    )
+
     profile_count = len(
         profiles
+    )
+
+    incomplete_count = sum(
+        1
+        for row in student_pathways
+        if not row.get(
+            "profile_complete"
+        )
     )
 
     saved_count = len(
@@ -39095,7 +39634,7 @@ elif page == "Admin Dashboard":
             )
 
         return (
-            '<div class="sp-admin-stat">'
+            f'<div class="sp-admin-stat">'
             f'<div class="sp-admin-stat-label">'
             f'{html_module.escape(str(label))}'
             f'</div>'
@@ -39106,22 +39645,29 @@ elif page == "Admin Dashboard":
             f'</div>'
         )
 
+    account_note = (
+        "Every Supabase Auth account"
+        if not auth_users_error
+        else "Auth Admin unavailable — see warning above"
+    )
+
     overview_html = (
         '<div class="sp-admin-section">'
-        '<div class="sp-admin-section-title">Platform Overview</div>'
-        '<p class="sp-admin-section-sub">'
-        'A quick snapshot of registered students, feedback volume, and early platform usage.'
-        '</p>'
         '<div class="sp-admin-metric-grid">'
         + admin_stat_card(
-            "Student Profiles",
+            "Student Accounts",
+            account_count if not auth_users_error else "—",
+            account_note,
+        )
+        + admin_stat_card(
+            "Completed Profiles",
             profile_count,
-            "Registered profiles"
+            f"{incomplete_count} without a completed profile",
         )
         + admin_stat_card(
             "Feedback Responses",
             review_count,
-            "Submitted responses"
+            "Submitted responses",
         )
         + admin_stat_card(
             "Average Rating",
@@ -39130,28 +39676,19 @@ elif page == "Admin Dashboard":
                 "Across all feedback"
                 if review_count
                 else "Waiting for feedback"
-            )
-        )
-        + admin_stat_card(
-            "Would Recommend",
-            recommend_display,
-            (
-                f"{recommend_yes} yes response(s)"
-                if review_count
-                else "Waiting for feedback"
-            )
+            ),
         )
         + '</div>'
         '<div class="sp-admin-metric-grid sp-admin-metric-grid-2">'
         + admin_stat_card(
             "Saved Opportunities",
             saved_count,
-            "Across all users"
+            "Across all users",
         )
         + admin_stat_card(
             "Favorite Colleges",
             favorite_count,
-            "Across all users"
+            "Across all users",
         )
         + '</div>'
         '</div>'
@@ -39162,14 +39699,14 @@ elif page == "Admin Dashboard":
     )
 
     # --------------------------------------------------------
-    # FEEDBACK ANALYTICS
+    # COMPACT FEEDBACK SUMMARY
     # --------------------------------------------------------
 
     st.html(
         '<div class="sp-admin-section" style="margin-bottom:0.35rem;">'
-        '<div class="sp-admin-section-title">Feedback Analytics</div>'
+        '<div class="sp-admin-section-title">Feedback Summary</div>'
         '<p class="sp-admin-section-sub">'
-        'Ratings, ease of use, recommendations, and the features students find most useful.'
+        'Compact pulse check. Student pathway selections are the primary admin focus below.'
         '</p>'
         '</div>'
     )
@@ -39184,711 +39721,390 @@ elif page == "Admin Dashboard":
 
     else:
 
-        ease_scores = [
-            int(
-                row.get(
-                    "ease_of_use",
-                    0
-                )
-                or 0
-            )
-            for row in feedback_rows
-            if row.get(
-                "ease_of_use"
-            )
-            is not None
-        ]
-
-        avg_ease = (
-            sum(
-                ease_scores
-            )
-            /
-            len(
-                ease_scores
-            )
-            if ease_scores
-            else 0
-        )
-
-        rating_counts = {
-            rating: 0
-            for rating in range(
-                1,
-                6
-            )
-        }
-
-        for row in feedback_rows:
-
-            try:
-
-                rating_counts[
-                    int(
-                        row.get(
-                            "rating",
-                            0
-                        )
-                    )
-                ] += 1
-
-            except Exception:
-
-                pass
-
-        recommend_counts = {
-            "Yes": 0,
-            "Maybe": 0,
-            "No": 0
-        }
-
-        for row in feedback_rows:
-
-            answer = str(
-                row.get(
-                    "would_recommend",
-                    ""
-                )
-            ).strip()
-
-            if answer in recommend_counts:
-
-                recommend_counts[
-                    answer
-                ] += 1
-
-        avg_ease_display = (
-            f"{avg_ease:.1f} / 5"
-            if ease_scores
-            else "No data"
-        )
-
-        analytics_cards = (
-            '<div class="sp-admin-analytics-grid">'
+        st.html(
+            '<div class="sp-admin-metric-grid sp-admin-metric-grid-3">'
             + admin_stat_card(
-                "Average Ease of Use",
-                avg_ease_display,
-                (
-                    "Self-reported ease score"
-                    if ease_scores
-                    else "No ease ratings yet"
-                )
-            )
-            + (
-                '<div class="sp-admin-stat">'
-                '<div class="sp-admin-stat-label">Average Rating</div>'
-                f'<div class="sp-admin-stat-value">'
-                f'{html_module.escape(avg_rating_display)}'
-                f'</div>'
-                + (
-                    admin_stars_html(
-                        avg_rating
-                    )
-                    if review_count
-                    else ""
-                )
-                + '</div>'
+                "Average Rating",
+                avg_rating_display,
+                f"{review_count} response(s)",
             )
             + admin_stat_card(
                 "Would Recommend",
                 recommend_display,
-                f"Yes · {recommend_yes} response(s)"
+                f"{recommend_yes} yes response(s)",
+            )
+            + admin_stat_card(
+                "Latest Comments",
+                min(5, review_count),
+                "Shown without account identifiers",
             )
             + '</div>'
         )
-
-        rating_bars = []
-
-        for rating in range(
-            5,
-            0,
-            -1
-        ):
-
-            count = rating_counts[
-                rating
-            ]
-
-            pct = (
-                (
-                    count
-                    /
-                    review_count
-                )
-                * 100
-                if review_count
-                else 0
-            )
-
-            rating_bars.append(
-                '<div class="sp-admin-bar-row">'
-                f'<div class="sp-admin-bar-label">{rating} ★</div>'
-                '<div class="sp-admin-bar-track">'
-                f'<div class="sp-admin-bar-fill" style="width:{pct:.1f}%;"></div>'
-                '</div>'
-                f'<div class="sp-admin-bar-count">{count}</div>'
-                '</div>'
-            )
-
-        recommend_bars = []
-
-        for answer, count in recommend_counts.items():
-
-            pct = (
-                (
-                    count
-                    /
-                    review_count
-                )
-                * 100
-                if review_count
-                else 0
-            )
-
-            recommend_bars.append(
-                '<div class="sp-admin-bar-row">'
-                f'<div class="sp-admin-bar-label">'
-                f'{html_module.escape(answer)}'
-                f'</div>'
-                '<div class="sp-admin-bar-track">'
-                f'<div class="sp-admin-bar-fill" style="width:{pct:.1f}%;"></div>'
-                '</div>'
-                f'<div class="sp-admin-bar-count">{count}</div>'
-                '</div>'
-            )
-
-        distribution_html = (
-            '<div class="sp-admin-dist-grid">'
-            '<div class="sp-admin-panel">'
-            '<div class="sp-admin-panel-title">Rating Distribution</div>'
-            + "".join(
-                rating_bars
-            )
-            + '</div>'
-            '<div class="sp-admin-panel">'
-            '<div class="sp-admin-panel-title">Recommendation Breakdown</div>'
-            + "".join(
-                recommend_bars
-            )
-            + '</div>'
-            '</div>'
-        )
-
-        feature_counts = {}
-
-        for row in feedback_rows:
-
-            features = text_to_list(
-                row.get(
-                    "favorite_features"
-                )
-            )
-
-            for feature in features:
-
-                feature_counts[
-                    feature
-                ] = (
-                    feature_counts.get(
-                        feature,
-                        0
-                    )
-                    + 1
-                )
-
-        if feature_counts:
-
-            feature_rankings = sorted(
-                feature_counts.items(),
-                key=lambda item:
-                    item[1],
-                reverse=True
-            )
-
-            feature_rows_html = []
-
-            for rank, (
-                feature,
-                count
-            ) in enumerate(
-                feature_rankings,
-                start=1
-            ):
-
-                feature_rows_html.append(
-                    '<div class="sp-admin-feature-row">'
-                    f'<p class="sp-admin-feature-name">'
-                    f'#{rank} {html_module.escape(str(feature))}'
-                    f'</p>'
-                    f'<p class="sp-admin-feature-count">'
-                    f'{count} vote(s)'
-                    f'</p>'
-                    '</div>'
-                )
-
-            features_html = (
-                '<div class="sp-admin-panel">'
-                '<div class="sp-admin-panel-title">Most Useful Features</div>'
-                '<div class="sp-admin-feature-list">'
-                + "".join(
-                    feature_rows_html
-                )
-                + '</div>'
-                '</div>'
-            )
-
-        else:
-
-            features_html = (
-                '<p class="sp-admin-empty">'
-                'Users have not selected favorite features yet.'
-                '</p>'
-            )
-
-        st.html(
-            analytics_cards
-            + distribution_html
-            + features_html
-        )
-
-    # --------------------------------------------------------
-    # PLATFORM ENGAGEMENT
-    # --------------------------------------------------------
-
-    application_status_counts = {}
-
-    for row in saved_rows:
-
-        status = str(
-            row.get(
-                "status",
-                "Saved"
-            )
-        ).strip()
-
-        application_status_counts[
-            status
-        ] = (
-            application_status_counts.get(
-                status,
-                0
-            )
-            + 1
-        )
-
-    engagement_cards = (
-        '<div class="sp-admin-section">'
-        '<div class="sp-admin-section-title">Platform Engagement</div>'
-        '<p class="sp-admin-section-sub">'
-        'How students are saving opportunities and tracking college applications.'
-        '</p>'
-        '<div class="sp-admin-metric-grid sp-admin-metric-grid-2">'
-        + admin_stat_card(
-            "Saved Opportunities",
-            saved_count,
-            "Across all users"
-        )
-        + admin_stat_card(
-            "Favorite Colleges",
-            favorite_count,
-            "Across all users"
-        )
-        + '</div>'
-    )
-
-    if application_status_counts:
-
-        total_status = sum(
-            application_status_counts.values()
-        )
-
-        status_bars = []
-
-        for status, count in sorted(
-            application_status_counts.items(),
-            key=lambda item:
-                item[1],
-            reverse=True
-        ):
-
-            pct = (
-                (
-                    count
-                    /
-                    total_status
-                )
-                * 100
-                if total_status
-                else 0
-            )
-
-            status_bars.append(
-                '<div class="sp-admin-bar-row">'
-                f'<div class="sp-admin-bar-label">'
-                f'{html_module.escape(status)}'
-                f'</div>'
-                '<div class="sp-admin-bar-track">'
-                f'<div class="sp-admin-bar-fill" style="width:{pct:.1f}%;"></div>'
-                '</div>'
-                f'<div class="sp-admin-bar-count">{count}</div>'
-                '</div>'
-            )
-
-        engagement_cards += (
-            '<div class="sp-admin-panel" style="margin-top:0.85rem;">'
-            '<div class="sp-admin-panel-title">Application Tracker Status</div>'
-            + "".join(
-                status_bars
-            )
-            + '</div>'
-        )
-
-    else:
-
-        engagement_cards += (
-            '<p class="sp-admin-empty" style="margin-top:0.85rem;">'
-            'No saved application activity yet.'
-            '</p>'
-        )
-
-    engagement_cards += '</div>'
-
-    st.html(
-        engagement_cards
-    )
-
-    # --------------------------------------------------------
-    # RECENT FEEDBACK
-    # --------------------------------------------------------
-
-    st.html(
-        '<div class="sp-admin-section" style="margin-bottom:0.35rem;">'
-        '<div class="sp-admin-section-title">Recent Feedback</div>'
-        '<p class="sp-admin-section-sub">'
-        'The most recent written responses from students, shown without emphasizing personal identifiers.'
-        '</p>'
-        '</div>'
-    )
-
-    if not feedback_rows:
-
-        st.html(
-            '<p class="sp-admin-empty">'
-            'No feedback has been submitted yet.'
-            '</p>'
-        )
-
-    else:
 
         sorted_feedback = sorted(
             feedback_rows,
-            key=lambda row:
-                str(
-                    row.get(
-                        "updated_at",
-                        row.get(
-                            "created_at",
-                            ""
-                        )
-                    )
-                ),
-            reverse=True
-        )
-
-        feedback_cards = [
-            '<div class="sp-admin-feedback-stack">'
-        ]
-
-        for row in sorted_feedback[:20]:
-
-            rating = int(
-                row.get(
-                    "rating",
-                    0
-                )
-                or 0
-            )
-
-            ease_value = row.get(
-                "ease_of_use"
-            )
-
-            ease_text = (
-                f"{int(ease_value)} / 5"
-                if ease_value
-                is not None
-                and
-                str(
-                    ease_value
-                ).strip()
-                !=
-                ""
-                else "Not answered"
-            )
-
-            recommend_text = str(
-                row.get(
-                    "would_recommend",
-                    "Not answered"
-                )
-                or
-                "Not answered"
-            ).strip()
-
-            overall_feeling = str(
-                row.get(
-                    "overall_feeling",
-                    ""
-                )
-                or
-                ""
-            ).strip()
-
-            improvement_text = str(
-                row.get(
-                    "improvements",
-                    ""
-                )
-                or
-                ""
-            ).strip()
-
-            comments_text = str(
-                row.get(
-                    "additional_comments",
-                    ""
-                )
-                or
-                ""
-            ).strip()
-
-            features = text_to_list(
-                row.get(
-                    "favorite_features"
-                )
-            )
-
-            date_raw = str(
+            key=lambda row: str(
                 row.get(
                     "updated_at",
-                    row.get(
-                        "created_at",
-                        ""
-                    )
+                    row.get("created_at", ""),
                 )
-                or
-                ""
+            ),
+            reverse=True,
+        )
+
+        feedback_cards = ['<div class="sp-admin-feedback-stack">']
+
+        for row in sorted_feedback[:5]:
+
+            rating = int(row.get("rating", 0) or 0)
+            recommend_text = str(
+                row.get("would_recommend", "Not answered") or "Not answered"
+            ).strip()
+            comment = str(
+                row.get("additional_comments")
+                or row.get("improvements")
+                or ""
             ).strip()
 
-            date_display = (
-                date_raw[:10]
-                if len(
-                    date_raw
-                )
-                >=
-                10
-                else (
-                    date_raw
-                    or
-                    "Date unavailable"
-                )
-            )
-
-            feature_pills = ""
-
-            if features:
-
-                feature_pills = (
-                    '<div class="sp-admin-pills">'
-                    + "".join(
-                        [
-                            '<span class="sp-admin-pill">'
-                            + html_module.escape(
-                                str(
-                                    feature
-                                )
-                            )
-                            + '</span>'
-                            for feature in features
-                        ]
-                    )
-                    + '</div>'
-                )
-
-            fields_html = []
-
-            fields_html.append(
-                '<div class="sp-admin-feedback-field">'
-                '<div class="sp-admin-feedback-label">Ease of use</div>'
-                f'<p class="sp-admin-feedback-body">'
-                f'{html_module.escape(ease_text)}'
-                f'</p>'
-                '</div>'
-            )
-
-            if overall_feeling:
-
-                fields_html.append(
-                    '<div class="sp-admin-feedback-field">'
-                    '<div class="sp-admin-feedback-label">Overall feeling</div>'
-                    f'<p class="sp-admin-feedback-body">'
-                    f'{html_module.escape(overall_feeling)}'
-                    f'</p>'
-                    '</div>'
-                )
-
-            if features:
-
-                fields_html.append(
-                    '<div class="sp-admin-feedback-field">'
-                    '<div class="sp-admin-feedback-label">Favorite features</div>'
-                    f'{feature_pills}'
-                    '</div>'
-                )
-
-            if improvement_text:
-
-                fields_html.append(
-                    '<div class="sp-admin-feedback-field">'
-                    '<div class="sp-admin-feedback-label">What should improve</div>'
-                    f'<p class="sp-admin-feedback-body">'
-                    f'{html_module.escape(improvement_text)}'
-                    f'</p>'
-                    '</div>'
-                )
-
-            if comments_text:
-
-                fields_html.append(
-                    '<div class="sp-admin-feedback-field">'
-                    '<div class="sp-admin-feedback-label">Additional comments</div>'
-                    f'<p class="sp-admin-feedback-body">'
-                    f'{html_module.escape(comments_text)}'
-                    f'</p>'
-                    '</div>'
-                )
-
-            if (
-                not improvement_text
-                and
-                not comments_text
-                and
-                not features
-                and
-                not overall_feeling
-            ):
-
-                fields_html.append(
-                    '<div class="sp-admin-feedback-field">'
-                    '<p class="sp-admin-feedback-meta">'
-                    'No written comments submitted.'
-                    '</p>'
-                    '</div>'
-                )
+            if not comment:
+                comment = "No written comments submitted."
 
             feedback_cards.append(
                 '<div class="sp-admin-feedback-card">'
                 '<div class="sp-admin-feedback-top">'
-                + admin_stars_html(
-                    rating
-                )
+                + admin_stars_html(rating)
                 + f'<span class="sp-admin-feedback-meta">'
                 f'Rating · {rating} / 5'
                 f'</span>'
                 + f'<span class="sp-admin-feedback-meta">'
                 f'Recommend · {html_module.escape(recommend_text)}'
                 f'</span>'
-                + f'<span class="sp-admin-feedback-meta">'
-                f'{html_module.escape(date_display)}'
-                f'</span>'
                 + '</div>'
-                + "".join(
-                    fields_html
-                )
-                + '</div>'
+                '<div class="sp-admin-feedback-field">'
+                f'<p class="sp-admin-feedback-body">'
+                f'{html_module.escape(comment)}'
+                f'</p>'
+                '</div>'
+                '</div>'
             )
 
-        feedback_cards.append(
-            '</div>'
-        )
-
-        st.html(
-            "".join(
-                feedback_cards
-            )
-        )
+        feedback_cards.append('</div>')
+        st.html("".join(feedback_cards))
 
     # --------------------------------------------------------
-    # PRIVACY-SAFE EXPORT VIEW
+    # STUDENT PATHWAYS OVERVIEW
     # --------------------------------------------------------
 
-    with st.expander(
-        "View feedback data"
-    ):
+    st.html(
+        '<div class="sp-admin-section" style="margin-bottom:0.35rem;">'
+        '<div class="sp-admin-section-title">Student Pathways Overview</div>'
+        '<p class="sp-admin-section-sub">'
+        'One expandable row per Authentication account, joined by user UUID. '
+        'Accounts without a completed profile still appear.'
+        '</p>'
+        '</div>'
+    )
 
-        if feedback_rows:
+    if auth_users_error and not student_pathways:
 
-            feedback_df = pd.DataFrame(
-                feedback_rows
+        st.info(
+            "Student Pathways Overview cannot load accounts until the Auth Admin "
+            "API listing succeeds."
+        )
+
+    else:
+
+        grade_options = sorted(
+            {
+                str(row.get("grade") or "").strip()
+                for row in student_pathways
+                if str(row.get("grade") or "").strip()
+            }
+        )
+        borough_options = sorted(
+            {
+                str(row.get("borough") or "").strip()
+                for row in student_pathways
+                if str(row.get("borough") or "").strip()
+            }
+        )
+        major_options = sorted(
+            {
+                str(item.get("major") or "").strip()
+                for row in student_pathways
+                for item in (row.get("majors") or [])
+                if str(item.get("major") or "").strip()
+            }
+        )
+
+        filter_col1, filter_col2 = st.columns(2)
+
+        with filter_col1:
+            search_query = st.text_input(
+                "Search email or name",
+                key="admin_pathway_search",
+                placeholder="Type part of an email or student name",
+            )
+            grade_filter = st.selectbox(
+                "Grade",
+                options=["All"] + grade_options,
+                key="admin_pathway_grade",
+            )
+            borough_filter = st.selectbox(
+                "Borough",
+                options=["All"] + borough_options,
+                key="admin_pathway_borough",
             )
 
-            safe_columns = [
-                column
-                for column in [
-                    "rating",
-                    "ease_of_use",
-                    "overall_feeling",
-                    "favorite_features",
-                    "improvements",
-                    "additional_comments",
-                    "would_recommend",
-                    "created_at",
-                    "updated_at"
-                ]
-                if column
-                in feedback_df.columns
-            ]
-
-            st.dataframe(
-                feedback_df[
-                    safe_columns
+        with filter_col2:
+            major_filter = st.selectbox(
+                "Potential major",
+                options=["All"] + major_options,
+                key="admin_pathway_major",
+            )
+            profile_filter = st.selectbox(
+                "Profile status",
+                options=[
+                    "All",
+                    "Completed",
+                    "Not completed",
                 ],
-                use_container_width=True,
-                hide_index=True
+                key="admin_pathway_profile_status",
+            )
+            program_query = st.text_input(
+                "Saved program",
+                key="admin_pathway_program",
+                placeholder="Filter by saved opportunity name",
             )
 
-            csv_export = (
-                feedback_df[
-                    safe_columns
+        search_norm = str(search_query or "").strip().lower()
+        program_norm = str(program_query or "").strip().lower()
+
+        filtered_pathways = []
+
+        for row in student_pathways:
+            if profile_filter == "Completed" and not row.get("profile_complete"):
+                continue
+            if profile_filter == "Not completed" and row.get("profile_complete"):
+                continue
+            if grade_filter != "All" and str(row.get("grade") or "") != grade_filter:
+                continue
+            if borough_filter != "All" and str(row.get("borough") or "") != borough_filter:
+                continue
+            if major_filter != "All":
+                majors = [
+                    str(item.get("major") or "")
+                    for item in (row.get("majors") or [])
                 ]
-                .to_csv(
-                    index=False
+                if major_filter not in majors:
+                    continue
+            if program_norm:
+                programs = [
+                    str(item.get("name") or "").lower()
+                    for item in (row.get("saved_programs") or [])
+                ]
+                if not any(program_norm in name for name in programs):
+                    continue
+            if search_norm:
+                haystack = " ".join(
+                    [
+                        str(row.get("email") or ""),
+                        str(row.get("student_name") or ""),
+                    ]
+                ).lower()
+                if search_norm not in haystack:
+                    continue
+            filtered_pathways.append(row)
+
+        st.caption(
+            f"Showing {len(filtered_pathways)} of {len(student_pathways)} accounts "
+            "(newest first)."
+        )
+
+        page_size = 20
+        total_pages = max(
+            1,
+            (len(filtered_pathways) + page_size - 1) // page_size,
+        )
+
+        filter_signature = (
+            search_norm,
+            grade_filter,
+            borough_filter,
+            major_filter,
+            profile_filter,
+            program_norm,
+        )
+        if st.session_state.get("admin_pathway_filter_sig") != filter_signature:
+            st.session_state.admin_pathway_filter_sig = filter_signature
+            st.session_state["admin_pathway_page"] = 1
+
+        if "admin_pathway_page" not in st.session_state:
+            st.session_state["admin_pathway_page"] = 1
+
+        # Keep page within bounds before the widget reads session state.
+        st.session_state["admin_pathway_page"] = max(
+            1,
+            min(int(st.session_state["admin_pathway_page"]), total_pages),
+        )
+
+        page_number = st.number_input(
+            "Results page",
+            min_value=1,
+            max_value=total_pages,
+            step=1,
+            key="admin_pathway_page",
+        )
+
+        start_idx = (int(page_number) - 1) * page_size
+        page_rows = filtered_pathways[start_idx:start_idx + page_size]
+
+        if not page_rows:
+            st.html(
+                '<p class="sp-admin-empty">'
+                'No accounts match the current filters.'
+                '</p>'
+            )
+
+        for row in page_rows:
+            email_label = row.get("email") or "No email on file"
+            name_label = row.get("student_name") or "Name not available"
+            created_label = row.get("created_at_label") or "Unknown"
+            profile_label = (
+                "Profile complete"
+                if row.get("profile_complete")
+                else "Profile not completed"
+            )
+            grade_borough = " · ".join(
+                part
+                for part in (
+                    f"Grade {row['grade']}" if row.get("grade") else "",
+                    row.get("borough") or "",
                 )
-                .encode(
-                    "utf-8"
+                if part
+            )
+
+            expander_title = (
+                f"{name_label} · {email_label} · {created_label}"
+            )
+
+            with st.expander(expander_title, expanded=False):
+                badge_class = (
+                    "sp-admin-pathway-badge-ok"
+                    if row.get("profile_complete")
+                    else "sp-admin-pathway-badge-missing"
                 )
-            )
+                st.html(
+                    f'<span class="sp-admin-pathway-badge {badge_class}">'
+                    f'{html_module.escape(profile_label)}'
+                    f'</span>'
+                    f'<p class="sp-admin-pathway-meta">'
+                    f'{html_module.escape(email_label)}'
+                    + (
+                        f' · {html_module.escape(grade_borough)}'
+                        if grade_borough
+                        else ""
+                    )
+                    + f' · Joined {html_module.escape(created_label)}'
+                    f'</p>'
+                )
 
-            st.download_button(
-                "Download Feedback CSV",
-                data=csv_export,
-                file_name="stem_pathways_feedback.csv",
-                mime="text/csv",
-                use_container_width=True
-            )
+                if not row.get("profile_complete"):
+                    st.html(
+                        '<p class="sp-admin-empty">'
+                        'Profile not completed.'
+                        '</p>'
+                    )
 
-        else:
+                st.html(
+                    '<p class="sp-admin-pathway-subtitle">'
+                    'Potential / recommended majors'
+                    '</p>'
+                )
+                majors = row.get("majors") or []
+                if not majors:
+                    st.html(
+                        '<p class="sp-admin-empty">'
+                        'No recommended majors yet.'
+                        '</p>'
+                    )
+                else:
+                    major_items = []
+                    for index, item in enumerate(majors, start=1):
+                        major_items.append(
+                            '<li>'
+                            f'<strong>#{index} '
+                            f'{html_module.escape(str(item.get("major") or ""))}'
+                            f'</strong>'
+                            f'<div class="sp-admin-pathway-reason">'
+                            f'{html_module.escape(str(item.get("reason") or ""))}'
+                            f'</div>'
+                            '</li>'
+                        )
+                    st.html(
+                        '<ol class="sp-admin-pathway-list">'
+                        + "".join(major_items)
+                        + '</ol>'
+                    )
 
-            st.write(
-                "No feedback data available."
-            )
+                st.html(
+                    '<p class="sp-admin-pathway-subtitle">'
+                    'Saved opportunities / programs'
+                    '</p>'
+                )
+                programs = row.get("saved_programs") or []
+                if not programs:
+                    st.html(
+                        '<p class="sp-admin-empty">'
+                        'No saved programs yet.'
+                        '</p>'
+                    )
+                else:
+                    program_items = []
+                    for item in programs:
+                        program_items.append(
+                            '<li>'
+                            f'{html_module.escape(str(item.get("name") or ""))}'
+                            f' — <em>'
+                            f'{html_module.escape(str(item.get("status") or "Saved"))}'
+                            f'</em>'
+                            '</li>'
+                        )
+                    st.html(
+                        '<ul class="sp-admin-pathway-list">'
+                        + "".join(program_items)
+                        + '</ul>'
+                    )
+
+                st.html(
+                    '<p class="sp-admin-pathway-subtitle">'
+                    'Favorite colleges'
+                    '</p>'
+                )
+                colleges = row.get("favorite_colleges") or []
+                if not colleges:
+                    st.html(
+                        '<p class="sp-admin-empty">'
+                        'No favorite colleges yet.'
+                        '</p>'
+                    )
+                else:
+                    college_items = [
+                        f'<li>{html_module.escape(str(name))}</li>'
+                        for name in colleges
+                    ]
+                    st.html(
+                        '<ul class="sp-admin-pathway-list">'
+                        + "".join(college_items)
+                        + '</ul>'
+                    )
 
     st.html(
         '<p class="sp-admin-footer-note">'
-        'Admin dashboard data is intended for product improvement and should be handled responsibly.'
+        'Admin dashboard data is private and intended for product improvement. '
+        'Handle student information responsibly and do not export account records.'
         '</p>'
     )
-
 
 
 
