@@ -11642,6 +11642,33 @@ st.markdown(
         pointer-events: none !important;
     }
 
+    /* Keep Streamlit's expand control in the DOM/layout so JS can click it,
+       without showing Deploy/toolbar chrome. */
+    html body .stApp:has(.sp-app-shell) [data-testid="stToolbar"]:has([data-testid="stExpandSidebarButton"]),
+    html body .stApp:has(.sp-app-shell) .stAppToolbar:has([data-testid="stExpandSidebarButton"]) {
+        display: block !important;
+        visibility: visible !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        opacity: 1 !important;
+        pointer-events: none !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        z-index: 2147483646 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stToolbar"]:has([data-testid="stExpandSidebarButton"]) > *:not(:has([data-testid="stExpandSidebarButton"])) {
+        display: none !important;
+    }
+
     html body .stApp:has(.sp-app-shell) [data-testid="stAppViewContainer"] > section,
     html body .stApp:has(.sp-app-shell) [data-testid="stAppViewContainer"],
     html body .stApp:has(.sp-app-shell) [data-testid="stMain"],
@@ -11651,19 +11678,92 @@ st.markdown(
         top: 0 !important;
     }
 
-    /* Keep open/collapse controls clickable above collapsed header */
-    html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapsedControl"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapsedControl"] button,
-    html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapsedControl"] [role="button"],
+    /* Keep sidebar collapse control usable; expand lives in hidden toolbar in
+       Streamlit 1.61 (stExpandSidebarButton), so use a floating reopen button. */
     html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapseButton"],
     html body .stApp:has(.sp-app-shell) [data-testid="stSidebarCollapseButton"] button,
-    html body .stApp:has(.sp-app-shell) [data-testid="stHeader"] [data-testid="stSidebarCollapsedControl"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stHeader"] [data-testid="stSidebarCollapseButton"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stHeader"] button:first-of-type {
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] button {
         pointer-events: auto !important;
         visibility: visible !important;
         opacity: 1 !important;
+        z-index: 2147483646 !important;
+    }
+
+    /* Floating "Open navigation" — body-mounted; visible only when collapsed */
+    html body button.sp-nav-reopen,
+    html body #sp-nav-reopen.sp-nav-reopen {
+        position: fixed !important;
+        top: calc(0.75rem + env(safe-area-inset-top, 0px)) !important;
+        left: calc(0.75rem + env(safe-area-inset-left, 0px)) !important;
+        right: auto !important;
+        bottom: auto !important;
+        width: 46px !important;
+        height: 46px !important;
+        min-width: 46px !important;
+        min-height: 46px !important;
+        max-width: 46px !important;
+        max-height: 46px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: none;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #0B1F33 !important;
+        background-color: #0B1F33 !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        border: 1px solid #0B1F33 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24) !important;
+        font-size: 1.35rem !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+        letter-spacing: 0 !important;
+        cursor: pointer !important;
         z-index: 2147483647 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: none !important;
+        overflow: visible !important;
+        -webkit-tap-highlight-color: transparent !important;
+        touch-action: manipulation !important;
+    }
+
+    html body button.sp-nav-reopen.is-visible,
+    html body #sp-nav-reopen.sp-nav-reopen.is-visible {
+        display: flex !important;
+    }
+
+    html body button.sp-nav-reopen:hover,
+    html body button.sp-nav-reopen:focus,
+    html body button.sp-nav-reopen:focus-visible,
+    html body #sp-nav-reopen.sp-nav-reopen:hover,
+    html body #sp-nav-reopen.sp-nav-reopen:focus,
+    html body #sp-nav-reopen.sp-nav-reopen:focus-visible {
+        background: #071521 !important;
+        background-color: #071521 !important;
+        border-color: #071521 !important;
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        outline: 2px solid #38BDF8 !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Native expand stays in DOM for the floating button to activate. */
+    html body .stApp:has(.sp-app-shell) [data-testid="stExpandSidebarButton"] {
+        position: fixed !important;
+        top: calc(0.75rem + env(safe-area-inset-top, 0px)) !important;
+        left: calc(0.75rem + env(safe-area-inset-left, 0px)) !important;
+        width: 46px !important;
+        height: 46px !important;
+        min-width: 46px !important;
+        min-height: 46px !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        overflow: hidden !important;
+        z-index: 2147483645 !important;
     }
 
 
@@ -29200,6 +29300,129 @@ with st.sidebar:
 st.markdown(
     '<div class="sp-app-shell" aria-hidden="true" style="display:none"></div>',
     unsafe_allow_html=True,
+)
+
+# Persistent floating reopen control for collapsed sidebar (Streamlit 1.61+
+# puts the native expand button inside the hidden app toolbar).
+st.html(
+    """
+<button
+  type="button"
+  id="sp-nav-reopen"
+  class="sp-nav-reopen"
+  aria-label="Open navigation"
+  title="Open navigation"
+  hidden
+>☰</button>
+<script>
+(function () {
+  function ensureBtn() {
+    var nodes = document.querySelectorAll("#sp-nav-reopen");
+    var btn = nodes[0] || null;
+    for (var i = 1; i < nodes.length; i++) {
+      nodes[i].parentNode && nodes[i].parentNode.removeChild(nodes[i]);
+    }
+    if (!btn) {
+      btn = document.createElement("button");
+      btn.type = "button";
+      btn.id = "sp-nav-reopen";
+      btn.className = "sp-nav-reopen";
+      btn.setAttribute("aria-label", "Open navigation");
+      btn.title = "Open navigation";
+      btn.textContent = "☰";
+      document.body.appendChild(btn);
+    } else if (btn.parentElement !== document.body) {
+      document.body.appendChild(btn);
+    }
+    if (!btn.__spNavBound) {
+      btn.__spNavBound = true;
+      btn.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var expand =
+          document.querySelector('[data-testid="stExpandSidebarButton"]') ||
+          document.querySelector('[data-testid="stSidebarCollapsedControl"] button') ||
+          document.querySelector('[data-testid="stSidebarCollapsedControl"]');
+        if (!expand) {
+          return;
+        }
+        var prevPointer = expand.style.pointerEvents;
+        var prevOpacity = expand.style.opacity;
+        expand.style.pointerEvents = "auto";
+        expand.style.opacity = "0";
+        try {
+          expand.dispatchEvent(
+            new MouseEvent("click", {
+              bubbles: true,
+              cancelable: true,
+              view: window
+            })
+          );
+          if (typeof expand.click === "function") {
+            expand.click();
+          }
+        } finally {
+          expand.style.pointerEvents = prevPointer;
+          expand.style.opacity = prevOpacity;
+        }
+        window.setTimeout(function () {
+          if (window.__spNavReopenSync) window.__spNavReopenSync();
+        }, 50);
+        window.setTimeout(function () {
+          if (window.__spNavReopenSync) window.__spNavReopenSync();
+        }, 250);
+      });
+    }
+    return btn;
+  }
+
+  function isAuthenticatedShell() {
+    return !!document.querySelector(".sp-app-shell");
+  }
+
+  function isSidebarCollapsed() {
+    if (document.querySelector('[data-testid="stExpandSidebarButton"]')) {
+      return true;
+    }
+    if (document.querySelector('[data-testid="stSidebarCollapsedControl"]')) {
+      return true;
+    }
+    var sidebar = document.querySelector('[data-testid="stSidebar"]');
+    if (!sidebar) {
+      return false;
+    }
+    var rect = sidebar.getBoundingClientRect();
+    return rect.width < 12;
+  }
+
+  function syncNavReopen() {
+    var btn = ensureBtn();
+    var show = isAuthenticatedShell() && isSidebarCollapsed();
+    btn.hidden = !show;
+    btn.setAttribute("aria-hidden", show ? "false" : "true");
+    btn.classList.toggle("is-visible", show);
+    btn.style.display = show ? "flex" : "none";
+  }
+
+  window.__spNavReopenSync = syncNavReopen;
+  syncNavReopen();
+
+  if (!window.__spNavReopenObserver) {
+    window.__spNavReopenObserver = new MutationObserver(function () {
+      window.requestAnimationFrame(syncNavReopen);
+    });
+    window.__spNavReopenObserver.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true
+    });
+    window.addEventListener("resize", syncNavReopen);
+    window.addEventListener("orientationchange", syncNavReopen);
+  }
+})();
+</script>
+    """,
+    unsafe_allow_javascript=True,
 )
 
 page = st.session_state.current_page
