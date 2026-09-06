@@ -12790,79 +12790,6 @@ st.markdown(
 
 
     /* ============================================================
-       SP_MATCHER_STEP1_CONTRAST_V1
-       "Explore What You Might Like" white card only
-       (st-key-college_matcher_step1). Does not restyle page-level
-       dark-navy background text.
-       ============================================================ */
-
-    /* Question labels — dark navy, medium-bold */
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] p,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] label,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] span,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] *,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] label p,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] p,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] *,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] .sp-matcher-slider-label,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] .sp-matcher-slider-label * {
-        color: #083B5C !important;
-        -webkit-text-fill-color: #083B5C !important;
-        font-weight: 650 !important;
-        opacity: 1 !important;
-    }
-
-    /* Selected dropdown / multiselect values */
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]),
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] [aria-selected],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] input,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stSelectbox"] input,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stMultiSelect"] input,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="tag"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="tag"] span,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]),
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="tag"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="tag"] span {
-        color: #083B5C !important;
-        -webkit-text-fill-color: #083B5C !important;
-    }
-
-    /* Placeholders — medium gray-blue, distinct but readable */
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] input::placeholder,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] input::-webkit-input-placeholder,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] [data-baseweb="placeholder"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] [class*="placeholder"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] div[class*="Placeholder"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-baseweb="select"] span[class*="Placeholder"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="select"] [data-baseweb="placeholder"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-baseweb="select"] span[class*="Placeholder"] {
-        color: #667788 !important;
-        -webkit-text-fill-color: #667788 !important;
-        opacity: 1 !important;
-    }
-
-    /* Answer-choice text on the math slider (incl. "It's okay") */
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] p,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] span,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] div,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] p,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] span,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] p,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderTickBar"] span,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"],
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] p,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [class*="st-key-college_discovery_math_v2"] [data-testid="stSliderThumbValue"] span {
-        color: #083B5C !important;
-        -webkit-text-fill-color: #083B5C !important;
-    }
-
-
-    /* ============================================================
        SP_PROFILE_SETUP_DARK_V1
        Create Your STEM Explorer Profile only
        (:has(.sp-profile-setup-page)). Landing + other pages untouched.
@@ -13590,6 +13517,131 @@ st.markdown(
             overflow-x: hidden !important;
         }
     }
+
+
+
+    /* ============================================================
+       SP_MATCHER_STEP1_LABELS_V3
+       Fixes pale question labels in white "Explore What You Might Like"
+       card only. Streamlit 1.61 renders widget labels as:
+         label[data-testid="stWidgetLabel"]
+           > span > [data-testid="stMarkdownContainer"] > p
+       AUTH pale rule on [data-testid="stMarkdownContainer"] > p (#B8CAD8)
+       out-specified older stWidgetLabel-only overrides — this block
+       targets the real markdown/label nodes with higher specificity
+       and must remain last among matcher contrast rules.
+       ============================================================ */
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] label,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] label[data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) label,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) label[data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] p,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stMarkdownContainer"] > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] label[data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) label[data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stMarkdownContainer"] > p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_interests_v3"] label[data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_interests_v3"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_subject_v3"] label[data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_subject_v3"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_work_v2"] label[data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_work_v2"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_environment_v2"] label[data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_environment_v2"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+        opacity: 1 !important;
+    }
+
+
+
+
+    /* ============================================================
+       SP_MY_APPLICATIONS_CONTRAST_V1
+       Dark-navy canvas text on My Applications only
+       (:has(.my-applications-page)). Does not restyle white
+       snapshot statistic cards (.sp-app-snapshot-stat *).
+       ============================================================ */
+
+    /* Privacy notice — light blue-gray on dark canvas */
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"],
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] p,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] span,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] div,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] *:not(a):not(svg):not(path):not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]) {
+        color: #BFD5E5 !important;
+        -webkit-text-fill-color: #BFD5E5 !important;
+        opacity: 1 !important;
+    }
+
+    /* Application Snapshot heading — white */
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-title,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_snapshot"] .sp-app-snapshot-title,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_snapshot"] .sp-app-snapshot-title *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-title,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-title * {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        opacity: 1 !important;
+    }
+
+    /* Snapshot description + progress status — light blue-gray */
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-subtitle,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-subtitle *,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-progress,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-progress *,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_snapshot"] .sp-app-snapshot-subtitle,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_snapshot"] .sp-app-snapshot-subtitle *,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_snapshot"] .sp-app-snapshot-progress,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_snapshot"] .sp-app-snapshot-progress *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-subtitle,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-subtitle *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-progress,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-progress * {
+        color: #BFD5E5 !important;
+        -webkit-text-fill-color: #BFD5E5 !important;
+        opacity: 1 !important;
+    }
+
+    /* Filter label inside white card — dark navy (not pale AUTH blue) */
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] label,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] label[data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] [data-testid="stWidgetLabel"] p,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] [data-testid="stWidgetLabel"] span,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] p,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-application_status_filter"]) [data-testid="stWidgetLabel"],
+    html body .stApp [data-testid="stMain"]:has(.my-applications-page) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-application_status_filter"]) [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] label[data-testid="stWidgetLabel"],
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page):not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-application_status_filter"]) [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+        opacity: 1 !important;
+    }
+
 
     </style>
     """,
@@ -32839,6 +32891,34 @@ elif page == "College Suggestions":
         # --------------------------------------------------------
 
         with st.container(key="college_matcher_step1", border=True):
+            st.html(
+                """
+<style id="sp-matcher-step1-labels-v3">
+html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] label,
+html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] label[data-testid="stWidgetLabel"],
+html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"],
+html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"],
+html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] p,
+html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) label[data-testid="stWidgetLabel"],
+html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stMarkdownContainer"] > p,
+html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-college_matcher_step1"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:not(:has(.sp-hero)) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-college_matcher_step1"]) [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_interests_v3"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_subject_v3"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_work_v2"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_environment_v2"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p {
+  color: #083B5C !important;
+  -webkit-text-fill-color: #083B5C !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+</style>
+                """
+            )
 
             st.html(
                 '<h2 class="sp-matcher-step-title">'
@@ -34497,6 +34577,43 @@ elif page == "My Applications":
 
     st.html(
         '<div class="sp-my-applications-page my-applications-page" aria-hidden="true"></div>'
+    )
+
+    st.html(
+        """
+<style id="sp-my-applications-contrast-v1">
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"],
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] p,
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"] > p,
+html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_privacy_notice"] [data-testid="stAlert"] *:not(svg):not(path):not([data-testid="stIconMaterial"]):not([class*="material-"]) {
+  color: #BFD5E5 !important;
+  -webkit-text-fill-color: #BFD5E5 !important;
+  opacity: 1 !important;
+}
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-title,
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-title * {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-subtitle,
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-subtitle *,
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-progress,
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) .sp-app-snapshot-progress * {
+  color: #BFD5E5 !important;
+  -webkit-text-fill-color: #BFD5E5 !important;
+  opacity: 1 !important;
+}
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] label[data-testid="stWidgetLabel"],
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] [data-testid="stWidgetLabel"],
+html body .stApp [data-testid="stMain"]:has(.my-applications-page) [class*="st-key-application_status_filter"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p {
+  color: #083B5C !important;
+  -webkit-text-fill-color: #083B5C !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+</style>
+        """
     )
 
     render_page_header(
