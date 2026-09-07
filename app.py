@@ -4624,6 +4624,226 @@ st.markdown(
         margin: 0 !important;
     }
 
+    /* Dashboard only: Your Next Saved Deadline card */
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_next_deadline"]) {
+        background: linear-gradient(155deg, #0C4566 0%, #093753 48%, #082F48 100%) !important;
+        background-color: #093753 !important;
+        border: 1px solid rgba(56, 189, 248, 0.42) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 10px 24px rgba(0, 12, 28, 0.22) !important;
+        padding: 1rem 1.05rem 0.85rem !important;
+        margin: 0 0 0.35rem 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"][data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] > [data-testid="stVerticalBlock"] {
+        gap: 0.55rem !important;
+    }
+
+    .sp-dash-deadline-title {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 1.05rem !important;
+        font-weight: 750 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.01em;
+        margin: 0 0 0.55rem 0 !important;
+    }
+
+    .sp-dash-deadline-body {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: 0.85rem 1.1rem;
+        width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .sp-dash-deadline-info {
+        flex: 1 1 auto;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.28rem;
+        justify-content: center;
+    }
+
+    .sp-dash-deadline-kicker {
+        color: #7DD3FC !important;
+        -webkit-text-fill-color: #7DD3FC !important;
+        font-size: 0.68rem !important;
+        font-weight: 750 !important;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+    }
+
+    .sp-dash-deadline-name {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-size: 1.22rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.015em;
+        margin: 0 !important;
+        overflow-wrap: anywhere;
+    }
+
+    .sp-dash-deadline-org {
+        color: #B7D4E6 !important;
+        -webkit-text-fill-color: #B7D4E6 !important;
+        font-size: 0.9rem !important;
+        font-weight: 550 !important;
+        line-height: 1.35 !important;
+        margin: 0 !important;
+        overflow-wrap: anywhere;
+    }
+
+    .sp-dash-deadline-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: #D5E8F4 !important;
+        -webkit-text-fill-color: #D5E8F4 !important;
+        font-size: 0.88rem !important;
+        font-weight: 600 !important;
+        line-height: 1.3 !important;
+        margin: 0.18rem 0 0 0 !important;
+    }
+
+    .sp-dash-deadline-date-icon {
+        display: inline-flex;
+        width: 0.95rem;
+        height: 0.95rem;
+        flex: 0 0 auto;
+        color: #7DD3FC;
+    }
+
+    .sp-dash-deadline-date-icon svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .sp-dash-deadline-countdown {
+        flex: 0 0 auto;
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 5.6rem;
+        padding: 0.55rem 0.75rem 0.5rem;
+        border-radius: 12px;
+        background: #D9F4FC;
+        border: 1px solid rgba(125, 211, 252, 0.85);
+        box-shadow: 0 4px 12px rgba(0, 12, 28, 0.12);
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .sp-dash-deadline-count {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 1.85rem !important;
+        font-weight: 850 !important;
+        line-height: 1 !important;
+        letter-spacing: -0.03em;
+        margin: 0 !important;
+    }
+
+    .sp-dash-deadline-count-label {
+        color: #0B5F7A !important;
+        -webkit-text-fill-color: #0B5F7A !important;
+        font-size: 0.68rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        margin: 0.28rem 0 0 0 !important;
+        max-width: 5.4rem;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton,
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] {
+        width: 100% !important;
+        margin: 0.15rem 0 0 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button:focus,
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button:active {
+        width: 100% !important;
+        min-height: 2.35rem !important;
+        height: auto !important;
+        padding: 0.42rem 0.9rem !important;
+        background: #E8F7FC !important;
+        background-color: #E8F7FC !important;
+        border: 1.5px solid #38BDF8 !important;
+        border-radius: 11px !important;
+        box-shadow: none !important;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button div {
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-weight: 700 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button:hover {
+        background: #CFF0FA !important;
+        background-color: #CFF0FA !important;
+        border-color: #018FC7 !important;
+        color: #062F48 !important;
+        -webkit-text-fill-color: #062F48 !important;
+        box-shadow: 0 4px 12px rgba(1, 143, 199, 0.18) !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button:hover p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button:hover span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-dash_next_deadline"] [class*="st-key-dashboard_deadline_calendar"] .stButton > button:hover div {
+        color: #062F48 !important;
+        -webkit-text-fill-color: #062F48 !important;
+    }
+
+    @media (max-width: 720px) {
+        .sp-dash-deadline-body {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.7rem;
+        }
+
+        .sp-dash-deadline-countdown {
+            width: 100%;
+            min-width: 0;
+            flex-direction: row;
+            justify-content: center;
+            gap: 0.55rem;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .sp-dash-deadline-count-label {
+            max-width: none;
+            margin: 0 !important;
+            text-align: left;
+        }
+
+        .sp-dash-deadline-name {
+            font-size: 1.1rem !important;
+        }
+    }
+
     html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"],
     html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"]:hover,
     html body [data-testid="stMain"] [class*="st-key-dash_continue_journey"][data-testid="stVerticalBlockBorderWrapper"] {
@@ -32452,65 +32672,85 @@ if page == "Dashboard":
             deadline_message = (
                 "Due today"
             )
+            countdown_label = "due today"
 
         elif days_left == 1:
 
             deadline_message = (
                 "1 day remaining"
             )
+            countdown_label = "day remaining"
 
         else:
 
             deadline_message = (
                 f"{days_left} days remaining"
             )
+            countdown_label = "days remaining"
 
-        with st.container(
-            border=True
-        ):
+        deadline_date_label = deadline_dt.strftime(
+            "%B %d, %Y"
+        ).replace(
+            " 0",
+            " "
+        )
 
-            deadline_col1, deadline_col2 = (
-                st.columns(
-                    [4, 1]
-                )
+        org_html = ""
+        if organization:
+            org_html = (
+                '<p class="sp-dash-deadline-org">'
+                + html_module.escape(str(organization))
+                + "</p>"
             )
 
-            with deadline_col1:
+        with st.container(key="dash_next_deadline"):
 
-                st.subheader(
-                    "Your Next Saved Deadline"
-                )
-
-                st.write(
-                    f"**{program_name}**"
-                )
-
-                if organization:
-
-                    st.caption(
-                        organization
-                    )
-
-                st.write(
-                    deadline_dt.strftime(
-                        "%B %d, %Y"
-                    ).replace(
-                        " 0",
-                        " "
-                    )
-                )
-
-            with deadline_col2:
-
-                st.metric(
-                    "Time Left",
-                    deadline_message
-                )
+            st.html(
+                '<div class="sp-dash-deadline-card">'
+                '<h3 class="sp-dash-deadline-title">'
+                "Your Next Saved Deadline"
+                "</h3>"
+                '<div class="sp-dash-deadline-body">'
+                '<div class="sp-dash-deadline-info">'
+                '<p class="sp-dash-deadline-kicker">Upcoming deadline</p>'
+                '<p class="sp-dash-deadline-name">'
+                + html_module.escape(str(program_name))
+                + "</p>"
+                + org_html
+                + '<p class="sp-dash-deadline-date">'
+                '<span class="sp-dash-deadline-date-icon" aria-hidden="true">'
+                '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">'
+                '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5" '
+                'stroke="currentColor" stroke-width="1.8"/>'
+                '<path d="M3.5 10h17" stroke="currentColor" stroke-width="1.8"/>'
+                '<path d="M8 3.5v3.5M16 3.5v3.5" stroke="currentColor" '
+                'stroke-width="1.8" stroke-linecap="round"/>'
+                "</svg>"
+                "</span>"
+                "<span>"
+                + html_module.escape(deadline_date_label)
+                + "</span>"
+                "</p>"
+                "</div>"
+                '<div class="sp-dash-deadline-countdown" role="status" '
+                'aria-label="'
+                + html_module.escape(deadline_message, quote=True)
+                + '">'
+                '<div class="sp-dash-deadline-count">'
+                + html_module.escape(str(days_left))
+                + "</div>"
+                '<div class="sp-dash-deadline-count-label">'
+                + html_module.escape(countdown_label)
+                + "</div>"
+                "</div>"
+                "</div>"
+                "</div>"
+            )
 
             if st.button(
                 "Open Deadline Calendar",
                 key="dashboard_deadline_calendar",
-                use_container_width=True
+                width="stretch",
             ):
 
                 st.session_state.current_page = (
