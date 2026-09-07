@@ -26337,6 +26337,13 @@ def _current_script_run_id():
 
 def _safe_auth_error_code(error):
     code = getattr(error, "code", None)
+    if code is None and hasattr(error, "to_dict"):
+        try:
+            payload = error.to_dict()
+        except Exception:
+            payload = None
+        if isinstance(payload, dict):
+            code = payload.get("code")
     if code is None:
         return "unknown"
     text = str(code).strip().lower()
@@ -26349,6 +26356,13 @@ def _safe_auth_error_code(error):
 
 def _safe_auth_error_status(error):
     status = getattr(error, "status", None)
+    if status is None and hasattr(error, "to_dict"):
+        try:
+            payload = error.to_dict()
+        except Exception:
+            payload = None
+        if isinstance(payload, dict):
+            status = payload.get("status")
     try:
         status_int = int(status)
     except (TypeError, ValueError):
@@ -26358,10 +26372,61 @@ def _safe_auth_error_status(error):
     return None
 
 
+def _safe_auth_error_message(error):
+    """
+    Extract a short Supabase Auth error message for Render logs.
+    Never returns tokens, secrets, authorization material, or raw exception dumps.
+    """
+
+    raw = getattr(error, "message", None)
+    if raw is None and hasattr(error, "to_dict"):
+        try:
+            payload = error.to_dict()
+        except Exception:
+            payload = None
+        if isinstance(payload, dict):
+            raw = payload.get("message")
+    # Do not fall back to str(error)/repr(error): those may include request details.
+    if raw is None:
+        return "unavailable"
+
+    text = " ".join(str(raw).split())
+    if not text:
+        return "unavailable"
+
+    # Redact JWT-shaped and credential-like fragments if a provider ever echoes them.
+    text = re.sub(
+        r"eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+",
+        "[redacted-jwt]",
+        text,
+    )
+    text = re.sub(
+        r"(?i)\b(bearer|token|access_token|refresh_token|id_token|password|"
+        r"api[_-]?key|client[_-]?secret|authorization)\b\s*[:=]\s*\S+",
+        r"\1=[redacted]",
+        text,
+    )
+    text = re.sub(
+        r"(?i)\bBearer\s+\S+",
+        "Bearer [redacted]",
+        text,
+    )
+
+    # Keep only printable-safe characters and bound length for log safety.
+    cleaned = "".join(
+        ch for ch in text
+        if ch.isalnum() or ch in {" ", "_", "-", ".", ",", ":", ";", "(", ")", "[", "]", "/", "'", '"'}
+    ).strip()
+    if not cleaned:
+        return "unavailable"
+    return cleaned[:180]
+
+
 def log_auth_event(action, error=None):
     """
-    Sanitized auth logging only: action name, status, safe error code.
-    Never logs passwords, tokens, emails, or raw exception/response bodies.
+    Sanitized auth logging only: action name, status, safe error code, and
+    safe Supabase error message. Never logs passwords, tokens, emails,
+    API keys, client secrets, authorization headers, or full exception objects.
     """
 
     action_name = str(action or "auth_event").strip()[:64] or "auth_event"
@@ -26371,18 +26436,21 @@ def log_auth_event(action, error=None):
 
     status = _safe_auth_error_status(error)
     code = _safe_auth_error_code(error)
+    message = _safe_auth_error_message(error)
     if status is None:
         logger.warning(
-            "auth_event action=%s code=%s",
+            "auth_event action=%s code=%s message=%s",
             action_name,
             code,
+            message,
         )
     else:
         logger.warning(
-            "auth_event action=%s status=%s code=%s",
+            "auth_event action=%s status=%s code=%s message=%s",
             action_name,
             status,
             code,
+            message,
         )
 
 
@@ -26787,16 +26855,14 @@ def resolve_google_supabase_auth_user(google_provider_sub, email="", name=""):
                 "google_provider_sub": google_provider_sub,
             }
 
-    id_token = _get_streamlit_google_id_token()
-    if id_token and supabase_auth_configured():
+    google_id_token = _get_streamlit_google_id_token()
+    if google_id_token and supabase_auth_configured():
         try:
             client = create_supabase_auth_client()
-            response = client.auth.sign_in_with_id_token(
-                {
-                    "provider": "google",
-                    "token": id_token,
-                }
-            )
+            response = client.auth.sign_in_with_id_token({
+                "provider": "google",
+                "token": google_id_token,
+            })
             user = getattr(response, "user", None)
             session = getattr(response, "session", None)
             if (
@@ -26824,7 +26890,10 @@ def resolve_google_supabase_auth_user(google_provider_sub, email="", name=""):
                     "provider": "google",
                     "google_provider_sub": google_provider_sub,
                 }
+            log_auth_event("google_id_token_sign_in_incomplete")
         except Exception as error:
+            # Log safe Supabase status/code/message only — never the ID token
+            # or the full exception object (may include request material).
             log_auth_event("google_id_token_sign_in", error)
 
     # Existing Auth users (already listed in Admin) via Google identity match.
