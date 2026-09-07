@@ -1269,6 +1269,163 @@ st.markdown(
         gap: 0.7rem !important;
     }
 
+    /* Deadline card action row only — compact saved badge + link buttons */
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"]:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"][data-testid="stVerticalBlockBorderWrapper"],
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has(> [class*="st-key-deadline_actions_"]) {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"][data-testid="stVerticalBlock"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] > [data-testid="stVerticalBlock"] {
+        gap: 0 !important;
+        background: transparent !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] [data-testid="stElementContainer"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] [data-testid="stHorizontalBlock"] {
+        gap: 0.5rem !important;
+        align-items: center !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] [data-testid="stColumn"] {
+        min-height: 0 !important;
+        height: auto !important;
+        padding: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] [data-testid="stColumn"] > div {
+        min-height: 0 !important;
+        height: auto !important;
+    }
+
+    .sp-deadline-saved-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        width: fit-content;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-height: 2.35rem;
+        padding: 0.35rem 0.7rem;
+        border-radius: 10px;
+        background: #E8F8EE;
+        border: 1px solid #B7E4C7;
+        color: #14532D !important;
+        -webkit-text-fill-color: #14532D !important;
+        font-size: 0.8rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        margin: 0 !important;
+    }
+
+    .sp-deadline-saved-check {
+        display: inline-flex;
+        width: 0.95rem;
+        height: 0.95rem;
+        flex: 0 0 auto;
+        color: #15803D;
+    }
+
+    .sp-deadline-saved-check svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton > button:focus,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton > button:active,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a:link,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a:visited,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a:focus,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a:active {
+        width: 100% !important;
+        min-height: 2.35rem !important;
+        height: auto !important;
+        padding: 0.42rem 0.75rem !important;
+        border-radius: 10px !important;
+        border: 1.5px solid #38BDF8 !important;
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        box-shadow: none !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-size: 0.84rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton > button div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a div {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton > button:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a:hover {
+        background: #E7F6FC !important;
+        background-color: #E7F6FC !important;
+        border-color: #018FC7 !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        box-shadow: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton > button:hover p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stButton > button:hover span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a:hover p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] .stLinkButton > a:hover span {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    @media (max-width: 720px) {
+        html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] [data-testid="stHorizontalBlock"] {
+            flex-direction: column !important;
+            flex-wrap: nowrap !important;
+            align-items: stretch !important;
+            gap: 0.45rem !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-deadline_actions_"] [data-testid="stColumn"] {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+            min-width: 100% !important;
+        }
+
+        .sp-deadline-saved-badge {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
     .sp-deadline-card {
         width: 100%;
         margin: 0;
@@ -37336,76 +37493,103 @@ elif page == "Deadline Calendar":
                             )
                         )
 
-                        if deadline_calendar_url:
+                        with st.container(
+                            key=f"deadline_actions_{month_key}_{card_index}"
+                        ):
 
-                            action1, action2, action3 = (
-                                st.columns(3)
-                            )
+                            if deadline_calendar_url:
 
-                        else:
-
-                            action1, action2 = (
-                                st.columns(2)
-                            )
-
-                        with action1:
-
-                            if not item["saved"]:
-
-                                if st.button(
-                                    "Save to My Applications",
-                                    key=f"calendar_save_{item['name']}_{item['deadline_text']}",
-                                    use_container_width=True
-                                ):
-
-                                    if save_opportunity(
-                                        user_sub,
-                                        item["name"]
-                                    ):
-
-                                        st.success(
-                                            "Saved to My Applications."
-                                        )
-
-                                        st.rerun()
+                                action1, action2, action3 = (
+                                    st.columns(
+                                        [1.15, 1, 1],
+                                        gap="small",
+                                        vertical_alignment="center",
+                                    )
+                                )
 
                             else:
 
-                                st.success(
-                                    "Saved in My Applications"
+                                action1, action2 = (
+                                    st.columns(
+                                        [1.15, 1],
+                                        gap="small",
+                                        vertical_alignment="center",
+                                    )
                                 )
 
-                        if deadline_calendar_url:
+                            with action1:
 
-                            with action2:
+                                if not item["saved"]:
 
-                                st.link_button(
-                                    "Add to Google Calendar",
-                                    deadline_calendar_url,
-                                    use_container_width=True
-                                )
+                                    if st.button(
+                                        "Save to My Applications",
+                                        key=f"calendar_save_{item['name']}_{item['deadline_text']}",
+                                        width="stretch",
+                                    ):
 
-                            with action3:
+                                        if save_opportunity(
+                                            user_sub,
+                                            item["name"]
+                                        ):
 
-                                if item["url"]:
+                                            st.success(
+                                                "Saved to My Applications."
+                                            )
 
-                                    st.link_button(
-                                        "View Official Program",
-                                        item["url"],
-                                        use_container_width=True
+                                            st.rerun()
+
+                                else:
+
+                                    st.html(
+                                        '<div class="sp-deadline-saved-badge" '
+                                        'role="status">'
+                                        '<span class="sp-deadline-saved-check" '
+                                        'aria-hidden="true">'
+                                        '<svg viewBox="0 0 24 24" fill="none" '
+                                        'xmlns="http://www.w3.org/2000/svg">'
+                                        '<circle cx="12" cy="12" r="10" '
+                                        'stroke="currentColor" stroke-width="1.8"/>'
+                                        '<path d="M7.5 12.5l3 3 6-6.5" '
+                                        'stroke="currentColor" stroke-width="2" '
+                                        'stroke-linecap="round" '
+                                        'stroke-linejoin="round"/>'
+                                        "</svg>"
+                                        "</span>"
+                                        "<span>Saved in My Applications</span>"
+                                        "</div>"
                                     )
 
-                        else:
+                            if deadline_calendar_url:
 
-                            with action2:
-
-                                if item["url"]:
+                                with action2:
 
                                     st.link_button(
-                                        "View Official Program",
-                                        item["url"],
-                                        use_container_width=True
+                                        "Add to Google Calendar",
+                                        deadline_calendar_url,
+                                        width="stretch",
                                     )
+
+                                with action3:
+
+                                    if item["url"]:
+
+                                        st.link_button(
+                                            "View Official Program",
+                                            item["url"],
+                                            width="stretch",
+                                        )
+
+                            else:
+
+                                with action2:
+
+                                    if item["url"]:
+
+                                        st.link_button(
+                                            "View Official Program",
+                                            item["url"],
+                                            width="stretch",
+                                        )
 
                 st.divider()
 
