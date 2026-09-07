@@ -1,5 +1,6 @@
 import os
 import secrets
+import time
 import html as html_module
 import base64
 import streamlit as st
@@ -26283,6 +26284,11 @@ SP_OAUTH_CALLBACK_ERROR_KEY = "_sp_oauth_callback_error"
 SP_OAUTH_TICKET_QUERY_KEY = "sp_oauth"
 SP_AUTH_SESSION_ID_KEY = "_sp_auth_session_id"
 SP_AUTH_COOKIE_NAV_KEY = "_sp_auth_cookie_nav"
+SP_AUTH_VALIDATED_AT_KEY = "_sp_auth_validated_at"
+SP_AUTH_TOUCHED_AT_KEY = "_sp_auth_idle_touched_at"
+# Skip remote Auth revalidation / idle DB touch on every Streamlit rerun.
+AUTH_REVALIDATE_SECONDS = 10 * 60
+AUTH_IDLE_TOUCH_SECONDS = 30 * 60
 
 
 # Production Google OAuth redirect_to (must also be allow-listed in Supabase).
@@ -26391,6 +26397,8 @@ def clear_email_auth_session():
     st.session_state.pop(SP_APP_USER_RUN_KEY, None)
     st.session_state.pop(SP_AUTH_STORAGE_KEY, None)
     st.session_state.pop(SP_AUTH_SESSION_ID_KEY, None)
+    st.session_state.pop(SP_AUTH_VALIDATED_AT_KEY, None)
+    st.session_state.pop(SP_AUTH_TOUCHED_AT_KEY, None)
     # Drop per-user approved identity-link caches.
     for key in list(st.session_state.keys()):
         if str(key).startswith("_sp_id_links_"):
@@ -26542,6 +26550,22 @@ def _auth_user_display_name(user):
 
 
 
+
+def _auth_timing_log(operation, started_at, *, detail=""):
+    """Safe timing log for auth/perf. Never logs tokens, cookies, emails, or secrets."""
+
+    try:
+        elapsed_ms = int((time.perf_counter() - float(started_at)) * 1000)
+    except Exception:
+        elapsed_ms = -1
+    op = str(operation or "auth_op").strip()[:64] or "auth_op"
+    extra = str(detail or "").strip()[:48]
+    if extra:
+        logger.info("auth_timing op=%s ms=%s detail=%s", op, elapsed_ms, extra)
+    else:
+        logger.info("auth_timing op=%s ms=%s", op, elapsed_ms)
+
+
 def _schedule_auth_cookie_set(session_id):
     """Queue a one-time /auth/persist-session navigation to set HttpOnly cookie."""
 
@@ -26682,6 +26706,9 @@ def _store_email_auth_session(session, user, *, provider="email", persist_cookie
             email=str(email),
             provider=provider_name,
         )
+    # Fresh login is already validated — enable restore fast path immediately.
+    st.session_state[SP_AUTH_VALIDATED_AT_KEY] = time.time()
+    st.session_state[SP_AUTH_TOUCHED_AT_KEY] = time.time()
     # Force re-resolve on next get_app_user call within a later rerun.
     st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
     st.session_state.pop(SP_APP_USER_RUN_KEY, None)
@@ -26870,8 +26897,13 @@ def sign_in_with_email(email, password, *, keep_signed_in=True):
 def restore_email_auth_user():
     """
     Restore Auth user from Streamlit working memory or durable HttpOnly cookie.
-    Durable source of truth: opaque sp_sid cookie -> encrypted auth_sessions row.
+
+    Fast path: when working memory already has a validated session, skip remote
+    Auth/DB calls on every Streamlit rerun (fixes lag + double-click navigation).
+    Cold path / expiry: load cookie session, refresh tokens, rotate as needed.
     """
+
+    started = time.perf_counter()
 
     if not supabase_auth_configured():
         clear_email_auth_session()
@@ -26885,6 +26917,9 @@ def restore_email_auth_user():
     access_token = ""
     refresh_token = ""
     provider_name = "email"
+    cached_user_id = ""
+    cached_email = ""
+    cached_display = ""
 
     if isinstance(payload, dict):
         access_token = str(payload.get("access_token") or "").strip()
@@ -26892,12 +26927,18 @@ def restore_email_auth_user():
         provider_name = str(
             payload.get("provider") or "email"
         ).strip().lower() or "email"
+        cached_user_id = str(payload.get("user_id") or "").strip()
+        cached_email = str(payload.get("email") or "")
+        cached_display = str(payload.get("display_name") or "")
 
     # Cold start / browser refresh: rebuild working memory from cookie session.
+    loaded_from_cookie = False
     if (not access_token or not refresh_token) and auth_persist.session_id_is_valid(
         session_id
     ):
+        load_started = time.perf_counter()
         loaded = auth_persist.load_server_session(session_id)
+        _auth_timing_log("cookie_session_load", load_started)
         if not loaded:
             log_auth_event("auth_cookie_session_invalid")
             clear_email_auth_session()
@@ -26907,13 +26948,16 @@ def restore_email_auth_user():
         provider_name = str(
             loaded.get("provider") or "email"
         ).strip().lower() or "email"
+        cached_user_id = str(loaded.get("user_id") or "")
+        cached_email = str(loaded.get("email") or "")
         session_id = str(loaded.get("session_id") or session_id)
+        loaded_from_cookie = True
         st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
         st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
             "access_token": access_token,
             "refresh_token": refresh_token,
-            "user_id": str(loaded.get("user_id") or ""),
-            "email": str(loaded.get("email") or ""),
+            "user_id": cached_user_id,
+            "email": cached_email,
             "display_name": "",
             "provider": provider_name if provider_name in {"email", "google"} else "email",
         }
@@ -26921,11 +26965,53 @@ def restore_email_auth_user():
     if not access_token or not refresh_token:
         return None
 
+    provider = provider_name if provider_name in {"email", "google"} else "email"
+    now_ts = time.time()
+
+    # Fast path: established working session, access token still fresh.
+    # Avoid Supabase Auth get_user + idle DB touch on every widget/nav rerun.
+    try:
+        validated_at = float(st.session_state.get(SP_AUTH_VALIDATED_AT_KEY) or 0)
+    except (TypeError, ValueError):
+        validated_at = 0.0
+    token_fresh = not auth_persist.access_token_expired(access_token)
+    recently_validated = (
+        validated_at > 0
+        and (now_ts - validated_at) < AUTH_REVALIDATE_SECONDS
+        and is_canonical_auth_uuid(cached_user_id)
+        and not loaded_from_cookie
+    )
+
+    if token_fresh and recently_validated:
+        # Throttled idle touch (server-side only; never blocks navigation).
+        try:
+            touched_at = float(st.session_state.get(SP_AUTH_TOUCHED_AT_KEY) or 0)
+        except (TypeError, ValueError):
+            touched_at = 0.0
+        if (
+            auth_persist.session_id_is_valid(session_id)
+            and (now_ts - touched_at) >= AUTH_IDLE_TOUCH_SECONDS
+        ):
+            touch_started = time.perf_counter()
+            if auth_persist.touch_server_session(session_id):
+                st.session_state[SP_AUTH_TOUCHED_AT_KEY] = now_ts
+            _auth_timing_log("idle_touch_throttled", touch_started)
+
+        _auth_timing_log("restore_fast_path", started)
+        return {
+            "user_id": cached_user_id,
+            "email": cached_email,
+            "display_name": cached_display,
+            "provider": provider,
+        }
+
     try:
         client = create_supabase_auth_client()
+
         # Refresh access token when expired; rotate durable session id afterward.
         if auth_persist.access_token_expired(access_token):
             try:
+                refresh_started = time.perf_counter()
                 client.auth.set_session(access_token, refresh_token)
                 refreshed = client.auth.refresh_session()
                 session = getattr(refreshed, "session", None) or refreshed
@@ -26942,7 +27028,6 @@ def restore_email_auth_user():
                 new_refresh = getattr(session, "refresh_token", None)
                 if not new_access or not new_refresh:
                     raise RuntimeError("refresh tokens missing")
-                # Update working memory without nesting another persist call.
                 _store_email_auth_session(
                     session,
                     user,
@@ -26960,7 +27045,10 @@ def restore_email_auth_user():
                 if rotated:
                     st.session_state[SP_AUTH_SESSION_ID_KEY] = rotated
                     _schedule_auth_cookie_set(rotated)
-                provider = provider_name if provider_name in {"email", "google"} else "email"
+                st.session_state[SP_AUTH_VALIDATED_AT_KEY] = time.time()
+                st.session_state[SP_AUTH_TOUCHED_AT_KEY] = time.time()
+                _auth_timing_log("token_refresh_rotate", refresh_started)
+                _auth_timing_log("restore_refresh_path", started)
                 return {
                     "user_id": str(user.id),
                     "email": str(getattr(user, "email", "") or ""),
@@ -26974,9 +27062,12 @@ def restore_email_auth_user():
                 clear_email_auth_session()
                 return None
 
+        # Slow path: periodic revalidation or first load after cookie restore.
+        validate_started = time.perf_counter()
         client.auth.set_session(access_token, refresh_token)
         user_response = client.auth.get_user()
         user = getattr(user_response, "user", None) or user_response
+        _auth_timing_log("auth_get_user", validate_started)
         if user is None or not getattr(user, "id", None):
             clear_email_auth_session()
             return None
@@ -26984,9 +27075,17 @@ def restore_email_auth_user():
             clear_email_auth_session()
             return None
 
-        # Keep idle clock fresh; do not rotate session id on plain validation.
+        # Throttled idle touch after successful validation.
         if auth_persist.session_id_is_valid(session_id):
-            auth_persist.touch_server_session(session_id)
+            try:
+                touched_at = float(st.session_state.get(SP_AUTH_TOUCHED_AT_KEY) or 0)
+            except (TypeError, ValueError):
+                touched_at = 0.0
+            if (time.time() - touched_at) >= AUTH_IDLE_TOUCH_SECONDS or loaded_from_cookie:
+                touch_started = time.perf_counter()
+                auth_persist.touch_server_session(session_id)
+                st.session_state[SP_AUTH_TOUCHED_AT_KEY] = time.time()
+                _auth_timing_log("idle_touch", touch_started)
             st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
 
         st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
@@ -26995,10 +27094,10 @@ def restore_email_auth_user():
             "user_id": str(user.id),
             "email": str(getattr(user, "email", "") or ""),
             "display_name": _auth_user_display_name(user),
-            "provider": provider_name if provider_name in {"email", "google"} else "email",
+            "provider": provider,
         }
-
-        provider = provider_name if provider_name in {"email", "google"} else "email"
+        st.session_state[SP_AUTH_VALIDATED_AT_KEY] = time.time()
+        _auth_timing_log("restore_validate_path", started)
         return {
             "user_id": str(user.id),
             "email": str(getattr(user, "email", "") or ""),
@@ -29701,10 +29800,14 @@ if process_supabase_auth_callback():
     flush_pending_auth_cookie_navigation()
     st.rerun()
 
-# After email/password login (or token-refresh rotation), set/clear HttpOnly cookie.
-flush_pending_auth_cookie_navigation()
-
+_auth_boot_started = time.perf_counter()
 app_user = get_app_user()
+_auth_timing_log("get_app_user", _auth_boot_started)
+
+# Flush cookie set/clear ONLY when pending (login / logout / token-rotation).
+# Must run after restore so a rotation ticket is not left for the next click
+# (which previously swallowed sidebar navigation and felt like a double-click).
+flush_pending_auth_cookie_navigation()
 
 if not app_user:
 

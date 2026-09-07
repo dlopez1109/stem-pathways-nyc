@@ -411,11 +411,17 @@ def test_process_callback_uses_ticket_not_session_verifier() -> None:
     fake_auth_persist.access_token_expired = lambda *a, **k: False
     fake_auth_persist.read_session_id_from_cookies = lambda *a, **k: None
     ns["auth_persist"] = fake_auth_persist
+    ns["time"] = __import__("time")
     ns["SP_AUTH_SESSION_ID_KEY"] = "_sp_auth_session_id"
     ns["SP_AUTH_COOKIE_NAV_KEY"] = "_sp_auth_cookie_nav"
+    ns["SP_AUTH_VALIDATED_AT_KEY"] = "_sp_auth_validated_at"
+    ns["SP_AUTH_TOUCHED_AT_KEY"] = "_sp_auth_idle_touched_at"
+    ns["AUTH_REVALIDATE_SECONDS"] = 10 * 60
+    ns["AUTH_IDLE_TOUCH_SECONDS"] = 30 * 60
     ns["SP_EMAIL_AUTH_STATE_KEY"] = "sp_email_auth"
     ns["SP_APP_USER_CACHE_KEY"] = "_sp_app_user_cache"
     ns["SP_APP_USER_RUN_KEY"] = "_sp_app_user_run_id"
+    ns["_auth_timing_log"] = lambda *a, **k: None
     ns["is_canonical_auth_uuid"] = ns.get(
         "is_canonical_auth_uuid",
         lambda value: bool(
