@@ -396,6 +396,37 @@ def test_process_callback_uses_ticket_not_session_verifier() -> None:
         ],
         ns,
     )
+    # Durable cookie persistence helpers (mocked — no DB / cryptography).
+    fake_auth_persist = MagicMock()
+    fake_auth_persist.session_id_is_valid = lambda value: bool(
+        value and len(str(value)) >= 20
+    )
+    fake_auth_persist.persist_secret_configured = lambda: True
+    fake_auth_persist.create_cookie_ticket = lambda *a, **k: "T" * 32
+    fake_auth_persist.create_server_session = lambda **k: "S" * 32
+    fake_auth_persist.rotate_server_session = lambda *a, **k: "S" * 32
+    fake_auth_persist.revoke_server_session = lambda *a, **k: True
+    fake_auth_persist.load_server_session = lambda *a, **k: None
+    fake_auth_persist.touch_server_session = lambda *a, **k: True
+    fake_auth_persist.access_token_expired = lambda *a, **k: False
+    fake_auth_persist.read_session_id_from_cookies = lambda *a, **k: None
+    ns["auth_persist"] = fake_auth_persist
+    ns["SP_AUTH_SESSION_ID_KEY"] = "_sp_auth_session_id"
+    ns["SP_AUTH_COOKIE_NAV_KEY"] = "_sp_auth_cookie_nav"
+    ns["SP_EMAIL_AUTH_STATE_KEY"] = "sp_email_auth"
+    ns["SP_APP_USER_CACHE_KEY"] = "_sp_app_user_cache"
+    ns["SP_APP_USER_RUN_KEY"] = "_sp_app_user_run_id"
+    ns["is_canonical_auth_uuid"] = ns.get(
+        "is_canonical_auth_uuid",
+        lambda value: bool(
+            re.fullmatch(
+                r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
+                r"[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+                str(value or ""),
+            )
+        ),
+    )
+
     exec(
         SOURCE[
             SOURCE.index("def _auth_user_display_name(") : SOURCE.index(

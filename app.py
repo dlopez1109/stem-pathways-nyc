@@ -12,6 +12,7 @@ from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.parse import parse_qs, quote_plus, urlencode, urlparse, urlunparse
 from supabase import ClientOptions, create_client
+import auth_persist
 import logging
 from opportunity_transparency import (
     apply_opportunity_transparency,
@@ -5954,28 +5955,84 @@ st.markdown(
         flex: 1 1 auto;
     }
 
+    /* Beat landing VerticalBlockBorderWrapper navy text (#083C5D !important). */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) .sp-signup-confirm .sp-signup-confirm-title,
+    html body .stApp [data-testid="stMain"] .sp-signup-confirm .sp-signup-confirm-title,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .sp-signup-confirm .sp-signup-confirm-title,
+    html body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"] .sp-signup-confirm .sp-signup-confirm-title,
     .sp-signup-confirm-title {
-        margin: 0 0 0.28rem;
-        color: #FFFFFF;
-        font-size: 1.02rem;
-        font-weight: 800;
-        line-height: 1.25;
+        margin: 0 0 0.28rem !important;
+        color: #F4FBFF !important;
+        -webkit-text-fill-color: #F4FBFF !important;
+        font-size: 1.02rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        opacity: 1 !important;
     }
 
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) .sp-signup-confirm .sp-signup-confirm-text,
+    html body .stApp [data-testid="stMain"] .sp-signup-confirm .sp-signup-confirm-text,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .sp-signup-confirm .sp-signup-confirm-text,
+    html body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"] .sp-signup-confirm .sp-signup-confirm-text,
     .sp-signup-confirm-text {
-        margin: 0;
-        color: #D5E8F4;
-        font-size: 0.9rem;
-        font-weight: 500;
-        line-height: 1.45;
+        margin: 0 !important;
+        color: #C9E0EE !important;
+        -webkit-text-fill-color: #C9E0EE !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        opacity: 1 !important;
     }
 
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) .sp-signup-confirm .sp-signup-confirm-secondary,
+    html body .stApp [data-testid="stMain"] .sp-signup-confirm .sp-signup-confirm-secondary,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .sp-signup-confirm .sp-signup-confirm-secondary,
+    html body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"] .sp-signup-confirm .sp-signup-confirm-secondary,
     .sp-signup-confirm-secondary {
-        margin: 0.45rem 0 0;
-        color: #8FB4C8;
-        font-size: 0.8rem;
-        font-weight: 500;
-        line-height: 1.4;
+        margin: 0.45rem 0 0 !important;
+        color: #B7D4E6 !important;
+        -webkit-text-fill-color: #B7D4E6 !important;
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        opacity: 1 !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) .sp-signup-confirm a,
+    html body .stApp [data-testid="stMain"] .sp-signup-confirm a,
+    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .sp-signup-confirm a,
+    html body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"] .sp-signup-confirm a,
+    .sp-signup-confirm a,
+    .sp-signup-confirm a:link {
+        color: #5EE7F2 !important;
+        -webkit-text-fill-color: #5EE7F2 !important;
+        font-weight: 650 !important;
+        text-decoration: underline !important;
+        text-underline-offset: 0.14em !important;
+        text-decoration-thickness: 1.5px !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-signup-confirm a:visited,
+    .sp-signup-confirm a:visited {
+        color: #9BE8F2 !important;
+        -webkit-text-fill-color: #9BE8F2 !important;
+        text-decoration: underline !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-signup-confirm a:hover,
+    html body .stApp [data-testid="stMain"] .sp-signup-confirm a:focus,
+    .sp-signup-confirm a:hover,
+    .sp-signup-confirm a:focus {
+        color: #B8F4FA !important;
+        -webkit-text-fill-color: #B8F4FA !important;
+        text-decoration: underline !important;
+        outline: none;
+    }
+
+    html body .stApp [data-testid="stMain"] .sp-signup-confirm a:active,
+    .sp-signup-confirm a:active {
+        color: #7FE0EC !important;
+        -webkit-text-fill-color: #7FE0EC !important;
     }
 
     .sp-auth-error {
@@ -10230,7 +10287,26 @@ st.markdown(
         box-shadow: none !important;
     }
 
-    html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
+    /* Feedback submit success only — light text on dark teal confirmation box */
+    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] p,
+    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] span,
+    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p,
+    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"] > p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] *:not(a):not(svg):not(path):not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]) {
+        color: #F4FBFF !important;
+        -webkit-text-fill-color: #F4FBFF !important;
+    }
+
+    @media (max-width: 900px) {
+        html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] p,
+        html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] span,
+        html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p {
+            color: #F4FBFF !important;
+            -webkit-text-fill-color: #F4FBFF !important;
+        }
+    }
+
+html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
     html:has([class*="st-key-feedback_page"]) [data-baseweb="menu"],
     html:has([class*="st-key-feedback_page"]) [role="listbox"] {
         background: #FFFFFF !important;
@@ -14376,6 +14452,14 @@ except Exception:
     )
     supabase = None
     supabase_connected = False
+
+# Auth persistence uses the same service-role client for auth_sessions rows.
+try:
+    auth_persist.set_service_client_factory(
+        lambda: supabase if supabase_connected else None
+    )
+except Exception:
+    pass
 
 
 # ============================================================
@@ -26197,6 +26281,9 @@ SP_AUTH_STORAGE_KEY = "_sp_supabase_auth_storage"
 SP_OAUTH_CODE_VERIFIER_KEY = "_sp_oauth_code_verifier"
 SP_OAUTH_CALLBACK_ERROR_KEY = "_sp_oauth_callback_error"
 SP_OAUTH_TICKET_QUERY_KEY = "sp_oauth"
+SP_AUTH_SESSION_ID_KEY = "_sp_auth_session_id"
+SP_AUTH_COOKIE_NAV_KEY = "_sp_auth_cookie_nav"
+
 
 # Production Google OAuth redirect_to (must also be allow-listed in Supabase).
 SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD = "https://stempathwaysnyc.com"
@@ -26303,6 +26390,7 @@ def clear_email_auth_session():
     st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
     st.session_state.pop(SP_APP_USER_RUN_KEY, None)
     st.session_state.pop(SP_AUTH_STORAGE_KEY, None)
+    st.session_state.pop(SP_AUTH_SESSION_ID_KEY, None)
     # Drop per-user approved identity-link caches.
     for key in list(st.session_state.keys()):
         if str(key).startswith("_sp_id_links_"):
@@ -26453,7 +26541,108 @@ def _auth_user_display_name(user):
     return ""
 
 
-def _store_email_auth_session(session, user, *, provider="email"):
+
+def _schedule_auth_cookie_set(session_id):
+    """Queue a one-time /auth/persist-session navigation to set HttpOnly cookie."""
+
+    session_id = str(session_id or "").strip()
+    if not auth_persist.session_id_is_valid(session_id):
+        return False
+    if not auth_persist.persist_secret_configured():
+        log_auth_event("auth_persist_secret_missing")
+        return False
+    ticket = auth_persist.create_cookie_ticket(session_id, purpose="set")
+    if not ticket:
+        log_auth_event("auth_cookie_ticket_create_failed")
+        return False
+    st.session_state[SP_AUTH_COOKIE_NAV_KEY] = (
+        f"/auth/persist-session?ticket={ticket}"
+    )
+    return True
+
+
+def _schedule_auth_cookie_clear():
+    """Queue navigation that deletes the HttpOnly session cookie."""
+
+    st.session_state[SP_AUTH_COOKIE_NAV_KEY] = "/auth/clear-session"
+    return True
+
+
+def flush_pending_auth_cookie_navigation():
+    """
+    Perform a full browser navigation to an /auth/* cookie route.
+    Must run before rendering authenticated UI when a cookie write/clear is pending.
+    """
+
+    target = st.session_state.pop(SP_AUTH_COOKIE_NAV_KEY, None)
+    if not target:
+        return False
+    target = str(target).strip()
+    if not target.startswith("/auth/"):
+        log_auth_event("auth_cookie_nav_invalid")
+        return False
+    # Relative /auth path only — never embed tokens.
+    safe = html_module.escape(target, quote=True)
+    st.markdown(
+        f'<meta http-equiv="refresh" content="0; url={safe}">',
+        unsafe_allow_html=True,
+    )
+    st.stop()
+    return True
+
+
+def _read_browser_auth_session_id():
+    """Read opaque sp_sid from HttpOnly cookie via Streamlit request context."""
+
+    try:
+        cookies = getattr(st.context, "cookies", None)
+    except Exception:
+        cookies = None
+    return auth_persist.read_session_id_from_cookies(cookies)
+
+
+def _persist_auth_session_server_side(
+    *,
+    access_token,
+    refresh_token,
+    user_id,
+    email="",
+    provider="email",
+    rotate_from=None,
+):
+    """Create/rotate server session and schedule HttpOnly cookie set."""
+
+    old_id = str(
+        rotate_from
+        or st.session_state.get(SP_AUTH_SESSION_ID_KEY)
+        or ""
+    ).strip()
+    if auth_persist.session_id_is_valid(old_id):
+        session_id = auth_persist.rotate_server_session(
+            old_id,
+            access_token=access_token,
+            refresh_token=refresh_token,
+            user_id=user_id,
+            email=email,
+            provider=provider,
+        )
+    else:
+        session_id = auth_persist.create_server_session(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            user_id=user_id,
+            email=email,
+            provider=provider,
+        )
+    if not session_id:
+        log_auth_event("auth_server_session_persist_failed")
+        return None
+    st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
+    _schedule_auth_cookie_set(session_id)
+    return session_id
+
+
+def _store_email_auth_session(session, user, *, provider="email", persist_cookie=True):
     if session is None or user is None:
         clear_email_auth_session()
         return False
@@ -26475,8 +26664,8 @@ def _store_email_auth_session(session, user, *, provider="email"):
     if provider_name not in {"email", "google"}:
         provider_name = "email"
 
-    # Tokens live only in Streamlit session_state (server-side, per browser tab).
-    # They are never written to URLs, logs, source, or browser cookies.
+    # Working copy for this Streamlit websocket only. Durable persistence is the
+    # opaque HttpOnly cookie + encrypted auth_sessions row (never tokens in cookie).
     st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
         "access_token": access_token,
         "refresh_token": refresh_token,
@@ -26485,6 +26674,14 @@ def _store_email_auth_session(session, user, *, provider="email"):
         "display_name": _auth_user_display_name(user),
         "provider": provider_name,
     }
+    if persist_cookie:
+        _persist_auth_session_server_side(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            user_id=str(user_id),
+            email=str(email),
+            provider=provider_name,
+        )
     # Force re-resolve on next get_app_user call within a later rerun.
     st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
     st.session_state.pop(SP_APP_USER_RUN_KEY, None)
@@ -26625,7 +26822,7 @@ def sign_up_with_email(email, password):
         return False, message
 
 
-def sign_in_with_email(email, password):
+def sign_in_with_email(email, password, *, keep_signed_in=True):
     """Sign in via Supabase Auth. Returns (ok, message)."""
 
     email = str(email or "").strip().lower()
@@ -26656,7 +26853,11 @@ def sign_in_with_email(email, password):
                 pass
             return False, AUTH_MSG_UNCONFIRMED
 
-        if not _store_email_auth_session(session, user):
+        if not _store_email_auth_session(
+            session,
+            user,
+            persist_cookie=bool(keep_signed_in),
+        ):
             return False, AUTH_MSG_SERVICE
 
         return True, ""
@@ -26668,69 +26869,141 @@ def sign_in_with_email(email, password):
 
 def restore_email_auth_user():
     """
-    Restore the email Auth user for this Streamlit session only.
-    Uses a fresh client + tokens from session_state (not a shared cache).
+    Restore Auth user from Streamlit working memory or durable HttpOnly cookie.
+    Durable source of truth: opaque sp_sid cookie -> encrypted auth_sessions row.
     """
-
-    payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
-    if not isinstance(payload, dict):
-        return None
-
-    access_token = str(payload.get("access_token") or "").strip()
-    refresh_token = str(payload.get("refresh_token") or "").strip()
-    if not access_token or not refresh_token:
-        clear_email_auth_session()
-        return None
 
     if not supabase_auth_configured():
         clear_email_auth_session()
         return None
 
+    payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
+    session_id = str(st.session_state.get(SP_AUTH_SESSION_ID_KEY) or "").strip()
+    if not auth_persist.session_id_is_valid(session_id):
+        session_id = _read_browser_auth_session_id() or ""
+
+    access_token = ""
+    refresh_token = ""
+    provider_name = "email"
+
+    if isinstance(payload, dict):
+        access_token = str(payload.get("access_token") or "").strip()
+        refresh_token = str(payload.get("refresh_token") or "").strip()
+        provider_name = str(
+            payload.get("provider") or "email"
+        ).strip().lower() or "email"
+
+    # Cold start / browser refresh: rebuild working memory from cookie session.
+    if (not access_token or not refresh_token) and auth_persist.session_id_is_valid(
+        session_id
+    ):
+        loaded = auth_persist.load_server_session(session_id)
+        if not loaded:
+            log_auth_event("auth_cookie_session_invalid")
+            clear_email_auth_session()
+            return None
+        access_token = str(loaded.get("access_token") or "").strip()
+        refresh_token = str(loaded.get("refresh_token") or "").strip()
+        provider_name = str(
+            loaded.get("provider") or "email"
+        ).strip().lower() or "email"
+        session_id = str(loaded.get("session_id") or session_id)
+        st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
+        st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "user_id": str(loaded.get("user_id") or ""),
+            "email": str(loaded.get("email") or ""),
+            "display_name": "",
+            "provider": provider_name if provider_name in {"email", "google"} else "email",
+        }
+
+    if not access_token or not refresh_token:
+        return None
+
     try:
         client = create_supabase_auth_client()
+        # Refresh access token when expired; rotate durable session id afterward.
+        if auth_persist.access_token_expired(access_token):
+            try:
+                client.auth.set_session(access_token, refresh_token)
+                refreshed = client.auth.refresh_session()
+                session = getattr(refreshed, "session", None) or refreshed
+                user = getattr(refreshed, "user", None)
+                if user is None:
+                    user_response = client.auth.get_user()
+                    user = getattr(user_response, "user", None) or user_response
+                if session is None or user is None or not getattr(user, "id", None):
+                    raise RuntimeError("refresh incomplete")
+                if not is_canonical_auth_uuid(user.id):
+                    clear_email_auth_session()
+                    return None
+                new_access = getattr(session, "access_token", None)
+                new_refresh = getattr(session, "refresh_token", None)
+                if not new_access or not new_refresh:
+                    raise RuntimeError("refresh tokens missing")
+                # Update working memory without nesting another persist call.
+                _store_email_auth_session(
+                    session,
+                    user,
+                    provider=provider_name,
+                    persist_cookie=False,
+                )
+                rotated = auth_persist.rotate_server_session(
+                    session_id,
+                    access_token=str(new_access),
+                    refresh_token=str(new_refresh),
+                    user_id=str(user.id),
+                    email=str(getattr(user, "email", "") or ""),
+                    provider=provider_name,
+                )
+                if rotated:
+                    st.session_state[SP_AUTH_SESSION_ID_KEY] = rotated
+                    _schedule_auth_cookie_set(rotated)
+                provider = provider_name if provider_name in {"email", "google"} else "email"
+                return {
+                    "user_id": str(user.id),
+                    "email": str(getattr(user, "email", "") or ""),
+                    "display_name": _auth_user_display_name(user),
+                    "provider": provider,
+                }
+            except Exception as refresh_error:
+                log_auth_event("auth_token_refresh_failed", refresh_error)
+                if auth_persist.session_id_is_valid(session_id):
+                    auth_persist.revoke_server_session(session_id)
+                clear_email_auth_session()
+                return None
+
         client.auth.set_session(access_token, refresh_token)
         user_response = client.auth.get_user()
         user = getattr(user_response, "user", None) or user_response
         if user is None or not getattr(user, "id", None):
             clear_email_auth_session()
             return None
+        if not is_canonical_auth_uuid(user.id):
+            clear_email_auth_session()
+            return None
 
-        # Refresh stored tokens if the client rotated them.
-        current = None
-        try:
-            current = client.auth.get_session()
-        except Exception:
-            current = None
-        existing_provider = "email"
-        existing_payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
-        if isinstance(existing_payload, dict):
-            existing_provider = str(
-                existing_payload.get("provider") or "email"
-            ).strip().lower() or "email"
-        if current is not None:
-            _store_email_auth_session(
-                current,
-                user,
-                provider=existing_provider,
-            )
-        else:
-            st.session_state[SP_EMAIL_AUTH_STATE_KEY]["user_id"] = str(user.id)
-            st.session_state[SP_EMAIL_AUTH_STATE_KEY]["email"] = str(
-                getattr(user, "email", "") or ""
-            )
-            st.session_state[SP_EMAIL_AUTH_STATE_KEY]["display_name"] = (
-                _auth_user_display_name(user)
-            )
+        # Keep idle clock fresh; do not rotate session id on plain validation.
+        if auth_persist.session_id_is_valid(session_id):
+            auth_persist.touch_server_session(session_id)
+            st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
 
-        provider = "email"
-        payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
-        if isinstance(payload, dict):
-            provider = str(payload.get("provider") or "email").strip().lower() or "email"
+        st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "user_id": str(user.id),
+            "email": str(getattr(user, "email", "") or ""),
+            "display_name": _auth_user_display_name(user),
+            "provider": provider_name if provider_name in {"email", "google"} else "email",
+        }
+
+        provider = provider_name if provider_name in {"email", "google"} else "email"
         return {
             "user_id": str(user.id),
             "email": str(getattr(user, "email", "") or ""),
             "display_name": _auth_user_display_name(user),
-            "provider": provider if provider in {"email", "google"} else "email",
+            "provider": provider,
         }
 
     except Exception as error:
@@ -27269,7 +27542,11 @@ def ownership_read_keys(auth_user_id):
 
 
 def sign_out_current_user():
-    """Sign out from email Auth and/or Google OAuth."""
+    """Sign out from email Auth and/or Google OAuth; revoke durable session."""
+
+    session_id = str(st.session_state.get(SP_AUTH_SESSION_ID_KEY) or "").strip()
+    if not auth_persist.session_id_is_valid(session_id):
+        session_id = _read_browser_auth_session_id() or ""
 
     payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
     if isinstance(payload, dict) and supabase_auth_configured():
@@ -27286,6 +27563,12 @@ def sign_out_current_user():
         except Exception as error:
             log_auth_event("email_sign_out", error)
 
+    if auth_persist.session_id_is_valid(session_id):
+        try:
+            auth_persist.revoke_server_session(session_id)
+        except Exception as error:
+            log_auth_event("auth_session_revoke_failed", error)
+
     clear_email_auth_session()
 
     # Reset student UI session markers so the next account starts clean locally.
@@ -27301,6 +27584,8 @@ def sign_out_current_user():
     ):
         st.session_state.pop(key, None)
 
+    _schedule_auth_cookie_clear()
+
     # Clear any leftover Streamlit OIDC cookie from older builds (best-effort).
     try:
         if getattr(st.user, "is_logged_in", False):
@@ -27309,6 +27594,8 @@ def sign_out_current_user():
     except Exception:
         pass
 
+    # Cookie clear requires a full HTTP navigation through asgi_app routes.
+    flush_pending_auth_cookie_navigation()
     st.rerun()
 
 
@@ -29410,7 +29697,12 @@ def google_calendar_deadline_url(
 
 # Complete Supabase Google OAuth PKCE callback before resolving the user.
 if process_supabase_auth_callback():
+    # Persist opaque session cookie before continuing into the app shell.
+    flush_pending_auth_cookie_navigation()
     st.rerun()
+
+# After email/password login (or token-refresh rotation), set/clear HttpOnly cookie.
+flush_pending_auth_cookie_navigation()
 
 app_user = get_app_user()
 
@@ -29815,7 +30107,7 @@ if not app_user:
                         key="email_sign_in_password",
                         autocomplete="current-password",
                     )
-                    # Preference only in session state — does not enable 30-day persistence.
+                    # When checked, creates durable HttpOnly cookie + server session (30-day max).
                     keep_signed_in = st.checkbox(
                         "Keep me signed in for 30 days.",
                         key="email_keep_signed_in",
@@ -29830,8 +30122,10 @@ if not app_user:
                     ok, message = sign_in_with_email(
                         sign_in_email,
                         sign_in_password,
+                        keep_signed_in=bool(keep_signed_in),
                     )
                     if ok:
+                        flush_pending_auth_cookie_navigation()
                         st.rerun()
                     else:
                         render_auth_error(message)
@@ -29884,7 +30178,8 @@ if not app_user:
                                 "Open the email and confirm your account before signing in."
                                 "</p>"
                                 '<p class="sp-signup-confirm-secondary">'
-                                "Already have an account? Sign in instead."
+                                'Already have an account? '
+                                '<a href="#sp-landing-auth" target="_self">Sign in instead</a>.'
                                 "</p>"
                                 "</div>"
                                 "</div>",
@@ -31899,717 +32194,954 @@ elif page == "My STEM Pathway":
     # ========================================================
 
     career_database = {
-
-        "Engineering": {
-
+        'Engineering': {
             "majors": [
-                "General Engineering",
-                "Engineering",
-                "Industrial Engineering",
-                "Civil Engineering",
-                "Systems Engineering"
-            ],
-
-            "careers": [
-                "Civil Engineer",
-                "Industrial Engineer",
-                "Systems Engineer",
-                "Materials Engineer",
-                "Aerospace Engineer"
-            ]
-        },
-
-        "Electrical Engineering": {
-
-            "majors": [
-                "Electrical Engineering",
-                "Electrical and Computer Engineering"
-            ],
-
-            "careers": [
-                "Electrical Engineer",
-                "Electronics Engineer",
-                "Power Systems Engineer",
-                "Controls Engineer",
-                "RF Engineer",
-                "Semiconductor Engineer",
-                "Hardware Engineer"
-            ]
-        },
-
-        "Mechanical Engineering": {
-
-            "majors": [
-                "Mechanical Engineering",
-                "Aerospace Engineering",
-                "Mechatronics"
-            ],
-
-            "careers": [
-                "Mechanical Engineer",
-                "Aerospace Engineer",
-                "Automotive Engineer",
-                "Manufacturing Engineer",
-                "Product Design Engineer",
-                "Mechatronics Engineer",
-                "Robotics Engineer"
-            ]
-        },
-
-        "Computer Engineering": {
-
-            "majors": [
-                "Computer Engineering",
-                "Electrical and Computer Engineering"
-            ],
-
-            "careers": [
-                "Computer Hardware Engineer",
-                "Embedded Systems Engineer",
-                "Firmware Engineer",
-                "FPGA Engineer",
-                "Hardware Engineer",
-                "Robotics Engineer",
-                "Systems Engineer"
-            ]
-        },
-
-        "Computer Science": {
-
-            "majors": [
-                "Computer Science",
-                "Software Engineering",
-                "Cybersecurity"
-            ],
-
-            "careers": [
-                "Software Developer",
-                "Backend Developer",
-                "Frontend Developer",
-                "Full-Stack Developer",
-                "Cybersecurity Analyst",
-                "Cloud Engineer",
-                "Database Architect",
-                "Systems Developer"
-            ]
-        },
-
-        "Artificial Intelligence": {
-
-            "majors": [
-                "Computer Science",
-                "Artificial Intelligence",
-                "Data Science"
-            ],
-
-            "careers": [
-                "Machine Learning Engineer",
-                "AI Engineer",
-                "Data Scientist",
-                "Computer Vision Engineer",
-                "NLP Engineer",
-                "AI Research Scientist",
-                "Machine Learning Researcher"
-            ]
-        },
-
-        "Data Science": {
-
-            "majors": [
-                "Data Science",
-                "Statistics",
-                "Computer Science",
-                "Applied Mathematics"
-            ],
-
-            "careers": [
-                "Data Scientist",
-                "Data Analyst",
-                "Data Engineer",
-                "Operations Research Analyst",
-                "Statistician",
-                "Business Intelligence Analyst",
-                "Quantitative Analyst"
-            ]
-        },
-
-        "Biomedical Engineering": {
-
-            "majors": [
-                "Biomedical Engineering",
-                "Bioengineering"
-            ],
-
-            "careers": [
-                "Biomedical Engineer",
-                "Medical Device Engineer",
-                "Biomechanical Engineer",
-                "Clinical Engineer",
-                "Rehabilitation Engineer",
-                "Healthcare Technology Engineer"
-            ]
-        },
-
-        "Biology": {
-
-            "majors": [
-                "Biology",
-                "Biochemistry",
-                "Molecular Biology",
-                "Biotechnology"
-            ],
-
-            "careers": [
-                "Biologist",
-                "Microbiologist",
-                "Biochemist",
-                "Biological Technician",
-                "Geneticist",
-                "Medical Scientist",
-                "Biotechnology Researcher"
-            ]
-        },
-
-        "Physics": {
-
-            "majors": [
-                "Physics",
-                "Applied Physics",
-                "Engineering Physics"
-            ],
-
-            "careers": [
-                "Physicist",
-                "Optical Engineer",
-                "Nuclear Engineer",
-                "Aerospace Engineer",
-                "Research Scientist",
-                "Medical Physicist"
-            ]
-        },
-
-        "Mathematics": {
-
-            "majors": [
-                "Mathematics",
-                "Applied Mathematics",
-                "Statistics",
-                "Actuarial Science"
-            ],
-
-            "careers": [
-                "Mathematician",
-                "Statistician",
-                "Actuary",
-                "Operations Research Analyst",
-                "Data Scientist",
-                "Quantitative Analyst"
-            ]
-        },
-
-        "Environmental Science": {
-
-            "majors": [
-                "Environmental Science",
-                "Environmental Engineering",
-                "Earth Science"
-            ],
-
-            "careers": [
-                "Environmental Scientist",
-                "Environmental Engineer",
-                "Hydrologist",
-                "Conservation Scientist",
-                "Environmental Consultant",
-                "Climate Data Analyst"
-            ]
-        },
-
-        "Robotics": {
-
-            "majors": [
-                "Robotics Engineering",
-                "Mechanical Engineering",
-                "Computer Engineering",
-                "Electrical Engineering",
-                "Mechatronics"
-            ],
-
-            "careers": [
-                "Robotics Engineer",
-                "Mechatronics Engineer",
-                "Controls Engineer",
-                "Automation Engineer",
-                "Embedded Systems Engineer",
-                "Computer Vision Engineer"
-            ]
-        },
-
-        "Civil Engineering": {
-            "majors": ["Civil Engineering", "Structural Engineering", "Environmental Engineering"],
-            "careers": ["Civil Engineer", "Structural Engineer", "Transportation Engineer", "Geotechnical Engineer"]
-        },
-        "Chemical Engineering": {
-            "majors": ["Chemical Engineering", "Chemistry", "Materials Science / Engineering"],
-            "careers": ["Chemical Engineer", "Process Engineer", "Materials Engineer", "Petroleum Engineer"]
-        },
-        "Environmental Engineering": {
-            "majors": ["Environmental Engineering", "Environmental Science", "Civil Engineering"],
-            "careers": ["Environmental Engineer", "Water Resources Engineer", "Sustainability Engineer"]
-        },
-        "Aerospace Engineering": {
-            "majors": ["Aerospace Engineering", "Mechanical Engineering", "Physics"],
-            "careers": ["Aerospace Engineer", "Flight Systems Engineer", "Avionics Engineer"]
-        },
-        "Industrial Engineering": {
-            "majors": ["Industrial Engineering", "Operations Research", "Systems Engineering"],
-            "careers": ["Industrial Engineer", "Operations Research Analyst", "Supply Chain Engineer"]
-        },
-        "Materials Science / Engineering": {
-            "majors": ["Materials Science / Engineering", "Chemical Engineering", "Physics"],
-            "careers": ["Materials Engineer", "Metallurgist", "Polymer Scientist"]
-        },
-        "Bioengineering": {
-            "majors": ["Bioengineering", "Biomedical Engineering", "Biotechnology"],
-            "careers": ["Bioengineer", "Biomedical Engineer", "Tissue Engineer"]
-        },
-        "Cybersecurity": {
-            "majors": ["Cybersecurity", "Computer Science", "Computer Engineering"],
-            "careers": ["Cybersecurity Analyst", "Security Engineer", "Network Defender"]
-        },
-        "Software Engineering": {
-            "majors": ["Software Engineering", "Computer Science"],
-            "careers": ["Software Engineer", "Full-Stack Developer", "Application Developer"]
-        },
-        "Web Development": {
-            "majors": ["Computer Science", "Software Engineering", "Web Development"],
-            "careers": ["Web Developer", "Frontend Developer", "Full-Stack Developer"]
-        },
-        "Applied Mathematics": {
-            "majors": ["Applied Mathematics", "Mathematics", "Statistics"],
-            "careers": ["Applied Mathematician", "Quantitative Analyst", "Operations Research Analyst"]
-        },
-        "Statistics": {
-            "majors": ["Statistics", "Data Science", "Applied Mathematics"],
-            "careers": ["Statistician", "Biostatistician", "Data Analyst"]
-        },
-        "Astrophysics / Astronomy": {
-            "majors": ["Astronomy", "Astrophysics", "Physics"],
-            "careers": ["Astronomer", "Astrophysicist", "Observatory Technician"]
-        },
-        "Chemistry": {
-            "majors": ["Chemistry", "Biochemistry", "Chemical Engineering"],
-            "careers": ["Chemist", "Analytical Chemist", "Pharmaceutical Scientist"]
-        },
-        "Biomedical Science": {
-            "majors": ["Biomedical Sciences", "Biology", "Biotechnology"],
-            "careers": ["Biomedical Scientist", "Lab Researcher", "Clinical Research Coordinator"]
-        },
-        "Neuroscience": {
-            "majors": ["Neuroscience", "Biology", "Psychology"],
-            "careers": ["Neuroscientist", "Research Technician", "Neurology Researcher"]
-        },
-        "Biotechnology": {
-            "majors": ["Biotechnology", "Biology", "Bioengineering"],
-            "careers": ["Biotechnologist", "Lab Technician", "Bioprocess Technician"]
-        },
-        "Bioinformatics / Computational Biology": {
-            "majors": ["Bioinformatics", "Computational Biology", "Computer Science"],
-            "careers": ["Bioinformatician", "Computational Biologist", "Genomics Analyst"]
-        },
-        "Medicine / Health Science": {
-            "majors": ["Biology", "Public Health", "Biomedical Sciences"],
-            "careers": ["Doctor / Physician", "Clinical researcher", "Health scientist"]
-        },
-        "Medicine / Health": {
-            "majors": ["Biology", "Public Health", "Biomedical Sciences"],
-            "careers": ["Doctor / Physician", "Clinical researcher", "Health scientist"]
-        },
-        "Public Health": {
-            "majors": ["Public Health", "Epidemiology", "Health Science"],
-            "careers": ["Epidemiologist", "Public Health Analyst", "Community Health Worker"]
-        },
-        "Cancer Research": {
-            "majors": ["Biology", "Biomedical Sciences", "Oncology research"],
-            "careers": ["Cancer researcher", "Lab technician", "Clinical research coordinator"]
-        },
-        "Earth Science / Geoscience": {
-            "majors": ["Geology", "Earth Science", "Environmental Science"],
-            "careers": ["Geoscientist", "Hydrologist", "Environmental geologist"]
-        },
-        "Climate Science": {
-            "majors": ["Climate Science", "Environmental Science", "Atmospheric Science"],
-            "careers": ["Climate scientist", "Climate data analyst", "Sustainability specialist"]
-        },
-        "Earth / Climate Science": {
-            "majors": ["Earth Science", "Climate Science", "Environmental Science"],
-            "careers": ["Climate scientist", "Geoscientist", "Environmental scientist"]
-        },
-        "Space Science": {
-            "majors": ["Astronomy", "Aerospace Engineering", "Physics"],
-            "careers": ["Space scientist", "Mission analyst", "Aerospace technician"]
-        },
-        "Quantitative Finance / Financial Engineering": {
-            "majors": ["Financial Engineering", "Applied Mathematics", "Statistics"],
-            "careers": ["Quantitative Analyst", "Financial Engineer", "Risk Analyst"]
-        },
-        "Financial Engineering": {
-            "majors": ["Financial Engineering", "Applied Mathematics", "Statistics"],
-            "careers": ["Financial Engineer", "Quantitative Analyst", "Risk Modeler"]
-        },
-        "Quantitative Finance": {
-            "majors": ["Quantitative Finance", "Financial Engineering", "Mathematics"],
-            "careers": ["Quantitative Analyst", "Trading Analyst", "Portfolio Risk Analyst"]
-        },
-        "FinTech": {
-            "majors": ["FinTech", "Computer Science", "Finance"],
-            "careers": ["FinTech Engineer", "Financial Software Developer", "Payments Analyst"]
-        },
-        "Finance": {
-            "majors": ["Finance", "Economics", "Business Analytics"],
-            "careers": ["Financial Analyst", "Investment Analyst", "Corporate Finance Analyst"]
-        },
-        "Business": {
-            "majors": ["Business Administration", "Business", "Management"],
-            "careers": ["Business Analyst", "Operations Associate", "Management Trainee"]
-        },
-        "Entrepreneurship": {
-            "majors": ["Entrepreneurship", "Business Administration", "Business"],
-            "careers": ["Founder / Startup Builder", "Product Manager pathway", "Small Business Manager"]
-        },
-        "Economics": {
-            "majors": ["Economics", "Quantitative Economics", "Statistics"],
-            "careers": ["Economist", "Economic Analyst", "Policy Analyst"]
-        },
-        "Quantitative Economics": {
-            "majors": ["Quantitative Economics", "Economics", "Applied Mathematics"],
-            "careers": ["Quantitative Economist", "Economic Data Analyst", "Policy Researcher"]
-        },
-        "Accounting": {
-            "majors": ["Accounting", "Finance", "Business Analytics"],
-            "careers": ["Accountant", "Auditor", "Financial Reporting Analyst"]
-        },
-        "Business Analytics": {
-            "majors": ["Business Analytics", "Data Science", "Statistics"],
-            "careers": ["Business Analyst", "Data Analyst", "Analytics Consultant"]
-        },
-        "Actuarial Science": {
-            "majors": ["Actuarial Science", "Statistics", "Mathematics"],
-            "careers": ["Actuary", "Risk Analyst", "Insurance Analyst"]
-        },
-        "Operations Research": {
-            "majors": ["Operations Research", "Applied Mathematics", "Industrial Engineering"],
-            "careers": ["Operations Research Analyst", "Optimization Specialist", "Logistics Analyst"]
-        },
-        "Machine Learning": {
-            "majors": ["Machine Learning", "Artificial Intelligence", "Computer Science"],
-            "careers": ["Machine Learning Engineer", "AI Researcher", "Data Scientist"]
-        },
-        "Game Development": {
-            "majors": ["Game Development", "Computer Science", "Software Engineering"],
-            "careers": ["Game Developer", "Gameplay Programmer", "Technical Artist"]
-        },
-        "Human-Computer Interaction": {
-            "majors": ["Human-Computer Interaction", "Computer Science", "Cognitive Science"],
-            "careers": ["UX Researcher", "Interaction Designer", "HCI Specialist"]
-        },
-        "Mechatronics": {
-            "majors": ["Mechatronics", "Mechanical Engineering", "Robotics"],
-            "careers": ["Mechatronics Engineer", "Automation Engineer", "Robotics Technician"]
-        },
-        "Medicine / Pre-Med": {
-            "majors": ["Biology", "Biomedical Sciences", "Pre-Med"],
-            "careers": ["Doctor / Physician", "Clinical Researcher", "Medical Scientist"]
-        },
-        "Genetics / Genomics": {
-            "majors": ["Genetics", "Genomics", "Biology"],
-            "careers": ["Geneticist", "Genomics Analyst", "Genetic Counselor pathway"]
-        },
-        "Pharmacy / Pharmaceutical Science": {
-            "majors": ["Pharmacy", "Pharmaceutical Sciences", "Chemistry"],
-            "careers": ["Pharmacist pathway", "Pharmaceutical Scientist", "Drug Development Analyst"]
-        },
-        "Psychology / Cognitive Science": {
-            "majors": ["Psychology", "Cognitive Science", "Neuroscience"],
-            "careers": ["Cognitive Scientist", "Behavioral Researcher", "UX Researcher"]
-        },
-        "Nuclear Science": {
-            "majors": ["Nuclear Science", "Physics", "Nuclear Engineering"],
-            "careers": ["Nuclear Scientist", "Radiation Specialist", "Energy Researcher"]
-        },
-        "Ecology": {
-            "majors": ["Ecology", "Environmental Science", "Biology"],
-            "careers": ["Ecologist", "Conservation Scientist", "Field Biologist"]
-        },
-        "Geology": {
-            "majors": ["Geology", "Earth Science", "Environmental Science"],
-            "careers": ["Geologist", "Geoscientist", "Environmental Geologist"]
-        },
-        "Earth Science": {
-            "majors": ["Earth Science", "Geology", "Environmental Science"],
-            "careers": ["Earth Scientist", "Geoscientist", "Hydrologist"]
-        },
-        "Marine Science": {
-            "majors": ["Marine Science", "Oceanography", "Biology"],
-            "careers": ["Marine Scientist", "Oceanographer", "Coastal Researcher"]
-        },
-        "Sustainability": {
-            "majors": ["Sustainability", "Environmental Studies", "Environmental Science"],
-            "careers": ["Sustainability Specialist", "ESG Analyst", "Environmental Planner"]
-        },
-        "Architecture": {
-            "majors": ["Architecture", "Architectural Studies", "Urban Design"],
-            "careers": ["Architect", "Architectural Designer", "Urban Designer"]
-        },
-        "Urban Planning": {
-            "majors": ["Urban Planning", "Urban Studies", "Geography"],
-            "careers": ["Urban Planner", "Transportation Planner", "Community Development Analyst"]
-        },
-        "Construction Engineering": {
-            "majors": ["Construction Engineering", "Civil Engineering", "Construction Management"],
-            "careers": ["Construction Engineer", "Project Engineer", "Site Engineer"]
-        },
-        "Structural Engineering": {
-            "majors": ["Structural Engineering", "Civil Engineering", "Architecture"],
-            "careers": ["Structural Engineer", "Bridge Engineer", "Building Design Engineer"]
-        },
-        "General / Interdisciplinary STEM": {
-            "majors": ["General STEM", "Liberal Arts and Sciences", "Undeclared STEM"],
-            "careers": ["STEM explorer", "Research assistant", "Technical analyst"]
-        },
-        "General STEM / Interdisciplinary": {
-            "majors": ["General STEM", "Liberal Arts and Sciences", "Undeclared STEM"],
-            "careers": ["STEM explorer", "Research assistant", "Technical analyst"]
-        },
-        "General Engineering / Undecided Engineering": {
-            "majors": [
-                "General Engineering",
-                "Undecided Engineering",
-                "Engineering"
+                'General Engineering',
+                'Engineering',
+                'Industrial Engineering',
+                'Civil Engineering',
+                'Systems Engineering'
             ],
             "careers": [
-                "Engineer",
-                "Project engineer",
-                "Systems engineer",
-                "Engineering technician"
+                'Civil Engineer',
+                'Industrial Engineer',
+                'Systems Engineer',
+                'Materials Engineer',
+                'Aerospace Engineer'
             ]
         },
-        "Information Technology / Information Science": {
+        'Electrical Engineering': {
+            "majors": ['Electrical Engineering', 'Electrical and Computer Engineering'],
+            "careers": [
+                'Electrical Engineer',
+                'Electronics Engineer',
+                'Power Systems Engineer',
+                'Controls Engineer',
+                'RF Engineer',
+                'Semiconductor Engineer',
+                'Hardware Engineer'
+            ]
+        },
+        'Mechanical Engineering': {
+            "majors": ['Mechanical Engineering', 'Aerospace Engineering', 'Mechatronics'],
+            "careers": [
+                'Mechanical Engineer',
+                'Aerospace Engineer',
+                'Automotive Engineer',
+                'Manufacturing Engineer',
+                'Product Design Engineer',
+                'Mechatronics Engineer',
+                'Robotics Engineer'
+            ]
+        },
+        'Computer Engineering': {
+            "majors": ['Computer Engineering', 'Electrical and Computer Engineering'],
+            "careers": [
+                'Computer Hardware Engineer',
+                'Embedded Systems Engineer',
+                'Firmware Engineer',
+                'FPGA Engineer',
+                'Hardware Engineer',
+                'Robotics Engineer',
+                'Systems Engineer'
+            ]
+        },
+        'Computer Science': {
+            "majors": ['Computer Science', 'Software Engineering', 'Cybersecurity'],
+            "careers": [
+                'Software Developer',
+                'Backend Developer',
+                'Frontend Developer',
+                'Full-Stack Developer',
+                'Cybersecurity Analyst',
+                'Cloud Engineer',
+                'Database Architect',
+                'Systems Developer'
+            ]
+        },
+        'Artificial Intelligence': {
+            "majors": ['Computer Science', 'Artificial Intelligence', 'Data Science'],
+            "careers": [
+                'Machine Learning Engineer',
+                'AI Engineer',
+                'Data Scientist',
+                'Computer Vision Engineer',
+                'NLP Engineer',
+                'AI Research Scientist',
+                'Machine Learning Researcher'
+            ]
+        },
+        'Data Science': {
             "majors": [
-                "Information Technology",
-                "Information Science",
-                "Computer Science"
+                'Data Science',
+                'Statistics',
+                'Computer Science',
+                'Applied Mathematics'
             ],
             "careers": [
-                "IT specialist",
-                "Systems analyst",
-                "Network administrator",
-                "Information architect"
+                'Data Scientist',
+                'Data Analyst',
+                'Data Engineer',
+                'Operations Research Analyst',
+                'Statistician',
+                'Business Intelligence Analyst',
+                'Quantitative Analyst'
             ]
         },
-        "Applied Physics": {
+        'Biomedical Engineering': {
+            "majors": ['Biomedical Engineering', 'Bioengineering'],
+            "careers": [
+                'Biomedical Engineer',
+                'Medical Device Engineer',
+                'Biomechanical Engineer',
+                'Clinical Engineer',
+                'Rehabilitation Engineer',
+                'Healthcare Technology Engineer'
+            ]
+        },
+        'Biology': {
             "majors": [
-                "Applied Physics",
-                "Physics",
-                "Engineering Physics"
+                'Biology',
+                'Biochemistry',
+                'Molecular Biology',
+                'Biotechnology'
             ],
             "careers": [
-                "Applied physicist",
-                "Research scientist",
-                "Optical engineer",
-                "Materials scientist"
+                'Biologist',
+                'Microbiologist',
+                'Biochemist',
+                'Biological Technician',
+                'Geneticist',
+                'Medical Scientist',
+                'Biotechnology Researcher'
             ]
         },
-        "Materials Science": {
+        'Physics': {
+            "majors": ['Physics', 'Applied Physics', 'Engineering Physics'],
+            "careers": [
+                'Physicist',
+                'Optical Engineer',
+                'Nuclear Engineer',
+                'Aerospace Engineer',
+                'Research Scientist',
+                'Medical Physicist'
+            ]
+        },
+        'Mathematics': {
             "majors": [
-                "Materials Science",
-                "Materials Science and Engineering",
-                "Chemistry"
+                'Mathematics',
+                'Applied Mathematics',
+                'Statistics',
+                'Actuarial Science'
             ],
             "careers": [
-                "Materials scientist",
-                "Metallurgist",
-                "Polymer scientist",
-                "Nanomaterials researcher"
+                'Mathematician',
+                'Statistician',
+                'Actuary',
+                'Operations Research Analyst',
+                'Data Scientist',
+                'Quantitative Analyst'
             ]
         },
-        "Astronomy / Astrophysics": {
+        'Environmental Science': {
+            "majors": ['Environmental Science', 'Environmental Engineering', 'Earth Science'],
+            "careers": [
+                'Environmental Scientist',
+                'Environmental Engineer',
+                'Hydrologist',
+                'Conservation Scientist',
+                'Environmental Consultant',
+                'Climate Data Analyst'
+            ]
+        },
+        'Robotics': {
             "majors": [
-                "Astronomy",
-                "Astrophysics",
-                "Physics"
+                'Robotics Engineering',
+                'Mechanical Engineering',
+                'Computer Engineering',
+                'Electrical Engineering',
+                'Mechatronics'
             ],
             "careers": [
-                "Astronomer",
-                "Astrophysicist",
-                "Observatory technician",
-                "Space scientist"
+                'Robotics Engineer',
+                'Mechatronics Engineer',
+                'Controls Engineer',
+                'Automation Engineer',
+                'Embedded Systems Engineer',
+                'Computer Vision Engineer'
             ]
         },
-        "Earth Science": {
-            "majors": [
-                "Earth Science",
-                "Geology",
-                "Environmental Science"
-            ],
+        'Civil Engineering': {
+            "majors": ['Civil Engineering', 'Structural Engineering', 'Environmental Engineering'],
             "careers": [
-                "Geoscientist",
-                "Hydrologist",
-                "Environmental geologist",
-                "Earth science researcher"
+                'Civil Engineer',
+                'Structural Engineer',
+                'Transportation Engineer',
+                'Geotechnical Engineer'
             ]
         },
-        "Biochemistry": {
-            "majors": [
-                "Biochemistry",
-                "Biology",
-                "Chemistry"
-            ],
+        'Chemical Engineering': {
+            "majors": ['Chemical Engineering', 'Chemistry', 'Materials Science / Engineering'],
             "careers": [
-                "Biochemist",
-                "Lab researcher",
-                "Pharmaceutical scientist",
-                "Molecular biologist"
+                'Chemical Engineer',
+                'Process Engineer',
+                'Materials Engineer',
+                'Bioprocess Engineer'
             ]
         },
-        "Health Science": {
-            "majors": [
-                "Health Science",
-                "Public Health",
-                "Biology"
-            ],
+        'Environmental Engineering': {
+            "majors": ['Environmental Engineering', 'Environmental Science', 'Civil Engineering'],
             "careers": [
-                "Health scientist",
-                "Clinical research coordinator",
-                "Public health analyst",
-                "Healthcare administrator"
+                'Environmental Engineer',
+                'Water Treatment Engineer',
+                'Environmental Scientist',
+                'Sustainability Analyst'
             ]
         },
-        "Environmental Studies / Sustainability": {
-            "majors": [
-                "Environmental Studies",
-                "Sustainability",
-                "Environmental Science"
-            ],
+        'Aerospace Engineering': {
+            "majors": ['Aerospace Engineering', 'Mechanical Engineering', 'Physics'],
             "careers": [
-                "Sustainability specialist",
-                "Environmental planner",
-                "Conservation analyst",
-                "Climate policy assistant"
+                'Aerospace Engineer',
+                'Flight Test Engineer',
+                'Avionics Systems Engineer',
+                'Space Systems Analyst'
             ]
         },
-        "Cognitive Science": {
-            "majors": [
-                "Cognitive Science",
-                "Neuroscience",
-                "Computer Science"
-            ],
+        'Industrial Engineering': {
+            "majors": ['Industrial Engineering', 'Operations Research', 'Systems Engineering'],
             "careers": [
-                "Cognitive scientist",
-                "UX researcher",
-                "Computational neuroscientist",
-                "Research assistant"
+                'Industrial Engineer',
+                'Operations Research Analyst',
+                'Supply Chain Engineer',
+                'Continuous Improvement Analyst'
             ]
         },
-        "Computational Science": {
-            "majors": [
-                "Computational Science",
-                "Applied Mathematics",
-                "Computer Science"
-            ],
+        'Materials Science / Engineering': {
+            "majors": ['Materials Science / Engineering', 'Chemical Engineering', 'Physics'],
             "careers": [
-                "Computational scientist",
-                "Simulation analyst",
-                "Scientific programmer",
-                "Data scientist"
+                'Materials Engineer',
+                'Metallurgist',
+                'Polymer Scientist',
+                'Nanomaterials Scientist'
             ]
         },
-        "STEM / General Science": {
-            "majors": [
-                "General Science",
-                "Liberal Arts and Sciences",
-                "Undeclared STEM"
-            ],
+        'Bioengineering': {
+            "majors": ['Bioengineering', 'Biomedical Engineering', 'Biotechnology'],
             "careers": [
-                "STEM explorer",
-                "Research assistant",
-                "Science communicator",
-                "Laboratory technician"
+                'Biomedical Engineer',
+                'Tissue Engineering Researcher',
+                'Medical Device Engineer',
+                'Biotechnology Researcher'
             ]
         },
-
-        "Nuclear Engineering": {
-            "majors": ["Nuclear Engineering", "Engineering Physics", "Physics"],
-            "careers": ["Nuclear Engineer", "Reactor Engineer", "Radiation Protection Specialist"]
-        },
-        "Systems Engineering": {
-            "majors": ["Systems Engineering", "Industrial Engineering", "Electrical Engineering"],
-            "careers": ["Systems Engineer", "Systems Analyst", "Integration Engineer"]
-        },
-        "Engineering Physics": {
-            "majors": ["Engineering Physics", "Applied Physics", "Physics"],
-            "careers": ["Engineering Physicist", "Applied Physicist", "R&D Engineer"]
-        },
-        "Information Systems": {
-            "majors": ["Information Systems", "Management Information Systems", "Computer Science"],
-            "careers": ["Systems Analyst", "IT Consultant", "Business Systems Analyst"]
-        },
-        "Management Information Systems": {
-            "majors": ["Management Information Systems", "Information Systems", "Business Analytics"],
-            "careers": ["MIS Analyst", "IT Manager pathway", "Business Technology Analyst"]
-        },
-        "Molecular Biology": {
-            "majors": ["Molecular Biology", "Biology", "Biochemistry"],
-            "careers": ["Molecular Biologist", "Lab Researcher", "Biotech Research Assistant"]
-        },
-        "Meteorology / Atmospheric Science": {
-            "majors": ["Meteorology", "Atmospheric Science", "Climate Science"],
-            "careers": ["Meteorologist", "Atmospheric Scientist", "Weather Analyst"]
-        },
-        "Oceanography": {
-            "majors": ["Oceanography", "Marine Science", "Earth Science"],
-            "careers": ["Oceanographer", "Marine Scientist", "Coastal Researcher"]
-        },
-        "Agricultural Science": {
-            "majors": ["Agricultural Science", "Plant Science", "Food Science"],
-            "careers": ["Agricultural Scientist", "Agronomist", "Crop Specialist"]
-        },
-        "Food Science": {
-            "majors": ["Food Science", "Chemistry", "Agricultural Science"],
-            "careers": ["Food Scientist", "Quality Assurance Specialist", "Product Development Scientist"]
-        },
-        "Architectural Engineering": {
-            "majors": ["Architectural Engineering", "Civil Engineering", "Architecture"],
-            "careers": ["Architectural Engineer", "Building Systems Engineer", "Structural Designer"]
-        },
-        "Construction Management": {
-            "majors": ["Construction Management", "Civil Engineering", "Construction Engineering"],
-            "careers": ["Construction Manager", "Project Manager", "Site Superintendent"]
-        },
-        "Industrial Design": {
-            "majors": ["Industrial Design", "Product Design", "Mechanical Engineering"],
-            "careers": ["Industrial Designer", "Product Designer", "UX Hardware Designer"]
-        },
-        "Supply Chain Management": {
-            "majors": ["Supply Chain Management", "Operations Management", "Industrial Engineering"],
-            "careers": ["Supply Chain Analyst", "Logistics Coordinator", "Operations Planner"]
-        },
-        "Operations Management": {
-            "majors": ["Operations Management", "Supply Chain Management", "Business Analytics"],
-            "careers": ["Operations Manager", "Process Improvement Analyst", "Operations Analyst"]
-        },
-        "Undecided STEM": {
-            "majors": [
-                "Undeclared STEM",
-                "General Science",
-                "Exploratory STEM"
-            ],
+        'Cybersecurity': {
+            "majors": ['Cybersecurity', 'Computer Science', 'Computer Engineering'],
             "careers": [
-                "STEM explorer",
-                "Research assistant",
-                "Technical analyst"
+                'Cybersecurity Analyst',
+                'Security Engineer',
+                'Security Operations Analyst',
+                'Network Engineer'
             ]
-        }
+        },
+        'Software Engineering': {
+            "majors": ['Software Engineering', 'Computer Science'],
+            "careers": [
+                'Software Developer',
+                'Full-Stack Developer',
+                'Application Software Engineer',
+                'Systems Developer'
+            ]
+        },
+        'Web Development': {
+            "majors": ['Computer Science', 'Software Engineering', 'Web Development'],
+            "careers": [
+                'Web Developer',
+                'Frontend Developer',
+                'Full-Stack Developer',
+                'Front-End Web Engineer'
+            ]
+        },
+        'Applied Mathematics': {
+            "majors": ['Applied Mathematics', 'Mathematics', 'Statistics'],
+            "careers": [
+                'Applied Mathematical Analyst',
+                'Quantitative Analyst',
+                'Operations Research Analyst',
+                'Mathematician'
+            ]
+        },
+        'Statistics': {
+            "majors": ['Statistics', 'Data Science', 'Applied Mathematics'],
+            "careers": [
+                'Statistician',
+                'Biostatistician',
+                'Data Analyst',
+                'Survey Statistician'
+            ]
+        },
+        'Astrophysics / Astronomy': {
+            "majors": ['Astronomy', 'Astrophysics', 'Physics'],
+            "careers": [
+                'Astronomer',
+                'Astrophysics Data Scientist',
+                'Observatory Instrumentation Specialist',
+                'Planetary Science Researcher'
+            ]
+        },
+        'Chemistry': {
+            "majors": ['Chemistry', 'Biochemistry', 'Chemical Engineering'],
+            "careers": [
+                'Chemist',
+                'Analytical Chemist',
+                'Pharmaceutical Scientist',
+                'Materials Chemist'
+            ]
+        },
+        'Biomedical Science': {
+            "majors": ['Biomedical Sciences', 'Biology', 'Biotechnology'],
+            "careers": [
+                'Biomedical Research Associate',
+                'Laboratory Research Assistant',
+                'Clinical Research Coordinator',
+                'Medical Scientist'
+            ]
+        },
+        'Neuroscience': {
+            "majors": ['Neuroscience', 'Biology', 'Psychology'],
+            "careers": [
+                'Neuroscientist',
+                'Field Research Technician',
+                'Behavioral Neuroscience Researcher',
+                'Neural Data Analyst'
+            ]
+        },
+        'Biotechnology': {
+            "majors": ['Biotechnology', 'Biology', 'Bioengineering'],
+            "careers": [
+                'Biotechnology Researcher',
+                'Biological Technician',
+                'Biomanufacturing Associate',
+                'Assay Development Scientist'
+            ]
+        },
+        'Bioinformatics / Computational Biology': {
+            "majors": ['Bioinformatics', 'Computational Biology', 'Computer Science'],
+            "careers": [
+                'Bioinformatics Analyst',
+                'Computational Biologist',
+                'Genomics Research Scientist',
+                'Systems Biology Analyst'
+            ]
+        },
+        'Medicine / Health Science': {
+            "majors": ['Biology', 'Public Health', 'Biomedical Sciences'],
+            "careers": [
+                'Doctor / Physician',
+                'Clinical Research Coordinator',
+                'Health Science Research Assistant',
+                'Medical Scientist'
+            ]
+        },
+        'Medicine / Health': {
+            "majors": ['Biology', 'Public Health', 'Biomedical Sciences'],
+            "careers": [
+                'Doctor / Physician',
+                'Clinical Research Coordinator',
+                'Health Science Research Assistant',
+                'Medical Scientist'
+            ]
+        },
+        'Public Health': {
+            "majors": ['Public Health', 'Epidemiology', 'Health Science'],
+            "careers": [
+                'Epidemiologist',
+                'Public Health Analyst',
+                'Community Health Program Evaluator',
+                'Health Education Specialist'
+            ]
+        },
+        'Cancer Research': {
+            "majors": ['Biology', 'Biomedical Sciences', 'Oncology research'],
+            "careers": [
+                'Cancer Biologist',
+                'Biological Technician',
+                'Clinical Research Coordinator',
+                'Clinical Oncology Research Coordinator'
+            ]
+        },
+        'Earth Science / Geoscience': {
+            "majors": ['Geology', 'Earth Science', 'Environmental Science'],
+            "careers": [
+                'Geoscientist',
+                'Hydrologist',
+                'Engineering Geologist',
+                'Earth Scientist'
+            ]
+        },
+        'Climate Science': {
+            "majors": ['Climate Science', 'Environmental Science', 'Atmospheric Science'],
+            "careers": [
+                'Climate Scientist',
+                'Climate Data Analyst',
+                'Sustainability Analyst',
+                'Climate Policy Analyst'
+            ]
+        },
+        'Earth / Climate Science': {
+            "majors": ['Earth Science', 'Climate Science', 'Environmental Science'],
+            "careers": [
+                'Climate Scientist',
+                'Geoscientist',
+                'Environmental Scientist',
+                'Climate Data Analyst'
+            ]
+        },
+        'Space Science': {
+            "majors": ['Astronomy', 'Aerospace Engineering', 'Physics'],
+            "careers": [
+                'Planetary Science Researcher',
+                'Space Systems Analyst',
+                'Mission Science Support Specialist',
+                'Aerospace Engineer'
+            ]
+        },
+        'Quantitative Finance / Financial Engineering': {
+            "majors": ['Financial Engineering', 'Applied Mathematics', 'Statistics'],
+            "careers": [
+                'Quantitative Analyst',
+                'Financial Engineer',
+                'Portfolio Risk Analyst',
+                'Actuary'
+            ]
+        },
+        'Financial Engineering': {
+            "majors": ['Financial Engineering', 'Applied Mathematics', 'Statistics'],
+            "careers": [
+                'Financial Engineer',
+                'Quantitative Analyst',
+                'Portfolio Risk Analyst',
+                'Data Scientist'
+            ]
+        },
+        'Quantitative Finance': {
+            "majors": ['Quantitative Finance', 'Financial Engineering', 'Mathematics'],
+            "careers": [
+                'Quantitative Analyst',
+                'Portfolio Risk Analyst',
+                'Financial Analyst',
+                'Actuary'
+            ]
+        },
+        'FinTech': {
+            "majors": ['FinTech', 'Computer Science', 'Finance'],
+            "careers": [
+                'Payments Systems Analyst',
+                'Scientific Software Developer',
+                'Financial Engineer',
+                'Quantitative Analyst'
+            ]
+        },
+        'Finance': {
+            "majors": ['Finance', 'Economics', 'Business Analytics'],
+            "careers": [
+                'Financial Analyst',
+                'Investment Banking Analyst',
+                'Corporate Finance Analyst',
+                'Business Intelligence Analyst'
+            ]
+        },
+        'Business': {
+            "majors": ['Business Administration', 'Business', 'Management'],
+            "careers": [
+                'Business Intelligence Analyst',
+                'Startup Operations Associate',
+                'Business Operations Analyst',
+                'Business Analytics Consultant'
+            ]
+        },
+        'Entrepreneurship': {
+            "majors": ['Entrepreneurship', 'Business Administration', 'Business'],
+            "careers": [
+                'Startup Operations Associate',
+                'AI Product Engineer',
+                'Business Operations Analyst'
+            ]
+        },
+        'Economics': {
+            "majors": ['Economics', 'Quantitative Economics', 'Statistics'],
+            "careers": [
+                'Economist',
+                'Econometric Analyst',
+                'Environmental Policy Analyst',
+                'Financial Analyst'
+            ]
+        },
+        'Quantitative Economics': {
+            "majors": ['Quantitative Economics', 'Economics', 'Applied Mathematics'],
+            "careers": [
+                'Quantitative Economist',
+                'Econometric Analyst',
+                'Climate Policy Analyst',
+                'Economist'
+            ]
+        },
+        'Accounting': {
+            "majors": ['Accounting', 'Finance', 'Business Analytics'],
+            "careers": [
+                'Accountant',
+                'Auditor',
+                'Financial Analyst',
+                'Systems Reporting Analyst'
+            ]
+        },
+        'Business Analytics': {
+            "majors": ['Business Analytics', 'Data Science', 'Statistics'],
+            "careers": [
+                'Business Intelligence Analyst',
+                'Data Analyst',
+                'Business Analytics Consultant',
+                'Statistical Analyst'
+            ]
+        },
+        'Actuarial Science': {
+            "majors": ['Actuarial Science', 'Statistics', 'Mathematics'],
+            "careers": [
+                'Actuary',
+                'Portfolio Risk Analyst',
+                'Property and Casualty Actuarial Analyst',
+                'Statistician'
+            ]
+        },
+        'Operations Research': {
+            "majors": ['Operations Research', 'Applied Mathematics', 'Industrial Engineering'],
+            "careers": [
+                'Operations Research Analyst',
+                'Optimization Specialist',
+                'Logistics Analyst',
+                'Simulation Analyst'
+            ]
+        },
+        'Machine Learning': {
+            "majors": ['Machine Learning', 'Artificial Intelligence', 'Computer Science'],
+            "careers": [
+                'Machine Learning Engineer',
+                'Machine Learning Researcher',
+                'Data Scientist',
+                'AI Engineer'
+            ]
+        },
+        'Game Development': {
+            "majors": ['Game Development', 'Computer Science', 'Software Engineering'],
+            "careers": [
+                'Game Engine Developer',
+                'Gameplay Programmer',
+                'Technical Game Designer',
+                'Software Developer'
+            ]
+        },
+        'Human-Computer Interaction': {
+            "majors": ['Human-Computer Interaction', 'Computer Science', 'Cognitive Science'],
+            "careers": [
+                'UX Researcher',
+                'Interaction Designer',
+                'HCI Technologist',
+                'Human Factors Specialist'
+            ]
+        },
+        'Mechatronics': {
+            "majors": ['Mechatronics', 'Mechanical Engineering', 'Robotics'],
+            "careers": [
+                'Mechatronics Engineer',
+                'Automation Engineer',
+                'Robotics Engineer',
+                'Controls Engineer'
+            ]
+        },
+        'Medicine / Pre-Med': {
+            "majors": ['Biology', 'Biomedical Sciences', 'Pre-Med'],
+            "careers": [
+                'Doctor / Physician',
+                'Clinical Research Coordinator',
+                'Medical Scientist',
+                'Health Science Research Assistant'
+            ]
+        },
+        'Genetics / Genomics': {
+            "majors": ['Genetics', 'Genomics', 'Biology'],
+            "careers": [
+                'Geneticist',
+                'Genomics Research Scientist',
+                'Clinical Genetics Analyst',
+                'Population Genetics Researcher'
+            ]
+        },
+        'Pharmacy / Pharmaceutical Science': {
+            "majors": ['Pharmacy', 'Pharmaceutical Sciences', 'Chemistry'],
+            "careers": [
+                'Pharmacist',
+                'Pharmaceutical Scientist',
+                'Assay Development Scientist',
+                'Clinical Pharmacologist Researcher'
+            ]
+        },
+        'Psychology / Cognitive Science': {
+            "majors": ['Psychology', 'Cognitive Science', 'Neuroscience'],
+            "careers": [
+                'Cognitive Science Researcher',
+                'Behavioral Neuroscience Researcher',
+                'UX Researcher',
+                'Behavioral Data Analyst'
+            ]
+        },
+        'Nuclear Science': {
+            "majors": ['Nuclear Science', 'Physics', 'Nuclear Engineering'],
+            "careers": [
+                'Nuclear Science Researcher',
+                'Radiation Detection Specialist',
+                'Nuclear Engineer'
+            ]
+        },
+        'Ecology': {
+            "majors": ['Ecology', 'Environmental Science', 'Biology'],
+            "careers": [
+                'Ecologist',
+                'Conservation Scientist',
+                'Wildlife Biologist',
+                'Restoration Ecologist'
+            ]
+        },
+        'Geology': {
+            "majors": ['Geology', 'Earth Science', 'Environmental Science'],
+            "careers": [
+                'Geologist',
+                'Geoscientist',
+                'Engineering Geologist',
+                'Hydrogeologist'
+            ]
+        },
+        'Earth Science': {
+            "majors": ['Earth Science', 'Geology', 'Environmental Science'],
+            "careers": [
+                'Geoscientist',
+                'Hydrologist',
+                'Engineering Geologist',
+                'Earth Scientist'
+            ]
+        },
+        'Marine Science': {
+            "majors": ['Marine Science', 'Oceanography', 'Biology'],
+            "careers": [
+                'Marine Biologist',
+                'Oceanographer',
+                'Coastal Ocean Observer',
+                'Marine Conservation Specialist'
+            ]
+        },
+        'Sustainability': {
+            "majors": ['Sustainability', 'Environmental Studies', 'Environmental Science'],
+            "careers": [
+                'Sustainability Analyst',
+                'ESG Data Analyst',
+                'Climate Adaptation Planner',
+                'Environmental Policy Analyst'
+            ]
+        },
+        'Architecture': {
+            "majors": ['Architecture', 'Architectural Studies', 'Urban Design'],
+            "careers": [
+                'Architect',
+                'Architectural Designer',
+                'Urban Planner',
+                'Building Information Modeling Specialist'
+            ]
+        },
+        'Urban Planning': {
+            "majors": ['Urban Planning', 'Urban Studies', 'Geography'],
+            "careers": [
+                'Urban Planner',
+                'Transportation Planner',
+                'Housing Policy Planner',
+                'Climate Adaptation Planner'
+            ]
+        },
+        'Construction Engineering': {
+            "majors": ['Construction Engineering', 'Civil Engineering', 'Construction Management'],
+            "careers": [
+                'Construction Engineer',
+                'Project Engineer (General)',
+                'Construction Manager',
+                'Civil Engineer'
+            ]
+        },
+        'Structural Engineering': {
+            "majors": ['Structural Engineering', 'Civil Engineering', 'Architecture'],
+            "careers": [
+                'Structural Engineer',
+                'Bridge Engineer',
+                'Building Structural Designer',
+                'Forensic Structural Engineer'
+            ]
+        },
+        'General / Interdisciplinary STEM': {
+            "majors": ['General STEM', 'Liberal Arts and Sciences', 'Undeclared STEM'],
+            "careers": [
+                'Exploratory Data Analyst',
+                'Laboratory Research Assistant',
+                'Science Communications Specialist',
+                'Technical Project Coordinator'
+            ]
+        },
+        'General STEM / Interdisciplinary': {
+            "majors": ['General STEM', 'Liberal Arts and Sciences', 'Undeclared STEM'],
+            "careers": [
+                'Exploratory Data Analyst',
+                'Laboratory Research Assistant',
+                'Science Communications Specialist',
+                'Technical Project Coordinator'
+            ]
+        },
+        'General Engineering / Undecided Engineering': {
+            "majors": ['General Engineering', 'Undecided Engineering', 'Engineering'],
+            "careers": [
+                'Project Engineer (General)',
+                'Systems Engineer',
+                'Maker Space Technology Associate'
+            ]
+        },
+        'Information Technology / Information Science': {
+            "majors": ['Information Technology', 'Information Science', 'Computer Science'],
+            "careers": [
+                'IT Systems Administrator',
+                'Business Systems Analyst',
+                'Database Architect',
+                'Cloud Systems Administrator'
+            ]
+        },
+        'Applied Physics': {
+            "majors": ['Applied Physics', 'Physics', 'Engineering Physics'],
+            "careers": [
+                'Applied Physicist',
+                'Research Scientist',
+                'Optical Engineer',
+                'Materials Research Scientist'
+            ]
+        },
+        'Materials Science': {
+            "majors": ['Materials Science', 'Materials Science and Engineering', 'Chemistry'],
+            "careers": [
+                'Materials Research Scientist',
+                'Metallurgist',
+                'Polymer Scientist',
+                'Nanomaterials Scientist'
+            ]
+        },
+        'Astronomy / Astrophysics': {
+            "majors": ['Astronomy', 'Astrophysics', 'Physics'],
+            "careers": [
+                'Astronomer',
+                'Astrophysics Data Scientist',
+                'Observatory Instrumentation Specialist',
+                'Planetary Science Researcher'
+            ]
+        },
+        'Biochemistry': {
+            "majors": ['Biochemistry', 'Biology', 'Chemistry'],
+            "careers": [
+                'Biochemist',
+                'Laboratory Research Assistant',
+                'Pharmaceutical Scientist',
+                'Molecular Biologist'
+            ]
+        },
+        'Health Science': {
+            "majors": ['Health Science', 'Public Health', 'Biology'],
+            "careers": [
+                'Health Science Research Assistant',
+                'Clinical Research Coordinator',
+                'Public Health Analyst',
+                'Healthcare Quality Analyst'
+            ]
+        },
+        'Environmental Studies / Sustainability': {
+            "majors": ['Environmental Studies', 'Sustainability', 'Environmental Science'],
+            "careers": [
+                'Sustainability Analyst',
+                'Climate Adaptation Planner',
+                'Conservation Scientist',
+                'Climate Policy Analyst'
+            ]
+        },
+        'Cognitive Science': {
+            "majors": ['Cognitive Science', 'Neuroscience', 'Computer Science'],
+            "careers": [
+                'Cognitive Science Researcher',
+                'UX Researcher',
+                'Neural Data Analyst',
+                'Laboratory Research Assistant'
+            ]
+        },
+        'Computational Science': {
+            "majors": ['Computational Science', 'Applied Mathematics', 'Computer Science'],
+            "careers": [
+                'Simulation Scientist',
+                'Simulation Analyst',
+                'Scientific Software Developer',
+                'Data Scientist'
+            ]
+        },
+        'STEM / General Science': {
+            "majors": ['General Science', 'Liberal Arts and Sciences', 'Undeclared STEM'],
+            "careers": [
+                'Exploratory Data Analyst',
+                'Laboratory Research Assistant',
+                'Science Communications Specialist',
+                'Biological Technician'
+            ]
+        },
+        'Nuclear Engineering': {
+            "majors": ['Nuclear Engineering', 'Engineering Physics', 'Physics'],
+            "careers": [
+                'Nuclear Engineer',
+                'Reactor Engineer',
+                'Radiation Protection Engineer',
+                'Nuclear Science Researcher'
+            ]
+        },
+        'Systems Engineering': {
+            "majors": ['Systems Engineering', 'Industrial Engineering', 'Electrical Engineering'],
+            "careers": [
+                'Systems Engineer',
+                'Business Systems Analyst',
+                'Integration Engineer',
+                'Industrial Engineer'
+            ]
+        },
+        'Engineering Physics': {
+            "majors": ['Engineering Physics', 'Applied Physics', 'Physics'],
+            "careers": [
+                'Experimental Systems Engineer',
+                'Applied Physicist',
+                'Instrumentation Engineer',
+                'Photonics Engineer'
+            ]
+        },
+        'Information Systems': {
+            "majors": ['Information Systems', 'Management Information Systems', 'Computer Science'],
+            "careers": [
+                'Business Systems Analyst',
+                'IT Business Analyst',
+                'MIS Analyst',
+                'IT Systems Administrator'
+            ]
+        },
+        'Management Information Systems': {
+            "majors": ['Management Information Systems', 'Information Systems', 'Business Analytics'],
+            "careers": [
+                'MIS Analyst',
+                'IT Project Analyst',
+                'Business Systems Analyst',
+                'Business Intelligence Analyst'
+            ]
+        },
+        'Molecular Biology': {
+            "majors": ['Molecular Biology', 'Biology', 'Biochemistry'],
+            "careers": [
+                'Molecular Biologist',
+                'Laboratory Research Assistant',
+                'Preclinical Research Assistant',
+                'Cell Biologist'
+            ]
+        },
+        'Meteorology / Atmospheric Science': {
+            "majors": ['Meteorology', 'Atmospheric Science', 'Climate Science'],
+            "careers": [
+                'Meteorologist',
+                'Atmospheric Scientist',
+                'Broadcast Meteorology Analyst',
+                'Aviation Weather Specialist'
+            ]
+        },
+        'Oceanography': {
+            "majors": ['Oceanography', 'Marine Science', 'Earth Science'],
+            "careers": [
+                'Oceanographer',
+                'Marine Biologist',
+                'Coastal Ocean Observer',
+                'Physical Oceanography Analyst'
+            ]
+        },
+        'Agricultural Science': {
+            "majors": ['Agricultural Science', 'Plant Science', 'Food Science'],
+            "careers": [
+                'Soil Scientist',
+                'Agronomist',
+                'Plant Breeding Assistant',
+                'Agricultural Data Specialist'
+            ]
+        },
+        'Food Science': {
+            "majors": ['Food Science', 'Chemistry', 'Agricultural Science'],
+            "careers": [
+                'Food Scientist',
+                'Food Safety Specialist',
+                'Biotech Product Development Associate',
+                'Sensory Scientist'
+            ]
+        },
+        'Architectural Engineering': {
+            "majors": ['Architectural Engineering', 'Civil Engineering', 'Architecture'],
+            "careers": [
+                'Architectural Engineer',
+                'Building Systems Engineer',
+                'Building Structural Designer',
+                'Civil Engineer'
+            ]
+        },
+        'Construction Management': {
+            "majors": ['Construction Management', 'Civil Engineering', 'Construction Engineering'],
+            "careers": [
+                'Construction Manager',
+                'Project Controls Analyst',
+                'Construction Engineer',
+                'Scheduler (Construction)'
+            ]
+        },
+        'Industrial Design': {
+            "majors": ['Industrial Design', 'Product Design', 'Mechanical Engineering'],
+            "careers": [
+                'Industrial Designer',
+                'Product Design Strategist',
+                'Hardware UX Designer',
+                'Ergonomics Designer'
+            ]
+        },
+        'Supply Chain Management': {
+            "majors": ['Supply Chain Management', 'Operations Management', 'Industrial Engineering'],
+            "careers": [
+                'Supply Chain Analyst',
+                'Logistics Analyst',
+                'Demand Planner',
+                'Operations Research Analyst'
+            ]
+        },
+        'Operations Management': {
+            "majors": ['Operations Management', 'Supply Chain Management', 'Business Analytics'],
+            "careers": [
+                'Operations Manager Track Analyst',
+                'Continuous Improvement Analyst',
+                'Service Operations Analyst',
+                'Business Operations Analyst'
+            ]
+        },
+        'Undecided STEM': {
+            "majors": ['Undeclared STEM', 'General Science', 'Exploratory STEM'],
+            "careers": [
+                'Exploratory Data Analyst',
+                'Laboratory Research Assistant',
+                'Technical Project Coordinator',
+                'Maker Space Technology Associate'
+            ]
+        },
     }
 
     # ========================================================
