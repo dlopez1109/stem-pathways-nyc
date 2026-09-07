@@ -1,4 +1,5 @@
 import os
+import secrets
 import html as html_module
 import base64
 import streamlit as st
@@ -9,7 +10,7 @@ from datetime import datetime, timezone
 from functools import lru_cache
 from zoneinfo import ZoneInfo
 from pathlib import Path
-from urllib.parse import quote_plus
+from urllib.parse import parse_qs, quote_plus, urlencode, urlparse, urlunparse
 from supabase import ClientOptions, create_client
 import logging
 from opportunity_transparency import (
@@ -26195,10 +26196,14 @@ SP_APP_USER_RUN_KEY = "_sp_app_user_run_id"
 SP_AUTH_STORAGE_KEY = "_sp_supabase_auth_storage"
 SP_OAUTH_CODE_VERIFIER_KEY = "_sp_oauth_code_verifier"
 SP_OAUTH_CALLBACK_ERROR_KEY = "_sp_oauth_callback_error"
+SP_OAUTH_TICKET_QUERY_KEY = "sp_oauth"
 
 # Production Google OAuth redirect_to (must also be allow-listed in Supabase).
 SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD = "https://stempathwaysnyc.com"
 SUPABASE_AUTH_STORAGE_KEY = "supabase.auth.token"
+OAUTH_PKCE_TICKET_TTL_SECONDS = 10 * 60
+OAUTH_PKCE_TICKETS_TABLE = "oauth_pkce_tickets"
+_OAUTH_TICKET_ID_RE = re.compile(r"^[A-Za-z0-9_-]{20,128}$")
 
 AUTH_MSG_INVALID = (
     "Those sign-in details did not work. "
@@ -26804,6 +26809,8 @@ def _clear_oauth_query_params():
         "error_code",
         "error_description",
         "error_uri",
+        SP_OAUTH_TICKET_QUERY_KEY,
+        "sp_oauth",
     )
     try:
         for key in list(st.query_params.keys()):
@@ -26834,10 +26841,188 @@ def _redirect_browser_to(url):
     return True
 
 
+def _oauth_ticket_id_is_valid(ticket_id):
+    return bool(_OAUTH_TICKET_ID_RE.fullmatch(str(ticket_id or "").strip()))
+
+
+def _append_oauth_ticket_to_redirect(redirect_base, ticket_id):
+    """Attach only the opaque ticket to redirect_to (never the verifier)."""
+
+    base = str(redirect_base or "").strip().rstrip("/")
+    ticket_id = str(ticket_id or "").strip()
+    if not base or not _oauth_ticket_id_is_valid(ticket_id):
+        return None
+    # Keep production callback host exact; append opaque ticket query only.
+    if base.endswith("/"):
+        base = base[:-1]
+    return f"{base}/?{SP_OAUTH_TICKET_QUERY_KEY}={ticket_id}"
+
+
+def _store_oauth_pkce_ticket(code_verifier):
+    """
+    Persist PKCE verifier server-side under a random single-use ticket.
+    Uses the service-role client + oauth_pkce_tickets table (not process memory).
+    Returns opaque ticket_id or None.
+    """
+
+    verifier = str(code_verifier or "").strip()
+    if not verifier or not supabase_connected or supabase is None:
+        log_auth_event("google_oauth_ticket_store_unavailable")
+        return None
+
+    ticket_id = secrets.token_urlsafe(32)
+    if not _oauth_ticket_id_is_valid(ticket_id):
+        log_auth_event("google_oauth_ticket_invalid")
+        return None
+
+    now = datetime.now(timezone.utc)
+    expires_at = now.timestamp() + OAUTH_PKCE_TICKET_TTL_SECONDS
+    expires_iso = datetime.fromtimestamp(expires_at, tz=timezone.utc).isoformat()
+
+    try:
+        (
+            supabase
+            .table(OAUTH_PKCE_TICKETS_TABLE)
+            .insert(
+                {
+                    "ticket_id": ticket_id,
+                    "code_verifier": verifier,
+                    "created_at": now.isoformat(),
+                    "expires_at": expires_iso,
+                    "consumed_at": None,
+                }
+            )
+            .execute()
+        )
+        return ticket_id
+    except Exception as error:
+        log_auth_event("google_oauth_ticket_store_failed", error)
+        return None
+
+
+def _diagnose_oauth_pkce_ticket_failure(ticket_id):
+    """Emit a safe diagnostic event for missing/expired/reused/invalid tickets."""
+
+    if not _oauth_ticket_id_is_valid(ticket_id):
+        log_auth_event("google_oauth_ticket_invalid")
+        return
+
+    if not supabase_connected or supabase is None:
+        log_auth_event("google_oauth_ticket_missing")
+        return
+
+    try:
+        response = (
+            supabase
+            .table(OAUTH_PKCE_TICKETS_TABLE)
+            .select("expires_at,consumed_at")
+            .eq("ticket_id", ticket_id)
+            .limit(1)
+            .execute()
+        )
+        rows = response.data or []
+        if not rows:
+            log_auth_event("google_oauth_ticket_missing")
+            return
+
+        row = rows[0] if isinstance(rows[0], dict) else {}
+        consumed_at = row.get("consumed_at")
+        if consumed_at:
+            log_auth_event("google_oauth_ticket_reused")
+            return
+
+        expires_raw = str(row.get("expires_at") or "").strip()
+        try:
+            expires_at = datetime.fromisoformat(expires_raw.replace("Z", "+00:00"))
+            if expires_at.tzinfo is None:
+                expires_at = expires_at.replace(tzinfo=timezone.utc)
+            if expires_at <= datetime.now(timezone.utc):
+                log_auth_event("google_oauth_ticket_expired")
+                return
+        except Exception:
+            log_auth_event("google_oauth_ticket_invalid")
+            return
+
+        log_auth_event("google_oauth_ticket_invalid")
+    except Exception as error:
+        log_auth_event("google_oauth_ticket_consume_failed", error)
+
+
+def _consume_oauth_pkce_ticket(ticket_id):
+    """
+    Atomically consume a single-use ticket and return the PKCE verifier.
+    Rejects missing, expired, reused, or invalid tickets.
+    Never logs the verifier or ticket value.
+    """
+
+    ticket_id = str(ticket_id or "").strip()
+    if not _oauth_ticket_id_is_valid(ticket_id):
+        log_auth_event("google_oauth_ticket_invalid")
+        return None
+
+    if not supabase_connected or supabase is None:
+        log_auth_event("google_oauth_ticket_missing")
+        return None
+
+    now = datetime.now(timezone.utc)
+    now_iso = now.isoformat()
+
+    try:
+        response = (
+            supabase
+            .table(OAUTH_PKCE_TICKETS_TABLE)
+            .update({"consumed_at": now_iso})
+            .eq("ticket_id", ticket_id)
+            .is_("consumed_at", "null")
+            .gt("expires_at", now_iso)
+            .select("code_verifier")
+            .execute()
+        )
+        rows = response.data or []
+        if not rows:
+            _diagnose_oauth_pkce_ticket_failure(ticket_id)
+            return None
+
+        verifier = str(rows[0].get("code_verifier") or "").strip()
+        if not verifier:
+            log_auth_event("google_oauth_ticket_invalid")
+            return None
+        return verifier
+    except Exception as error:
+        log_auth_event("google_oauth_ticket_consume_failed", error)
+        return None
+
+
+def _oauth_authorize_url_with_ticket(oauth_url, redirect_base, ticket_id):
+    """
+    Rewrite only redirect_to on the authorize URL so the PKCE code_challenge
+    stays paired with the stored verifier. Never logs URL contents.
+    """
+
+    oauth_url = str(oauth_url or "").strip()
+    ticketed_redirect = _append_oauth_ticket_to_redirect(redirect_base, ticket_id)
+    if not oauth_url or not ticketed_redirect:
+        return None
+
+    try:
+        parsed = urlparse(oauth_url)
+        query = parse_qs(parsed.query, keep_blank_values=True)
+        query["redirect_to"] = [ticketed_redirect]
+        flat = []
+        for key, values in query.items():
+            for value in values:
+                flat.append((key, value))
+        return urlunparse(parsed._replace(query=urlencode(flat)))
+    except Exception:
+        log_auth_event("google_oauth_redirect_rewrite_failed")
+        return None
+
+
 def start_supabase_google_oauth():
     """
     Begin Supabase Auth Google OAuth (PKCE).
-    Stores the code_verifier in session_state for the callback exchange.
+    Persists the code_verifier server-side under an opaque single-use ticket
+    and sends only that ticket through the OAuth redirect_to URL.
     """
 
     if not supabase_auth_configured():
@@ -26845,12 +27030,14 @@ def start_supabase_google_oauth():
 
     try:
         client = create_supabase_auth_client(flow_type="pkce")
-        redirect_to = supabase_google_oauth_redirect_to()
+        redirect_base = supabase_google_oauth_redirect_to()
+
+        # One authorize call so code_challenge and code_verifier stay paired.
         response = client.auth.sign_in_with_oauth(
             {
                 "provider": "google",
                 "options": {
-                    "redirect_to": redirect_to,
+                    "redirect_to": redirect_base,
                     "query_params": {
                         "access_type": "offline",
                         "prompt": "select_account",
@@ -26869,9 +27056,23 @@ def start_supabase_google_oauth():
             log_auth_event("google_oauth_missing_verifier")
             return False, AUTH_MSG_GOOGLE_OAUTH
 
-        st.session_state[SP_OAUTH_CODE_VERIFIER_KEY] = str(verifier)
+        ticket_id = _store_oauth_pkce_ticket(verifier)
+        if not ticket_id:
+            return False, AUTH_MSG_GOOGLE_OAUTH
+
+        ticketed_url = _oauth_authorize_url_with_ticket(
+            oauth_url,
+            redirect_base,
+            ticket_id,
+        )
+        if not ticketed_url:
+            log_auth_event("google_oauth_ticket_invalid")
+            return False, AUTH_MSG_GOOGLE_OAUTH
+
+        # Do not keep the raw verifier in session_state across the redirect.
+        st.session_state.pop(SP_OAUTH_CODE_VERIFIER_KEY, None)
         st.session_state.pop(SP_OAUTH_CALLBACK_ERROR_KEY, None)
-        _redirect_browser_to(oauth_url)
+        _redirect_browser_to(ticketed_url)
         return True, ""
     except Exception as error:
         log_auth_event("google_oauth_start", error)
@@ -26881,8 +27082,9 @@ def start_supabase_google_oauth():
 def process_supabase_auth_callback():
     """
     Complete Supabase OAuth PKCE callback when ?code= is present.
-    Establishes the Supabase session and stores Auth user.id as owner.
-    Never logs authorization codes, tokens, or complete callback URLs.
+    Consumes the opaque ticket, restores the verifier into Auth storage,
+    exchanges the code, and stores Auth user.id as the canonical owner.
+    Never logs authorization codes, tokens, tickets, or complete callback URLs.
     """
 
     try:
@@ -26914,20 +27116,30 @@ def process_supabase_auth_callback():
         _clear_oauth_query_params()
         return False
 
-    verifier = str(st.session_state.get(SP_OAUTH_CODE_VERIFIER_KEY) or "").strip()
-    if not verifier:
-        storage = _session_auth_storage()
-        verifier = str(
-            storage.get_item(f"{SUPABASE_AUTH_STORAGE_KEY}-code-verifier") or ""
-        ).strip()
+    try:
+        ticket_id = str(params.get(SP_OAUTH_TICKET_QUERY_KEY) or "").strip()
+    except Exception:
+        ticket_id = ""
 
+    if not ticket_id:
+        log_auth_event("google_oauth_ticket_missing")
+        st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+        _clear_oauth_query_params()
+        return False
+
+    verifier = _consume_oauth_pkce_ticket(ticket_id)
     if not verifier:
-        log_auth_event("google_oauth_callback_missing_verifier")
         st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
         _clear_oauth_query_params()
         return False
 
     try:
+        # Restore verifier into the Auth client's PKCE storage, then exchange.
+        storage = _session_auth_storage()
+        storage.set_item(
+            f"{SUPABASE_AUTH_STORAGE_KEY}-code-verifier",
+            verifier,
+        )
         client = create_supabase_auth_client(flow_type="pkce")
         response = client.auth.exchange_code_for_session(
             {
@@ -26945,6 +27157,7 @@ def process_supabase_auth_callback():
 
         st.session_state.pop(SP_OAUTH_CODE_VERIFIER_KEY, None)
         st.session_state.pop(SP_OAUTH_CALLBACK_ERROR_KEY, None)
+        storage.remove_item(f"{SUPABASE_AUTH_STORAGE_KEY}-code-verifier")
         _clear_oauth_query_params()
         log_auth_event("google_oauth_callback_success")
         return True

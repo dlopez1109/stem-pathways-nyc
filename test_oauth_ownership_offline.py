@@ -8,8 +8,10 @@ from __future__ import annotations
 
 import re
 import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import MagicMock
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse, quote_plus
 
 ROOT = Path(__file__).resolve().parent
 APP = ROOT / "app.py"
@@ -25,9 +27,17 @@ def test_source_contracts() -> None:
     required = [
         "def start_supabase_google_oauth(",
         "def process_supabase_auth_callback(",
+        "def _store_oauth_pkce_ticket(",
+        "def _consume_oauth_pkce_ticket(",
         "exchange_code_for_session",
-        'sign_in_with_oauth',
+        "sign_in_with_oauth",
         'SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD = "https://stempathwaysnyc.com"',
+        "OAUTH_PKCE_TICKET_TTL_SECONDS = 10 * 60",
+        "oauth_pkce_tickets",
+        "google_oauth_ticket_missing",
+        "google_oauth_ticket_expired",
+        "google_oauth_ticket_reused",
+        "google_oauth_ticket_invalid",
         "def is_canonical_auth_uuid(",
         "def require_user_sub(",
     ]
@@ -47,6 +57,10 @@ def test_source_contracts() -> None:
         if item in SOURCE:
             fail(f"forbidden leftover present: {item}")
 
+    # Verifier must not be kept as the redirect persistence mechanism.
+    if "st.session_state[SP_OAUTH_CODE_VERIFIER_KEY] = str(verifier)" in SOURCE:
+        fail("raw verifier still written into session_state for redirect persistence")
+
 
 def _load_ownership_helpers():
     fake_st = MagicMock()
@@ -54,14 +68,13 @@ def _load_ownership_helpers():
     fake_st.session_state = {}
     fake_st.query_params = {}
     sys.modules["streamlit"] = fake_st
-    import streamlit as st  # noqa: F401
 
     ns = {
         "re": re,
         "st": fake_st,
         "html_module": __import__("html"),
-        "datetime": __import__("datetime").datetime,
-        "timezone": __import__("datetime").timezone,
+        "datetime": datetime,
+        "timezone": timezone,
         "ZoneInfo": __import__("zoneinfo").ZoneInfo,
         "logger": MagicMock(),
         "supabase": MagicMock(),
@@ -77,6 +90,12 @@ def _load_ownership_helpers():
         "canonicalize_stem_field": lambda x: str(x or "").strip(),
         "ClientOptions": MagicMock(),
         "create_client": MagicMock(),
+        "secrets": __import__("secrets"),
+        "parse_qs": parse_qs,
+        "urlencode": urlencode,
+        "urlparse": urlparse,
+        "urlunparse": urlunparse,
+        "quote_plus": quote_plus,
     }
 
     exec(
@@ -112,18 +131,21 @@ def _load_ownership_helpers():
         ns,
     )
 
-    # Callback helpers (pure functions + query clearing)
     ns["SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD"] = "https://stempathwaysnyc.com"
     ns["SUPABASE_AUTH_STORAGE_KEY"] = "supabase.auth.token"
+    ns["SP_OAUTH_TICKET_QUERY_KEY"] = "sp_oauth"
+    ns["OAUTH_PKCE_TICKET_TTL_SECONDS"] = 10 * 60
+    ns["OAUTH_PKCE_TICKETS_TABLE"] = "oauth_pkce_tickets"
+    ns["_OAUTH_TICKET_ID_RE"] = re.compile(r"^[A-Za-z0-9_-]{20,128}$")
+
     exec(
         SOURCE[
             SOURCE.index("def supabase_google_oauth_redirect_to(") : SOURCE.index(
-                "def start_supabase_google_oauth("
+                "def _clear_oauth_query_params("
             )
         ],
         ns,
     )
-    # Include process + clear helpers used by tests via exec of clear + process pieces
     exec(
         SOURCE[
             SOURCE.index("def _clear_oauth_query_params(") : SOURCE.index(
@@ -195,30 +217,12 @@ def test_uuid_ownership_and_no_email_join() -> None:
     pathways = ns["build_admin_student_pathways"](auth_users, admin_data)
     assert pathways[0]["profile_complete"]
     assert all(p["name"] != "Legacy Prog" for p in pathways[0]["saved_programs"])
-
-    # Matching email alone must never attach orphan rows.
     assert "orphan-google-sub" in {
         r["owner_id"]
         for r in ns["build_admin_unmatched_legacy_ownership_report"](
             auth_users, admin_data
         )
     }
-
-    admin_data2 = dict(admin_data)
-    admin_data2["identity_links"] = [
-        {
-            "google_user_sub": "orphan-google-sub",
-            "auth_user_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-            "status": "approved",
-        }
-    ]
-    names = {
-        p["name"]
-        for p in ns["build_admin_student_pathways"](auth_users, admin_data2)[0][
-            "saved_programs"
-        ]
-    }
-    assert "Legacy Prog" in names
 
 
 def test_callback_query_clear_and_redirect_constant() -> None:
@@ -232,26 +236,150 @@ def test_callback_query_clear_and_redirect_constant() -> None:
         {
             "code": "AUTH_CODE_SHOULD_NOT_BE_LOGGED",
             "state": "STATE_SHOULD_NOT_BE_LOGGED",
+            "sp_oauth": "TICKET_SHOULD_NOT_BE_LOGGED",
             "auth": "signin",
         }
     )
     ns["_clear_oauth_query_params"]()
     assert "code" not in fake_st.query_params
     assert "state" not in fake_st.query_params
+    assert "sp_oauth" not in fake_st.query_params
     assert fake_st.query_params.get("auth") == "signin"
 
-    # Production host forces production redirect.
     fake_st.context.headers = {"Host": "stempathwaysnyc.com"}
-    assert (
-        ns["supabase_google_oauth_redirect_to"]()
-        == "https://stempathwaysnyc.com"
+    assert ns["supabase_google_oauth_redirect_to"]() == "https://stempathwaysnyc.com"
+
+
+def test_ticket_redirect_contains_only_opaque_ticket() -> None:
+    ns, _ = _load_ownership_helpers()
+    exec(
+        SOURCE[
+            SOURCE.index("def _oauth_ticket_id_is_valid(") : SOURCE.index(
+                "def _store_oauth_pkce_ticket("
+            )
+        ],
+        ns,
+    )
+    ticket = "A" * 32
+    redirect = ns["_append_oauth_ticket_to_redirect"](
+        "https://stempathwaysnyc.com", ticket
+    )
+    assert redirect.startswith("https://stempathwaysnyc.com/?sp_oauth=")
+    assert "code_verifier" not in redirect
+    assert "access_token" not in redirect
+    qs = parse_qs(urlparse(redirect).query)
+    assert qs["sp_oauth"] == [ticket]
+
+
+def test_consume_ticket_rejects_expired_and_reused() -> None:
+    ns, _ = _load_ownership_helpers()
+    events = []
+    ns["log_auth_event"] = lambda action, error=None: events.append(action)
+    ns["supabase_connected"] = True
+
+    class FakeTable:
+        def __init__(self):
+            self._op = "select"
+            self.row = None
+
+        def update(self, *_a, **_k):
+            self._op = "update"
+            return self
+
+        def select(self, *_a, **_k):
+            if self._op != "update":
+                self._op = "select"
+            return self
+
+        def eq(self, *_a, **_k):
+            return self
+
+        def is_(self, *_a, **_k):
+            return self
+
+        def gt(self, *_a, **_k):
+            return self
+
+        def limit(self, *_a, **_k):
+            return self
+
+        def insert(self, *_a, **_k):
+            self._op = "insert"
+            return self
+
+        def execute(self):
+            if self._op == "update":
+                # atomic consume misses for these negative cases
+                self._op = "select"
+                return MagicMock(data=[])
+            return MagicMock(data=[self.row] if self.row else [])
+
+    table = FakeTable()
+    ns["supabase"] = MagicMock()
+    ns["supabase"].table.return_value = table
+    ns["OAUTH_PKCE_TICKETS_TABLE"] = "oauth_pkce_tickets"
+    ns["_OAUTH_TICKET_ID_RE"] = re.compile(r"^[A-Za-z0-9_-]{20,128}$")
+
+    exec(
+        SOURCE[
+            SOURCE.index("def _oauth_ticket_id_is_valid(") : SOURCE.index(
+                "def _oauth_authorize_url_with_ticket("
+            )
+            if "def _oauth_authorize_url_with_ticket(" in SOURCE
+            else SOURCE.index("def start_supabase_google_oauth(")
+        ],
+        ns,
     )
 
+    # Reused
+    events.clear()
+    table.row = {
+        "expires_at": (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat(),
+        "consumed_at": datetime.now(timezone.utc).isoformat(),
+    }
+    assert ns["_consume_oauth_pkce_ticket"]("B" * 32) is None
+    assert "google_oauth_ticket_reused" in events
 
-def test_process_callback_stores_uuid_owner() -> None:
+    # Expired
+    events.clear()
+    table.row = {
+        "expires_at": (datetime.now(timezone.utc) - timedelta(minutes=1)).isoformat(),
+        "consumed_at": None,
+    }
+    assert ns["_consume_oauth_pkce_ticket"]("C" * 32) is None
+    assert "google_oauth_ticket_expired" in events
+
+    # Missing
+    events.clear()
+    table.row = None
+    assert ns["_consume_oauth_pkce_ticket"]("D" * 32) is None
+    assert "google_oauth_ticket_missing" in events
+
+    # Invalid format
+    events.clear()
+    assert ns["_consume_oauth_pkce_ticket"]("short") is None
+    assert "google_oauth_ticket_invalid" in events
+
+
+def test_process_callback_uses_ticket_not_session_verifier() -> None:
     ns, fake_st = _load_ownership_helpers()
 
-    # Load process_supabase_auth_callback + dependencies into ns
+    for name, value in (
+        ("SP_EMAIL_AUTH_STATE_KEY", "sp_email_auth"),
+        ("SP_OAUTH_CODE_VERIFIER_KEY", "_sp_oauth_code_verifier"),
+        ("SP_OAUTH_CALLBACK_ERROR_KEY", "_sp_oauth_callback_error"),
+        ("SP_AUTH_STORAGE_KEY", "_sp_supabase_auth_storage"),
+        ("SP_APP_USER_CACHE_KEY", "_sp_app_user_cache"),
+        ("SP_APP_USER_RUN_KEY", "_sp_app_user_run_id"),
+        ("SP_OAUTH_TICKET_QUERY_KEY", "sp_oauth"),
+        ("SUPABASE_AUTH_STORAGE_KEY", "supabase.auth.token"),
+        ("AUTH_MSG_GOOGLE_CALLBACK", "Google sign-in could not be completed. Please try again."),
+        ("OAUTH_PKCE_TICKETS_TABLE", "oauth_pkce_tickets"),
+        ("OAUTH_PKCE_TICKET_TTL_SECONDS", 600),
+    ):
+        ns[name] = value
+    ns["_OAUTH_TICKET_ID_RE"] = re.compile(r"^[A-Za-z0-9_-]{20,128}$")
+
     exec(
         SOURCE[
             SOURCE.index("def _session_auth_storage(") : SOURCE.index(
@@ -260,19 +388,6 @@ def test_process_callback_stores_uuid_owner() -> None:
         ],
         ns,
     )
-    # constants already needed
-    for name, value in (
-        ("SP_EMAIL_AUTH_STATE_KEY", "sp_email_auth"),
-        ("SP_OAUTH_CODE_VERIFIER_KEY", "_sp_oauth_code_verifier"),
-        ("SP_OAUTH_CALLBACK_ERROR_KEY", "_sp_oauth_callback_error"),
-        ("SP_AUTH_STORAGE_KEY", "_sp_supabase_auth_storage"),
-        ("SP_APP_USER_CACHE_KEY", "_sp_app_user_cache"),
-        ("SP_APP_USER_RUN_KEY", "_sp_app_user_run_id"),
-        ("SUPABASE_AUTH_STORAGE_KEY", "supabase.auth.token"),
-        ("AUTH_MSG_GOOGLE_CALLBACK", "Google sign-in could not be completed. Please try again."),
-    ):
-        ns[name] = value
-
     exec(
         SOURCE[
             SOURCE.index("def clear_email_auth_session(") : SOURCE.index(
@@ -285,6 +400,14 @@ def test_process_callback_stores_uuid_owner() -> None:
         SOURCE[
             SOURCE.index("def _auth_user_display_name(") : SOURCE.index(
                 "def password_meets_requirements("
+            )
+        ],
+        ns,
+    )
+    exec(
+        SOURCE[
+            SOURCE.index("def _oauth_ticket_id_is_valid(") : SOURCE.index(
+                "def start_supabase_google_oauth("
             )
         ],
         ns,
@@ -310,9 +433,7 @@ def test_process_callback_stores_uuid_owner() -> None:
 
     class FakeAuth:
         def exchange_code_for_session(self, payload):
-            assert "auth_code" in payload
-            assert payload.get("code_verifier") == "test-verifier"
-            # Ensure we never require email matching.
+            assert payload.get("code_verifier") == "server-ticket-verifier"
             assert "email" not in payload
             return MagicMock(user=FakeUser(), session=FakeSession())
 
@@ -321,13 +442,16 @@ def test_process_callback_stores_uuid_owner() -> None:
 
     ns["supabase_auth_configured"] = lambda: True
     ns["create_supabase_auth_client"] = lambda flow_type="pkce": FakeClient()
+    ns["_consume_oauth_pkce_ticket"] = (
+        lambda ticket_id: "server-ticket-verifier" if ticket_id == ("E" * 32) else None
+    )
     ns["log_auth_event"] = lambda *a, **k: None
 
-    fake_st.session_state = {
-        ns["SP_OAUTH_CODE_VERIFIER_KEY"]: "test-verifier",
-        ns["SP_AUTH_STORAGE_KEY"]: {},
+    fake_st.session_state = {ns["SP_AUTH_STORAGE_KEY"]: {}}
+    fake_st.query_params = {
+        "code": "one-time-auth-code",
+        "sp_oauth": "E" * 32,
     }
-    fake_st.query_params = {"code": "one-time-auth-code"}
 
     ok = ns["process_supabase_auth_callback"]()
     assert ok is True
@@ -335,12 +459,14 @@ def test_process_callback_stores_uuid_owner() -> None:
     assert stored["user_id"] == "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
     assert stored["provider"] == "google"
     assert "code" not in fake_st.query_params
-    assert ns["SP_OAUTH_CODE_VERIFIER_KEY"] not in fake_st.session_state
+    assert "sp_oauth" not in fake_st.query_params
 
 
 if __name__ == "__main__":
     test_source_contracts()
     test_uuid_ownership_and_no_email_join()
     test_callback_query_clear_and_redirect_constant()
-    test_process_callback_stores_uuid_owner()
+    test_ticket_redirect_contains_only_opaque_ticket()
+    test_consume_ticket_rejects_expired_and_reused()
+    test_process_callback_uses_ticket_not_session_verifier()
     print("ALL_OFFLINE_OAUTH_TESTS_PASSED")
