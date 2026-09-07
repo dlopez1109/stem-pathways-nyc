@@ -10,7 +10,7 @@ from functools import lru_cache
 from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.parse import quote_plus
-from supabase import create_client
+from supabase import ClientOptions, create_client
 import logging
 from opportunity_transparency import (
     apply_opportunity_transparency,
@@ -26181,80 +26181,24 @@ def supabase_upsert(
 
 
 
-def get_google_user():
-    """
-    Read Streamlit Google OIDC identity claims for display / bridging only.
-    The Google provider subject must never own student rows.
-    """
-
-    try:
-        provider_sub = st.user.get("sub")
-    except Exception:
-        provider_sub = None
-
-    try:
-        email = st.user.get("email")
-    except Exception:
-        email = None
-
-    try:
-        google_name = st.user.get("name")
-    except Exception:
-        google_name = None
-
-    return (
-        str(provider_sub) if provider_sub else None,
-        str(email) if email else "",
-        str(google_name) if google_name else ""
-    )
-
-
-def _get_streamlit_google_id_token():
-    """
-    Return the Google OIDC ID token when Streamlit exposes it.
-    Requires [auth] expose_tokens including \"id\" in secrets.toml.
-    Never log or display the token value.
-    """
-
-    try:
-        tokens = getattr(st.user, "tokens", None)
-    except Exception:
-        tokens = None
-
-    if tokens is None:
-        return None
-
-    raw = None
-    try:
-        if hasattr(tokens, "get"):
-            raw = tokens.get("id")
-        if not raw:
-            raw = getattr(tokens, "id", None)
-        if not raw:
-            try:
-                raw = tokens["id"]
-            except Exception:
-                raw = None
-    except Exception:
-        raw = None
-
-    text = str(raw or "").strip()
-    return text or None
-
-
 # ============================================================
-# EMAIL / PASSWORD AUTH (Supabase Auth)
+# SUPABASE AUTH (email/password + Google OAuth)
 # - Uses publishable key only (never service_key)
 # - Per-Streamlit-session client + tokens (never cache_resource)
-# - Passwords are never stored, logged, or displayed by this app
-# - Google sign-in bridges to the same Supabase Auth user.id
+# - Google uses Supabase Auth OAuth (PKCE); no Streamlit ID-token exchange
+# - Passwords/tokens are never stored in source, logs, or URLs
 # ============================================================
 
 SP_EMAIL_AUTH_STATE_KEY = "sp_email_auth"
-SP_GOOGLE_AUTH_BRIDGE_KEY = "sp_google_auth_bridge"
 SP_APP_USER_CACHE_KEY = "_sp_app_user_cache"
 SP_APP_USER_RUN_KEY = "_sp_app_user_run_id"
-SP_AUTH_BRIDGE_ERROR_KEY = "_sp_auth_bridge_error"
+SP_AUTH_STORAGE_KEY = "_sp_supabase_auth_storage"
+SP_OAUTH_CODE_VERIFIER_KEY = "_sp_oauth_code_verifier"
+SP_OAUTH_CALLBACK_ERROR_KEY = "_sp_oauth_callback_error"
+
+# Production Google OAuth redirect_to (must also be allow-listed in Supabase).
+SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD = "https://stempathwaysnyc.com"
+SUPABASE_AUTH_STORAGE_KEY = "supabase.auth.token"
 
 AUTH_MSG_INVALID = (
     "Those sign-in details did not work. "
@@ -26276,6 +26220,12 @@ AUTH_MSG_PASSWORD_RULES = (
 )
 AUTH_MSG_PASSWORD_MISMATCH = (
     "Passwords do not match."
+)
+AUTH_MSG_GOOGLE_OAUTH = (
+    "Google sign-in is temporarily unavailable. Please try again in a moment."
+)
+AUTH_MSG_GOOGLE_CALLBACK = (
+    "Google sign-in could not be completed. Please try again."
 )
 
 
@@ -26299,22 +26249,55 @@ def supabase_auth_configured():
     return bool(_auth_secret_url() and _auth_secret_publishable_key())
 
 
-def create_supabase_auth_client():
+def _session_auth_storage():
+    """PKCE/auth storage backed by Streamlit session_state (survives reruns)."""
+
+    class _SessionAuthStorage:
+        def get_item(self, key: str):
+            store = st.session_state.setdefault(SP_AUTH_STORAGE_KEY, {})
+            if not isinstance(store, dict):
+                store = {}
+                st.session_state[SP_AUTH_STORAGE_KEY] = store
+            value = store.get(key)
+            return None if value is None else str(value)
+
+        def set_item(self, key: str, value: str) -> None:
+            store = st.session_state.setdefault(SP_AUTH_STORAGE_KEY, {})
+            if not isinstance(store, dict):
+                store = {}
+                st.session_state[SP_AUTH_STORAGE_KEY] = store
+            store[key] = str(value)
+
+        def remove_item(self, key: str) -> None:
+            store = st.session_state.setdefault(SP_AUTH_STORAGE_KEY, {})
+            if isinstance(store, dict):
+                store.pop(key, None)
+
+    return _SessionAuthStorage()
+
+
+def create_supabase_auth_client(*, flow_type="pkce"):
     """Fresh Auth client for this call/session — never globally cached."""
 
     url = _auth_secret_url()
     key = _auth_secret_publishable_key()
     if not url or not key:
         raise RuntimeError("Supabase Auth is not configured.")
-    return create_client(url, key)
+    options = ClientOptions(
+        flow_type=flow_type,
+        storage=_session_auth_storage(),
+        persist_session=True,
+    )
+    return create_client(url, key, options=options)
 
 
 def clear_email_auth_session():
     st.session_state.pop(SP_EMAIL_AUTH_STATE_KEY, None)
-    st.session_state.pop(SP_GOOGLE_AUTH_BRIDGE_KEY, None)
-    st.session_state.pop(SP_AUTH_BRIDGE_ERROR_KEY, None)
+    st.session_state.pop(SP_OAUTH_CODE_VERIFIER_KEY, None)
+    st.session_state.pop(SP_OAUTH_CALLBACK_ERROR_KEY, None)
     st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
     st.session_state.pop(SP_APP_USER_RUN_KEY, None)
+    st.session_state.pop(SP_AUTH_STORAGE_KEY, None)
     # Drop per-user approved identity-link caches.
     for key in list(st.session_state.keys()):
         if str(key).startswith("_sp_id_links_"):
@@ -26454,7 +26437,18 @@ def log_auth_event(action, error=None):
         )
 
 
-def _store_email_auth_session(session, user):
+def _auth_user_display_name(user):
+    metadata = getattr(user, "user_metadata", None) or {}
+    if not isinstance(metadata, dict):
+        return ""
+    for key in ("full_name", "name", "display_name"):
+        value = str(metadata.get(key) or "").strip()
+        if value:
+            return value
+    return ""
+
+
+def _store_email_auth_session(session, user, *, provider="email"):
     if session is None or user is None:
         clear_email_auth_session()
         return False
@@ -26468,6 +26462,14 @@ def _store_email_auth_session(session, user):
         clear_email_auth_session()
         return False
 
+    if not is_canonical_auth_uuid(user_id):
+        clear_email_auth_session()
+        return False
+
+    provider_name = str(provider or "email").strip().lower() or "email"
+    if provider_name not in {"email", "google"}:
+        provider_name = "email"
+
     # Tokens live only in Streamlit session_state (server-side, per browser tab).
     # They are never written to URLs, logs, source, or browser cookies.
     st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
@@ -26475,6 +26477,8 @@ def _store_email_auth_session(session, user):
         "refresh_token": refresh_token,
         "user_id": str(user_id),
         "email": str(email),
+        "display_name": _auth_user_display_name(user),
+        "provider": provider_name,
     }
     # Force re-resolve on next get_app_user call within a later rerun.
     st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
@@ -26692,18 +26696,36 @@ def restore_email_auth_user():
             current = client.auth.get_session()
         except Exception:
             current = None
+        existing_provider = "email"
+        existing_payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
+        if isinstance(existing_payload, dict):
+            existing_provider = str(
+                existing_payload.get("provider") or "email"
+            ).strip().lower() or "email"
         if current is not None:
-            _store_email_auth_session(current, user)
+            _store_email_auth_session(
+                current,
+                user,
+                provider=existing_provider,
+            )
         else:
             st.session_state[SP_EMAIL_AUTH_STATE_KEY]["user_id"] = str(user.id)
             st.session_state[SP_EMAIL_AUTH_STATE_KEY]["email"] = str(
                 getattr(user, "email", "") or ""
             )
+            st.session_state[SP_EMAIL_AUTH_STATE_KEY]["display_name"] = (
+                _auth_user_display_name(user)
+            )
 
+        provider = "email"
+        payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
+        if isinstance(payload, dict):
+            provider = str(payload.get("provider") or "email").strip().lower() or "email"
         return {
             "user_id": str(user.id),
             "email": str(getattr(user, "email", "") or ""),
-            "provider": "email",
+            "display_name": _auth_user_display_name(user),
+            "provider": provider if provider in {"email", "google"} else "email",
         }
 
     except Exception as error:
@@ -26745,173 +26767,192 @@ def _google_identity_provider_subs_from_auth_user(user):
     return sorted(subs)
 
 
-@st.cache_data(show_spinner=False, ttl=120)
-def map_google_provider_sub_to_auth_user_id():
+def supabase_google_oauth_redirect_to():
     """
-    Build Google provider-subject → Auth user.id map from Auth Admin.
-    Lookup is by Google identity only — never by email.
+    Canonical redirect_to for Supabase Google OAuth.
+    Production always uses https://stempathwaysnyc.com.
+    Local/dev falls back to the current request origin when available.
     """
 
-    users, error = list_all_auth_users_admin()
-    if error:
-        return {}
+    host = ""
+    try:
+        headers = getattr(st.context, "headers", None)
+        if headers is not None:
+            host = str(headers.get("Host") or headers.get("host") or "").strip()
+    except Exception:
+        host = ""
 
-    mapping = {}
-    for row in users or []:
-        auth_id = str(row.get("user_sub") or "").strip()
-        if not is_canonical_auth_uuid(auth_id):
-            continue
-        for google_sub in row.get("google_provider_subs") or []:
-            google_sub = str(google_sub or "").strip()
-            if not google_sub:
-                continue
-            # First Auth user wins; do not overwrite with email-based guesses.
-            mapping.setdefault(google_sub, auth_id)
-
-    return mapping
-
-
-def lookup_auth_user_id_by_google_provider_sub(google_provider_sub):
-    """Resolve Auth UUID from Google provider subject without using email."""
-
-    google_provider_sub = str(google_provider_sub or "").strip()
-    if not google_provider_sub:
-        return None
-
-    mapping = map_google_provider_sub_to_auth_user_id()
-    auth_id = str(mapping.get(google_provider_sub) or "").strip()
-    if is_canonical_auth_uuid(auth_id):
-        return auth_id
-    return None
+    host_name = host.split(":")[0].strip().lower()
+    if host_name == "stempathwaysnyc.com" or host_name.endswith(".stempathwaysnyc.com"):
+        return SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD
+    if host_name in {"localhost", "127.0.0.1", "::1"}:
+        port = "8501"
+        if ":" in host:
+            port = host.split(":", 1)[1].strip() or "8501"
+        return f"http://{host_name}:{port}"
+    # Default to the production callback URL required by this deployment.
+    return SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD
 
 
-def _store_google_auth_bridge(google_provider_sub, user_id, email=""):
-    google_provider_sub = str(google_provider_sub or "").strip()
-    user_id = str(user_id or "").strip()
-    if not google_provider_sub or not is_canonical_auth_uuid(user_id):
+def _clear_oauth_query_params():
+    """Remove OAuth callback query keys without logging values or full URLs."""
+
+    sensitive_keys = (
+        "code",
+        "state",
+        "error",
+        "error_code",
+        "error_description",
+        "error_uri",
+    )
+    try:
+        for key in list(st.query_params.keys()):
+            key_name = str(key or "").strip().lower()
+            if key_name in sensitive_keys:
+                try:
+                    del st.query_params[key]
+                except Exception:
+                    pass
+    except Exception:
+        log_auth_event("oauth_query_clear_failed")
+
+
+def _redirect_browser_to(url):
+    """Navigate the browser to an absolute OAuth URL (never log the URL)."""
+
+    target = str(url or "").strip()
+    if not target.startswith("https://") and not target.startswith("http://"):
+        log_auth_event("oauth_redirect_invalid_url")
         return False
-
-    st.session_state[SP_GOOGLE_AUTH_BRIDGE_KEY] = {
-        "google_provider_sub": google_provider_sub,
-        "user_id": user_id,
-        "email": str(email or ""),
-    }
-    st.session_state.pop(SP_AUTH_BRIDGE_ERROR_KEY, None)
-    st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
-    st.session_state.pop(SP_APP_USER_RUN_KEY, None)
+    # Meta refresh avoids embedding the URL in Python logs.
+    safe = html_module.escape(target, quote=True)
+    st.markdown(
+        f'<meta http-equiv="refresh" content="0; url={safe}">',
+        unsafe_allow_html=True,
+    )
+    st.stop()
     return True
 
 
-def resolve_google_supabase_auth_user(google_provider_sub, email="", name=""):
+def start_supabase_google_oauth():
     """
-    Bridge Streamlit Google OIDC to the canonical Supabase Auth user.id.
-
-    Order:
-    1) Cached bridge for this Google provider subject
-    2) Existing Supabase session (from prior ID-token exchange)
-    3) sign_in_with_id_token when Streamlit exposes the Google ID token
-    4) Auth Admin identity lookup by Google provider subject (never email)
-
-    Never returns the Google provider subject as user_id / owner.
+    Begin Supabase Auth Google OAuth (PKCE).
+    Stores the code_verifier in session_state for the callback exchange.
     """
 
-    google_provider_sub = str(google_provider_sub or "").strip()
-    if not google_provider_sub:
-        return None
+    if not supabase_auth_configured():
+        return False, AUTH_MSG_GOOGLE_OAUTH
 
-    bridged = st.session_state.get(SP_GOOGLE_AUTH_BRIDGE_KEY)
-    if (
-        isinstance(bridged, dict)
-        and str(bridged.get("google_provider_sub") or "").strip()
-        == google_provider_sub
-        and is_canonical_auth_uuid(bridged.get("user_id"))
-    ):
-        return {
-            "user_id": str(bridged["user_id"]),
-            "email": str(bridged.get("email") or email or ""),
-            "display_name": name or "",
-            "provider": "google",
-            "google_provider_sub": google_provider_sub,
-        }
-
-    # Prefer an already-established Supabase session (ID-token exchange).
-    email_user = restore_email_auth_user()
-    if email_user and is_canonical_auth_uuid(email_user.get("user_id")):
-        # Only reuse when this session belongs to the same Google identity,
-        # or when Admin identity map confirms the Auth UUID for this Google sub.
-        mapped_id = lookup_auth_user_id_by_google_provider_sub(google_provider_sub)
-        session_id = str(email_user["user_id"])
-        if mapped_id and mapped_id == session_id:
-            _store_google_auth_bridge(
-                google_provider_sub,
-                session_id,
-                email_user.get("email") or email,
-            )
-            return {
-                "user_id": session_id,
-                "email": str(email_user.get("email") or email or ""),
-                "display_name": name or "",
+    try:
+        client = create_supabase_auth_client(flow_type="pkce")
+        redirect_to = supabase_google_oauth_redirect_to()
+        response = client.auth.sign_in_with_oauth(
+            {
                 "provider": "google",
-                "google_provider_sub": google_provider_sub,
+                "options": {
+                    "redirect_to": redirect_to,
+                    "query_params": {
+                        "access_type": "offline",
+                        "prompt": "select_account",
+                    },
+                },
             }
+        )
+        oauth_url = str(getattr(response, "url", "") or "").strip()
+        if not oauth_url:
+            log_auth_event("google_oauth_missing_url")
+            return False, AUTH_MSG_GOOGLE_OAUTH
 
-    google_id_token = _get_streamlit_google_id_token()
-    if google_id_token and supabase_auth_configured():
-        try:
-            client = create_supabase_auth_client()
-            response = client.auth.sign_in_with_id_token({
-                "provider": "google",
-                "token": google_id_token,
-            })
-            user = getattr(response, "user", None)
-            session = getattr(response, "session", None)
-            if (
-                user is not None
-                and session is not None
-                and is_canonical_auth_uuid(getattr(user, "id", None))
-            ):
-                _store_email_auth_session(session, user)
-                user_email = str(getattr(user, "email", "") or email or "")
-                _store_google_auth_bridge(
-                    google_provider_sub,
-                    str(user.id),
-                    user_email,
-                )
-                # Identity map may be stale until Admin refresh.
-                try:
-                    map_google_provider_sub_to_auth_user_id.clear()
-                    list_all_auth_users_admin.clear()
-                except Exception:
-                    pass
-                return {
-                    "user_id": str(user.id),
-                    "email": user_email,
-                    "display_name": name or "",
-                    "provider": "google",
-                    "google_provider_sub": google_provider_sub,
-                }
-            log_auth_event("google_id_token_sign_in_incomplete")
-        except Exception as error:
-            # Log safe Supabase status/code/message only — never the ID token
-            # or the full exception object (may include request material).
-            log_auth_event("google_id_token_sign_in", error)
+        storage = _session_auth_storage()
+        verifier = storage.get_item(f"{SUPABASE_AUTH_STORAGE_KEY}-code-verifier")
+        if not verifier:
+            log_auth_event("google_oauth_missing_verifier")
+            return False, AUTH_MSG_GOOGLE_OAUTH
 
-    # Existing Auth users (already listed in Admin) via Google identity match.
-    mapped_id = lookup_auth_user_id_by_google_provider_sub(google_provider_sub)
-    if mapped_id:
-        _store_google_auth_bridge(google_provider_sub, mapped_id, email)
-        return {
-            "user_id": mapped_id,
-            "email": str(email or ""),
-            "display_name": name or "",
-            "provider": "google",
-            "google_provider_sub": google_provider_sub,
-        }
+        st.session_state[SP_OAUTH_CODE_VERIFIER_KEY] = str(verifier)
+        st.session_state.pop(SP_OAUTH_CALLBACK_ERROR_KEY, None)
+        _redirect_browser_to(oauth_url)
+        return True, ""
+    except Exception as error:
+        log_auth_event("google_oauth_start", error)
+        return False, AUTH_MSG_GOOGLE_OAUTH
 
-    st.session_state[SP_AUTH_BRIDGE_ERROR_KEY] = (
-        "google_supabase_bridge_failed"
-    )
-    return None
+
+def process_supabase_auth_callback():
+    """
+    Complete Supabase OAuth PKCE callback when ?code= is present.
+    Establishes the Supabase session and stores Auth user.id as owner.
+    Never logs authorization codes, tokens, or complete callback URLs.
+    """
+
+    try:
+        params = st.query_params
+    except Exception:
+        return False
+
+    try:
+        error_code = str(params.get("error") or "").strip()
+    except Exception:
+        error_code = ""
+
+    if error_code:
+        log_auth_event("google_oauth_callback_provider_error")
+        st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+        _clear_oauth_query_params()
+        return False
+
+    try:
+        auth_code = str(params.get("code") or "").strip()
+    except Exception:
+        auth_code = ""
+
+    if not auth_code:
+        return False
+
+    if not supabase_auth_configured():
+        st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+        _clear_oauth_query_params()
+        return False
+
+    verifier = str(st.session_state.get(SP_OAUTH_CODE_VERIFIER_KEY) or "").strip()
+    if not verifier:
+        storage = _session_auth_storage()
+        verifier = str(
+            storage.get_item(f"{SUPABASE_AUTH_STORAGE_KEY}-code-verifier") or ""
+        ).strip()
+
+    if not verifier:
+        log_auth_event("google_oauth_callback_missing_verifier")
+        st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+        _clear_oauth_query_params()
+        return False
+
+    try:
+        client = create_supabase_auth_client(flow_type="pkce")
+        response = client.auth.exchange_code_for_session(
+            {
+                "auth_code": auth_code,
+                "code_verifier": verifier,
+            }
+        )
+        user = getattr(response, "user", None)
+        session = getattr(response, "session", None)
+        if not _store_email_auth_session(session, user, provider="google"):
+            log_auth_event("google_oauth_callback_incomplete")
+            st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+            _clear_oauth_query_params()
+            return False
+
+        st.session_state.pop(SP_OAUTH_CODE_VERIFIER_KEY, None)
+        st.session_state.pop(SP_OAUTH_CALLBACK_ERROR_KEY, None)
+        _clear_oauth_query_params()
+        log_auth_event("google_oauth_callback_success")
+        return True
+    except Exception as error:
+        log_auth_event("google_oauth_callback_exchange", error)
+        st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+        _clear_oauth_query_params()
+        return False
 
 
 def get_app_user():
@@ -26919,8 +26960,7 @@ def get_app_user():
     Resolve the active app user once per Streamlit rerun and reuse the result.
 
     Canonical owner for every provider is Supabase Auth user.id (UUID).
-    Google provider subjects are kept only as google_provider_sub for bridging
-    / diagnostics and are never used as user_sub for new records.
+    Email/password and Google OAuth both use the same Supabase session store.
     """
 
     run_id = _current_script_run_id()
@@ -26933,49 +26973,17 @@ def get_app_user():
         return st.session_state.get(SP_APP_USER_CACHE_KEY)
 
     resolved = None
-
-    try:
-        google_logged_in = bool(st.user.is_logged_in)
-    except Exception:
-        google_logged_in = False
-
-    if google_logged_in:
-        google_provider_sub, email, name = get_google_user()
-        if google_provider_sub:
-            bridged = resolve_google_supabase_auth_user(
-                google_provider_sub,
-                email=email,
-                name=name,
-            )
-            if bridged and is_canonical_auth_uuid(bridged.get("user_id")):
-                resolved = {
-                    "user_sub": str(bridged["user_id"]),
-                    "email": str(bridged.get("email") or email or ""),
-                    "display_name": str(bridged.get("display_name") or name or ""),
-                    "provider": "google",
-                    "google_provider_sub": google_provider_sub,
-                }
-            else:
-                # Signed in with Google OIDC, but no canonical Auth UUID yet.
-                # Do not fall back to the Google provider subject as owner.
-                resolved = {
-                    "user_sub": None,
-                    "email": email,
-                    "display_name": name,
-                    "provider": "google",
-                    "google_provider_sub": google_provider_sub,
-                    "auth_bridge_error": True,
-                }
-
-    if resolved is None:
-        email_user = restore_email_auth_user()
-        if email_user and is_canonical_auth_uuid(email_user.get("user_id")):
-            resolved = {
-                "user_sub": str(email_user["user_id"]),
-                "email": str(email_user.get("email") or ""),
-                "display_name": "",
-                "provider": "email",
-            }
+    auth_user = restore_email_auth_user()
+    if auth_user and is_canonical_auth_uuid(auth_user.get("user_id")):
+        provider = str(auth_user.get("provider") or "email").strip().lower()
+        if provider not in {"email", "google"}:
+            provider = "email"
+        resolved = {
+            "user_sub": str(auth_user["user_id"]),
+            "email": str(auth_user.get("email") or ""),
+            "display_name": str(auth_user.get("display_name") or ""),
+            "provider": provider,
+        }
 
     if run_id is not None:
         st.session_state[SP_APP_USER_RUN_KEY] = run_id
@@ -27080,12 +27088,13 @@ def sign_out_current_user():
     ):
         st.session_state.pop(key, None)
 
+    # Clear any leftover Streamlit OIDC cookie from older builds (best-effort).
     try:
-        if st.user.is_logged_in:
+        if getattr(st.user, "is_logged_in", False):
             st.logout()
             return
-    except Exception as error:
-        log_auth_event("google_sign_out", error)
+    except Exception:
+        pass
 
     st.rerun()
 
@@ -28522,10 +28531,6 @@ def clear_admin_accounts_caches():
 
     load_admin_metrics.clear()
     list_all_auth_users_admin.clear()
-    try:
-        map_google_provider_sub_to_auth_user_id.clear()
-    except Exception:
-        pass
 
 
 def admin_browser_timezone():
@@ -29187,8 +29192,12 @@ def google_calendar_deadline_url(
 
 # ============================================================
 # LOGIN / CREATE ACCOUNT
-# Google OAuth remains available. Email/password uses Supabase Auth.
+# Google uses Supabase Auth OAuth. Email/password uses Supabase Auth.
 # ============================================================
+
+# Complete Supabase Google OAuth PKCE callback before resolving the user.
+if process_supabase_auth_callback():
+    st.rerun()
 
 app_user = get_app_user()
 
@@ -29541,13 +29550,22 @@ if not app_user:
             unsafe_allow_html=True
         )
 
+        oauth_error = str(
+            st.session_state.get(SP_OAUTH_CALLBACK_ERROR_KEY) or ""
+        ).strip()
+        if oauth_error:
+            render_auth_error(oauth_error)
+            st.session_state.pop(SP_OAUTH_CALLBACK_ERROR_KEY, None)
+
         if st.button(
             "Continue with Google",
             type="primary",
             width="stretch",
             key="google_continue"
         ):
-            st.login("google")
+            ok, message = start_supabase_google_oauth()
+            if not ok:
+                render_auth_error(message or AUTH_MSG_GOOGLE_OAUTH)
 
         st.markdown(
             '<div class="sp-auth-divider"><span>or continue with email</span></div>',
@@ -29556,8 +29574,8 @@ if not app_user:
 
         if not supabase_auth_configured():
             st.info(
-                "Email sign-in is not configured yet. "
-                "You can still continue with Google."
+                "Sign-in is not configured yet. "
+                "Please try again once authentication is available."
             )
         else:
             auth_mode = st.radio(
@@ -29696,28 +29714,10 @@ if not app_user:
 
 if not app_user or not is_canonical_auth_uuid(app_user.get("user_sub")):
 
-    bridge_failed = bool(
-        isinstance(app_user, dict)
-        and (
-            app_user.get("auth_bridge_error")
-            or app_user.get("provider") == "google"
-        )
+    st.error(
+        "Sign-in succeeded, but the app could not retrieve "
+        "your Supabase account identifier."
     )
-
-    if bridge_failed:
-        st.error(
-            "Google sign-in worked, but STEM Pathways NYC could not connect "
-            "it to your Supabase Auth account. Student data is only saved under "
-            "your Supabase account ID — not your Google provider ID. "
-            "Ask an administrator to enable Google ID token exposure "
-            "(auth.expose_tokens = [\"id\"]) and confirm Google is enabled "
-            "in Supabase Auth, then sign in again."
-        )
-    else:
-        st.error(
-            "Sign-in succeeded, but the app could not retrieve "
-            "your Supabase account identifier."
-        )
 
     if st.button(
         "Sign Out",
