@@ -11165,6 +11165,49 @@ st.markdown(
         margin: 0 !important;
     }
 
+    .sp-admin-email-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        margin: 0.35rem 0 0.75rem 0;
+        border: 1px solid rgba(8, 59, 92, 0.14);
+        border-radius: 12px;
+        background: #F7FBFD;
+        box-sizing: border-box;
+    }
+
+    .sp-admin-email-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 640px;
+    }
+
+    .sp-admin-email-table th,
+    .sp-admin-email-table td {
+        text-align: left;
+        padding: 0.62rem 0.75rem;
+        vertical-align: top;
+        border-bottom: 1px solid rgba(8, 59, 92, 0.1);
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-size: 0.86rem !important;
+        line-height: 1.35 !important;
+    }
+
+    .sp-admin-email-table th {
+        font-weight: 700 !important;
+        background: #E8F3F8;
+        white-space: nowrap;
+    }
+
+    .sp-admin-email-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .sp-admin-email-table .sp-admin-email-cell {
+        font-weight: 600 !important;
+        word-break: break-word;
+    }
+
     @media (max-width: 720px) {
         .sp-admin-metric-grid,
         .sp-admin-metric-grid.sp-admin-metric-grid-2,
@@ -29266,6 +29309,226 @@ def _admin_format_created_at(value):
         return text[:16]
 
 
+_ADMIN_PROVIDER_LABELS = {
+    "google": "Google",
+    "email": "Email",
+    "password": "Email",
+}
+
+
+def _admin_format_sign_in_provider(provider_keys):
+    """Human-readable sign-in providers only (never provider IDs)."""
+
+    labels = []
+    seen = set()
+    for raw in provider_keys or []:
+        key = str(raw or "").strip().lower()
+        if not key or key in seen:
+            continue
+        if key in {"id", "sub", "provider_id", "identity_id"}:
+            continue
+        seen.add(key)
+        labels.append(_ADMIN_PROVIDER_LABELS.get(key, key.replace("_", " ").title()))
+
+    if not labels:
+        return "Unknown"
+    return " + ".join(labels)
+
+
+def _admin_auth_sign_in_provider_keys(user):
+    """
+    Collect sign-in provider names from Auth user identities / app_metadata.
+    Never returns provider subject IDs, tokens, or secrets.
+    """
+
+    keys = []
+    seen = set()
+
+    def _add(raw):
+        key = str(raw or "").strip().lower()
+        if not key or key in seen:
+            return
+        if key in {"id", "sub", "provider_id", "identity_id"}:
+            return
+        seen.add(key)
+        keys.append(key)
+
+    identities = getattr(user, "identities", None) or []
+    for identity in identities:
+        _add(getattr(identity, "provider", None))
+
+    app_metadata = getattr(user, "app_metadata", None) or {}
+    if isinstance(app_metadata, dict):
+        providers = app_metadata.get("providers")
+        if isinstance(providers, list):
+            for item in providers:
+                _add(item)
+        _add(app_metadata.get("provider"))
+
+    return keys
+
+
+def _admin_auth_email_confirmed(user):
+    """True when Supabase Auth reports the email as confirmed."""
+
+    for attr in ("email_confirmed_at", "confirmed_at"):
+        value = getattr(user, attr, None)
+        if value is None:
+            continue
+        text = str(value).strip()
+        if text and text.lower() not in {"none", "null"}:
+            return True
+    return False
+
+
+def _admin_safe_auth_user_row(user):
+    """
+    Map a Supabase Auth user object to admin-safe fields only.
+    Excludes passwords, tokens, provider IDs, and secrets from display fields.
+    google_provider_subs is kept for UUID/legacy join diagnostics only — never
+    render those values in the Registered Account Emails UI.
+    """
+
+    user_sub = str(getattr(user, "id", "") or "").strip()
+    if not user_sub:
+        return None
+
+    metadata = getattr(user, "user_metadata", None) or {}
+    created_at = getattr(user, "created_at", None)
+    if created_at is not None and hasattr(created_at, "isoformat"):
+        created_at = created_at.isoformat()
+    else:
+        created_at = str(created_at or "").strip() or None
+
+    provider_keys = _admin_auth_sign_in_provider_keys(user)
+    email_confirmed = _admin_auth_email_confirmed(user)
+
+    return {
+        "user_sub": user_sub,
+        "email": str(getattr(user, "email", "") or "").strip(),
+        "created_at": created_at,
+        "display_name": _admin_safe_display_name(metadata),
+        "sign_in_provider": _admin_format_sign_in_provider(provider_keys),
+        "sign_in_provider_keys": list(provider_keys),
+        "email_confirmed": bool(email_confirmed),
+        "google_provider_subs": _google_identity_provider_subs_from_auth_user(
+            user
+        ),
+    }
+
+
+def paginate_auth_admin_list_users(admin_api, *, per_page=100, max_pages=200):
+    """
+    Fetch every Auth Admin list_users page (not just the first).
+
+    Returns a list of admin-safe user dicts, newest-first by created_at.
+    Does not log emails or other personal information.
+    """
+
+    if admin_api is None or not hasattr(admin_api, "list_users"):
+        raise RuntimeError("Auth Admin list_users is unavailable.")
+
+    page_size = max(1, int(per_page or 100))
+    page_limit = max(1, int(max_pages or 200))
+    users = []
+    page = 1
+
+    while page <= page_limit:
+        batch = admin_api.list_users(page=page, per_page=page_size) or []
+        if not batch:
+            break
+
+        for user in batch:
+            row = _admin_safe_auth_user_row(user)
+            if row is not None:
+                users.append(row)
+
+        if len(batch) < page_size:
+            break
+
+        page += 1
+
+    users.sort(
+        key=lambda row: str(row.get("created_at") or ""),
+        reverse=True,
+    )
+    return users
+
+
+def build_admin_registered_account_emails(auth_users, admin_data):
+    """
+    Build Registered Account Emails rows from Auth users + profile presence.
+
+    Profile status is joined by authenticated Supabase user UUID only
+    (plus approved identity-link alternate UUIDs). Never joins by email.
+    Accounts without profiles still appear. Read-only — does not mutate data.
+    """
+
+    profiles = admin_data.get("profiles") or []
+    identity_links = admin_data.get("identity_links") or []
+    profile_owner_col = (
+        admin_data.get("profile_owner_column")
+        or admin_detect_owner_id_column(profiles)
+        or "user_sub"
+    )
+
+    profiles_by_id = {}
+    for row in profiles:
+        owner_id = admin_row_owner_id(row, profile_owner_col)
+        if owner_id and owner_id not in profiles_by_id:
+            profiles_by_id[owner_id] = row
+
+    auth_to_linked_subs = {}
+    for link in identity_links:
+        if not isinstance(link, dict):
+            continue
+        if str(link.get("status") or "").strip().lower() != "approved":
+            continue
+        auth_id = str(link.get("auth_user_id") or "").strip()
+        google_sub = str(link.get("google_user_sub") or "").strip()
+        if not auth_id or not google_sub:
+            continue
+        auth_to_linked_subs.setdefault(auth_id, set()).add(google_sub)
+
+    rows = []
+    for auth_user in auth_users or []:
+        auth_uuid = str(auth_user.get("user_sub") or "").strip()
+        if not auth_uuid:
+            continue
+
+        join_keys = [auth_uuid]
+        for linked in sorted(auth_to_linked_subs.get(auth_uuid, set())):
+            if linked not in join_keys:
+                join_keys.append(linked)
+
+        profile_complete = any(key in profiles_by_id for key in join_keys)
+        provider_label = str(auth_user.get("sign_in_provider") or "").strip()
+        if not provider_label:
+            provider_label = _admin_format_sign_in_provider(
+                auth_user.get("sign_in_provider_keys")
+            )
+
+        rows.append(
+            {
+                "user_sub": auth_uuid,
+                "email": str(auth_user.get("email") or "").strip(),
+                "created_at": auth_user.get("created_at"),
+                "created_at_label": _admin_format_created_at(
+                    auth_user.get("created_at")
+                ),
+                "sign_in_provider": provider_label,
+                "email_confirmed": bool(auth_user.get("email_confirmed")),
+                "profile_complete": bool(profile_complete),
+            }
+        )
+
+    rows.sort(
+        key=lambda row: str(row.get("created_at") or ""),
+        reverse=True,
+    )
+    return rows
+
+
 @st.cache_data(show_spinner=False)
 def list_all_auth_users_admin():
     """
@@ -29294,45 +29557,8 @@ def list_all_auth_users_admin():
             "from Authentication with the current client."
         )
 
-    users = []
-    page = 1
-    per_page = 100
-
     try:
-        while page <= 200:
-            batch = admin_api.list_users(page=page, per_page=per_page) or []
-            if not batch:
-                break
-
-            for user in batch:
-                user_sub = str(getattr(user, "id", "") or "").strip()
-                if not user_sub:
-                    continue
-
-                metadata = getattr(user, "user_metadata", None) or {}
-                created_at = getattr(user, "created_at", None)
-                if created_at is not None and hasattr(created_at, "isoformat"):
-                    created_at = created_at.isoformat()
-                else:
-                    created_at = str(created_at or "").strip() or None
-
-                users.append(
-                    {
-                        "user_sub": user_sub,
-                        "email": str(getattr(user, "email", "") or "").strip(),
-                        "created_at": created_at,
-                        "display_name": _admin_safe_display_name(metadata),
-                        "google_provider_subs": _google_identity_provider_subs_from_auth_user(
-                            user
-                        ),
-                    }
-                )
-
-            if len(batch) < per_page:
-                break
-
-            page += 1
-
+        users = paginate_auth_admin_list_users(admin_api)
     except Exception as exc:
         log_supabase_exception("list_all_auth_users_admin")
         return [], (
@@ -29340,12 +29566,6 @@ def list_all_auth_users_admin():
             f"({type(exc).__name__}). Student Accounts cannot be counted "
             "from Authentication until this error is resolved."
         )
-
-    # Newest accounts first
-    users.sort(
-        key=lambda row: str(row.get("created_at") or ""),
-        reverse=True,
-    )
 
     return users, None
 
@@ -41186,6 +41406,156 @@ elif page == "Admin Dashboard":
     st.html(
         overview_html
     )
+
+    # --------------------------------------------------------
+    # REGISTERED ACCOUNT EMAILS (Auth Admin, read-only)
+    # --------------------------------------------------------
+
+    st.html(
+        '<div class="sp-admin-section" style="margin-bottom:0.35rem;">'
+        '<div class="sp-admin-section-title">Registered Account Emails</div>'
+        '<p class="sp-admin-section-sub">'
+        'Every Supabase Authentication account (Google and email/password), '
+        'including accounts that have not completed a profile. Profile status '
+        'is joined by Auth user UUID only. Passwords, tokens, and provider IDs '
+        'are never shown. Do not export or download these student records.'
+        '</p>'
+        '</div>'
+    )
+
+    registered_account_emails = build_admin_registered_account_emails(
+        auth_users,
+        admin_data,
+    )
+
+    if auth_users_error and not registered_account_emails:
+        st.info(
+            "Registered Account Emails cannot load until the Auth Admin "
+            "API listing succeeds."
+        )
+    else:
+        st.caption(
+            f"Total Authentication accounts: {account_count}"
+            + (
+                " (Auth Admin listing error — count may be incomplete)"
+                if auth_users_error
+                else ""
+            )
+        )
+
+        email_search = st.text_input(
+            "Search by email",
+            key="admin_registered_emails_search",
+            placeholder="Type part of an email address",
+            help=(
+                "Filters the on-screen list only. Administrator only. "
+                "Does not export or change accounts."
+            ),
+        )
+        email_search_norm = str(email_search or "").strip().lower()
+
+        filtered_registered_emails = []
+        for row in registered_account_emails:
+            email_value = str(row.get("email") or "").strip().lower()
+            if email_search_norm and email_search_norm not in email_value:
+                continue
+            filtered_registered_emails.append(row)
+
+        email_page_size = 25
+        email_total_pages = max(
+            1,
+            (len(filtered_registered_emails) + email_page_size - 1)
+            // email_page_size,
+        )
+        email_filter_signature = (email_search_norm, account_count)
+        if (
+            st.session_state.get("admin_registered_emails_filter_sig")
+            != email_filter_signature
+        ):
+            st.session_state.admin_registered_emails_filter_sig = (
+                email_filter_signature
+            )
+            st.session_state["admin_registered_emails_page"] = 1
+
+        if "admin_registered_emails_page" not in st.session_state:
+            st.session_state["admin_registered_emails_page"] = 1
+
+        st.session_state["admin_registered_emails_page"] = max(
+            1,
+            min(
+                int(st.session_state["admin_registered_emails_page"]),
+                email_total_pages,
+            ),
+        )
+
+        email_page_number = st.number_input(
+            "Account emails page",
+            min_value=1,
+            max_value=email_total_pages,
+            step=1,
+            key="admin_registered_emails_page",
+        )
+
+        email_start = (int(email_page_number) - 1) * email_page_size
+        email_page_rows = filtered_registered_emails[
+            email_start:email_start + email_page_size
+        ]
+
+        st.caption(
+            f"Showing {len(email_page_rows)} of "
+            f"{len(filtered_registered_emails)} matching account(s) "
+            f"(page {int(email_page_number)} of {email_total_pages}; "
+            "newest first)."
+        )
+
+        if not email_page_rows:
+            st.html(
+                '<p class="sp-admin-empty">'
+                'No Authentication accounts match the current email search.'
+                '</p>'
+            )
+        else:
+            table_rows_html = []
+            for row in email_page_rows:
+                email_label = str(row.get("email") or "").strip() or (
+                    "No email on file"
+                )
+                confirmed_label = (
+                    "Confirmed"
+                    if row.get("email_confirmed")
+                    else "Not confirmed"
+                )
+                profile_label = (
+                    "Completed"
+                    if row.get("profile_complete")
+                    else "Not completed"
+                )
+                table_rows_html.append(
+                    "<tr>"
+                    f'<td class="sp-admin-email-cell">'
+                    f"{html_module.escape(email_label)}"
+                    "</td>"
+                    f"<td>{html_module.escape(str(row.get('created_at_label') or 'Unknown'))}</td>"
+                    f"<td>{html_module.escape(str(row.get('sign_in_provider') or 'Unknown'))}</td>"
+                    f"<td>{html_module.escape(confirmed_label)}</td>"
+                    f"<td>{html_module.escape(profile_label)}</td>"
+                    "</tr>"
+                )
+
+            st.html(
+                '<div class="sp-admin-email-table-wrap">'
+                '<table class="sp-admin-email-table">'
+                "<thead><tr>"
+                "<th>Email</th>"
+                "<th>Created</th>"
+                "<th>Sign-in provider</th>"
+                "<th>Email confirmation</th>"
+                "<th>Profile</th>"
+                "</tr></thead>"
+                "<tbody>"
+                + "".join(table_rows_html)
+                + "</tbody></table></div>"
+            )
 
     # --------------------------------------------------------
     # COMPACT FEEDBACK SUMMARY
