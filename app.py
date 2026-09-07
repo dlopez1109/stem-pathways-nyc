@@ -28101,6 +28101,7 @@ def save_opportunity(user_sub, opportunity_name):
                 .execute()
             )
             if existing.data:
+                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
         try:
@@ -28113,6 +28114,7 @@ def save_opportunity(user_sub, opportunity_name):
             )
 
             if mutation_row_count(upserted) > 0:
+                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             # ignore_duplicates may return zero rows when the row already exists.
@@ -28127,6 +28129,7 @@ def save_opportunity(user_sub, opportunity_name):
             )
 
             if verified.data:
+                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             notify_student_data_error()
@@ -28147,6 +28150,7 @@ def save_opportunity(user_sub, opportunity_name):
             )
 
             if mutation_row_count(inserted) > 0:
+                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             notify_student_data_error()
@@ -28155,6 +28159,7 @@ def save_opportunity(user_sub, opportunity_name):
     except Exception as error:
 
         if is_unique_violation(error):
+            invalidate_user_discovery_hide_caches(user_sub)
             return True
 
         log_supabase_exception(
@@ -28254,6 +28259,7 @@ def delete_saved_opportunity(user_sub, saved_id):
         )
 
         if mutation_row_count(deleted) > 0:
+            invalidate_user_discovery_hide_caches(user_sub)
             return True
 
         notify_student_data_error()
@@ -28279,6 +28285,145 @@ def saved_opportunity_names(user_sub):
         str(item.get("opportunity_name", ""))
         for item in saved
     }
+
+
+def opportunity_catalog_id(value):
+    """
+    Stable catalog identity for an opportunity row or saved name.
+    Uses canonical opportunity name (not list position). Compatible with
+    existing saved_opportunities.opportunity_name rows.
+    """
+
+    if value is None:
+        return ""
+    if isinstance(value, dict):
+        name = value.get("name") or value.get("opportunity_name") or ""
+    else:
+        try:
+            name = value.get("name") if hasattr(value, "get") else value
+        except Exception:
+            name = value
+        if hasattr(name, "get"):
+            try:
+                name = name.get("name") or name.get("opportunity_name") or ""
+            except Exception:
+                name = str(name or "")
+    canonical = canonical_opportunity_name(str(name or "").strip())
+    if not canonical:
+        return ""
+    slug = re.sub(r"[^a-z0-9]+", "-", canonical.casefold()).strip("-")
+    return f"opp:{slug}" if slug else ""
+
+
+def college_catalog_id(value, *, unitid_by_name=None):
+    """
+    Stable catalog identity for a college dict or saved college name.
+    Prefers IPEDS unitid when present; otherwise normalized name key.
+    """
+
+    unitid = None
+    name = ""
+    if isinstance(value, dict):
+        unitid = value.get("unitid")
+        name = str(value.get("name") or value.get("college_name") or "").strip()
+    else:
+        name = str(value or "").strip()
+
+    if (
+        unitid is not None
+        and str(unitid).strip()
+        and str(unitid).strip().lower() not in {"nan", "none"}
+    ):
+        return f"unitid:{str(unitid).strip()}"
+
+    key = normalize_college_name_key(name)
+    if unitid_by_name and key in unitid_by_name:
+        resolved = unitid_by_name.get(key)
+        if resolved is not None and str(resolved).strip():
+            return f"unitid:{str(resolved).strip()}"
+    return f"college:{key}" if key else ""
+
+
+def _college_unitid_by_name_index(catalog=None):
+    """Map normalized college name -> IPEDS unitid for stable favorite matching."""
+
+    if catalog is None:
+        try:
+            catalog = load_stem_college_catalog()
+        except Exception:
+            catalog = []
+    index = {}
+    for college in catalog or []:
+        if not isinstance(college, dict):
+            continue
+        name = str(college.get("name") or "").strip()
+        unitid = college.get("unitid")
+        if not name or unitid is None:
+            continue
+        key = normalize_college_name_key(name)
+        if key and key not in index:
+            index[key] = unitid
+        official = str(college.get("official_name") or "").strip()
+        if official:
+            okey = normalize_college_name_key(official)
+            if okey and okey not in index:
+                index[okey] = unitid
+    return index
+
+
+def invalidate_user_discovery_hide_caches(user_sub=None):
+    """Clear per-user saved/favorite catalog-id caches after mutations."""
+
+    prefix_opp = "_sp_saved_opp_catalog_ids_"
+    prefix_fav = "_sp_fav_college_catalog_ids_"
+    user_sub = str(user_sub or "").strip()
+    if user_sub:
+        st.session_state.pop(f"{prefix_opp}{user_sub}", None)
+        st.session_state.pop(f"{prefix_fav}{user_sub}", None)
+        return
+    for key in list(st.session_state.keys()):
+        text_key = str(key)
+        if text_key.startswith(prefix_opp) or text_key.startswith(prefix_fav):
+            st.session_state.pop(key, None)
+
+
+def user_saved_opportunity_catalog_ids(user_sub):
+    """Catalog IDs for opportunities this signed-in user has already saved."""
+
+    user_sub = str(user_sub or "").strip()
+    if not require_user_sub(user_sub):
+        return set()
+    cache_key = f"_sp_saved_opp_catalog_ids_{user_sub}"
+    cached = st.session_state.get(cache_key)
+    if isinstance(cached, set):
+        return cached
+    ids = set()
+    for item in load_saved_opportunities(user_sub):
+        catalog_id = opportunity_catalog_id(item)
+        if catalog_id:
+            ids.add(catalog_id)
+    st.session_state[cache_key] = ids
+    return ids
+
+
+def user_favorite_college_catalog_ids(user_sub, catalog=None):
+    """Catalog IDs (prefer unitid) for colleges this user has favorited."""
+
+    user_sub = str(user_sub or "").strip()
+    if not require_user_sub(user_sub):
+        return set()
+    cache_key = f"_sp_fav_college_catalog_ids_{user_sub}"
+    cached = st.session_state.get(cache_key)
+    if isinstance(cached, set):
+        return cached
+    unitid_by_name = _college_unitid_by_name_index(catalog)
+    ids = set()
+    for item in load_favorite_colleges(user_sub):
+        catalog_id = college_catalog_id(item, unitid_by_name=unitid_by_name)
+        if catalog_id:
+            ids.add(catalog_id)
+    st.session_state[cache_key] = ids
+    return ids
 
 
 
@@ -28362,6 +28507,7 @@ def add_favorite_college(
                 .execute()
             )
             if existing.data:
+                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
         current = load_favorite_colleges(
@@ -28404,6 +28550,7 @@ def add_favorite_college(
             )
 
             if mutation_row_count(upserted) > 0:
+                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             verified = (
@@ -28417,6 +28564,7 @@ def add_favorite_college(
             )
 
             if verified.data:
+                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             notify_student_data_error()
@@ -28437,6 +28585,7 @@ def add_favorite_college(
             )
 
             if mutation_row_count(inserted) > 0:
+                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             notify_student_data_error()
@@ -28445,6 +28594,7 @@ def add_favorite_college(
     except Exception as error:
 
         if is_unique_violation(error):
+            invalidate_user_discovery_hide_caches(user_sub)
             return True
 
         log_supabase_exception(
@@ -28730,6 +28880,7 @@ def remove_favorite_college(
                     notify_student_data_error()
                     return False
 
+        invalidate_user_discovery_hide_caches(user_sub)
         return True
 
     except Exception:
@@ -34165,6 +34316,10 @@ elif page == "Opportunities":
 
     else:
 
+        saved_opportunity_catalog_ids = user_saved_opportunity_catalog_ids(
+            user_sub
+        )
+
         # Migrate / clear obsolete per-category multiselect keys from the prior UI.
         _obsolete_opp_filter_keys = [
             "opportunity_filter_research_areas",
@@ -34820,6 +34975,7 @@ elif page == "Opportunities":
         else:
 
             search_results = []
+            search_hidden_saved = 0
 
             for _, opportunity in opportunities.iterrows():
 
@@ -34922,6 +35078,11 @@ elif page == "Opportunities":
 
                     score = 50
                     reasons = []
+
+                catalog_id = opportunity_catalog_id(opportunity)
+                if catalog_id and catalog_id in saved_opportunity_catalog_ids:
+                    search_hidden_saved += 1
+                    continue
 
                 search_results.append(
                     (
@@ -35057,11 +35218,18 @@ elif page == "Opportunities":
 
             if not search_results:
 
-                st.warning(
-                    "No opportunities matched every filter. Filters across categories "
-                    "are combined with AND, so try clearing Opportunity Type, Selectivity, "
-                    "or STEM Area and search again."
-                )
+                if search_hidden_saved > 0:
+                    st.info(
+                        "You've already saved every opportunity that matches these filters. "
+                        "Open **My Applications** to review them, or change your filters "
+                        "to discover more programs."
+                    )
+                else:
+                    st.warning(
+                        "No opportunities matched every filter. Filters across categories "
+                        "are combined with AND, so try clearing Opportunity Type, Selectivity, "
+                        "or STEM Area and search again."
+                    )
 
             for (
                 result_index,
@@ -35162,6 +35330,7 @@ elif page == "Opportunities":
                                 st.success(
                                     "Saved to My Applications."
                                 )
+                                st.rerun()
 
                     with action2:
 
@@ -35219,6 +35388,7 @@ elif page == "Opportunities":
         )
 
         recommended_results = []
+        recommended_hidden_saved = 0
 
         for _, recommended_opportunity in opportunities.iterrows():
 
@@ -35270,6 +35440,11 @@ elif page == "Opportunities":
                 recommended_score = 50
                 recommended_reasons = []
 
+            catalog_id = opportunity_catalog_id(recommended_opportunity)
+            if catalog_id and catalog_id in saved_opportunity_catalog_ids:
+                recommended_hidden_saved += 1
+                continue
+
             recommended_results.append(
                 (
                     recommended_score,
@@ -35286,10 +35461,17 @@ elif page == "Opportunities":
 
         if not recommended_results:
 
-            st.info(
-                "No personalized recommendations are available yet. "
-                "Try updating your profile interests."
-            )
+            if recommended_hidden_saved > 0:
+                st.info(
+                    "You've already saved your personalized opportunity recommendations. "
+                    "Open **My Applications** to manage them, or explore new programs "
+                    "with Search & Filters above."
+                )
+            else:
+                st.info(
+                    "No personalized recommendations are available yet. "
+                    "Try updating your profile interests."
+                )
 
         for (
             rec_index,
@@ -35386,6 +35568,7 @@ elif page == "Opportunities":
                             st.success(
                                 "Saved to My Applications."
                             )
+                            st.rerun()
 
                 with rec_action2:
 
@@ -37226,7 +37409,16 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
             "Colleges are scored by how well they match your STEM interests "
             "and preferences, then labeled **Reach**, **Target**, or **Safety** "
             "using selectivity stars. Browse the full catalog with search and filters. "
-            "We show your top matches first, then you can load more."
+            "We show your top matches first, then you can load more. "
+            "Colleges you already saved appear under **Favorite Colleges**."
+        )
+
+        favorite_college_catalog_ids = user_favorite_college_catalog_ids(
+            user_sub,
+            college_catalog,
+        )
+        college_unitid_by_name = _college_unitid_by_name_index(
+            college_catalog
         )
 
         def college_has_intended_field(result):
@@ -37333,6 +37525,7 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
                                 '✓ College saved to My Favorite Colleges.'
                                 '</div>'
                             )
+                            st.rerun()
 
                 with favorite_action2:
 
@@ -37511,7 +37704,18 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
                 return False
             return True
 
-        filtered = [item for item in annotated if passes_filters(item)]
+        filtered_matches = [item for item in annotated if passes_filters(item)]
+        filtered = []
+        college_hidden_favorited = 0
+        for item in filtered_matches:
+            catalog_id = college_catalog_id(
+                item.get("college") or {},
+                unitid_by_name=college_unitid_by_name,
+            )
+            if catalog_id and catalog_id in favorite_college_catalog_ids:
+                college_hidden_favorited += 1
+                continue
+            filtered.append(item)
         filtered.sort(
             key=lambda item: (
                 0 if item.get("strong_fit") else 1,
@@ -37534,10 +37738,17 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
         visible = filtered[:visible_count]
 
         if not filtered:
-            st.info(
-                "No colleges match your current filters. Clear a filter or broaden "
-                "distance/cost settings to see more of the catalog."
-            )
+            if college_hidden_favorited > 0:
+                st.info(
+                    "You've already saved every college that matches these filters. "
+                    "Open **Favorite Colleges** to review them, or clear a filter "
+                    "to see more of the catalog."
+                )
+            else:
+                st.info(
+                    "No colleges match your current filters. Clear a filter or broaden "
+                    "distance/cost settings to see more of the catalog."
+                )
         else:
             for rank, result in enumerate(visible, start=1):
                 render_college_match_card(
