@@ -10,7 +10,8 @@ Streamlit `session_state` (process memory for that websocket).
 - Table `auth_cookie_tickets`: one-time tickets so ASGI routes can set cookies
 - Absolute lifetime: 30 days
 - Idle timeout: 7 days (sliding on activity)
-- Session ID rotates on login and access-token refresh
+- Session ID is newly generated at login; access-token renewal updates only the
+  encrypted server-side credentials so it cannot interrupt a normal app click
 - Sign out revokes the server row and clears the cookie via `/auth/clear-session`
 - Ownership remains Supabase Auth `user.id` UUID (no email linking)
 

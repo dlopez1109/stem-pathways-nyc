@@ -114,6 +114,7 @@ def test_source_contracts() -> None:
         "_read_browser_auth_session_id",
         "auth_persist.create_server_session",
         "auth_persist.rotate_server_session",
+        "auth_persist.update_server_session_tokens",
         "auth_persist.revoke_server_session",
         "/auth/persist-session",
         "/auth/clear-session",
@@ -128,6 +129,15 @@ def test_source_contracts() -> None:
 
     if "COOKIE_NAME = \"sp_sid\"" not in auth:
         fail("cookie must be opaque sp_sid")
+    refresh_block = app[
+        app.index("# Refresh an expired access token") : app.index(
+            "# Slow path: periodic revalidation"
+        )
+    ]
+    if "auth_persist.update_server_session_tokens" not in refresh_block:
+        fail("token refresh must update the server session in place")
+    if "_schedule_auth_cookie_set" in refresh_block:
+        fail("token refresh must not schedule a cookie redirect that swallows clicks")
     if "access_token" in auth and "encrypt_token" not in auth:
         fail("token handling missing encryption helpers")
     # Cookie must not store raw access/refresh tokens

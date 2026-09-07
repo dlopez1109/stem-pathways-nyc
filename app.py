@@ -27715,7 +27715,11 @@ def restore_email_auth_user():
     try:
         client = create_supabase_auth_client()
 
-        # Refresh access token when expired; rotate durable session id afterward.
+        # Refresh an expired access token without changing the opaque browser
+        # session id. A cookie-setting redirect here can consume the widget event
+        # that triggered this rerun, making navigation appear to need two clicks.
+        # The existing high-entropy session id was already rotated at login; token
+        # renewal only updates its encrypted server-side credentials.
         if auth_persist.access_token_expired(access_token):
             try:
                 refresh_started = time.perf_counter()
@@ -27741,20 +27745,18 @@ def restore_email_auth_user():
                     provider=provider_name,
                     persist_cookie=False,
                 )
-                rotated = auth_persist.rotate_server_session(
-                    session_id,
-                    access_token=str(new_access),
-                    refresh_token=str(new_refresh),
-                    user_id=str(user.id),
-                    email=str(getattr(user, "email", "") or ""),
-                    provider=provider_name,
-                )
-                if rotated:
-                    st.session_state[SP_AUTH_SESSION_ID_KEY] = rotated
-                    _schedule_auth_cookie_set(rotated)
+                if auth_persist.session_id_is_valid(session_id):
+                    updated = auth_persist.update_server_session_tokens(
+                        session_id,
+                        access_token=str(new_access),
+                        refresh_token=str(new_refresh),
+                    )
+                    if not updated:
+                        raise RuntimeError("server session token update failed")
+                    st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
                 st.session_state[SP_AUTH_VALIDATED_AT_KEY] = time.time()
                 st.session_state[SP_AUTH_TOUCHED_AT_KEY] = time.time()
-                _auth_timing_log("token_refresh_rotate", refresh_started)
+                _auth_timing_log("token_refresh_update", refresh_started)
                 _auth_timing_log("restore_refresh_path", started)
                 return {
                     "user_id": str(user.id),

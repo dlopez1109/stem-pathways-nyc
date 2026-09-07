@@ -349,7 +349,7 @@ def update_server_session_tokens(
     refresh_token: str,
     client=None,
 ) -> bool:
-    """Update tokens in-place (prefer rotate_server_session after refresh)."""
+    """Update refreshed tokens without forcing a browser-cookie navigation."""
 
     session_id = str(session_id or "").strip()
     access_token = str(access_token or "").strip()
