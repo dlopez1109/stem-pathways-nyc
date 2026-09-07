@@ -27861,14 +27861,22 @@ def load_admin_metrics():
             "profiles": [],
             "feedback": [],
             "saved_opportunities": [],
-            "favorite_colleges": []
+            "favorite_colleges": [],
+            "identity_links": [],
+            "profile_owner_column": None,
+            "saved_owner_column": None,
+            "favorite_owner_column": None,
         }
 
     data = {
         "profiles": [],
         "feedback": [],
         "saved_opportunities": [],
-        "favorite_colleges": []
+        "favorite_colleges": [],
+        "identity_links": [],
+        "profile_owner_column": None,
+        "saved_owner_column": None,
+        "favorite_owner_column": None,
     }
 
     table_map = {
@@ -27912,8 +27920,91 @@ def load_admin_metrics():
                 key
             ] = []
 
+    # Optional approved identity links (Auth UUID <-> Google user_sub).
+    # Missing table is fine; never join student rows by email.
+    try:
+        links_response = (
+            supabase
+            .table("account_identity_links")
+            .select("google_user_sub,auth_user_id,status")
+            .eq("status", "approved")
+            .execute()
+        )
+        data["identity_links"] = links_response.data or []
+    except Exception:
+        log_supabase_exception("load_admin_metrics:account_identity_links")
+        data["identity_links"] = []
+
+    data["profile_owner_column"] = admin_detect_owner_id_column(
+        data.get("profiles") or []
+    )
+    data["saved_owner_column"] = admin_detect_owner_id_column(
+        data.get("saved_opportunities") or []
+    )
+    data["favorite_owner_column"] = admin_detect_owner_id_column(
+        data.get("favorite_colleges") or []
+    )
+
     return data
 
+
+ADMIN_OWNER_ID_CANDIDATES = (
+    "user_sub",
+    "user_id",
+    "auth_user_id",
+    "uid",
+)
+
+
+def admin_detect_owner_id_column(rows):
+    """Inspect actual row keys to find the user-identity column (never email)."""
+
+    if not rows:
+        return None
+
+    keys = set()
+    for row in rows[:50]:
+        if isinstance(row, dict):
+            keys.update(str(key) for key in row.keys())
+
+    for candidate in ADMIN_OWNER_ID_CANDIDATES:
+        if candidate in keys:
+            return candidate
+
+    return None
+
+
+def admin_row_owner_id(row, column_name):
+    if not isinstance(row, dict) or not column_name:
+        return ""
+    return str(row.get(column_name) or "").strip()
+
+
+def admin_index_rows_by_owner(rows, column_name):
+    indexed = {}
+    if not column_name:
+        return indexed
+
+    for row in rows or []:
+        owner_id = admin_row_owner_id(row, column_name)
+        if not owner_id:
+            continue
+        indexed.setdefault(owner_id, []).append(row)
+
+    return indexed
+
+
+def admin_rows_for_keys(indexed, join_keys):
+    collected = []
+    seen = set()
+    for key in join_keys:
+        for row in indexed.get(key) or []:
+            marker = id(row)
+            if marker in seen:
+                continue
+            seen.add(marker)
+            collected.append(row)
+    return collected
 
 
 def clear_admin_accounts_caches():
@@ -28127,36 +28218,81 @@ def admin_reproducible_major_recommendations(profile, limit=5):
 
 
 def build_admin_student_pathways(auth_users, admin_data):
-    """Join Auth users to student data by user_sub (UUID), never by email."""
+    """
+    Join Auth users to student data by authenticated user UUID.
 
-    profiles_by_sub = {}
-    for row in admin_data.get("profiles") or []:
-        user_sub = str(row.get("user_sub") or "").strip()
-        if user_sub:
-            profiles_by_sub[user_sub] = row
+    Owner columns are detected from each table's actual keys (for example
+    user_sub vs user_id). Email is never used as a join key. Approved
+    account_identity_links may add an alternate Google user_sub for the
+    same Auth UUID without rewriting student rows.
+    """
 
-    saved_by_sub = {}
-    for row in admin_data.get("saved_opportunities") or []:
-        user_sub = str(row.get("user_sub") or "").strip()
-        if not user_sub:
+    profiles = admin_data.get("profiles") or []
+    saved_rows_all = admin_data.get("saved_opportunities") or []
+    favorite_rows_all = admin_data.get("favorite_colleges") or []
+    identity_links = admin_data.get("identity_links") or []
+
+    profile_owner_col = (
+        admin_data.get("profile_owner_column")
+        or admin_detect_owner_id_column(profiles)
+        or "user_sub"
+    )
+    saved_owner_col = (
+        admin_data.get("saved_owner_column")
+        or admin_detect_owner_id_column(saved_rows_all)
+        or "user_sub"
+    )
+    favorite_owner_col = (
+        admin_data.get("favorite_owner_column")
+        or admin_detect_owner_id_column(favorite_rows_all)
+        or "user_sub"
+    )
+
+    profiles_by_id = {}
+    for row in profiles:
+        owner_id = admin_row_owner_id(row, profile_owner_col)
+        if owner_id and owner_id not in profiles_by_id:
+            profiles_by_id[owner_id] = row
+
+    saved_by_id = admin_index_rows_by_owner(saved_rows_all, saved_owner_col)
+    favorites_by_id = admin_index_rows_by_owner(
+        favorite_rows_all,
+        favorite_owner_col,
+    )
+
+    # auth_user_id (UUID) -> alternate google_user_sub keys from approved links
+    auth_to_linked_subs = {}
+    for link in identity_links:
+        if not isinstance(link, dict):
             continue
-        saved_by_sub.setdefault(user_sub, []).append(row)
-
-    favorites_by_sub = {}
-    for row in admin_data.get("favorite_colleges") or []:
-        user_sub = str(row.get("user_sub") or "").strip()
-        if not user_sub:
+        if str(link.get("status") or "").strip().lower() != "approved":
             continue
-        favorites_by_sub.setdefault(user_sub, []).append(row)
+        auth_id = str(link.get("auth_user_id") or "").strip()
+        google_sub = str(link.get("google_user_sub") or "").strip()
+        if not auth_id or not google_sub:
+            continue
+        auth_to_linked_subs.setdefault(auth_id, set()).add(google_sub)
 
     pathways = []
 
     for auth_user in auth_users:
-        user_sub = str(auth_user.get("user_sub") or "").strip()
-        if not user_sub:
+        auth_uuid = str(auth_user.get("user_sub") or "").strip()
+        if not auth_uuid:
             continue
 
-        profile_row = profiles_by_sub.get(user_sub)
+        join_keys = [auth_uuid]
+        for linked in sorted(auth_to_linked_subs.get(auth_uuid, set())):
+            if linked not in join_keys:
+                join_keys.append(linked)
+
+        profile_row = None
+        matched_profile_key = ""
+        for key in join_keys:
+            if key in profiles_by_id:
+                profile_row = profiles_by_id[key]
+                matched_profile_key = key
+                break
+
         profile_complete = bool(profile_row)
 
         if profile_row:
@@ -28191,7 +28327,7 @@ def build_admin_student_pathways(auth_users, admin_data):
 
         majors = admin_reproducible_major_recommendations(profile)
 
-        saved_rows = saved_by_sub.get(user_sub, [])
+        saved_rows = admin_rows_for_keys(saved_by_id, join_keys)
         saved_programs = []
         for row in saved_rows:
             saved_programs.append(
@@ -28204,7 +28340,7 @@ def build_admin_student_pathways(auth_users, admin_data):
             )
         saved_programs.sort(key=lambda item: item["name"].lower())
 
-        favorite_rows = favorites_by_sub.get(user_sub, [])
+        favorite_rows = admin_rows_for_keys(favorites_by_id, join_keys)
         favorite_colleges = sorted(
             {
                 str(row.get("college_name") or "").strip()
@@ -28214,9 +28350,41 @@ def build_admin_student_pathways(auth_users, admin_data):
             key=str.lower,
         )
 
+        matched_any_activity = bool(
+            profile_row or saved_programs or favorite_colleges or majors
+        )
+        used_linked_identity = any(key != auth_uuid for key in join_keys)
+
+        join_diagnostic = ""
+        if not matched_any_activity:
+            cols = ", ".join(
+                sorted(
+                    {
+                        profile_owner_col,
+                        saved_owner_col,
+                        favorite_owner_col,
+                    }
+                )
+            )
+            if used_linked_identity:
+                join_diagnostic = (
+                    "Admin diagnostic: this Auth UUID has an approved identity "
+                    "link, but no student_profiles / saved_opportunities / "
+                    f"favorite_colleges rows matched via ({cols})."
+                )
+            else:
+                join_diagnostic = (
+                    "Admin diagnostic: no related student records matched this "
+                    f"Auth user UUID via ({cols}). "
+                    "New accounts with no activity look like this. If you "
+                    "expected saved data, it may be stored under a different "
+                    "identity key (for example a Google user_sub) and is not "
+                    "linked to this Auth UUID."
+                )
+
         pathways.append(
             {
-                "user_sub": user_sub,
+                "user_sub": auth_uuid,
                 "email": str(auth_user.get("email") or "").strip(),
                 "student_name": student_name,
                 "grade": grade,
@@ -28229,6 +28397,14 @@ def build_admin_student_pathways(auth_users, admin_data):
                 "majors": majors,
                 "saved_programs": saved_programs,
                 "favorite_colleges": favorite_colleges,
+                "join_diagnostic": join_diagnostic,
+                "join_keys_used": list(join_keys),
+                "matched_profile_key": matched_profile_key,
+                "owner_columns": {
+                    "profiles": profile_owner_col,
+                    "saved_opportunities": saved_owner_col,
+                    "favorite_colleges": favorite_owner_col,
+                },
             }
         )
 
@@ -39437,6 +39613,10 @@ elif page == "Admin Dashboard":
         "feedback": [],
         "saved_opportunities": [],
         "favorite_colleges": [],
+        "identity_links": [],
+        "profile_owner_column": None,
+        "saved_owner_column": None,
+        "favorite_owner_column": None,
     }
     auth_users = admin_snapshot.get("auth_users") or []
     auth_users_error = admin_snapshot.get("auth_users_error")
@@ -40012,9 +40192,13 @@ elif page == "Admin Dashboard":
                 if not row.get("profile_complete"):
                     st.html(
                         '<p class="sp-admin-empty">'
-                        'Profile not completed.'
+                        'Profile not completed'
                         '</p>'
                     )
+
+                join_diagnostic = str(row.get("join_diagnostic") or "").strip()
+                if join_diagnostic:
+                    st.info(join_diagnostic)
 
                 st.html(
                     '<p class="sp-admin-pathway-subtitle">'
@@ -40025,7 +40209,7 @@ elif page == "Admin Dashboard":
                 if not majors:
                     st.html(
                         '<p class="sp-admin-empty">'
-                        'No recommended majors yet.'
+                        'No potential majors generated'
                         '</p>'
                     )
                 else:
@@ -40056,7 +40240,7 @@ elif page == "Admin Dashboard":
                 if not programs:
                     st.html(
                         '<p class="sp-admin-empty">'
-                        'No saved programs yet.'
+                        'No programs saved'
                         '</p>'
                     )
                 else:
@@ -40085,7 +40269,7 @@ elif page == "Admin Dashboard":
                 if not colleges:
                     st.html(
                         '<p class="sp-admin-empty">'
-                        'No favorite colleges yet.'
+                        'No favorite colleges selected'
                         '</p>'
                     )
                 else:
