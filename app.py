@@ -4283,19 +4283,26 @@ st.markdown(
     [data-testid="stMain"] [class*="st-key-google_continue"] button,
     [data-testid="stMain"] [class*="st-key-google_continue"] button:active,
     [data-testid="stMain"] [class*="st-key-google_continue"] button:focus,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button:focus-visible,
     [data-testid="stMain"] [class*="st-key-google_continue"] button:hover {
-        background: var(--sp-primary) !important;
-        color: #FFFFFF !important;
-        border: 1px solid var(--sp-primary) !important;
-        box-shadow: 0 6px 16px rgba(1, 143, 199, 0.22) !important;
+        background: #FFFFFF !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        border: 1px solid rgba(255,255,255,0.92) !important;
+        box-shadow: 0 6px 18px rgba(0, 12, 28, 0.18) !important;
+        font-weight: 700 !important;
     }
 
     [data-testid="stMain"] [class*="st-key-google_continue"] button p,
     [data-testid="stMain"] [class*="st-key-google_continue"] button span,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button div,
     [data-testid="stMain"] [class*="st-key-google_continue"] button:hover p,
-    [data-testid="stMain"] [class*="st-key-google_continue"] button:hover span {
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
+    [data-testid="stMain"] [class*="st-key-google_continue"] button:hover span,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button:focus p,
+    [data-testid="stMain"] [class*="st-key-google_continue"] button:active p {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
     }
 
     [data-baseweb="input"] > div,
@@ -5489,6 +5496,10 @@ st.markdown(
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button {
+        position: relative !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         min-height: 3.35rem !important;
         height: 3.35rem !important;
         padding: 0.85rem 1.5rem !important;
@@ -5497,32 +5508,50 @@ st.markdown(
         border-radius: 12px !important;
         width: 100% !important;
         background: #FFFFFF !important;
-        color: #083C5D !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
         border: 1px solid rgba(255,255,255,0.92) !important;
         box-shadow: 0 6px 18px rgba(0, 12, 28, 0.18) !important;
-        transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease !important;
+        transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background-color 140ms ease !important;
     }
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button::before {
         content: "G";
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
         display: inline-grid;
         place-items: center;
         width: 1.65rem;
         height: 1.65rem;
-        margin-right: 0.65rem;
+        margin-right: 0;
         border-radius: 50%;
-        color: #4285F4;
-        background: #F6F9FE;
-        border: 1px solid #D7E4FA;
+        color: #4285F4 !important;
+        -webkit-text-fill-color: #4285F4 !important;
+        background: #F6F9FE !important;
+        border: 1px solid #D7E4FA !important;
         font-weight: 850;
+        z-index: 1;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button p {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button p,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button span,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button [data-testid="stMarkdownContainer"],
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button [data-testid="stMarkdownContainer"] p {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+        position: relative;
+        z-index: 0;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:hover {
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:hover,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:focus,
+    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:active {
+        background: #EAF7FC !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
         transform: translateY(-1px) !important;
         border-color: #5EC8F2 !important;
         box-shadow: 0 10px 22px rgba(0, 12, 28, 0.24) !important;
@@ -12776,28 +12805,240 @@ st.markdown(
         }
     }
 
-    /* Filled cyan / gradient CTAs + destructive controls stay intentionally different */
+    /* Filled cyan CTAs keep white labels (NOT white/light primary shells like Google) */
     html body .stApp [data-testid="stMain"] [class*="st-key-gpa_add_course"] .stButton > button,
-    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_add_course"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_add_course"] .stButton > button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body .stApp [data-testid="stMain"] [class*="st-key-gpa_calculate_course_gpa"] .stButton > button,
-    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_calculate_course_gpa"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_calculate_course_gpa"] .stButton > button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body .stApp [data-testid="stMain"] [class*="st-key-gpa_confirm_results"] .stButton > button,
-    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_confirm_results"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_confirm_results"] .stButton > button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body .stApp [data-testid="stMain"] [class*="st-key-gpa_restart_confirm"] .stButton > button,
-    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_restart_confirm"] .stButton > button *,
-    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button,
-    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_restart_confirm"] .stButton > button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button,
-    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]),
     html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button,
-    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button *,
-    html body .stApp [data-testid="stMain"] button[kind="primary"],
-    html body .stApp [data-testid="stMain"] button[kind="primary"] *,
-    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-primary"],
-    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-primary"] * {
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button *:not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]) {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
     }
+
+    /* ============================================================
+       SP_GOOGLE_CONTINUE_CONTRAST_V1
+       White/light primary Google CTA — dark navy label (not white).
+       Beats earlier primary white-text preservation. Icon ::before
+       stays blue "G" on the left; label stays centered.
+       ============================================================ */
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:link,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:visited,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:focus,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:focus-visible,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:active,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:focus,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:active {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+        position: relative !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:hover,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:focus,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:active,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:focus,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:active {
+        background: #EAF7FC !important;
+        background-color: #EAF7FC !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button [data-testid="stMarkdownContainer"] p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:hover p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:hover span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:focus p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:active p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button span,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button [data-testid="stMarkdownContainer"] p {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+    }
+
+    /* Keep Google "G" icon mark blue — do not inherit navy label color */
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button::before,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button::before {
+        color: #4285F4 !important;
+        -webkit-text-fill-color: #4285F4 !important;
+        background: #F6F9FE !important;
+        border: 1px solid #D7E4FA !important;
+        position: absolute !important;
+        left: 1rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin-right: 0 !important;
+    }
+
+    /* Other white/light primary shells on dark pages (same invisible-label class) */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] button[kind="primary"]:not(:where(
+        [class*="st-key-gpa_add_course"] *,
+        [class*="st-key-gpa_calculate_course_gpa"] *,
+        [class*="st-key-gpa_confirm_results"] *,
+        [class*="st-key-gpa_restart_confirm"] *,
+        [class*="st-key-college_matcher_submit"] *,
+        [class*="st-key-stemq_submit"] *,
+        [class*="st-key-feedback_submit"] *,
+        [class*="st-key-opportunity_search_panel"] *,
+        [class*="st-key-profile_save_section"] *,
+        [class*="st-key-update_profile_button_wrapper"] *,
+        [class*="st-key-dash_journey_card_"] *
+    )),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] button[kind="primary"]:not(:where(
+        [class*="st-key-gpa_add_course"] *,
+        [class*="st-key-gpa_calculate_course_gpa"] *,
+        [class*="st-key-gpa_confirm_results"] *,
+        [class*="st-key-gpa_restart_confirm"] *,
+        [class*="st-key-college_matcher_submit"] *,
+        [class*="st-key-stemq_submit"] *,
+        [class*="st-key-feedback_submit"] *,
+        [class*="st-key-opportunity_search_panel"] *,
+        [class*="st-key-profile_save_section"] *,
+        [class*="st-key-update_profile_button_wrapper"] *,
+        [class*="st-key-dash_journey_card_"] *
+    )):hover,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] button[kind="primary"]:not(:where(
+        [class*="st-key-gpa_add_course"] *,
+        [class*="st-key-gpa_calculate_course_gpa"] *,
+        [class*="st-key-gpa_confirm_results"] *,
+        [class*="st-key-gpa_restart_confirm"] *,
+        [class*="st-key-college_matcher_submit"] *,
+        [class*="st-key-stemq_submit"] *,
+        [class*="st-key-feedback_submit"] *,
+        [class*="st-key-opportunity_search_panel"] *,
+        [class*="st-key-profile_save_section"] *,
+        [class*="st-key-update_profile_button_wrapper"] *,
+        [class*="st-key-dash_journey_card_"] *
+    )):focus,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] button[kind="primary"]:not(:where(
+        [class*="st-key-gpa_add_course"] *,
+        [class*="st-key-gpa_calculate_course_gpa"] *,
+        [class*="st-key-gpa_confirm_results"] *,
+        [class*="st-key-gpa_restart_confirm"] *,
+        [class*="st-key-college_matcher_submit"] *,
+        [class*="st-key-stemq_submit"] *,
+        [class*="st-key-feedback_submit"] *,
+        [class*="st-key-opportunity_search_panel"] *,
+        [class*="st-key-profile_save_section"] *,
+        [class*="st-key-update_profile_button_wrapper"] *,
+        [class*="st-key-dash_journey_card_"] *
+    )):active {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] button[kind="primary"]:not(:where(
+        [class*="st-key-gpa_add_course"] *,
+        [class*="st-key-gpa_calculate_course_gpa"] *,
+        [class*="st-key-gpa_confirm_results"] *,
+        [class*="st-key-gpa_restart_confirm"] *,
+        [class*="st-key-college_matcher_submit"] *,
+        [class*="st-key-stemq_submit"] *,
+        [class*="st-key-feedback_submit"] *,
+        [class*="st-key-opportunity_search_panel"] *,
+        [class*="st-key-profile_save_section"] *,
+        [class*="st-key-update_profile_button_wrapper"] *,
+        [class*="st-key-dash_journey_card_"] *
+    )) p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] button[kind="primary"]:not(:where(
+        [class*="st-key-gpa_add_course"] *,
+        [class*="st-key-gpa_calculate_course_gpa"] *,
+        [class*="st-key-gpa_confirm_results"] *,
+        [class*="st-key-gpa_restart_confirm"] *,
+        [class*="st-key-college_matcher_submit"] *,
+        [class*="st-key-stemq_submit"] *,
+        [class*="st-key-feedback_submit"] *,
+        [class*="st-key-opportunity_search_panel"] *,
+        [class*="st-key-profile_save_section"] *,
+        [class*="st-key-update_profile_button_wrapper"] *,
+        [class*="st-key-dash_journey_card_"] *
+    )) span {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+    }
+
+    @media (max-width: 768px) {
+        html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button,
+        html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button p,
+        html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button span,
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button,
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button p,
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button span {
+            color: #083B5C !important;
+            -webkit-text-fill-color: #083B5C !important;
+            font-weight: 700 !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button:hover,
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button:hover {
+            background: #EAF7FC !important;
+            color: #083B5C !important;
+            -webkit-text-fill-color: #083B5C !important;
+        }
+
+        html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button::before,
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-google_continue"] button::before {
+            color: #4285F4 !important;
+            -webkit-text-fill-color: #4285F4 !important;
+            left: 0.85rem !important;
+        }
+    }
+
+    /* Reassert white labels on filled cyan/gradient primaries after navy shell fix */
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-feedback_submit"] .stButton > button div,
+    html body .stApp [data-testid="stMain"] [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-opportunity_search_panel"] [data-testid="stFormSubmitButton"] button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_add_course"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_add_course"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_add_course"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_calculate_course_gpa"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_calculate_course_gpa"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_calculate_course_gpa"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_confirm_results"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_confirm_results"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_confirm_results"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_restart_confirm"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_restart_confirm"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_restart_confirm"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button span,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button p,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button span {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
 
     html body .stApp [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button,
     html body .stApp [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button *,
