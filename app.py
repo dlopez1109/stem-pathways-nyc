@@ -25,6 +25,8 @@ APP_DIR = Path(__file__).resolve().parent
 COLLEGE_LOGO_DIR = APP_DIR / "assets" / "college_logos"
 
 # Exact college-catalog names -> local logo filenames in assets/college_logos/
+# Prefer SVG; PNG/WebP allowed. Colleges omitted here fall back to slug match,
+# then polished initials when no trustworthy local logo exists.
 COLLEGE_LOGO_FILES = {
     "MIT": "mit.svg",
     "Stanford University": "stanford-university.png",
@@ -45,7 +47,7 @@ COLLEGE_LOGO_FILES = {
     "Stevens Institute of Technology": "stevens-institute-of-technology.svg",
     "CCNY": "ccny.svg",
     "Stony Brook University": "stony-brook-university.svg",
-    "CUNY City Tech": "cuny-city-tech.svg",
+    "CUNY City Tech": "cuny-city-tech.png",
     "UMass Lowell": "umass-lowell.png",
     "Western New England University": "western-new-england-university.svg",
     "UMass Boston": "umass-boston.svg",
@@ -53,7 +55,75 @@ COLLEGE_LOGO_FILES = {
     "University of New Hampshire": "university-of-new-hampshire.svg",
     "UMass Dartmouth": "umass-dartmouth.svg",
     "Wilkes University": "wilkes-university.png",
-    "University of Pittsburgh at Johnstown": "university-of-pittsburgh-at-johnstown.svg"
+    "University of Pittsburgh at Johnstown": "university-of-pittsburgh-at-johnstown.svg",
+    "CUNY Baruch College": "cuny-baruch-college.png",
+    "CUNY Brooklyn College": "cuny-brooklyn-college.png",
+    "CUNY John Jay College": "cuny-john-jay-college.svg",
+    "CUNY Lehman College": "cuny-lehman-college.png",
+    "CUNY Medgar Evers College": "cuny-medgar-evers-college.png",
+    "CUNY College of Staten Island": "cuny-college-of-staten-island.svg",
+    "CUNY York College": "cuny-york-college.svg",
+    "Queensborough Community College": "queensborough-community-college.svg",
+    "Bronx Community College": "bronx-community-college.png",
+    "Kingsborough Community College": "kingsborough-community-college.svg",
+    "University at Buffalo": "university-at-buffalo.svg",
+    "Binghamton University": "binghamton-university.png",
+    "University at Albany": "university-at-albany.svg",
+    "SUNY Geneseo": "suny-geneseo.svg",
+    "SUNY Polytechnic Institute": "suny-polytechnic-institute.png",
+    "SUNY Oswego": "suny-oswego.svg",
+    "Fashion Institute of Technology": "fashion-institute-of-technology.svg",
+    "SUNY Maritime College": "suny-maritime-college.png",
+    "Buffalo State University": "buffalo-state-university.png",
+    "RPI": "rpi.svg",
+    "University of Rochester": "university-of-rochester.svg",
+    "Syracuse University": "syracuse-university.svg",
+    "Hofstra University": "hofstra-university.svg",
+    "Pace University": "pace-university.svg",
+    "NJIT": "njit.svg",
+    "Rutgers University–New Brunswick": "rutgers-university-new-brunswick.svg",
+    "Northeastern University": "northeastern-university.png",
+    "Boston University": "boston-university.svg",
+    "Yale University": "yale-university.svg",
+    "Brown University": "brown-university.svg",
+    "UCLA": "ucla.svg",
+    "UC San Diego": "uc-san-diego.png",
+    "University of Illinois Urbana-Champaign": "university-of-illinois-urbana-champaign.png",
+    "University of Wisconsin–Madison": "university-of-wisconsin-madison.svg",
+    "UT Austin": "ut-austin.svg",
+    "Virginia Tech": "virginia-tech.svg",
+    "Penn State": "penn-state.png",
+    "Ohio State University": "ohio-state-university.svg",
+    "University of Washington": "university-of-washington.png",
+    "University of Virginia": "university-of-virginia.svg",
+    "University of Pennsylvania": "university-of-pennsylvania.svg",
+    "Spelman College": "spelman-college.png",
+    "Morehouse College": "morehouse-college.svg",
+    "Florida A&M University": "florida-a-m-university.svg",
+    "Florida International University": "florida-international-university.svg",
+    "University of Texas at El Paso": "university-of-texas-at-el-paso.svg",
+    "Montclair State University": "montclair-state-university.svg",
+    "William Paterson University": "william-paterson-university.png",
+    "Rowan University": "rowan-university.svg",
+    "Temple University": "temple-university.svg",
+    "University of Delaware": "university-of-delaware.svg",
+}
+
+# Explicit alias filenames when the catalog name slug would not match the file stem.
+COLLEGE_LOGO_ALIASES = {
+    "SUNY Polytechnic Institute": "suny-polytechnic-institute.png",
+    "RPI": "rpi.svg",
+    "NJIT": "njit.svg",
+    "UT Austin": "ut-austin.svg",
+    "UCLA": "ucla.svg",
+    "CCNY": "ccny.svg",
+    "UC Berkeley": "uc-berkeley.svg",
+    "Georgia Tech": "georgia-tech.svg",
+    "NYU Tandon": "nyu-tandon.svg",
+    "CUNY City Tech": "cuny-city-tech.png",
+    "UC San Diego": "uc-san-diego.png",
+    "Penn State": "penn-state.png",
+    "Florida A&M University": "florida-a-m-university.svg",
 }
 
 
@@ -1819,8 +1889,8 @@ st.markdown(
         box-shadow: 0 2px 8px rgba(8, 60, 93, 0.08);
         flex-shrink: 0;
         box-sizing: border-box;
-        /* Source logos already include ~12% padded content; keep only a thin CSS inset. */
-        padding: 3px;
+        /* Keep logos fully visible: never stretch or crop. */
+        padding: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1840,19 +1910,29 @@ st.markdown(
         outline: none;
         background: transparent;
         object-fit: contain;
-        object-position: center;
+        object-position: center center;
+        max-width: 100%;
+        max-height: 100%;
+        width: 100%;
+        height: 100%;
         padding: 0;
         box-sizing: border-box;
+        flex-shrink: 0;
     }
 
     .sp-fav-college-initials {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-size: 1.05rem !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-size: 0.98rem !important;
         font-weight: 800 !important;
         letter-spacing: 0.04em;
         background: #E7F6FC;
         border-radius: 50%;
+        border: 1px solid #B9E5F5;
+        box-sizing: border-box;
+        line-height: 1 !important;
+        text-align: center;
+        user-select: none;
     }
 
     .sp-college-card-head {
@@ -1873,11 +1953,11 @@ st.markdown(
         .sp-fav-college-mark {
             width: 56px;
             height: 56px;
-            padding: 2px;
+            padding: 6px;
         }
 
         .sp-fav-college-initials {
-            font-size: 0.88rem !important;
+            font-size: 0.82rem !important;
         }
     }
 
@@ -24497,7 +24577,28 @@ def college_list_initials(college_name):
         "University of New Hampshire": "UNH",
         "UMass Dartmouth": "UMD",
         "Wilkes University": "WU",
-        "University of Pittsburgh at Johnstown": "UPJ"
+        "University of Pittsburgh at Johnstown": "UPJ",
+        "BMCC": "BMCC",
+        "CUNY Hunter College": "HC",
+        "CUNY Queens College": "QC",
+        "LaGuardia Community College": "LG",
+        "SUNY New Paltz": "NP",
+        "SUNY Farmingdale": "FSC",
+        "SUNY Polytechnic Institute": "SPI",
+        "SUNY Oneonta": "ONE",
+        "Rochester Institute of Technology": "RIT",
+        "Fordham University": "FU",
+        "University of Connecticut": "UC",
+        "University of Maryland": "UMD",
+        "Howard University": "HU",
+        "North Carolina A&T State University": "A&T",
+        "Hampton University": "HU",
+        "New Jersey City University": "NJCU",
+        "College of New Jersey": "TCNJ",
+        "Drexel University": "DU",
+        "RPI": "RPI",
+        "NJIT": "NJIT",
+        "Penn State": "PSU",
     }
 
     if college_name in known:
@@ -24547,7 +24648,10 @@ def college_logo_alt_text(college_name):
 def resolve_college_logo_path(college_name):
     """Prefer explicit map, then slug-matched local files; initials used if missing."""
 
-    filename = COLLEGE_LOGO_FILES.get(college_name)
+    filename = (
+        COLLEGE_LOGO_FILES.get(college_name)
+        or COLLEGE_LOGO_ALIASES.get(college_name)
+    )
     if filename:
         mapped = COLLEGE_LOGO_DIR / filename
         if mapped.is_file():
@@ -24589,6 +24693,15 @@ def college_logo_data_uri(college_name, _mtime_ns=0):
         ".svg": "image/svg+xml",
     }.get(suffix, "application/octet-stream")
 
+    if suffix == ".svg":
+        text = raw[:4000].decode("utf-8", errors="ignore").lower()
+        if "<svg" not in text or "<html" in text:
+            return None
+    elif suffix == ".png" and not raw.startswith(b"\x89PNG"):
+        return None
+    elif suffix in {".jpg", ".jpeg"} and not raw.startswith(b"\xff\xd8"):
+        return None
+
     encoded = base64.b64encode(raw).decode("ascii")
     return f"data:{mime};base64,{encoded}"
 
@@ -24600,6 +24713,9 @@ def college_logo_mark_html(college_name, initials=None):
     )
     alt_safe = html_module.escape(
         college_logo_alt_text(college_name)
+    )
+    label_safe = html_module.escape(
+        str(college_name or "College").strip() or "College"
     )
     mtime_ns = 0
     path = resolve_college_logo_path(college_name)
@@ -24619,8 +24735,11 @@ def college_logo_mark_html(college_name, initials=None):
         )
 
     return (
-        '<div class="sp-fav-college-mark">'
-        f'<div class="sp-fav-college-initials">{initials_safe}</div>'
+        '<div class="sp-fav-college-mark" role="img" '
+        f'aria-label="{label_safe} initials">'
+        f'<div class="sp-fav-college-initials" aria-hidden="true">'
+        f"{initials_safe}"
+        "</div>"
         "</div>"
     )
 
