@@ -1,6 +1,5 @@
 import os
 import secrets
-import time
 import html as html_module
 import base64
 import streamlit as st
@@ -13,7 +12,6 @@ from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.parse import parse_qs, quote_plus, urlencode, urlparse, urlunparse
 from supabase import ClientOptions, create_client
-import auth_persist
 import logging
 from opportunity_transparency import (
     apply_opportunity_transparency,
@@ -1812,19 +1810,20 @@ st.markdown(
     [data-testid="stMain"] [class*="st-key-favorite_college_card_"] .stButton > button,
     [data-testid="stMain"] [class*="st-key-favorite_college_card_"] .stLinkButton > a {
         background: #FFFFFF !important;
-        border: 1px solid #D5DEE6 !important;
+        border: 1px solid #63C7E8 !important;
         border-radius: 10px !important;
         box-shadow: none !important;
-        color: #083C5D !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
         min-height: 2.45rem !important;
-        font-weight: 650 !important;
+        font-weight: 700 !important;
     }
 
     [data-testid="stMain"] [class*="st-key-favorite_college_card_"] .stButton > button p,
     [data-testid="stMain"] [class*="st-key-favorite_college_card_"] .stLinkButton > a p {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
-        font-weight: 650 !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
     }
 
     [data-testid="stMain"] [class*="st-key-favorite_college_card_"] [class*="st-key-favorite_save_notes_"] button:hover,
@@ -3762,9 +3761,9 @@ st.markdown(
     html body [data-testid="stMain"] .st-key-gpa_restart_request .stButton > button,
     html body [data-testid="stMain"] .st-key-gpa_restart_cancel .stButton > button {
         background: #FFFFFF !important;
-        border: 1px solid #018FC7 !important;
-        color: #018FC7 !important;
-        -webkit-text-fill-color: #018FC7 !important;
+        border: 1px solid #63C7E8 !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
         min-height: 2.4rem !important;
     }
 
@@ -4216,7 +4215,7 @@ st.markdown(
     [data-testid="stMain"] [data-testid="stPageLink"] a,
     [data-testid="stMain"] [data-testid="stPageLink-NavLink"] {
         background: #FFFFFF !important;
-        color: #0B4F71 !important;
+        color: #083B5C !important;
         border: 2px solid #63C7E8 !important;
         border-radius: 12px !important;
         min-height: 42px !important;
@@ -4242,10 +4241,10 @@ st.markdown(
     [data-testid="stMain"] [data-testid="stFormSubmitButton"] button span,
     [data-testid="stMain"] [data-testid="stPageLink"] a p,
     [data-testid="stMain"] [data-testid="stPageLink"] a span {
-        color: #0B4F71 !important;
+        color: #083B5C !important;
         font-weight: 700 !important;
         font-size: 0.95rem !important;
-        -webkit-text-fill-color: #0B4F71 !important;
+        -webkit-text-fill-color: #083B5C !important;
     }
 
     [data-testid="stMain"] .stButton > button:hover,
@@ -4258,8 +4257,8 @@ st.markdown(
     [data-testid="stMain"] [data-testid="stPageLink"] a:hover,
     [data-testid="stMain"] [data-testid="stPageLink-NavLink"]:hover {
         background: #EAF7FC !important;
-        border-color: #083C5D !important;
-        color: #083C5D !important;
+        border-color: #63C7E8 !important;
+        color: #083B5C !important;
         box-shadow: none !important;
         transform: none !important;
     }
@@ -4277,8 +4276,8 @@ st.markdown(
     [data-testid="stMain"] [data-testid="stDownloadButton"] button:hover span,
     [data-testid="stMain"] [data-testid="stFormSubmitButton"] button:hover p,
     [data-testid="stMain"] [data-testid="stFormSubmitButton"] button:hover span {
-        color: #083C5D !important;
-        -webkit-text-fill-color: #083C5D !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
     }
 
     [data-testid="stMain"] [class*="st-key-google_continue"] button,
@@ -4713,15 +4712,16 @@ st.markdown(
 
     html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button,
     html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:focus,
-    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:active {
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:active,
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:visited {
         background: #FFFFFF !important;
         background-color: #FFFFFF !important;
-        border: 1px solid #018FC7 !important;
+        border: 1px solid #63C7E8 !important;
         border-radius: 10px !important;
         box-shadow: none !important;
-        color: #018FC7 !important;
-        -webkit-text-fill-color: #018FC7 !important;
-        font-weight: 750 !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
         font-size: 0.88rem !important;
         min-height: 2.35rem !important;
         height: auto !important;
@@ -4730,9 +4730,11 @@ st.markdown(
     }
 
     html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:hover {
-        background: #E7F6FC !important;
-        background-color: #E7F6FC !important;
-        border-color: #018FC7 !important;
+        background: #EAF7FC !important;
+        background-color: #EAF7FC !important;
+        border-color: #63C7E8 !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
     }
 
     html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:focus-visible {
@@ -4742,10 +4744,12 @@ st.markdown(
 
     html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button p,
     html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button span,
-    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button div {
-        color: #018FC7 !important;
-        -webkit-text-fill-color: #018FC7 !important;
-        font-weight: 750 !important;
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button div,
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:hover p,
+    html body [data-testid="stMain"] [class*="st-key-dash_journey_card_"] .stButton > button:hover span {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
     }
 
     .sp-page-header {
@@ -5956,84 +5960,28 @@ st.markdown(
         flex: 1 1 auto;
     }
 
-    /* Beat landing VerticalBlockBorderWrapper navy text (#083C5D !important). */
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) .sp-signup-confirm .sp-signup-confirm-title,
-    html body .stApp [data-testid="stMain"] .sp-signup-confirm .sp-signup-confirm-title,
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .sp-signup-confirm .sp-signup-confirm-title,
-    html body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"] .sp-signup-confirm .sp-signup-confirm-title,
     .sp-signup-confirm-title {
-        margin: 0 0 0.28rem !important;
-        color: #F4FBFF !important;
-        -webkit-text-fill-color: #F4FBFF !important;
-        font-size: 1.02rem !important;
-        font-weight: 800 !important;
-        line-height: 1.25 !important;
-        opacity: 1 !important;
+        margin: 0 0 0.28rem;
+        color: #FFFFFF;
+        font-size: 1.02rem;
+        font-weight: 800;
+        line-height: 1.25;
     }
 
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) .sp-signup-confirm .sp-signup-confirm-text,
-    html body .stApp [data-testid="stMain"] .sp-signup-confirm .sp-signup-confirm-text,
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .sp-signup-confirm .sp-signup-confirm-text,
-    html body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"] .sp-signup-confirm .sp-signup-confirm-text,
     .sp-signup-confirm-text {
-        margin: 0 !important;
-        color: #C9E0EE !important;
-        -webkit-text-fill-color: #C9E0EE !important;
-        font-size: 0.9rem !important;
-        font-weight: 500 !important;
-        line-height: 1.45 !important;
-        opacity: 1 !important;
+        margin: 0;
+        color: #D5E8F4;
+        font-size: 0.9rem;
+        font-weight: 500;
+        line-height: 1.45;
     }
 
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) .sp-signup-confirm .sp-signup-confirm-secondary,
-    html body .stApp [data-testid="stMain"] .sp-signup-confirm .sp-signup-confirm-secondary,
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .sp-signup-confirm .sp-signup-confirm-secondary,
-    html body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"] .sp-signup-confirm .sp-signup-confirm-secondary,
     .sp-signup-confirm-secondary {
-        margin: 0.45rem 0 0 !important;
-        color: #B7D4E6 !important;
-        -webkit-text-fill-color: #B7D4E6 !important;
-        font-size: 0.8rem !important;
-        font-weight: 500 !important;
-        line-height: 1.4 !important;
-        opacity: 1 !important;
-    }
-
-    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) .sp-signup-confirm a,
-    html body .stApp [data-testid="stMain"] .sp-signup-confirm a,
-    html body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .sp-signup-confirm a,
-    html body .stApp [data-testid="stMain"] [data-testid="stMarkdownContainer"] .sp-signup-confirm a,
-    .sp-signup-confirm a,
-    .sp-signup-confirm a:link {
-        color: #5EE7F2 !important;
-        -webkit-text-fill-color: #5EE7F2 !important;
-        font-weight: 650 !important;
-        text-decoration: underline !important;
-        text-underline-offset: 0.14em !important;
-        text-decoration-thickness: 1.5px !important;
-    }
-
-    html body .stApp [data-testid="stMain"] .sp-signup-confirm a:visited,
-    .sp-signup-confirm a:visited {
-        color: #9BE8F2 !important;
-        -webkit-text-fill-color: #9BE8F2 !important;
-        text-decoration: underline !important;
-    }
-
-    html body .stApp [data-testid="stMain"] .sp-signup-confirm a:hover,
-    html body .stApp [data-testid="stMain"] .sp-signup-confirm a:focus,
-    .sp-signup-confirm a:hover,
-    .sp-signup-confirm a:focus {
-        color: #B8F4FA !important;
-        -webkit-text-fill-color: #B8F4FA !important;
-        text-decoration: underline !important;
-        outline: none;
-    }
-
-    html body .stApp [data-testid="stMain"] .sp-signup-confirm a:active,
-    .sp-signup-confirm a:active {
-        color: #7FE0EC !important;
-        -webkit-text-fill-color: #7FE0EC !important;
+        margin: 0.45rem 0 0;
+        color: #8FB4C8;
+        font-size: 0.8rem;
+        font-weight: 500;
+        line-height: 1.4;
     }
 
     .sp-auth-error {
@@ -6736,14 +6684,16 @@ st.markdown(
     [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] .stButton > button span,
     [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="secondary"] p,
     [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="secondary"] span {
-        color: #0B4F71 !important;
+        color: #083B5C !important;
         font-weight: 700 !important;
+        -webkit-text-fill-color: #083B5C !important;
     }
 
     [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="primary"] p,
     [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] button[kind="primary"] span {
-        color: #0B4F71 !important;
+        color: #083B5C !important;
         font-weight: 700 !important;
+        -webkit-text-fill-color: #083B5C !important;
     }
 
     html body [data-testid="stMain"] .sp-hero .sp-kicker,
@@ -10288,26 +10238,7 @@ st.markdown(
         box-shadow: none !important;
     }
 
-    /* Feedback submit success only — light text on dark teal confirmation box */
-    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] p,
-    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] span,
-    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p,
-    html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"] > p,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] *:not(a):not(svg):not(path):not([data-testid="stIconMaterial"]):not([class*="material-symbols"]):not([class*="material-icons"]) {
-        color: #F4FBFF !important;
-        -webkit-text-fill-color: #F4FBFF !important;
-    }
-
-    @media (max-width: 900px) {
-        html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] p,
-        html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] span,
-        html body .stApp [data-testid="stMain"]:has([class*="st-key-feedback_page"]) [class*="st-key-feedback_submit"] [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p {
-            color: #F4FBFF !important;
-            -webkit-text-fill-color: #F4FBFF !important;
-        }
-    }
-
-html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
+    html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
     html:has([class*="st-key-feedback_page"]) [data-baseweb="menu"],
     html:has([class*="st-key-feedback_page"]) [role="listbox"] {
         background: #FFFFFF !important;
@@ -12530,12 +12461,14 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
         -webkit-text-fill-color: #083C5D !important;
     }
 
-    /* Dashboard dark bordered cards — light text (not the light-surface navy) */
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] p,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] span,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] div,
+    /* Dashboard dark bordered cards — light text (not the light-surface navy).
+       Exclude white/light button + link-button interiors so AUTH pale text
+       cannot bleach secondary CTAs like "Open Deadline Calendar". */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] p:not(:where(.stButton *, .stLinkButton *, [data-testid="stDownloadButton"] *, [data-testid="stFormSubmitButton"] *, [data-testid="stPageLink"] *)),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] span:not(:where(.stButton *, .stLinkButton *, [data-testid="stDownloadButton"] *, [data-testid="stFormSubmitButton"] *, [data-testid="stPageLink"] *, [data-testid="stIconMaterial"], [class*="material-symbols"], [class*="material-icons"])),
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] div:not(:where(.stButton, .stButton *, .stLinkButton, .stLinkButton *, [data-testid="stDownloadButton"], [data-testid="stDownloadButton"] *, [data-testid="stFormSubmitButton"], [data-testid="stFormSubmitButton"] *, [data-testid="stPageLink"], [data-testid="stPageLink"] *)),
     html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] li,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"] p,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMarkdownContainer"] p:not(:where(.stButton *, .stLinkButton *, [data-testid="stDownloadButton"] *, [data-testid="stFormSubmitButton"] *)),
     html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"],
     html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"] * {
         color: #B8CAD8 !important;
@@ -12700,17 +12633,216 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
         -webkit-text-fill-color: #9AD8F0 !important;
     }
 
-    /* Keep gradient/action button labels dark on cyan-teal fills */
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button *,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .stButton > button,
-    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .stButton > button *,
+    /* Gradient / filled primary CTAs keep near-black labels on cyan-teal fills */
     html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-update_profile_button_wrapper"] .stButton > button,
     html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-update_profile_button_wrapper"] .stButton > button * {
         color: #041E33 !important;
         -webkit-text-fill-color: #041E33 !important;
     }
 
+
+    /* ============================================================
+       SP_LIGHT_BUTTON_CONTRAST_V1
+       Shared reusable labels for white/light secondary controls
+       (st.button secondary, st.link_button, download/page-link styled
+       like white buttons). Beats AUTH pale #B8CAD8 on dark cards.
+       Does NOT restyle sidebar, gradient/primary fills, or destructive.
+       ============================================================ */
+
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]),
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):hover,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):focus,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):focus-visible,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):active,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):visited,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"],
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:hover,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:focus,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:active,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:visited,
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"],
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"]:hover,
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"]:focus,
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"]:active,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:link,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:visited,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:hover,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:focus,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:active,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button:focus,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button:active,
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink"] a,
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink"] a:visited,
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink"] a:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink-NavLink"],
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink-NavLink"]:visited,
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink-NavLink"]:hover {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]) p,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]) span,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]) div,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]) [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]) [data-testid="stMarkdownContainer"] p,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):hover p,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):hover span,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):focus p,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):active p,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"] p,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"] span,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:hover p,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:hover span,
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"] p,
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"] span,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a p,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a span,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a div,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:visited p,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:hover p,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:hover span,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:focus p,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:active p,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button p,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button span,
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink"] a p,
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink"] a span {
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+        font-weight: 700 !important;
+    }
+
+    /* Hover: keep white/light control look with very light cyan wash */
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):hover,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:hover,
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"]:hover,
+    html body .stApp [data-testid="stMain"] .stLinkButton > a:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink"] a:hover,
+    html body .stApp [data-testid="stMain"] [data-testid="stPageLink-NavLink"]:hover {
+        background: #EAF7FC !important;
+        background-color: #EAF7FC !important;
+        color: #083B5C !important;
+        -webkit-text-fill-color: #083B5C !important;
+    }
+
+    /* Disabled: still readable muted blue-gray (not nearly invisible) */
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):disabled,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"])[disabled],
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:disabled,
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-secondary"]:disabled,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button:disabled {
+        color: #4A6478 !important;
+        -webkit-text-fill-color: #4A6478 !important;
+        opacity: 0.78 !important;
+        font-weight: 700 !important;
+        cursor: not-allowed !important;
+    }
+
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):disabled p,
+    html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):disabled span,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:disabled p,
+    html body .stApp [data-testid="stMain"] button[kind="secondary"]:disabled span,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button:disabled p,
+    html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button:disabled span {
+        color: #4A6478 !important;
+        -webkit-text-fill-color: #4A6478 !important;
+        font-weight: 700 !important;
+    }
+
+    @media (max-width: 768px) {
+        html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]),
+        html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]) *,
+        html body .stApp [data-testid="stMain"] button[kind="secondary"],
+        html body .stApp [data-testid="stMain"] button[kind="secondary"] *,
+        html body .stApp [data-testid="stMain"] .stLinkButton > a,
+        html body .stApp [data-testid="stMain"] .stLinkButton > a * {
+            color: #083B5C !important;
+            -webkit-text-fill-color: #083B5C !important;
+            font-weight: 700 !important;
+        }
+
+        html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):disabled,
+        html body .stApp [data-testid="stMain"] .stButton > button:not([kind="primary"]):not([data-testid*="primary"]):disabled *,
+        html body .stApp [data-testid="stMain"] button[kind="secondary"]:disabled,
+        html body .stApp [data-testid="stMain"] button[kind="secondary"]:disabled * {
+            color: #4A6478 !important;
+            -webkit-text-fill-color: #4A6478 !important;
+        }
+    }
+
+    /* Filled cyan / gradient CTAs + destructive controls stay intentionally different */
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_add_course"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_add_course"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_calculate_course_gpa"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_calculate_course_gpa"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_confirm_results"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_confirm_results"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_restart_confirm"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_restart_confirm"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-google_continue"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-college_matcher_submit"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-stemq_submit"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] button[kind="primary"],
+    html body .stApp [data-testid="stMain"] button[kind="primary"] *,
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-primary"],
+    html body .stApp [data-testid="stMain"] button[data-testid^="stBaseButton-primary"] * {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-profile_save_section"] .stButton > button *,
+    html body .stApp [data-testid="stMain"] [class*="st-key-update_profile_button_wrapper"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-update_profile_button_wrapper"] .stButton > button *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-dash_continue"] [class*="st-key-update_profile"] .stButton > button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"] [class*="st-key-dash_continue"] [class*="st-key-update_profile"] .stButton > button *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button *,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .stButton > button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .stButton > button * {
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+    }
+
+    /* Reassert dashboard journey gradient fills (not white secondary CTAs) */
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button:focus,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button:active,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .stButton > button {
+        background: linear-gradient(90deg, #38BDF8 0%, #14B8A6 100%) !important;
+        background-color: #38BDF8 !important;
+        border: 1px solid transparent !important;
+    }
+
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [class*="st-key-dash_journey_card_"] .stButton > button:hover,
+    html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-hero) [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-dash_journey_card_"]) .stButton > button:hover {
+        background: linear-gradient(90deg, #5EC8F2 0%, #2DD4BF 100%) !important;
+        background-color: #5EC8F2 !important;
+        border-color: transparent !important;
+        color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_remove_course_"] .stButton > button,
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_remove_course_"] .stButton > button * {
+        color: #5A6A78 !important;
+        -webkit-text-fill-color: #5A6A78 !important;
+    }
+
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_remove_course_"] .stButton > button:hover:not(:disabled),
+    html body .stApp [data-testid="stMain"] [class*="st-key-gpa_remove_course_"] .stButton > button:hover:not(:disabled) * {
+        color: #9B2C2C !important;
+        -webkit-text-fill-color: #9B2C2C !important;
+    }
 
     /* ============================================================
        SP_STEM_PATHWAY_CONTRAST_V1
@@ -14453,14 +14585,6 @@ except Exception:
     )
     supabase = None
     supabase_connected = False
-
-# Auth persistence uses the same service-role client for auth_sessions rows.
-try:
-    auth_persist.set_service_client_factory(
-        lambda: supabase if supabase_connected else None
-    )
-except Exception:
-    pass
 
 
 # ============================================================
@@ -26282,14 +26406,6 @@ SP_AUTH_STORAGE_KEY = "_sp_supabase_auth_storage"
 SP_OAUTH_CODE_VERIFIER_KEY = "_sp_oauth_code_verifier"
 SP_OAUTH_CALLBACK_ERROR_KEY = "_sp_oauth_callback_error"
 SP_OAUTH_TICKET_QUERY_KEY = "sp_oauth"
-SP_AUTH_SESSION_ID_KEY = "_sp_auth_session_id"
-SP_AUTH_COOKIE_NAV_KEY = "_sp_auth_cookie_nav"
-SP_AUTH_VALIDATED_AT_KEY = "_sp_auth_validated_at"
-SP_AUTH_TOUCHED_AT_KEY = "_sp_auth_idle_touched_at"
-# Skip remote Auth revalidation / idle DB touch on every Streamlit rerun.
-AUTH_REVALIDATE_SECONDS = 10 * 60
-AUTH_IDLE_TOUCH_SECONDS = 30 * 60
-
 
 # Production Google OAuth redirect_to (must also be allow-listed in Supabase).
 SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD = "https://stempathwaysnyc.com"
@@ -26396,9 +26512,6 @@ def clear_email_auth_session():
     st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
     st.session_state.pop(SP_APP_USER_RUN_KEY, None)
     st.session_state.pop(SP_AUTH_STORAGE_KEY, None)
-    st.session_state.pop(SP_AUTH_SESSION_ID_KEY, None)
-    st.session_state.pop(SP_AUTH_VALIDATED_AT_KEY, None)
-    st.session_state.pop(SP_AUTH_TOUCHED_AT_KEY, None)
     # Drop per-user approved identity-link caches.
     for key in list(st.session_state.keys()):
         if str(key).startswith("_sp_id_links_"):
@@ -26549,124 +26662,7 @@ def _auth_user_display_name(user):
     return ""
 
 
-
-
-def _auth_timing_log(operation, started_at, *, detail=""):
-    """Safe timing log for auth/perf. Never logs tokens, cookies, emails, or secrets."""
-
-    try:
-        elapsed_ms = int((time.perf_counter() - float(started_at)) * 1000)
-    except Exception:
-        elapsed_ms = -1
-    op = str(operation or "auth_op").strip()[:64] or "auth_op"
-    extra = str(detail or "").strip()[:48]
-    if extra:
-        logger.info("auth_timing op=%s ms=%s detail=%s", op, elapsed_ms, extra)
-    else:
-        logger.info("auth_timing op=%s ms=%s", op, elapsed_ms)
-
-
-def _schedule_auth_cookie_set(session_id):
-    """Queue a one-time /auth/persist-session navigation to set HttpOnly cookie."""
-
-    session_id = str(session_id or "").strip()
-    if not auth_persist.session_id_is_valid(session_id):
-        return False
-    if not auth_persist.persist_secret_configured():
-        log_auth_event("auth_persist_secret_missing")
-        return False
-    ticket = auth_persist.create_cookie_ticket(session_id, purpose="set")
-    if not ticket:
-        log_auth_event("auth_cookie_ticket_create_failed")
-        return False
-    st.session_state[SP_AUTH_COOKIE_NAV_KEY] = (
-        f"/auth/persist-session?ticket={ticket}"
-    )
-    return True
-
-
-def _schedule_auth_cookie_clear():
-    """Queue navigation that deletes the HttpOnly session cookie."""
-
-    st.session_state[SP_AUTH_COOKIE_NAV_KEY] = "/auth/clear-session"
-    return True
-
-
-def flush_pending_auth_cookie_navigation():
-    """
-    Perform a full browser navigation to an /auth/* cookie route.
-    Must run before rendering authenticated UI when a cookie write/clear is pending.
-    """
-
-    target = st.session_state.pop(SP_AUTH_COOKIE_NAV_KEY, None)
-    if not target:
-        return False
-    target = str(target).strip()
-    if not target.startswith("/auth/"):
-        log_auth_event("auth_cookie_nav_invalid")
-        return False
-    # Relative /auth path only — never embed tokens.
-    safe = html_module.escape(target, quote=True)
-    st.markdown(
-        f'<meta http-equiv="refresh" content="0; url={safe}">',
-        unsafe_allow_html=True,
-    )
-    st.stop()
-    return True
-
-
-def _read_browser_auth_session_id():
-    """Read opaque sp_sid from HttpOnly cookie via Streamlit request context."""
-
-    try:
-        cookies = getattr(st.context, "cookies", None)
-    except Exception:
-        cookies = None
-    return auth_persist.read_session_id_from_cookies(cookies)
-
-
-def _persist_auth_session_server_side(
-    *,
-    access_token,
-    refresh_token,
-    user_id,
-    email="",
-    provider="email",
-    rotate_from=None,
-):
-    """Create/rotate server session and schedule HttpOnly cookie set."""
-
-    old_id = str(
-        rotate_from
-        or st.session_state.get(SP_AUTH_SESSION_ID_KEY)
-        or ""
-    ).strip()
-    if auth_persist.session_id_is_valid(old_id):
-        session_id = auth_persist.rotate_server_session(
-            old_id,
-            access_token=access_token,
-            refresh_token=refresh_token,
-            user_id=user_id,
-            email=email,
-            provider=provider,
-        )
-    else:
-        session_id = auth_persist.create_server_session(
-            access_token=access_token,
-            refresh_token=refresh_token,
-            user_id=user_id,
-            email=email,
-            provider=provider,
-        )
-    if not session_id:
-        log_auth_event("auth_server_session_persist_failed")
-        return None
-    st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
-    _schedule_auth_cookie_set(session_id)
-    return session_id
-
-
-def _store_email_auth_session(session, user, *, provider="email", persist_cookie=True):
+def _store_email_auth_session(session, user, *, provider="email"):
     if session is None or user is None:
         clear_email_auth_session()
         return False
@@ -26688,8 +26684,8 @@ def _store_email_auth_session(session, user, *, provider="email", persist_cookie
     if provider_name not in {"email", "google"}:
         provider_name = "email"
 
-    # Working copy for this Streamlit websocket only. Durable persistence is the
-    # opaque HttpOnly cookie + encrypted auth_sessions row (never tokens in cookie).
+    # Tokens live only in Streamlit session_state (server-side, per browser tab).
+    # They are never written to URLs, logs, source, or browser cookies.
     st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
         "access_token": access_token,
         "refresh_token": refresh_token,
@@ -26698,17 +26694,6 @@ def _store_email_auth_session(session, user, *, provider="email", persist_cookie
         "display_name": _auth_user_display_name(user),
         "provider": provider_name,
     }
-    if persist_cookie:
-        _persist_auth_session_server_side(
-            access_token=access_token,
-            refresh_token=refresh_token,
-            user_id=str(user_id),
-            email=str(email),
-            provider=provider_name,
-        )
-    # Fresh login is already validated — enable restore fast path immediately.
-    st.session_state[SP_AUTH_VALIDATED_AT_KEY] = time.time()
-    st.session_state[SP_AUTH_TOUCHED_AT_KEY] = time.time()
     # Force re-resolve on next get_app_user call within a later rerun.
     st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
     st.session_state.pop(SP_APP_USER_RUN_KEY, None)
@@ -26849,7 +26834,7 @@ def sign_up_with_email(email, password):
         return False, message
 
 
-def sign_in_with_email(email, password, *, keep_signed_in=True):
+def sign_in_with_email(email, password):
     """Sign in via Supabase Auth. Returns (ok, message)."""
 
     email = str(email or "").strip().lower()
@@ -26880,11 +26865,7 @@ def sign_in_with_email(email, password, *, keep_signed_in=True):
                 pass
             return False, AUTH_MSG_UNCONFIRMED
 
-        if not _store_email_auth_session(
-            session,
-            user,
-            persist_cookie=bool(keep_signed_in),
-        ):
+        if not _store_email_auth_session(session, user):
             return False, AUTH_MSG_SERVICE
 
         return True, ""
@@ -26896,213 +26877,69 @@ def sign_in_with_email(email, password, *, keep_signed_in=True):
 
 def restore_email_auth_user():
     """
-    Restore Auth user from Streamlit working memory or durable HttpOnly cookie.
-
-    Fast path: when working memory already has a validated session, skip remote
-    Auth/DB calls on every Streamlit rerun (fixes lag + double-click navigation).
-    Cold path / expiry: load cookie session, refresh tokens, rotate as needed.
+    Restore the email Auth user for this Streamlit session only.
+    Uses a fresh client + tokens from session_state (not a shared cache).
     """
 
-    started = time.perf_counter()
+    payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
+    if not isinstance(payload, dict):
+        return None
+
+    access_token = str(payload.get("access_token") or "").strip()
+    refresh_token = str(payload.get("refresh_token") or "").strip()
+    if not access_token or not refresh_token:
+        clear_email_auth_session()
+        return None
 
     if not supabase_auth_configured():
         clear_email_auth_session()
         return None
 
-    payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
-    session_id = str(st.session_state.get(SP_AUTH_SESSION_ID_KEY) or "").strip()
-    if not auth_persist.session_id_is_valid(session_id):
-        session_id = _read_browser_auth_session_id() or ""
-
-    access_token = ""
-    refresh_token = ""
-    provider_name = "email"
-    cached_user_id = ""
-    cached_email = ""
-    cached_display = ""
-
-    if isinstance(payload, dict):
-        access_token = str(payload.get("access_token") or "").strip()
-        refresh_token = str(payload.get("refresh_token") or "").strip()
-        provider_name = str(
-            payload.get("provider") or "email"
-        ).strip().lower() or "email"
-        cached_user_id = str(payload.get("user_id") or "").strip()
-        cached_email = str(payload.get("email") or "")
-        cached_display = str(payload.get("display_name") or "")
-
-    # Cold start / browser refresh: rebuild working memory from cookie session.
-    loaded_from_cookie = False
-    if (not access_token or not refresh_token) and auth_persist.session_id_is_valid(
-        session_id
-    ):
-        load_started = time.perf_counter()
-        loaded = auth_persist.load_server_session(session_id)
-        _auth_timing_log("cookie_session_load", load_started)
-        if not loaded:
-            log_auth_event("auth_cookie_session_invalid")
-            clear_email_auth_session()
-            return None
-        access_token = str(loaded.get("access_token") or "").strip()
-        refresh_token = str(loaded.get("refresh_token") or "").strip()
-        provider_name = str(
-            loaded.get("provider") or "email"
-        ).strip().lower() or "email"
-        cached_user_id = str(loaded.get("user_id") or "")
-        cached_email = str(loaded.get("email") or "")
-        session_id = str(loaded.get("session_id") or session_id)
-        loaded_from_cookie = True
-        st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
-        st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-            "user_id": cached_user_id,
-            "email": cached_email,
-            "display_name": "",
-            "provider": provider_name if provider_name in {"email", "google"} else "email",
-        }
-
-    if not access_token or not refresh_token:
-        return None
-
-    provider = provider_name if provider_name in {"email", "google"} else "email"
-    now_ts = time.time()
-
-    # Fast path: established working session, access token still fresh.
-    # Avoid Supabase Auth get_user + idle DB touch on every widget/nav rerun.
-    try:
-        validated_at = float(st.session_state.get(SP_AUTH_VALIDATED_AT_KEY) or 0)
-    except (TypeError, ValueError):
-        validated_at = 0.0
-    token_fresh = not auth_persist.access_token_expired(access_token)
-    recently_validated = (
-        validated_at > 0
-        and (now_ts - validated_at) < AUTH_REVALIDATE_SECONDS
-        and is_canonical_auth_uuid(cached_user_id)
-        and not loaded_from_cookie
-    )
-
-    if token_fresh and recently_validated:
-        # Throttled idle touch (server-side only; never blocks navigation).
-        try:
-            touched_at = float(st.session_state.get(SP_AUTH_TOUCHED_AT_KEY) or 0)
-        except (TypeError, ValueError):
-            touched_at = 0.0
-        if (
-            auth_persist.session_id_is_valid(session_id)
-            and (now_ts - touched_at) >= AUTH_IDLE_TOUCH_SECONDS
-        ):
-            touch_started = time.perf_counter()
-            if auth_persist.touch_server_session(session_id):
-                st.session_state[SP_AUTH_TOUCHED_AT_KEY] = now_ts
-            _auth_timing_log("idle_touch_throttled", touch_started)
-
-        _auth_timing_log("restore_fast_path", started)
-        return {
-            "user_id": cached_user_id,
-            "email": cached_email,
-            "display_name": cached_display,
-            "provider": provider,
-        }
-
     try:
         client = create_supabase_auth_client()
-
-        # Refresh access token when expired; rotate durable session id afterward.
-        if auth_persist.access_token_expired(access_token):
-            try:
-                refresh_started = time.perf_counter()
-                client.auth.set_session(access_token, refresh_token)
-                refreshed = client.auth.refresh_session()
-                session = getattr(refreshed, "session", None) or refreshed
-                user = getattr(refreshed, "user", None)
-                if user is None:
-                    user_response = client.auth.get_user()
-                    user = getattr(user_response, "user", None) or user_response
-                if session is None or user is None or not getattr(user, "id", None):
-                    raise RuntimeError("refresh incomplete")
-                if not is_canonical_auth_uuid(user.id):
-                    clear_email_auth_session()
-                    return None
-                new_access = getattr(session, "access_token", None)
-                new_refresh = getattr(session, "refresh_token", None)
-                if not new_access or not new_refresh:
-                    raise RuntimeError("refresh tokens missing")
-                _store_email_auth_session(
-                    session,
-                    user,
-                    provider=provider_name,
-                    persist_cookie=False,
-                )
-                rotated = auth_persist.rotate_server_session(
-                    session_id,
-                    access_token=str(new_access),
-                    refresh_token=str(new_refresh),
-                    user_id=str(user.id),
-                    email=str(getattr(user, "email", "") or ""),
-                    provider=provider_name,
-                )
-                if rotated:
-                    st.session_state[SP_AUTH_SESSION_ID_KEY] = rotated
-                    _schedule_auth_cookie_set(rotated)
-                st.session_state[SP_AUTH_VALIDATED_AT_KEY] = time.time()
-                st.session_state[SP_AUTH_TOUCHED_AT_KEY] = time.time()
-                _auth_timing_log("token_refresh_rotate", refresh_started)
-                _auth_timing_log("restore_refresh_path", started)
-                return {
-                    "user_id": str(user.id),
-                    "email": str(getattr(user, "email", "") or ""),
-                    "display_name": _auth_user_display_name(user),
-                    "provider": provider,
-                }
-            except Exception as refresh_error:
-                log_auth_event("auth_token_refresh_failed", refresh_error)
-                if auth_persist.session_id_is_valid(session_id):
-                    auth_persist.revoke_server_session(session_id)
-                clear_email_auth_session()
-                return None
-
-        # Slow path: periodic revalidation or first load after cookie restore.
-        validate_started = time.perf_counter()
         client.auth.set_session(access_token, refresh_token)
         user_response = client.auth.get_user()
         user = getattr(user_response, "user", None) or user_response
-        _auth_timing_log("auth_get_user", validate_started)
         if user is None or not getattr(user, "id", None):
             clear_email_auth_session()
             return None
-        if not is_canonical_auth_uuid(user.id):
-            clear_email_auth_session()
-            return None
 
-        # Throttled idle touch after successful validation.
-        if auth_persist.session_id_is_valid(session_id):
-            try:
-                touched_at = float(st.session_state.get(SP_AUTH_TOUCHED_AT_KEY) or 0)
-            except (TypeError, ValueError):
-                touched_at = 0.0
-            if (time.time() - touched_at) >= AUTH_IDLE_TOUCH_SECONDS or loaded_from_cookie:
-                touch_started = time.perf_counter()
-                auth_persist.touch_server_session(session_id)
-                st.session_state[SP_AUTH_TOUCHED_AT_KEY] = time.time()
-                _auth_timing_log("idle_touch", touch_started)
-            st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
+        # Refresh stored tokens if the client rotated them.
+        current = None
+        try:
+            current = client.auth.get_session()
+        except Exception:
+            current = None
+        existing_provider = "email"
+        existing_payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
+        if isinstance(existing_payload, dict):
+            existing_provider = str(
+                existing_payload.get("provider") or "email"
+            ).strip().lower() or "email"
+        if current is not None:
+            _store_email_auth_session(
+                current,
+                user,
+                provider=existing_provider,
+            )
+        else:
+            st.session_state[SP_EMAIL_AUTH_STATE_KEY]["user_id"] = str(user.id)
+            st.session_state[SP_EMAIL_AUTH_STATE_KEY]["email"] = str(
+                getattr(user, "email", "") or ""
+            )
+            st.session_state[SP_EMAIL_AUTH_STATE_KEY]["display_name"] = (
+                _auth_user_display_name(user)
+            )
 
-        st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-            "user_id": str(user.id),
-            "email": str(getattr(user, "email", "") or ""),
-            "display_name": _auth_user_display_name(user),
-            "provider": provider,
-        }
-        st.session_state[SP_AUTH_VALIDATED_AT_KEY] = time.time()
-        _auth_timing_log("restore_validate_path", started)
+        provider = "email"
+        payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
+        if isinstance(payload, dict):
+            provider = str(payload.get("provider") or "email").strip().lower() or "email"
         return {
             "user_id": str(user.id),
             "email": str(getattr(user, "email", "") or ""),
             "display_name": _auth_user_display_name(user),
-            "provider": provider,
+            "provider": provider if provider in {"email", "google"} else "email",
         }
 
     except Exception as error:
@@ -27641,11 +27478,7 @@ def ownership_read_keys(auth_user_id):
 
 
 def sign_out_current_user():
-    """Sign out from email Auth and/or Google OAuth; revoke durable session."""
-
-    session_id = str(st.session_state.get(SP_AUTH_SESSION_ID_KEY) or "").strip()
-    if not auth_persist.session_id_is_valid(session_id):
-        session_id = _read_browser_auth_session_id() or ""
+    """Sign out from email Auth and/or Google OAuth."""
 
     payload = st.session_state.get(SP_EMAIL_AUTH_STATE_KEY)
     if isinstance(payload, dict) and supabase_auth_configured():
@@ -27662,12 +27495,6 @@ def sign_out_current_user():
         except Exception as error:
             log_auth_event("email_sign_out", error)
 
-    if auth_persist.session_id_is_valid(session_id):
-        try:
-            auth_persist.revoke_server_session(session_id)
-        except Exception as error:
-            log_auth_event("auth_session_revoke_failed", error)
-
     clear_email_auth_session()
 
     # Reset student UI session markers so the next account starts clean locally.
@@ -27683,8 +27510,6 @@ def sign_out_current_user():
     ):
         st.session_state.pop(key, None)
 
-    _schedule_auth_cookie_clear()
-
     # Clear any leftover Streamlit OIDC cookie from older builds (best-effort).
     try:
         if getattr(st.user, "is_logged_in", False):
@@ -27693,8 +27518,6 @@ def sign_out_current_user():
     except Exception:
         pass
 
-    # Cookie clear requires a full HTTP navigation through asgi_app routes.
-    flush_pending_auth_cookie_navigation()
     st.rerun()
 
 
@@ -28101,7 +27924,6 @@ def save_opportunity(user_sub, opportunity_name):
                 .execute()
             )
             if existing.data:
-                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
         try:
@@ -28114,7 +27936,6 @@ def save_opportunity(user_sub, opportunity_name):
             )
 
             if mutation_row_count(upserted) > 0:
-                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             # ignore_duplicates may return zero rows when the row already exists.
@@ -28129,7 +27950,6 @@ def save_opportunity(user_sub, opportunity_name):
             )
 
             if verified.data:
-                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             notify_student_data_error()
@@ -28150,7 +27970,6 @@ def save_opportunity(user_sub, opportunity_name):
             )
 
             if mutation_row_count(inserted) > 0:
-                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             notify_student_data_error()
@@ -28159,7 +27978,6 @@ def save_opportunity(user_sub, opportunity_name):
     except Exception as error:
 
         if is_unique_violation(error):
-            invalidate_user_discovery_hide_caches(user_sub)
             return True
 
         log_supabase_exception(
@@ -28259,7 +28077,6 @@ def delete_saved_opportunity(user_sub, saved_id):
         )
 
         if mutation_row_count(deleted) > 0:
-            invalidate_user_discovery_hide_caches(user_sub)
             return True
 
         notify_student_data_error()
@@ -28285,145 +28102,6 @@ def saved_opportunity_names(user_sub):
         str(item.get("opportunity_name", ""))
         for item in saved
     }
-
-
-def opportunity_catalog_id(value):
-    """
-    Stable catalog identity for an opportunity row or saved name.
-    Uses canonical opportunity name (not list position). Compatible with
-    existing saved_opportunities.opportunity_name rows.
-    """
-
-    if value is None:
-        return ""
-    if isinstance(value, dict):
-        name = value.get("name") or value.get("opportunity_name") or ""
-    else:
-        try:
-            name = value.get("name") if hasattr(value, "get") else value
-        except Exception:
-            name = value
-        if hasattr(name, "get"):
-            try:
-                name = name.get("name") or name.get("opportunity_name") or ""
-            except Exception:
-                name = str(name or "")
-    canonical = canonical_opportunity_name(str(name or "").strip())
-    if not canonical:
-        return ""
-    slug = re.sub(r"[^a-z0-9]+", "-", canonical.casefold()).strip("-")
-    return f"opp:{slug}" if slug else ""
-
-
-def college_catalog_id(value, *, unitid_by_name=None):
-    """
-    Stable catalog identity for a college dict or saved college name.
-    Prefers IPEDS unitid when present; otherwise normalized name key.
-    """
-
-    unitid = None
-    name = ""
-    if isinstance(value, dict):
-        unitid = value.get("unitid")
-        name = str(value.get("name") or value.get("college_name") or "").strip()
-    else:
-        name = str(value or "").strip()
-
-    if (
-        unitid is not None
-        and str(unitid).strip()
-        and str(unitid).strip().lower() not in {"nan", "none"}
-    ):
-        return f"unitid:{str(unitid).strip()}"
-
-    key = normalize_college_name_key(name)
-    if unitid_by_name and key in unitid_by_name:
-        resolved = unitid_by_name.get(key)
-        if resolved is not None and str(resolved).strip():
-            return f"unitid:{str(resolved).strip()}"
-    return f"college:{key}" if key else ""
-
-
-def _college_unitid_by_name_index(catalog=None):
-    """Map normalized college name -> IPEDS unitid for stable favorite matching."""
-
-    if catalog is None:
-        try:
-            catalog = load_stem_college_catalog()
-        except Exception:
-            catalog = []
-    index = {}
-    for college in catalog or []:
-        if not isinstance(college, dict):
-            continue
-        name = str(college.get("name") or "").strip()
-        unitid = college.get("unitid")
-        if not name or unitid is None:
-            continue
-        key = normalize_college_name_key(name)
-        if key and key not in index:
-            index[key] = unitid
-        official = str(college.get("official_name") or "").strip()
-        if official:
-            okey = normalize_college_name_key(official)
-            if okey and okey not in index:
-                index[okey] = unitid
-    return index
-
-
-def invalidate_user_discovery_hide_caches(user_sub=None):
-    """Clear per-user saved/favorite catalog-id caches after mutations."""
-
-    prefix_opp = "_sp_saved_opp_catalog_ids_"
-    prefix_fav = "_sp_fav_college_catalog_ids_"
-    user_sub = str(user_sub or "").strip()
-    if user_sub:
-        st.session_state.pop(f"{prefix_opp}{user_sub}", None)
-        st.session_state.pop(f"{prefix_fav}{user_sub}", None)
-        return
-    for key in list(st.session_state.keys()):
-        text_key = str(key)
-        if text_key.startswith(prefix_opp) or text_key.startswith(prefix_fav):
-            st.session_state.pop(key, None)
-
-
-def user_saved_opportunity_catalog_ids(user_sub):
-    """Catalog IDs for opportunities this signed-in user has already saved."""
-
-    user_sub = str(user_sub or "").strip()
-    if not require_user_sub(user_sub):
-        return set()
-    cache_key = f"_sp_saved_opp_catalog_ids_{user_sub}"
-    cached = st.session_state.get(cache_key)
-    if isinstance(cached, set):
-        return cached
-    ids = set()
-    for item in load_saved_opportunities(user_sub):
-        catalog_id = opportunity_catalog_id(item)
-        if catalog_id:
-            ids.add(catalog_id)
-    st.session_state[cache_key] = ids
-    return ids
-
-
-def user_favorite_college_catalog_ids(user_sub, catalog=None):
-    """Catalog IDs (prefer unitid) for colleges this user has favorited."""
-
-    user_sub = str(user_sub or "").strip()
-    if not require_user_sub(user_sub):
-        return set()
-    cache_key = f"_sp_fav_college_catalog_ids_{user_sub}"
-    cached = st.session_state.get(cache_key)
-    if isinstance(cached, set):
-        return cached
-    unitid_by_name = _college_unitid_by_name_index(catalog)
-    ids = set()
-    for item in load_favorite_colleges(user_sub):
-        catalog_id = college_catalog_id(item, unitid_by_name=unitid_by_name)
-        if catalog_id:
-            ids.add(catalog_id)
-    st.session_state[cache_key] = ids
-    return ids
 
 
 
@@ -28507,7 +28185,6 @@ def add_favorite_college(
                 .execute()
             )
             if existing.data:
-                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
         current = load_favorite_colleges(
@@ -28550,7 +28227,6 @@ def add_favorite_college(
             )
 
             if mutation_row_count(upserted) > 0:
-                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             verified = (
@@ -28564,7 +28240,6 @@ def add_favorite_college(
             )
 
             if verified.data:
-                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             notify_student_data_error()
@@ -28585,7 +28260,6 @@ def add_favorite_college(
             )
 
             if mutation_row_count(inserted) > 0:
-                invalidate_user_discovery_hide_caches(user_sub)
                 return True
 
             notify_student_data_error()
@@ -28594,7 +28268,6 @@ def add_favorite_college(
     except Exception as error:
 
         if is_unique_violation(error):
-            invalidate_user_discovery_hide_caches(user_sub)
             return True
 
         log_supabase_exception(
@@ -28880,7 +28553,6 @@ def remove_favorite_college(
                     notify_student_data_error()
                     return False
 
-        invalidate_user_discovery_hide_caches(user_sub)
         return True
 
     except Exception:
@@ -29947,18 +29619,9 @@ def google_calendar_deadline_url(
 
 # Complete Supabase Google OAuth PKCE callback before resolving the user.
 if process_supabase_auth_callback():
-    # Persist opaque session cookie before continuing into the app shell.
-    flush_pending_auth_cookie_navigation()
     st.rerun()
 
-_auth_boot_started = time.perf_counter()
 app_user = get_app_user()
-_auth_timing_log("get_app_user", _auth_boot_started)
-
-# Flush cookie set/clear ONLY when pending (login / logout / token-rotation).
-# Must run after restore so a rotation ticket is not left for the next click
-# (which previously swallowed sidebar navigation and felt like a double-click).
-flush_pending_auth_cookie_navigation()
 
 if not app_user:
 
@@ -30361,7 +30024,7 @@ if not app_user:
                         key="email_sign_in_password",
                         autocomplete="current-password",
                     )
-                    # When checked, creates durable HttpOnly cookie + server session (30-day max).
+                    # Preference only in session state — does not enable 30-day persistence.
                     keep_signed_in = st.checkbox(
                         "Keep me signed in for 30 days.",
                         key="email_keep_signed_in",
@@ -30376,10 +30039,8 @@ if not app_user:
                     ok, message = sign_in_with_email(
                         sign_in_email,
                         sign_in_password,
-                        keep_signed_in=bool(keep_signed_in),
                     )
                     if ok:
-                        flush_pending_auth_cookie_navigation()
                         st.rerun()
                     else:
                         render_auth_error(message)
@@ -30432,8 +30093,7 @@ if not app_user:
                                 "Open the email and confirm your account before signing in."
                                 "</p>"
                                 '<p class="sp-signup-confirm-secondary">'
-                                'Already have an account? '
-                                '<a href="#sp-landing-auth" target="_self">Sign in instead</a>.'
+                                "Already have an account? Sign in instead."
                                 "</p>"
                                 "</div>"
                                 "</div>",
@@ -30718,121 +30378,6 @@ html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-
   html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(2):last-child),
   html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_"] [data-testid="stHorizontalBlock"]:has(> div:nth-child(3):last-child) {
     grid-template-columns: minmax(0, 1fr) !important;
-  }
-}
-
-/* ============================================================
-   PROFILE SETUP — STEM Interests contrast (section 2 only)
-   Beats global VerticalBlockBorderWrapper dark-text (#083C5D)
-   on desktop + mobile. Inputs stay dark navy.
-   ============================================================ */
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h1,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h2,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h3,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h1 *,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h2 *,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h3 *,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stHeading"] h2,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stHeading"] h2 *,
-html:has([class*="st-key-profile_setup_section_interests"]) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h2,
-html:has([class*="st-key-profile_setup_section_interests"]) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h2 * {
-  color: #F4FBFF !important;
-  -webkit-text-fill-color: #F4FBFF !important;
-  opacity: 1 !important;
-}
-
-/* Description / instruction caption */
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaptionContainer"],
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaptionContainer"] *,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaptionContainer"] p,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaption"],
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaption"] *,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stCaptionContainer"],
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stCaptionContainer"] p,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stCaptionContainer"] *,
-html:has([class*="st-key-profile_setup_section_interests"]) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaptionContainer"] p {
-  color: #C9E0EE !important;
-  -webkit-text-fill-color: #C9E0EE !important;
-  opacity: 1 !important;
-}
-
-/* Field / category labels (e.g. Engineering & Technology) */
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] label,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] label[data-testid="stWidgetLabel"],
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel"],
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel] span,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel] p,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel] *,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"],
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] p,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stWidgetLabel"],
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stWidgetLabel"] p,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stWidgetLabel"] *,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p,
-html:has([class*="st-key-profile_setup_section_interests"]) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] > p {
-  color: #D7EAF5 !important;
-  -webkit-text-fill-color: #D7EAF5 !important;
-  opacity: 1 !important;
-  font-weight: 600 !important;
-}
-
-/* Helper / secondary / checkbox copy / validation inside this section */
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCheckbox"] label,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCheckbox"] label p,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCheckbox"] [data-testid="stMarkdownContainer"] p,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHelpIcon"],
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] small,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] .sp-profile-validation,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] .sp-profile-validation *,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] .sp-profile-validation-text,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stCheckbox"] label p,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-testid="stCheckbox"] [data-testid="stMarkdownContainer"] p {
-  color: #B7D4E6 !important;
-  -webkit-text-fill-color: #B7D4E6 !important;
-  opacity: 1 !important;
-}
-
-/* Keep white input/dropdown text dark navy (do not lighten typed values) */
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-baseweb="input"] > div,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-baseweb="select"] > div,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stMultiSelect"] > div > div,
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] input:not([type="checkbox"]):not([type="radio"]),
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]),
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) input:not([type="checkbox"]):not([type="radio"]),
-html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"]:has([class*="st-key-profile_setup_section_interests"]) [data-baseweb="select"] span:not([class*="Placeholder"]):not([data-baseweb="placeholder"]) {
-  color: #083B5C !important;
-  -webkit-text-fill-color: #083B5C !important;
-}
-
-@media (max-width: 768px) {
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h2,
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h2 *,
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaptionContainer"],
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaptionContainer"] *,
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel"],
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel"] *,
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCheckbox"] label p {
-    opacity: 1 !important;
-  }
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h2,
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stHeading"] h2 * {
-    color: #F4FBFF !important;
-    -webkit-text-fill-color: #F4FBFF !important;
-  }
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaptionContainer"],
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCaptionContainer"] * {
-    color: #C9E0EE !important;
-    -webkit-text-fill-color: #C9E0EE !important;
-  }
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel"],
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stWidgetLabel"] * {
-    color: #D7EAF5 !important;
-    -webkit-text-fill-color: #D7EAF5 !important;
-  }
-  html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [class*="st-key-profile_setup_section_interests"] [data-testid="stCheckbox"] label p {
-    color: #B7D4E6 !important;
-    -webkit-text-fill-color: #B7D4E6 !important;
   }
 }
 </style>
@@ -32563,954 +32108,717 @@ elif page == "My STEM Pathway":
     # ========================================================
 
     career_database = {
-        'Engineering': {
+
+        "Engineering": {
+
             "majors": [
-                'General Engineering',
-                'Engineering',
-                'Industrial Engineering',
-                'Civil Engineering',
-                'Systems Engineering'
+                "General Engineering",
+                "Engineering",
+                "Industrial Engineering",
+                "Civil Engineering",
+                "Systems Engineering"
+            ],
+
+            "careers": [
+                "Civil Engineer",
+                "Industrial Engineer",
+                "Systems Engineer",
+                "Materials Engineer",
+                "Aerospace Engineer"
+            ]
+        },
+
+        "Electrical Engineering": {
+
+            "majors": [
+                "Electrical Engineering",
+                "Electrical and Computer Engineering"
+            ],
+
+            "careers": [
+                "Electrical Engineer",
+                "Electronics Engineer",
+                "Power Systems Engineer",
+                "Controls Engineer",
+                "RF Engineer",
+                "Semiconductor Engineer",
+                "Hardware Engineer"
+            ]
+        },
+
+        "Mechanical Engineering": {
+
+            "majors": [
+                "Mechanical Engineering",
+                "Aerospace Engineering",
+                "Mechatronics"
+            ],
+
+            "careers": [
+                "Mechanical Engineer",
+                "Aerospace Engineer",
+                "Automotive Engineer",
+                "Manufacturing Engineer",
+                "Product Design Engineer",
+                "Mechatronics Engineer",
+                "Robotics Engineer"
+            ]
+        },
+
+        "Computer Engineering": {
+
+            "majors": [
+                "Computer Engineering",
+                "Electrical and Computer Engineering"
+            ],
+
+            "careers": [
+                "Computer Hardware Engineer",
+                "Embedded Systems Engineer",
+                "Firmware Engineer",
+                "FPGA Engineer",
+                "Hardware Engineer",
+                "Robotics Engineer",
+                "Systems Engineer"
+            ]
+        },
+
+        "Computer Science": {
+
+            "majors": [
+                "Computer Science",
+                "Software Engineering",
+                "Cybersecurity"
+            ],
+
+            "careers": [
+                "Software Developer",
+                "Backend Developer",
+                "Frontend Developer",
+                "Full-Stack Developer",
+                "Cybersecurity Analyst",
+                "Cloud Engineer",
+                "Database Architect",
+                "Systems Developer"
+            ]
+        },
+
+        "Artificial Intelligence": {
+
+            "majors": [
+                "Computer Science",
+                "Artificial Intelligence",
+                "Data Science"
+            ],
+
+            "careers": [
+                "Machine Learning Engineer",
+                "AI Engineer",
+                "Data Scientist",
+                "Computer Vision Engineer",
+                "NLP Engineer",
+                "AI Research Scientist",
+                "Machine Learning Researcher"
+            ]
+        },
+
+        "Data Science": {
+
+            "majors": [
+                "Data Science",
+                "Statistics",
+                "Computer Science",
+                "Applied Mathematics"
+            ],
+
+            "careers": [
+                "Data Scientist",
+                "Data Analyst",
+                "Data Engineer",
+                "Operations Research Analyst",
+                "Statistician",
+                "Business Intelligence Analyst",
+                "Quantitative Analyst"
+            ]
+        },
+
+        "Biomedical Engineering": {
+
+            "majors": [
+                "Biomedical Engineering",
+                "Bioengineering"
+            ],
+
+            "careers": [
+                "Biomedical Engineer",
+                "Medical Device Engineer",
+                "Biomechanical Engineer",
+                "Clinical Engineer",
+                "Rehabilitation Engineer",
+                "Healthcare Technology Engineer"
+            ]
+        },
+
+        "Biology": {
+
+            "majors": [
+                "Biology",
+                "Biochemistry",
+                "Molecular Biology",
+                "Biotechnology"
+            ],
+
+            "careers": [
+                "Biologist",
+                "Microbiologist",
+                "Biochemist",
+                "Biological Technician",
+                "Geneticist",
+                "Medical Scientist",
+                "Biotechnology Researcher"
+            ]
+        },
+
+        "Physics": {
+
+            "majors": [
+                "Physics",
+                "Applied Physics",
+                "Engineering Physics"
+            ],
+
+            "careers": [
+                "Physicist",
+                "Optical Engineer",
+                "Nuclear Engineer",
+                "Aerospace Engineer",
+                "Research Scientist",
+                "Medical Physicist"
+            ]
+        },
+
+        "Mathematics": {
+
+            "majors": [
+                "Mathematics",
+                "Applied Mathematics",
+                "Statistics",
+                "Actuarial Science"
+            ],
+
+            "careers": [
+                "Mathematician",
+                "Statistician",
+                "Actuary",
+                "Operations Research Analyst",
+                "Data Scientist",
+                "Quantitative Analyst"
+            ]
+        },
+
+        "Environmental Science": {
+
+            "majors": [
+                "Environmental Science",
+                "Environmental Engineering",
+                "Earth Science"
+            ],
+
+            "careers": [
+                "Environmental Scientist",
+                "Environmental Engineer",
+                "Hydrologist",
+                "Conservation Scientist",
+                "Environmental Consultant",
+                "Climate Data Analyst"
+            ]
+        },
+
+        "Robotics": {
+
+            "majors": [
+                "Robotics Engineering",
+                "Mechanical Engineering",
+                "Computer Engineering",
+                "Electrical Engineering",
+                "Mechatronics"
+            ],
+
+            "careers": [
+                "Robotics Engineer",
+                "Mechatronics Engineer",
+                "Controls Engineer",
+                "Automation Engineer",
+                "Embedded Systems Engineer",
+                "Computer Vision Engineer"
+            ]
+        },
+
+        "Civil Engineering": {
+            "majors": ["Civil Engineering", "Structural Engineering", "Environmental Engineering"],
+            "careers": ["Civil Engineer", "Structural Engineer", "Transportation Engineer", "Geotechnical Engineer"]
+        },
+        "Chemical Engineering": {
+            "majors": ["Chemical Engineering", "Chemistry", "Materials Science / Engineering"],
+            "careers": ["Chemical Engineer", "Process Engineer", "Materials Engineer", "Petroleum Engineer"]
+        },
+        "Environmental Engineering": {
+            "majors": ["Environmental Engineering", "Environmental Science", "Civil Engineering"],
+            "careers": ["Environmental Engineer", "Water Resources Engineer", "Sustainability Engineer"]
+        },
+        "Aerospace Engineering": {
+            "majors": ["Aerospace Engineering", "Mechanical Engineering", "Physics"],
+            "careers": ["Aerospace Engineer", "Flight Systems Engineer", "Avionics Engineer"]
+        },
+        "Industrial Engineering": {
+            "majors": ["Industrial Engineering", "Operations Research", "Systems Engineering"],
+            "careers": ["Industrial Engineer", "Operations Research Analyst", "Supply Chain Engineer"]
+        },
+        "Materials Science / Engineering": {
+            "majors": ["Materials Science / Engineering", "Chemical Engineering", "Physics"],
+            "careers": ["Materials Engineer", "Metallurgist", "Polymer Scientist"]
+        },
+        "Bioengineering": {
+            "majors": ["Bioengineering", "Biomedical Engineering", "Biotechnology"],
+            "careers": ["Bioengineer", "Biomedical Engineer", "Tissue Engineer"]
+        },
+        "Cybersecurity": {
+            "majors": ["Cybersecurity", "Computer Science", "Computer Engineering"],
+            "careers": ["Cybersecurity Analyst", "Security Engineer", "Network Defender"]
+        },
+        "Software Engineering": {
+            "majors": ["Software Engineering", "Computer Science"],
+            "careers": ["Software Engineer", "Full-Stack Developer", "Application Developer"]
+        },
+        "Web Development": {
+            "majors": ["Computer Science", "Software Engineering", "Web Development"],
+            "careers": ["Web Developer", "Frontend Developer", "Full-Stack Developer"]
+        },
+        "Applied Mathematics": {
+            "majors": ["Applied Mathematics", "Mathematics", "Statistics"],
+            "careers": ["Applied Mathematician", "Quantitative Analyst", "Operations Research Analyst"]
+        },
+        "Statistics": {
+            "majors": ["Statistics", "Data Science", "Applied Mathematics"],
+            "careers": ["Statistician", "Biostatistician", "Data Analyst"]
+        },
+        "Astrophysics / Astronomy": {
+            "majors": ["Astronomy", "Astrophysics", "Physics"],
+            "careers": ["Astronomer", "Astrophysicist", "Observatory Technician"]
+        },
+        "Chemistry": {
+            "majors": ["Chemistry", "Biochemistry", "Chemical Engineering"],
+            "careers": ["Chemist", "Analytical Chemist", "Pharmaceutical Scientist"]
+        },
+        "Biomedical Science": {
+            "majors": ["Biomedical Sciences", "Biology", "Biotechnology"],
+            "careers": ["Biomedical Scientist", "Lab Researcher", "Clinical Research Coordinator"]
+        },
+        "Neuroscience": {
+            "majors": ["Neuroscience", "Biology", "Psychology"],
+            "careers": ["Neuroscientist", "Research Technician", "Neurology Researcher"]
+        },
+        "Biotechnology": {
+            "majors": ["Biotechnology", "Biology", "Bioengineering"],
+            "careers": ["Biotechnologist", "Lab Technician", "Bioprocess Technician"]
+        },
+        "Bioinformatics / Computational Biology": {
+            "majors": ["Bioinformatics", "Computational Biology", "Computer Science"],
+            "careers": ["Bioinformatician", "Computational Biologist", "Genomics Analyst"]
+        },
+        "Medicine / Health Science": {
+            "majors": ["Biology", "Public Health", "Biomedical Sciences"],
+            "careers": ["Doctor / Physician", "Clinical researcher", "Health scientist"]
+        },
+        "Medicine / Health": {
+            "majors": ["Biology", "Public Health", "Biomedical Sciences"],
+            "careers": ["Doctor / Physician", "Clinical researcher", "Health scientist"]
+        },
+        "Public Health": {
+            "majors": ["Public Health", "Epidemiology", "Health Science"],
+            "careers": ["Epidemiologist", "Public Health Analyst", "Community Health Worker"]
+        },
+        "Cancer Research": {
+            "majors": ["Biology", "Biomedical Sciences", "Oncology research"],
+            "careers": ["Cancer researcher", "Lab technician", "Clinical research coordinator"]
+        },
+        "Earth Science / Geoscience": {
+            "majors": ["Geology", "Earth Science", "Environmental Science"],
+            "careers": ["Geoscientist", "Hydrologist", "Environmental geologist"]
+        },
+        "Climate Science": {
+            "majors": ["Climate Science", "Environmental Science", "Atmospheric Science"],
+            "careers": ["Climate scientist", "Climate data analyst", "Sustainability specialist"]
+        },
+        "Earth / Climate Science": {
+            "majors": ["Earth Science", "Climate Science", "Environmental Science"],
+            "careers": ["Climate scientist", "Geoscientist", "Environmental scientist"]
+        },
+        "Space Science": {
+            "majors": ["Astronomy", "Aerospace Engineering", "Physics"],
+            "careers": ["Space scientist", "Mission analyst", "Aerospace technician"]
+        },
+        "Quantitative Finance / Financial Engineering": {
+            "majors": ["Financial Engineering", "Applied Mathematics", "Statistics"],
+            "careers": ["Quantitative Analyst", "Financial Engineer", "Risk Analyst"]
+        },
+        "Financial Engineering": {
+            "majors": ["Financial Engineering", "Applied Mathematics", "Statistics"],
+            "careers": ["Financial Engineer", "Quantitative Analyst", "Risk Modeler"]
+        },
+        "Quantitative Finance": {
+            "majors": ["Quantitative Finance", "Financial Engineering", "Mathematics"],
+            "careers": ["Quantitative Analyst", "Trading Analyst", "Portfolio Risk Analyst"]
+        },
+        "FinTech": {
+            "majors": ["FinTech", "Computer Science", "Finance"],
+            "careers": ["FinTech Engineer", "Financial Software Developer", "Payments Analyst"]
+        },
+        "Finance": {
+            "majors": ["Finance", "Economics", "Business Analytics"],
+            "careers": ["Financial Analyst", "Investment Analyst", "Corporate Finance Analyst"]
+        },
+        "Business": {
+            "majors": ["Business Administration", "Business", "Management"],
+            "careers": ["Business Analyst", "Operations Associate", "Management Trainee"]
+        },
+        "Entrepreneurship": {
+            "majors": ["Entrepreneurship", "Business Administration", "Business"],
+            "careers": ["Founder / Startup Builder", "Product Manager pathway", "Small Business Manager"]
+        },
+        "Economics": {
+            "majors": ["Economics", "Quantitative Economics", "Statistics"],
+            "careers": ["Economist", "Economic Analyst", "Policy Analyst"]
+        },
+        "Quantitative Economics": {
+            "majors": ["Quantitative Economics", "Economics", "Applied Mathematics"],
+            "careers": ["Quantitative Economist", "Economic Data Analyst", "Policy Researcher"]
+        },
+        "Accounting": {
+            "majors": ["Accounting", "Finance", "Business Analytics"],
+            "careers": ["Accountant", "Auditor", "Financial Reporting Analyst"]
+        },
+        "Business Analytics": {
+            "majors": ["Business Analytics", "Data Science", "Statistics"],
+            "careers": ["Business Analyst", "Data Analyst", "Analytics Consultant"]
+        },
+        "Actuarial Science": {
+            "majors": ["Actuarial Science", "Statistics", "Mathematics"],
+            "careers": ["Actuary", "Risk Analyst", "Insurance Analyst"]
+        },
+        "Operations Research": {
+            "majors": ["Operations Research", "Applied Mathematics", "Industrial Engineering"],
+            "careers": ["Operations Research Analyst", "Optimization Specialist", "Logistics Analyst"]
+        },
+        "Machine Learning": {
+            "majors": ["Machine Learning", "Artificial Intelligence", "Computer Science"],
+            "careers": ["Machine Learning Engineer", "AI Researcher", "Data Scientist"]
+        },
+        "Game Development": {
+            "majors": ["Game Development", "Computer Science", "Software Engineering"],
+            "careers": ["Game Developer", "Gameplay Programmer", "Technical Artist"]
+        },
+        "Human-Computer Interaction": {
+            "majors": ["Human-Computer Interaction", "Computer Science", "Cognitive Science"],
+            "careers": ["UX Researcher", "Interaction Designer", "HCI Specialist"]
+        },
+        "Mechatronics": {
+            "majors": ["Mechatronics", "Mechanical Engineering", "Robotics"],
+            "careers": ["Mechatronics Engineer", "Automation Engineer", "Robotics Technician"]
+        },
+        "Medicine / Pre-Med": {
+            "majors": ["Biology", "Biomedical Sciences", "Pre-Med"],
+            "careers": ["Doctor / Physician", "Clinical Researcher", "Medical Scientist"]
+        },
+        "Genetics / Genomics": {
+            "majors": ["Genetics", "Genomics", "Biology"],
+            "careers": ["Geneticist", "Genomics Analyst", "Genetic Counselor pathway"]
+        },
+        "Pharmacy / Pharmaceutical Science": {
+            "majors": ["Pharmacy", "Pharmaceutical Sciences", "Chemistry"],
+            "careers": ["Pharmacist pathway", "Pharmaceutical Scientist", "Drug Development Analyst"]
+        },
+        "Psychology / Cognitive Science": {
+            "majors": ["Psychology", "Cognitive Science", "Neuroscience"],
+            "careers": ["Cognitive Scientist", "Behavioral Researcher", "UX Researcher"]
+        },
+        "Nuclear Science": {
+            "majors": ["Nuclear Science", "Physics", "Nuclear Engineering"],
+            "careers": ["Nuclear Scientist", "Radiation Specialist", "Energy Researcher"]
+        },
+        "Ecology": {
+            "majors": ["Ecology", "Environmental Science", "Biology"],
+            "careers": ["Ecologist", "Conservation Scientist", "Field Biologist"]
+        },
+        "Geology": {
+            "majors": ["Geology", "Earth Science", "Environmental Science"],
+            "careers": ["Geologist", "Geoscientist", "Environmental Geologist"]
+        },
+        "Earth Science": {
+            "majors": ["Earth Science", "Geology", "Environmental Science"],
+            "careers": ["Earth Scientist", "Geoscientist", "Hydrologist"]
+        },
+        "Marine Science": {
+            "majors": ["Marine Science", "Oceanography", "Biology"],
+            "careers": ["Marine Scientist", "Oceanographer", "Coastal Researcher"]
+        },
+        "Sustainability": {
+            "majors": ["Sustainability", "Environmental Studies", "Environmental Science"],
+            "careers": ["Sustainability Specialist", "ESG Analyst", "Environmental Planner"]
+        },
+        "Architecture": {
+            "majors": ["Architecture", "Architectural Studies", "Urban Design"],
+            "careers": ["Architect", "Architectural Designer", "Urban Designer"]
+        },
+        "Urban Planning": {
+            "majors": ["Urban Planning", "Urban Studies", "Geography"],
+            "careers": ["Urban Planner", "Transportation Planner", "Community Development Analyst"]
+        },
+        "Construction Engineering": {
+            "majors": ["Construction Engineering", "Civil Engineering", "Construction Management"],
+            "careers": ["Construction Engineer", "Project Engineer", "Site Engineer"]
+        },
+        "Structural Engineering": {
+            "majors": ["Structural Engineering", "Civil Engineering", "Architecture"],
+            "careers": ["Structural Engineer", "Bridge Engineer", "Building Design Engineer"]
+        },
+        "General / Interdisciplinary STEM": {
+            "majors": ["General STEM", "Liberal Arts and Sciences", "Undeclared STEM"],
+            "careers": ["STEM explorer", "Research assistant", "Technical analyst"]
+        },
+        "General STEM / Interdisciplinary": {
+            "majors": ["General STEM", "Liberal Arts and Sciences", "Undeclared STEM"],
+            "careers": ["STEM explorer", "Research assistant", "Technical analyst"]
+        },
+        "General Engineering / Undecided Engineering": {
+            "majors": [
+                "General Engineering",
+                "Undecided Engineering",
+                "Engineering"
             ],
             "careers": [
-                'Civil Engineer',
-                'Industrial Engineer',
-                'Systems Engineer',
-                'Materials Engineer',
-                'Aerospace Engineer'
+                "Engineer",
+                "Project engineer",
+                "Systems engineer",
+                "Engineering technician"
             ]
         },
-        'Electrical Engineering': {
-            "majors": ['Electrical Engineering', 'Electrical and Computer Engineering'],
-            "careers": [
-                'Electrical Engineer',
-                'Electronics Engineer',
-                'Power Systems Engineer',
-                'Controls Engineer',
-                'RF Engineer',
-                'Semiconductor Engineer',
-                'Hardware Engineer'
-            ]
-        },
-        'Mechanical Engineering': {
-            "majors": ['Mechanical Engineering', 'Aerospace Engineering', 'Mechatronics'],
-            "careers": [
-                'Mechanical Engineer',
-                'Aerospace Engineer',
-                'Automotive Engineer',
-                'Manufacturing Engineer',
-                'Product Design Engineer',
-                'Mechatronics Engineer',
-                'Robotics Engineer'
-            ]
-        },
-        'Computer Engineering': {
-            "majors": ['Computer Engineering', 'Electrical and Computer Engineering'],
-            "careers": [
-                'Computer Hardware Engineer',
-                'Embedded Systems Engineer',
-                'Firmware Engineer',
-                'FPGA Engineer',
-                'Hardware Engineer',
-                'Robotics Engineer',
-                'Systems Engineer'
-            ]
-        },
-        'Computer Science': {
-            "majors": ['Computer Science', 'Software Engineering', 'Cybersecurity'],
-            "careers": [
-                'Software Developer',
-                'Backend Developer',
-                'Frontend Developer',
-                'Full-Stack Developer',
-                'Cybersecurity Analyst',
-                'Cloud Engineer',
-                'Database Architect',
-                'Systems Developer'
-            ]
-        },
-        'Artificial Intelligence': {
-            "majors": ['Computer Science', 'Artificial Intelligence', 'Data Science'],
-            "careers": [
-                'Machine Learning Engineer',
-                'AI Engineer',
-                'Data Scientist',
-                'Computer Vision Engineer',
-                'NLP Engineer',
-                'AI Research Scientist',
-                'Machine Learning Researcher'
-            ]
-        },
-        'Data Science': {
+        "Information Technology / Information Science": {
             "majors": [
-                'Data Science',
-                'Statistics',
-                'Computer Science',
-                'Applied Mathematics'
+                "Information Technology",
+                "Information Science",
+                "Computer Science"
             ],
             "careers": [
-                'Data Scientist',
-                'Data Analyst',
-                'Data Engineer',
-                'Operations Research Analyst',
-                'Statistician',
-                'Business Intelligence Analyst',
-                'Quantitative Analyst'
+                "IT specialist",
+                "Systems analyst",
+                "Network administrator",
+                "Information architect"
             ]
         },
-        'Biomedical Engineering': {
-            "majors": ['Biomedical Engineering', 'Bioengineering'],
-            "careers": [
-                'Biomedical Engineer',
-                'Medical Device Engineer',
-                'Biomechanical Engineer',
-                'Clinical Engineer',
-                'Rehabilitation Engineer',
-                'Healthcare Technology Engineer'
-            ]
-        },
-        'Biology': {
+        "Applied Physics": {
             "majors": [
-                'Biology',
-                'Biochemistry',
-                'Molecular Biology',
-                'Biotechnology'
+                "Applied Physics",
+                "Physics",
+                "Engineering Physics"
             ],
             "careers": [
-                'Biologist',
-                'Microbiologist',
-                'Biochemist',
-                'Biological Technician',
-                'Geneticist',
-                'Medical Scientist',
-                'Biotechnology Researcher'
+                "Applied physicist",
+                "Research scientist",
+                "Optical engineer",
+                "Materials scientist"
             ]
         },
-        'Physics': {
-            "majors": ['Physics', 'Applied Physics', 'Engineering Physics'],
-            "careers": [
-                'Physicist',
-                'Optical Engineer',
-                'Nuclear Engineer',
-                'Aerospace Engineer',
-                'Research Scientist',
-                'Medical Physicist'
-            ]
-        },
-        'Mathematics': {
+        "Materials Science": {
             "majors": [
-                'Mathematics',
-                'Applied Mathematics',
-                'Statistics',
-                'Actuarial Science'
+                "Materials Science",
+                "Materials Science and Engineering",
+                "Chemistry"
             ],
             "careers": [
-                'Mathematician',
-                'Statistician',
-                'Actuary',
-                'Operations Research Analyst',
-                'Data Scientist',
-                'Quantitative Analyst'
+                "Materials scientist",
+                "Metallurgist",
+                "Polymer scientist",
+                "Nanomaterials researcher"
             ]
         },
-        'Environmental Science': {
-            "majors": ['Environmental Science', 'Environmental Engineering', 'Earth Science'],
-            "careers": [
-                'Environmental Scientist',
-                'Environmental Engineer',
-                'Hydrologist',
-                'Conservation Scientist',
-                'Environmental Consultant',
-                'Climate Data Analyst'
-            ]
-        },
-        'Robotics': {
+        "Astronomy / Astrophysics": {
             "majors": [
-                'Robotics Engineering',
-                'Mechanical Engineering',
-                'Computer Engineering',
-                'Electrical Engineering',
-                'Mechatronics'
+                "Astronomy",
+                "Astrophysics",
+                "Physics"
             ],
             "careers": [
-                'Robotics Engineer',
-                'Mechatronics Engineer',
-                'Controls Engineer',
-                'Automation Engineer',
-                'Embedded Systems Engineer',
-                'Computer Vision Engineer'
-            ]
-        },
-        'Civil Engineering': {
-            "majors": ['Civil Engineering', 'Structural Engineering', 'Environmental Engineering'],
-            "careers": [
-                'Civil Engineer',
-                'Structural Engineer',
-                'Transportation Engineer',
-                'Geotechnical Engineer'
-            ]
-        },
-        'Chemical Engineering': {
-            "majors": ['Chemical Engineering', 'Chemistry', 'Materials Science / Engineering'],
-            "careers": [
-                'Chemical Engineer',
-                'Process Engineer',
-                'Materials Engineer',
-                'Bioprocess Engineer'
-            ]
-        },
-        'Environmental Engineering': {
-            "majors": ['Environmental Engineering', 'Environmental Science', 'Civil Engineering'],
-            "careers": [
-                'Environmental Engineer',
-                'Water Treatment Engineer',
-                'Environmental Scientist',
-                'Sustainability Analyst'
-            ]
-        },
-        'Aerospace Engineering': {
-            "majors": ['Aerospace Engineering', 'Mechanical Engineering', 'Physics'],
-            "careers": [
-                'Aerospace Engineer',
-                'Flight Test Engineer',
-                'Avionics Systems Engineer',
-                'Space Systems Analyst'
-            ]
-        },
-        'Industrial Engineering': {
-            "majors": ['Industrial Engineering', 'Operations Research', 'Systems Engineering'],
-            "careers": [
-                'Industrial Engineer',
-                'Operations Research Analyst',
-                'Supply Chain Engineer',
-                'Continuous Improvement Analyst'
-            ]
-        },
-        'Materials Science / Engineering': {
-            "majors": ['Materials Science / Engineering', 'Chemical Engineering', 'Physics'],
-            "careers": [
-                'Materials Engineer',
-                'Metallurgist',
-                'Polymer Scientist',
-                'Nanomaterials Scientist'
-            ]
-        },
-        'Bioengineering': {
-            "majors": ['Bioengineering', 'Biomedical Engineering', 'Biotechnology'],
-            "careers": [
-                'Biomedical Engineer',
-                'Tissue Engineering Researcher',
-                'Medical Device Engineer',
-                'Biotechnology Researcher'
-            ]
-        },
-        'Cybersecurity': {
-            "majors": ['Cybersecurity', 'Computer Science', 'Computer Engineering'],
-            "careers": [
-                'Cybersecurity Analyst',
-                'Security Engineer',
-                'Security Operations Analyst',
-                'Network Engineer'
-            ]
-        },
-        'Software Engineering': {
-            "majors": ['Software Engineering', 'Computer Science'],
-            "careers": [
-                'Software Developer',
-                'Full-Stack Developer',
-                'Application Software Engineer',
-                'Systems Developer'
-            ]
-        },
-        'Web Development': {
-            "majors": ['Computer Science', 'Software Engineering', 'Web Development'],
-            "careers": [
-                'Web Developer',
-                'Frontend Developer',
-                'Full-Stack Developer',
-                'Front-End Web Engineer'
-            ]
-        },
-        'Applied Mathematics': {
-            "majors": ['Applied Mathematics', 'Mathematics', 'Statistics'],
-            "careers": [
-                'Applied Mathematical Analyst',
-                'Quantitative Analyst',
-                'Operations Research Analyst',
-                'Mathematician'
-            ]
-        },
-        'Statistics': {
-            "majors": ['Statistics', 'Data Science', 'Applied Mathematics'],
-            "careers": [
-                'Statistician',
-                'Biostatistician',
-                'Data Analyst',
-                'Survey Statistician'
-            ]
-        },
-        'Astrophysics / Astronomy': {
-            "majors": ['Astronomy', 'Astrophysics', 'Physics'],
-            "careers": [
-                'Astronomer',
-                'Astrophysics Data Scientist',
-                'Observatory Instrumentation Specialist',
-                'Planetary Science Researcher'
-            ]
-        },
-        'Chemistry': {
-            "majors": ['Chemistry', 'Biochemistry', 'Chemical Engineering'],
-            "careers": [
-                'Chemist',
-                'Analytical Chemist',
-                'Pharmaceutical Scientist',
-                'Materials Chemist'
-            ]
-        },
-        'Biomedical Science': {
-            "majors": ['Biomedical Sciences', 'Biology', 'Biotechnology'],
-            "careers": [
-                'Biomedical Research Associate',
-                'Laboratory Research Assistant',
-                'Clinical Research Coordinator',
-                'Medical Scientist'
-            ]
-        },
-        'Neuroscience': {
-            "majors": ['Neuroscience', 'Biology', 'Psychology'],
-            "careers": [
-                'Neuroscientist',
-                'Field Research Technician',
-                'Behavioral Neuroscience Researcher',
-                'Neural Data Analyst'
-            ]
-        },
-        'Biotechnology': {
-            "majors": ['Biotechnology', 'Biology', 'Bioengineering'],
-            "careers": [
-                'Biotechnology Researcher',
-                'Biological Technician',
-                'Biomanufacturing Associate',
-                'Assay Development Scientist'
-            ]
-        },
-        'Bioinformatics / Computational Biology': {
-            "majors": ['Bioinformatics', 'Computational Biology', 'Computer Science'],
-            "careers": [
-                'Bioinformatics Analyst',
-                'Computational Biologist',
-                'Genomics Research Scientist',
-                'Systems Biology Analyst'
-            ]
-        },
-        'Medicine / Health Science': {
-            "majors": ['Biology', 'Public Health', 'Biomedical Sciences'],
-            "careers": [
-                'Doctor / Physician',
-                'Clinical Research Coordinator',
-                'Health Science Research Assistant',
-                'Medical Scientist'
-            ]
-        },
-        'Medicine / Health': {
-            "majors": ['Biology', 'Public Health', 'Biomedical Sciences'],
-            "careers": [
-                'Doctor / Physician',
-                'Clinical Research Coordinator',
-                'Health Science Research Assistant',
-                'Medical Scientist'
-            ]
-        },
-        'Public Health': {
-            "majors": ['Public Health', 'Epidemiology', 'Health Science'],
-            "careers": [
-                'Epidemiologist',
-                'Public Health Analyst',
-                'Community Health Program Evaluator',
-                'Health Education Specialist'
-            ]
-        },
-        'Cancer Research': {
-            "majors": ['Biology', 'Biomedical Sciences', 'Oncology research'],
-            "careers": [
-                'Cancer Biologist',
-                'Biological Technician',
-                'Clinical Research Coordinator',
-                'Clinical Oncology Research Coordinator'
-            ]
-        },
-        'Earth Science / Geoscience': {
-            "majors": ['Geology', 'Earth Science', 'Environmental Science'],
-            "careers": [
-                'Geoscientist',
-                'Hydrologist',
-                'Engineering Geologist',
-                'Earth Scientist'
-            ]
-        },
-        'Climate Science': {
-            "majors": ['Climate Science', 'Environmental Science', 'Atmospheric Science'],
-            "careers": [
-                'Climate Scientist',
-                'Climate Data Analyst',
-                'Sustainability Analyst',
-                'Climate Policy Analyst'
-            ]
-        },
-        'Earth / Climate Science': {
-            "majors": ['Earth Science', 'Climate Science', 'Environmental Science'],
-            "careers": [
-                'Climate Scientist',
-                'Geoscientist',
-                'Environmental Scientist',
-                'Climate Data Analyst'
-            ]
-        },
-        'Space Science': {
-            "majors": ['Astronomy', 'Aerospace Engineering', 'Physics'],
-            "careers": [
-                'Planetary Science Researcher',
-                'Space Systems Analyst',
-                'Mission Science Support Specialist',
-                'Aerospace Engineer'
-            ]
-        },
-        'Quantitative Finance / Financial Engineering': {
-            "majors": ['Financial Engineering', 'Applied Mathematics', 'Statistics'],
-            "careers": [
-                'Quantitative Analyst',
-                'Financial Engineer',
-                'Portfolio Risk Analyst',
-                'Actuary'
-            ]
-        },
-        'Financial Engineering': {
-            "majors": ['Financial Engineering', 'Applied Mathematics', 'Statistics'],
-            "careers": [
-                'Financial Engineer',
-                'Quantitative Analyst',
-                'Portfolio Risk Analyst',
-                'Data Scientist'
-            ]
-        },
-        'Quantitative Finance': {
-            "majors": ['Quantitative Finance', 'Financial Engineering', 'Mathematics'],
-            "careers": [
-                'Quantitative Analyst',
-                'Portfolio Risk Analyst',
-                'Financial Analyst',
-                'Actuary'
-            ]
-        },
-        'FinTech': {
-            "majors": ['FinTech', 'Computer Science', 'Finance'],
-            "careers": [
-                'Payments Systems Analyst',
-                'Scientific Software Developer',
-                'Financial Engineer',
-                'Quantitative Analyst'
-            ]
-        },
-        'Finance': {
-            "majors": ['Finance', 'Economics', 'Business Analytics'],
-            "careers": [
-                'Financial Analyst',
-                'Investment Banking Analyst',
-                'Corporate Finance Analyst',
-                'Business Intelligence Analyst'
-            ]
-        },
-        'Business': {
-            "majors": ['Business Administration', 'Business', 'Management'],
-            "careers": [
-                'Business Intelligence Analyst',
-                'Startup Operations Associate',
-                'Business Operations Analyst',
-                'Business Analytics Consultant'
-            ]
-        },
-        'Entrepreneurship': {
-            "majors": ['Entrepreneurship', 'Business Administration', 'Business'],
-            "careers": [
-                'Startup Operations Associate',
-                'AI Product Engineer',
-                'Business Operations Analyst'
-            ]
-        },
-        'Economics': {
-            "majors": ['Economics', 'Quantitative Economics', 'Statistics'],
-            "careers": [
-                'Economist',
-                'Econometric Analyst',
-                'Environmental Policy Analyst',
-                'Financial Analyst'
-            ]
-        },
-        'Quantitative Economics': {
-            "majors": ['Quantitative Economics', 'Economics', 'Applied Mathematics'],
-            "careers": [
-                'Quantitative Economist',
-                'Econometric Analyst',
-                'Climate Policy Analyst',
-                'Economist'
-            ]
-        },
-        'Accounting': {
-            "majors": ['Accounting', 'Finance', 'Business Analytics'],
-            "careers": [
-                'Accountant',
-                'Auditor',
-                'Financial Analyst',
-                'Systems Reporting Analyst'
-            ]
-        },
-        'Business Analytics': {
-            "majors": ['Business Analytics', 'Data Science', 'Statistics'],
-            "careers": [
-                'Business Intelligence Analyst',
-                'Data Analyst',
-                'Business Analytics Consultant',
-                'Statistical Analyst'
-            ]
-        },
-        'Actuarial Science': {
-            "majors": ['Actuarial Science', 'Statistics', 'Mathematics'],
-            "careers": [
-                'Actuary',
-                'Portfolio Risk Analyst',
-                'Property and Casualty Actuarial Analyst',
-                'Statistician'
-            ]
-        },
-        'Operations Research': {
-            "majors": ['Operations Research', 'Applied Mathematics', 'Industrial Engineering'],
-            "careers": [
-                'Operations Research Analyst',
-                'Optimization Specialist',
-                'Logistics Analyst',
-                'Simulation Analyst'
-            ]
-        },
-        'Machine Learning': {
-            "majors": ['Machine Learning', 'Artificial Intelligence', 'Computer Science'],
-            "careers": [
-                'Machine Learning Engineer',
-                'Machine Learning Researcher',
-                'Data Scientist',
-                'AI Engineer'
-            ]
-        },
-        'Game Development': {
-            "majors": ['Game Development', 'Computer Science', 'Software Engineering'],
-            "careers": [
-                'Game Engine Developer',
-                'Gameplay Programmer',
-                'Technical Game Designer',
-                'Software Developer'
-            ]
-        },
-        'Human-Computer Interaction': {
-            "majors": ['Human-Computer Interaction', 'Computer Science', 'Cognitive Science'],
-            "careers": [
-                'UX Researcher',
-                'Interaction Designer',
-                'HCI Technologist',
-                'Human Factors Specialist'
-            ]
-        },
-        'Mechatronics': {
-            "majors": ['Mechatronics', 'Mechanical Engineering', 'Robotics'],
-            "careers": [
-                'Mechatronics Engineer',
-                'Automation Engineer',
-                'Robotics Engineer',
-                'Controls Engineer'
-            ]
-        },
-        'Medicine / Pre-Med': {
-            "majors": ['Biology', 'Biomedical Sciences', 'Pre-Med'],
-            "careers": [
-                'Doctor / Physician',
-                'Clinical Research Coordinator',
-                'Medical Scientist',
-                'Health Science Research Assistant'
-            ]
-        },
-        'Genetics / Genomics': {
-            "majors": ['Genetics', 'Genomics', 'Biology'],
-            "careers": [
-                'Geneticist',
-                'Genomics Research Scientist',
-                'Clinical Genetics Analyst',
-                'Population Genetics Researcher'
-            ]
-        },
-        'Pharmacy / Pharmaceutical Science': {
-            "majors": ['Pharmacy', 'Pharmaceutical Sciences', 'Chemistry'],
-            "careers": [
-                'Pharmacist',
-                'Pharmaceutical Scientist',
-                'Assay Development Scientist',
-                'Clinical Pharmacologist Researcher'
-            ]
-        },
-        'Psychology / Cognitive Science': {
-            "majors": ['Psychology', 'Cognitive Science', 'Neuroscience'],
-            "careers": [
-                'Cognitive Science Researcher',
-                'Behavioral Neuroscience Researcher',
-                'UX Researcher',
-                'Behavioral Data Analyst'
-            ]
-        },
-        'Nuclear Science': {
-            "majors": ['Nuclear Science', 'Physics', 'Nuclear Engineering'],
-            "careers": [
-                'Nuclear Science Researcher',
-                'Radiation Detection Specialist',
-                'Nuclear Engineer'
-            ]
-        },
-        'Ecology': {
-            "majors": ['Ecology', 'Environmental Science', 'Biology'],
-            "careers": [
-                'Ecologist',
-                'Conservation Scientist',
-                'Wildlife Biologist',
-                'Restoration Ecologist'
-            ]
-        },
-        'Geology': {
-            "majors": ['Geology', 'Earth Science', 'Environmental Science'],
-            "careers": [
-                'Geologist',
-                'Geoscientist',
-                'Engineering Geologist',
-                'Hydrogeologist'
-            ]
-        },
-        'Earth Science': {
-            "majors": ['Earth Science', 'Geology', 'Environmental Science'],
-            "careers": [
-                'Geoscientist',
-                'Hydrologist',
-                'Engineering Geologist',
-                'Earth Scientist'
-            ]
-        },
-        'Marine Science': {
-            "majors": ['Marine Science', 'Oceanography', 'Biology'],
-            "careers": [
-                'Marine Biologist',
-                'Oceanographer',
-                'Coastal Ocean Observer',
-                'Marine Conservation Specialist'
-            ]
-        },
-        'Sustainability': {
-            "majors": ['Sustainability', 'Environmental Studies', 'Environmental Science'],
-            "careers": [
-                'Sustainability Analyst',
-                'ESG Data Analyst',
-                'Climate Adaptation Planner',
-                'Environmental Policy Analyst'
-            ]
-        },
-        'Architecture': {
-            "majors": ['Architecture', 'Architectural Studies', 'Urban Design'],
-            "careers": [
-                'Architect',
-                'Architectural Designer',
-                'Urban Planner',
-                'Building Information Modeling Specialist'
-            ]
-        },
-        'Urban Planning': {
-            "majors": ['Urban Planning', 'Urban Studies', 'Geography'],
-            "careers": [
-                'Urban Planner',
-                'Transportation Planner',
-                'Housing Policy Planner',
-                'Climate Adaptation Planner'
-            ]
-        },
-        'Construction Engineering': {
-            "majors": ['Construction Engineering', 'Civil Engineering', 'Construction Management'],
-            "careers": [
-                'Construction Engineer',
-                'Project Engineer (General)',
-                'Construction Manager',
-                'Civil Engineer'
-            ]
-        },
-        'Structural Engineering': {
-            "majors": ['Structural Engineering', 'Civil Engineering', 'Architecture'],
-            "careers": [
-                'Structural Engineer',
-                'Bridge Engineer',
-                'Building Structural Designer',
-                'Forensic Structural Engineer'
-            ]
-        },
-        'General / Interdisciplinary STEM': {
-            "majors": ['General STEM', 'Liberal Arts and Sciences', 'Undeclared STEM'],
-            "careers": [
-                'Exploratory Data Analyst',
-                'Laboratory Research Assistant',
-                'Science Communications Specialist',
-                'Technical Project Coordinator'
-            ]
-        },
-        'General STEM / Interdisciplinary': {
-            "majors": ['General STEM', 'Liberal Arts and Sciences', 'Undeclared STEM'],
-            "careers": [
-                'Exploratory Data Analyst',
-                'Laboratory Research Assistant',
-                'Science Communications Specialist',
-                'Technical Project Coordinator'
-            ]
-        },
-        'General Engineering / Undecided Engineering': {
-            "majors": ['General Engineering', 'Undecided Engineering', 'Engineering'],
-            "careers": [
-                'Project Engineer (General)',
-                'Systems Engineer',
-                'Maker Space Technology Associate'
-            ]
-        },
-        'Information Technology / Information Science': {
-            "majors": ['Information Technology', 'Information Science', 'Computer Science'],
-            "careers": [
-                'IT Systems Administrator',
-                'Business Systems Analyst',
-                'Database Architect',
-                'Cloud Systems Administrator'
-            ]
-        },
-        'Applied Physics': {
-            "majors": ['Applied Physics', 'Physics', 'Engineering Physics'],
-            "careers": [
-                'Applied Physicist',
-                'Research Scientist',
-                'Optical Engineer',
-                'Materials Research Scientist'
-            ]
-        },
-        'Materials Science': {
-            "majors": ['Materials Science', 'Materials Science and Engineering', 'Chemistry'],
-            "careers": [
-                'Materials Research Scientist',
-                'Metallurgist',
-                'Polymer Scientist',
-                'Nanomaterials Scientist'
-            ]
-        },
-        'Astronomy / Astrophysics': {
-            "majors": ['Astronomy', 'Astrophysics', 'Physics'],
-            "careers": [
-                'Astronomer',
-                'Astrophysics Data Scientist',
-                'Observatory Instrumentation Specialist',
-                'Planetary Science Researcher'
-            ]
-        },
-        'Biochemistry': {
-            "majors": ['Biochemistry', 'Biology', 'Chemistry'],
-            "careers": [
-                'Biochemist',
-                'Laboratory Research Assistant',
-                'Pharmaceutical Scientist',
-                'Molecular Biologist'
-            ]
-        },
-        'Health Science': {
-            "majors": ['Health Science', 'Public Health', 'Biology'],
-            "careers": [
-                'Health Science Research Assistant',
-                'Clinical Research Coordinator',
-                'Public Health Analyst',
-                'Healthcare Quality Analyst'
-            ]
-        },
-        'Environmental Studies / Sustainability': {
-            "majors": ['Environmental Studies', 'Sustainability', 'Environmental Science'],
-            "careers": [
-                'Sustainability Analyst',
-                'Climate Adaptation Planner',
-                'Conservation Scientist',
-                'Climate Policy Analyst'
-            ]
-        },
-        'Cognitive Science': {
-            "majors": ['Cognitive Science', 'Neuroscience', 'Computer Science'],
-            "careers": [
-                'Cognitive Science Researcher',
-                'UX Researcher',
-                'Neural Data Analyst',
-                'Laboratory Research Assistant'
-            ]
-        },
-        'Computational Science': {
-            "majors": ['Computational Science', 'Applied Mathematics', 'Computer Science'],
-            "careers": [
-                'Simulation Scientist',
-                'Simulation Analyst',
-                'Scientific Software Developer',
-                'Data Scientist'
-            ]
-        },
-        'STEM / General Science': {
-            "majors": ['General Science', 'Liberal Arts and Sciences', 'Undeclared STEM'],
-            "careers": [
-                'Exploratory Data Analyst',
-                'Laboratory Research Assistant',
-                'Science Communications Specialist',
-                'Biological Technician'
-            ]
-        },
-        'Nuclear Engineering': {
-            "majors": ['Nuclear Engineering', 'Engineering Physics', 'Physics'],
-            "careers": [
-                'Nuclear Engineer',
-                'Reactor Engineer',
-                'Radiation Protection Engineer',
-                'Nuclear Science Researcher'
-            ]
-        },
-        'Systems Engineering': {
-            "majors": ['Systems Engineering', 'Industrial Engineering', 'Electrical Engineering'],
-            "careers": [
-                'Systems Engineer',
-                'Business Systems Analyst',
-                'Integration Engineer',
-                'Industrial Engineer'
-            ]
-        },
-        'Engineering Physics': {
-            "majors": ['Engineering Physics', 'Applied Physics', 'Physics'],
-            "careers": [
-                'Experimental Systems Engineer',
-                'Applied Physicist',
-                'Instrumentation Engineer',
-                'Photonics Engineer'
-            ]
-        },
-        'Information Systems': {
-            "majors": ['Information Systems', 'Management Information Systems', 'Computer Science'],
-            "careers": [
-                'Business Systems Analyst',
-                'IT Business Analyst',
-                'MIS Analyst',
-                'IT Systems Administrator'
-            ]
-        },
-        'Management Information Systems': {
-            "majors": ['Management Information Systems', 'Information Systems', 'Business Analytics'],
-            "careers": [
-                'MIS Analyst',
-                'IT Project Analyst',
-                'Business Systems Analyst',
-                'Business Intelligence Analyst'
-            ]
-        },
-        'Molecular Biology': {
-            "majors": ['Molecular Biology', 'Biology', 'Biochemistry'],
-            "careers": [
-                'Molecular Biologist',
-                'Laboratory Research Assistant',
-                'Preclinical Research Assistant',
-                'Cell Biologist'
-            ]
-        },
-        'Meteorology / Atmospheric Science': {
-            "majors": ['Meteorology', 'Atmospheric Science', 'Climate Science'],
-            "careers": [
-                'Meteorologist',
-                'Atmospheric Scientist',
-                'Broadcast Meteorology Analyst',
-                'Aviation Weather Specialist'
-            ]
-        },
-        'Oceanography': {
-            "majors": ['Oceanography', 'Marine Science', 'Earth Science'],
-            "careers": [
-                'Oceanographer',
-                'Marine Biologist',
-                'Coastal Ocean Observer',
-                'Physical Oceanography Analyst'
-            ]
-        },
-        'Agricultural Science': {
-            "majors": ['Agricultural Science', 'Plant Science', 'Food Science'],
-            "careers": [
-                'Soil Scientist',
-                'Agronomist',
-                'Plant Breeding Assistant',
-                'Agricultural Data Specialist'
-            ]
-        },
-        'Food Science': {
-            "majors": ['Food Science', 'Chemistry', 'Agricultural Science'],
-            "careers": [
-                'Food Scientist',
-                'Food Safety Specialist',
-                'Biotech Product Development Associate',
-                'Sensory Scientist'
-            ]
-        },
-        'Architectural Engineering': {
-            "majors": ['Architectural Engineering', 'Civil Engineering', 'Architecture'],
-            "careers": [
-                'Architectural Engineer',
-                'Building Systems Engineer',
-                'Building Structural Designer',
-                'Civil Engineer'
-            ]
-        },
-        'Construction Management': {
-            "majors": ['Construction Management', 'Civil Engineering', 'Construction Engineering'],
-            "careers": [
-                'Construction Manager',
-                'Project Controls Analyst',
-                'Construction Engineer',
-                'Scheduler (Construction)'
-            ]
-        },
-        'Industrial Design': {
-            "majors": ['Industrial Design', 'Product Design', 'Mechanical Engineering'],
-            "careers": [
-                'Industrial Designer',
-                'Product Design Strategist',
-                'Hardware UX Designer',
-                'Ergonomics Designer'
-            ]
-        },
-        'Supply Chain Management': {
-            "majors": ['Supply Chain Management', 'Operations Management', 'Industrial Engineering'],
-            "careers": [
-                'Supply Chain Analyst',
-                'Logistics Analyst',
-                'Demand Planner',
-                'Operations Research Analyst'
-            ]
-        },
-        'Operations Management': {
-            "majors": ['Operations Management', 'Supply Chain Management', 'Business Analytics'],
-            "careers": [
-                'Operations Manager Track Analyst',
-                'Continuous Improvement Analyst',
-                'Service Operations Analyst',
-                'Business Operations Analyst'
-            ]
-        },
-        'Undecided STEM': {
-            "majors": ['Undeclared STEM', 'General Science', 'Exploratory STEM'],
-            "careers": [
-                'Exploratory Data Analyst',
-                'Laboratory Research Assistant',
-                'Technical Project Coordinator',
-                'Maker Space Technology Associate'
-            ]
-        },
+                "Astronomer",
+                "Astrophysicist",
+                "Observatory technician",
+                "Space scientist"
+            ]
+        },
+        "Earth Science": {
+            "majors": [
+                "Earth Science",
+                "Geology",
+                "Environmental Science"
+            ],
+            "careers": [
+                "Geoscientist",
+                "Hydrologist",
+                "Environmental geologist",
+                "Earth science researcher"
+            ]
+        },
+        "Biochemistry": {
+            "majors": [
+                "Biochemistry",
+                "Biology",
+                "Chemistry"
+            ],
+            "careers": [
+                "Biochemist",
+                "Lab researcher",
+                "Pharmaceutical scientist",
+                "Molecular biologist"
+            ]
+        },
+        "Health Science": {
+            "majors": [
+                "Health Science",
+                "Public Health",
+                "Biology"
+            ],
+            "careers": [
+                "Health scientist",
+                "Clinical research coordinator",
+                "Public health analyst",
+                "Healthcare administrator"
+            ]
+        },
+        "Environmental Studies / Sustainability": {
+            "majors": [
+                "Environmental Studies",
+                "Sustainability",
+                "Environmental Science"
+            ],
+            "careers": [
+                "Sustainability specialist",
+                "Environmental planner",
+                "Conservation analyst",
+                "Climate policy assistant"
+            ]
+        },
+        "Cognitive Science": {
+            "majors": [
+                "Cognitive Science",
+                "Neuroscience",
+                "Computer Science"
+            ],
+            "careers": [
+                "Cognitive scientist",
+                "UX researcher",
+                "Computational neuroscientist",
+                "Research assistant"
+            ]
+        },
+        "Computational Science": {
+            "majors": [
+                "Computational Science",
+                "Applied Mathematics",
+                "Computer Science"
+            ],
+            "careers": [
+                "Computational scientist",
+                "Simulation analyst",
+                "Scientific programmer",
+                "Data scientist"
+            ]
+        },
+        "STEM / General Science": {
+            "majors": [
+                "General Science",
+                "Liberal Arts and Sciences",
+                "Undeclared STEM"
+            ],
+            "careers": [
+                "STEM explorer",
+                "Research assistant",
+                "Science communicator",
+                "Laboratory technician"
+            ]
+        },
+
+        "Nuclear Engineering": {
+            "majors": ["Nuclear Engineering", "Engineering Physics", "Physics"],
+            "careers": ["Nuclear Engineer", "Reactor Engineer", "Radiation Protection Specialist"]
+        },
+        "Systems Engineering": {
+            "majors": ["Systems Engineering", "Industrial Engineering", "Electrical Engineering"],
+            "careers": ["Systems Engineer", "Systems Analyst", "Integration Engineer"]
+        },
+        "Engineering Physics": {
+            "majors": ["Engineering Physics", "Applied Physics", "Physics"],
+            "careers": ["Engineering Physicist", "Applied Physicist", "R&D Engineer"]
+        },
+        "Information Systems": {
+            "majors": ["Information Systems", "Management Information Systems", "Computer Science"],
+            "careers": ["Systems Analyst", "IT Consultant", "Business Systems Analyst"]
+        },
+        "Management Information Systems": {
+            "majors": ["Management Information Systems", "Information Systems", "Business Analytics"],
+            "careers": ["MIS Analyst", "IT Manager pathway", "Business Technology Analyst"]
+        },
+        "Molecular Biology": {
+            "majors": ["Molecular Biology", "Biology", "Biochemistry"],
+            "careers": ["Molecular Biologist", "Lab Researcher", "Biotech Research Assistant"]
+        },
+        "Meteorology / Atmospheric Science": {
+            "majors": ["Meteorology", "Atmospheric Science", "Climate Science"],
+            "careers": ["Meteorologist", "Atmospheric Scientist", "Weather Analyst"]
+        },
+        "Oceanography": {
+            "majors": ["Oceanography", "Marine Science", "Earth Science"],
+            "careers": ["Oceanographer", "Marine Scientist", "Coastal Researcher"]
+        },
+        "Agricultural Science": {
+            "majors": ["Agricultural Science", "Plant Science", "Food Science"],
+            "careers": ["Agricultural Scientist", "Agronomist", "Crop Specialist"]
+        },
+        "Food Science": {
+            "majors": ["Food Science", "Chemistry", "Agricultural Science"],
+            "careers": ["Food Scientist", "Quality Assurance Specialist", "Product Development Scientist"]
+        },
+        "Architectural Engineering": {
+            "majors": ["Architectural Engineering", "Civil Engineering", "Architecture"],
+            "careers": ["Architectural Engineer", "Building Systems Engineer", "Structural Designer"]
+        },
+        "Construction Management": {
+            "majors": ["Construction Management", "Civil Engineering", "Construction Engineering"],
+            "careers": ["Construction Manager", "Project Manager", "Site Superintendent"]
+        },
+        "Industrial Design": {
+            "majors": ["Industrial Design", "Product Design", "Mechanical Engineering"],
+            "careers": ["Industrial Designer", "Product Designer", "UX Hardware Designer"]
+        },
+        "Supply Chain Management": {
+            "majors": ["Supply Chain Management", "Operations Management", "Industrial Engineering"],
+            "careers": ["Supply Chain Analyst", "Logistics Coordinator", "Operations Planner"]
+        },
+        "Operations Management": {
+            "majors": ["Operations Management", "Supply Chain Management", "Business Analytics"],
+            "careers": ["Operations Manager", "Process Improvement Analyst", "Operations Analyst"]
+        },
+        "Undecided STEM": {
+            "majors": [
+                "Undeclared STEM",
+                "General Science",
+                "Exploratory STEM"
+            ],
+            "careers": [
+                "STEM explorer",
+                "Research assistant",
+                "Technical analyst"
+            ]
+        }
     }
 
     # ========================================================
@@ -34431,10 +33739,6 @@ elif page == "Opportunities":
 
     else:
 
-        saved_opportunity_catalog_ids = user_saved_opportunity_catalog_ids(
-            user_sub
-        )
-
         # Migrate / clear obsolete per-category multiselect keys from the prior UI.
         _obsolete_opp_filter_keys = [
             "opportunity_filter_research_areas",
@@ -35090,7 +34394,6 @@ elif page == "Opportunities":
         else:
 
             search_results = []
-            search_hidden_saved = 0
 
             for _, opportunity in opportunities.iterrows():
 
@@ -35193,11 +34496,6 @@ elif page == "Opportunities":
 
                     score = 50
                     reasons = []
-
-                catalog_id = opportunity_catalog_id(opportunity)
-                if catalog_id and catalog_id in saved_opportunity_catalog_ids:
-                    search_hidden_saved += 1
-                    continue
 
                 search_results.append(
                     (
@@ -35333,18 +34631,11 @@ elif page == "Opportunities":
 
             if not search_results:
 
-                if search_hidden_saved > 0:
-                    st.info(
-                        "You've already saved every opportunity that matches these filters. "
-                        "Open **My Applications** to review them, or change your filters "
-                        "to discover more programs."
-                    )
-                else:
-                    st.warning(
-                        "No opportunities matched every filter. Filters across categories "
-                        "are combined with AND, so try clearing Opportunity Type, Selectivity, "
-                        "or STEM Area and search again."
-                    )
+                st.warning(
+                    "No opportunities matched every filter. Filters across categories "
+                    "are combined with AND, so try clearing Opportunity Type, Selectivity, "
+                    "or STEM Area and search again."
+                )
 
             for (
                 result_index,
@@ -35445,7 +34736,6 @@ elif page == "Opportunities":
                                 st.success(
                                     "Saved to My Applications."
                                 )
-                                st.rerun()
 
                     with action2:
 
@@ -35503,7 +34793,6 @@ elif page == "Opportunities":
         )
 
         recommended_results = []
-        recommended_hidden_saved = 0
 
         for _, recommended_opportunity in opportunities.iterrows():
 
@@ -35555,11 +34844,6 @@ elif page == "Opportunities":
                 recommended_score = 50
                 recommended_reasons = []
 
-            catalog_id = opportunity_catalog_id(recommended_opportunity)
-            if catalog_id and catalog_id in saved_opportunity_catalog_ids:
-                recommended_hidden_saved += 1
-                continue
-
             recommended_results.append(
                 (
                     recommended_score,
@@ -35576,17 +34860,10 @@ elif page == "Opportunities":
 
         if not recommended_results:
 
-            if recommended_hidden_saved > 0:
-                st.info(
-                    "You've already saved your personalized opportunity recommendations. "
-                    "Open **My Applications** to manage them, or explore new programs "
-                    "with Search & Filters above."
-                )
-            else:
-                st.info(
-                    "No personalized recommendations are available yet. "
-                    "Try updating your profile interests."
-                )
+            st.info(
+                "No personalized recommendations are available yet. "
+                "Try updating your profile interests."
+            )
 
         for (
             rec_index,
@@ -35683,7 +34960,6 @@ elif page == "Opportunities":
                             st.success(
                                 "Saved to My Applications."
                             )
-                            st.rerun()
 
                 with rec_action2:
 
@@ -37524,16 +36800,7 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
             "Colleges are scored by how well they match your STEM interests "
             "and preferences, then labeled **Reach**, **Target**, or **Safety** "
             "using selectivity stars. Browse the full catalog with search and filters. "
-            "We show your top matches first, then you can load more. "
-            "Colleges you already saved appear under **Favorite Colleges**."
-        )
-
-        favorite_college_catalog_ids = user_favorite_college_catalog_ids(
-            user_sub,
-            college_catalog,
-        )
-        college_unitid_by_name = _college_unitid_by_name_index(
-            college_catalog
+            "We show your top matches first, then you can load more."
         )
 
         def college_has_intended_field(result):
@@ -37640,7 +36907,6 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
                                 '✓ College saved to My Favorite Colleges.'
                                 '</div>'
                             )
-                            st.rerun()
 
                 with favorite_action2:
 
@@ -37819,18 +37085,7 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
                 return False
             return True
 
-        filtered_matches = [item for item in annotated if passes_filters(item)]
-        filtered = []
-        college_hidden_favorited = 0
-        for item in filtered_matches:
-            catalog_id = college_catalog_id(
-                item.get("college") or {},
-                unitid_by_name=college_unitid_by_name,
-            )
-            if catalog_id and catalog_id in favorite_college_catalog_ids:
-                college_hidden_favorited += 1
-                continue
-            filtered.append(item)
+        filtered = [item for item in annotated if passes_filters(item)]
         filtered.sort(
             key=lambda item: (
                 0 if item.get("strong_fit") else 1,
@@ -37853,17 +37108,10 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
         visible = filtered[:visible_count]
 
         if not filtered:
-            if college_hidden_favorited > 0:
-                st.info(
-                    "You've already saved every college that matches these filters. "
-                    "Open **Favorite Colleges** to review them, or clear a filter "
-                    "to see more of the catalog."
-                )
-            else:
-                st.info(
-                    "No colleges match your current filters. Clear a filter or broaden "
-                    "distance/cost settings to see more of the catalog."
-                )
+            st.info(
+                "No colleges match your current filters. Clear a filter or broaden "
+                "distance/cost settings to see more of the catalog."
+            )
         else:
             for rank, result in enumerate(visible, start=1):
                 render_college_match_card(
