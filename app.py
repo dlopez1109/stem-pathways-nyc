@@ -26074,11 +26074,25 @@ def notify_student_data_error(message=None):
     )
 
 
-def require_user_sub(user_sub):
+_AUTH_UUID_RE = re.compile(
+    r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
+    r"[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+)
 
-    return bool(
-        str(user_sub or "").strip()
-    )
+
+def is_canonical_auth_uuid(value):
+    """True when value looks like a Supabase Auth user.id UUID."""
+
+    return bool(_AUTH_UUID_RE.fullmatch(str(value or "").strip()))
+
+
+def require_user_sub(user_sub):
+    """
+    Ownership writes/reads require the canonical Supabase Auth user.id.
+    Google provider subjects, identity_id, and emails are never valid owners.
+    """
+
+    return is_canonical_auth_uuid(user_sub)
 
 
 def log_supabase_exception(action):
@@ -26168,11 +26182,15 @@ def supabase_upsert(
 
 
 def get_google_user():
+    """
+    Read Streamlit Google OIDC identity claims for display / bridging only.
+    The Google provider subject must never own student rows.
+    """
 
     try:
-        user_sub = st.user.get("sub")
+        provider_sub = st.user.get("sub")
     except Exception:
-        user_sub = None
+        provider_sub = None
 
     try:
         email = st.user.get("email")
@@ -26185,10 +26203,43 @@ def get_google_user():
         google_name = None
 
     return (
-        str(user_sub) if user_sub else None,
+        str(provider_sub) if provider_sub else None,
         str(email) if email else "",
         str(google_name) if google_name else ""
     )
+
+
+def _get_streamlit_google_id_token():
+    """
+    Return the Google OIDC ID token when Streamlit exposes it.
+    Requires [auth] expose_tokens including \"id\" in secrets.toml.
+    Never log or display the token value.
+    """
+
+    try:
+        tokens = getattr(st.user, "tokens", None)
+    except Exception:
+        tokens = None
+
+    if tokens is None:
+        return None
+
+    raw = None
+    try:
+        if hasattr(tokens, "get"):
+            raw = tokens.get("id")
+        if not raw:
+            raw = getattr(tokens, "id", None)
+        if not raw:
+            try:
+                raw = tokens["id"]
+            except Exception:
+                raw = None
+    except Exception:
+        raw = None
+
+    text = str(raw or "").strip()
+    return text or None
 
 
 # ============================================================
@@ -26196,11 +26247,14 @@ def get_google_user():
 # - Uses publishable key only (never service_key)
 # - Per-Streamlit-session client + tokens (never cache_resource)
 # - Passwords are never stored, logged, or displayed by this app
+# - Google sign-in bridges to the same Supabase Auth user.id
 # ============================================================
 
 SP_EMAIL_AUTH_STATE_KEY = "sp_email_auth"
+SP_GOOGLE_AUTH_BRIDGE_KEY = "sp_google_auth_bridge"
 SP_APP_USER_CACHE_KEY = "_sp_app_user_cache"
 SP_APP_USER_RUN_KEY = "_sp_app_user_run_id"
+SP_AUTH_BRIDGE_ERROR_KEY = "_sp_auth_bridge_error"
 
 AUTH_MSG_INVALID = (
     "Those sign-in details did not work. "
@@ -26257,8 +26311,14 @@ def create_supabase_auth_client():
 
 def clear_email_auth_session():
     st.session_state.pop(SP_EMAIL_AUTH_STATE_KEY, None)
+    st.session_state.pop(SP_GOOGLE_AUTH_BRIDGE_KEY, None)
+    st.session_state.pop(SP_AUTH_BRIDGE_ERROR_KEY, None)
     st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
     st.session_state.pop(SP_APP_USER_RUN_KEY, None)
+    # Drop per-user approved identity-link caches.
+    for key in list(st.session_state.keys()):
+        if str(key).startswith("_sp_id_links_"):
+            st.session_state.pop(key, None)
 
 
 def _current_script_run_id():
@@ -26584,11 +26644,214 @@ def restore_email_auth_user():
         return None
 
 
+def _google_identity_provider_subs_from_auth_user(user):
+    """
+    Extract Google provider subject values from a Supabase Auth user.
+    Matches Streamlit st.user.sub / Google OIDC sub — never email.
+    Does not use identity_id (Supabase identity row UUID) as a Google sub.
+    """
+
+    subs = set()
+    identities = getattr(user, "identities", None) or []
+
+    for identity in identities:
+        provider = str(getattr(identity, "provider", "") or "").strip().lower()
+        if provider != "google":
+            continue
+
+        # For Google, identity.id is typically the provider subject.
+        provider_user_id = str(getattr(identity, "id", "") or "").strip()
+        if provider_user_id and not is_canonical_auth_uuid(provider_user_id):
+            subs.add(provider_user_id)
+        elif provider_user_id:
+            # Rare: still keep UUID-shaped provider ids if Google ever emits one.
+            subs.add(provider_user_id)
+
+        identity_data = getattr(identity, "identity_data", None) or {}
+        if isinstance(identity_data, dict):
+            for key in ("sub", "provider_id"):
+                value = str(identity_data.get(key) or "").strip()
+                if value:
+                    subs.add(value)
+
+    return sorted(subs)
+
+
+@st.cache_data(show_spinner=False, ttl=120)
+def map_google_provider_sub_to_auth_user_id():
+    """
+    Build Google provider-subject → Auth user.id map from Auth Admin.
+    Lookup is by Google identity only — never by email.
+    """
+
+    users, error = list_all_auth_users_admin()
+    if error:
+        return {}
+
+    mapping = {}
+    for row in users or []:
+        auth_id = str(row.get("user_sub") or "").strip()
+        if not is_canonical_auth_uuid(auth_id):
+            continue
+        for google_sub in row.get("google_provider_subs") or []:
+            google_sub = str(google_sub or "").strip()
+            if not google_sub:
+                continue
+            # First Auth user wins; do not overwrite with email-based guesses.
+            mapping.setdefault(google_sub, auth_id)
+
+    return mapping
+
+
+def lookup_auth_user_id_by_google_provider_sub(google_provider_sub):
+    """Resolve Auth UUID from Google provider subject without using email."""
+
+    google_provider_sub = str(google_provider_sub or "").strip()
+    if not google_provider_sub:
+        return None
+
+    mapping = map_google_provider_sub_to_auth_user_id()
+    auth_id = str(mapping.get(google_provider_sub) or "").strip()
+    if is_canonical_auth_uuid(auth_id):
+        return auth_id
+    return None
+
+
+def _store_google_auth_bridge(google_provider_sub, user_id, email=""):
+    google_provider_sub = str(google_provider_sub or "").strip()
+    user_id = str(user_id or "").strip()
+    if not google_provider_sub or not is_canonical_auth_uuid(user_id):
+        return False
+
+    st.session_state[SP_GOOGLE_AUTH_BRIDGE_KEY] = {
+        "google_provider_sub": google_provider_sub,
+        "user_id": user_id,
+        "email": str(email or ""),
+    }
+    st.session_state.pop(SP_AUTH_BRIDGE_ERROR_KEY, None)
+    st.session_state.pop(SP_APP_USER_CACHE_KEY, None)
+    st.session_state.pop(SP_APP_USER_RUN_KEY, None)
+    return True
+
+
+def resolve_google_supabase_auth_user(google_provider_sub, email="", name=""):
+    """
+    Bridge Streamlit Google OIDC to the canonical Supabase Auth user.id.
+
+    Order:
+    1) Cached bridge for this Google provider subject
+    2) Existing Supabase session (from prior ID-token exchange)
+    3) sign_in_with_id_token when Streamlit exposes the Google ID token
+    4) Auth Admin identity lookup by Google provider subject (never email)
+
+    Never returns the Google provider subject as user_id / owner.
+    """
+
+    google_provider_sub = str(google_provider_sub or "").strip()
+    if not google_provider_sub:
+        return None
+
+    bridged = st.session_state.get(SP_GOOGLE_AUTH_BRIDGE_KEY)
+    if (
+        isinstance(bridged, dict)
+        and str(bridged.get("google_provider_sub") or "").strip()
+        == google_provider_sub
+        and is_canonical_auth_uuid(bridged.get("user_id"))
+    ):
+        return {
+            "user_id": str(bridged["user_id"]),
+            "email": str(bridged.get("email") or email or ""),
+            "display_name": name or "",
+            "provider": "google",
+            "google_provider_sub": google_provider_sub,
+        }
+
+    # Prefer an already-established Supabase session (ID-token exchange).
+    email_user = restore_email_auth_user()
+    if email_user and is_canonical_auth_uuid(email_user.get("user_id")):
+        # Only reuse when this session belongs to the same Google identity,
+        # or when Admin identity map confirms the Auth UUID for this Google sub.
+        mapped_id = lookup_auth_user_id_by_google_provider_sub(google_provider_sub)
+        session_id = str(email_user["user_id"])
+        if mapped_id and mapped_id == session_id:
+            _store_google_auth_bridge(
+                google_provider_sub,
+                session_id,
+                email_user.get("email") or email,
+            )
+            return {
+                "user_id": session_id,
+                "email": str(email_user.get("email") or email or ""),
+                "display_name": name or "",
+                "provider": "google",
+                "google_provider_sub": google_provider_sub,
+            }
+
+    id_token = _get_streamlit_google_id_token()
+    if id_token and supabase_auth_configured():
+        try:
+            client = create_supabase_auth_client()
+            response = client.auth.sign_in_with_id_token(
+                {
+                    "provider": "google",
+                    "token": id_token,
+                }
+            )
+            user = getattr(response, "user", None)
+            session = getattr(response, "session", None)
+            if (
+                user is not None
+                and session is not None
+                and is_canonical_auth_uuid(getattr(user, "id", None))
+            ):
+                _store_email_auth_session(session, user)
+                user_email = str(getattr(user, "email", "") or email or "")
+                _store_google_auth_bridge(
+                    google_provider_sub,
+                    str(user.id),
+                    user_email,
+                )
+                # Identity map may be stale until Admin refresh.
+                try:
+                    map_google_provider_sub_to_auth_user_id.clear()
+                    list_all_auth_users_admin.clear()
+                except Exception:
+                    pass
+                return {
+                    "user_id": str(user.id),
+                    "email": user_email,
+                    "display_name": name or "",
+                    "provider": "google",
+                    "google_provider_sub": google_provider_sub,
+                }
+        except Exception as error:
+            log_auth_event("google_id_token_sign_in", error)
+
+    # Existing Auth users (already listed in Admin) via Google identity match.
+    mapped_id = lookup_auth_user_id_by_google_provider_sub(google_provider_sub)
+    if mapped_id:
+        _store_google_auth_bridge(google_provider_sub, mapped_id, email)
+        return {
+            "user_id": mapped_id,
+            "email": str(email or ""),
+            "display_name": name or "",
+            "provider": "google",
+            "google_provider_sub": google_provider_sub,
+        }
+
+    st.session_state[SP_AUTH_BRIDGE_ERROR_KEY] = (
+        "google_supabase_bridge_failed"
+    )
+    return None
+
+
 def get_app_user():
     """
     Resolve the active app user once per Streamlit rerun and reuse the result.
-    Google identity is preferred when present so existing Google user_sub
-    values and saved rows stay intact.
+
+    Canonical owner for every provider is Supabase Auth user.id (UUID).
+    Google provider subjects are kept only as google_provider_sub for bridging
+    / diagnostics and are never used as user_sub for new records.
     """
 
     run_id = _current_script_run_id()
@@ -26608,21 +26871,39 @@ def get_app_user():
         google_logged_in = False
 
     if google_logged_in:
-        user_sub, email, name = get_google_user()
-        if user_sub:
-            resolved = {
-                "user_sub": user_sub,
-                "email": email,
-                "display_name": name,
-                "provider": "google",
-            }
+        google_provider_sub, email, name = get_google_user()
+        if google_provider_sub:
+            bridged = resolve_google_supabase_auth_user(
+                google_provider_sub,
+                email=email,
+                name=name,
+            )
+            if bridged and is_canonical_auth_uuid(bridged.get("user_id")):
+                resolved = {
+                    "user_sub": str(bridged["user_id"]),
+                    "email": str(bridged.get("email") or email or ""),
+                    "display_name": str(bridged.get("display_name") or name or ""),
+                    "provider": "google",
+                    "google_provider_sub": google_provider_sub,
+                }
+            else:
+                # Signed in with Google OIDC, but no canonical Auth UUID yet.
+                # Do not fall back to the Google provider subject as owner.
+                resolved = {
+                    "user_sub": None,
+                    "email": email,
+                    "display_name": name,
+                    "provider": "google",
+                    "google_provider_sub": google_provider_sub,
+                    "auth_bridge_error": True,
+                }
 
     if resolved is None:
         email_user = restore_email_auth_user()
-        if email_user:
+        if email_user and is_canonical_auth_uuid(email_user.get("user_id")):
             resolved = {
-                "user_sub": email_user["user_id"],
-                "email": email_user["email"],
+                "user_sub": str(email_user["user_id"]),
+                "email": str(email_user.get("email") or ""),
                 "display_name": "",
                 "provider": "email",
             }
@@ -26635,7 +26916,66 @@ def get_app_user():
 
 
 def is_app_authenticated():
-    return get_app_user() is not None
+    user = get_app_user()
+    return bool(user and is_canonical_auth_uuid(user.get("user_sub")))
+
+
+def load_approved_identity_link_subs(auth_user_id):
+    """
+    Approved account_identity_links google_user_sub values for this Auth UUID.
+    Used for READ joins only. Never auto-creates links from email matches.
+    """
+
+    auth_user_id = str(auth_user_id or "").strip()
+    if not is_canonical_auth_uuid(auth_user_id) or not supabase_connected:
+        return []
+
+    cache_key = f"_sp_id_links_{auth_user_id}"
+    if cache_key in st.session_state:
+        cached = st.session_state.get(cache_key)
+        if isinstance(cached, list):
+            return cached
+
+    links = []
+    try:
+        response = (
+            supabase
+            .table("account_identity_links")
+            .select("google_user_sub,status")
+            .eq("auth_user_id", auth_user_id)
+            .eq("status", "approved")
+            .execute()
+        )
+        for row in response.data or []:
+            if not isinstance(row, dict):
+                continue
+            google_sub = str(row.get("google_user_sub") or "").strip()
+            if google_sub:
+                links.append(google_sub)
+    except Exception:
+        log_supabase_exception("load_approved_identity_link_subs")
+        links = []
+
+    st.session_state[cache_key] = links
+    return links
+
+
+def ownership_read_keys(auth_user_id):
+    """
+    Keys to try when loading student rows for an Auth UUID.
+    Canonical Auth UUID first; approved legacy Google keys next.
+    Writes must still use only the Auth UUID.
+    """
+
+    auth_user_id = str(auth_user_id or "").strip()
+    keys = []
+    if is_canonical_auth_uuid(auth_user_id):
+        keys.append(auth_user_id)
+    for linked in load_approved_identity_link_subs(auth_user_id):
+        linked = str(linked or "").strip()
+        if linked and linked not in keys:
+            keys.append(linked)
+    return keys
 
 
 def sign_out_current_user():
@@ -26690,20 +27030,22 @@ def load_profile(user_sub):
         return None
 
     try:
+        row = None
+        for owner_key in ownership_read_keys(user_sub):
+            response = (
+                supabase
+                .table("student_profiles")
+                .select("*")
+                .eq("user_sub", owner_key)
+                .limit(1)
+                .execute()
+            )
+            if response.data:
+                row = response.data[0]
+                break
 
-        response = (
-            supabase
-            .table("student_profiles")
-            .select("*")
-            .eq("user_sub", user_sub)
-            .limit(1)
-            .execute()
-        )
-
-        if not response.data:
+        if not row:
             return None
-
-        row = response.data[0]
 
         return {
             "id": row.get("id"),
@@ -26964,17 +27306,32 @@ def load_saved_opportunities(user_sub):
         return []
 
     try:
+        collected = []
+        seen_ids = set()
+        for owner_key in ownership_read_keys(user_sub):
+            response = (
+                supabase
+                .table("saved_opportunities")
+                .select("*")
+                .eq("user_sub", owner_key)
+                .order("saved_at", desc=True)
+                .execute()
+            )
+            for row in response.data or []:
+                if not isinstance(row, dict):
+                    continue
+                row_id = row.get("id")
+                marker = row_id if row_id is not None else id(row)
+                if marker in seen_ids:
+                    continue
+                seen_ids.add(marker)
+                collected.append(row)
 
-        response = (
-            supabase
-            .table("saved_opportunities")
-            .select("*")
-            .eq("user_sub", user_sub)
-            .order("saved_at", desc=True)
-            .execute()
+        collected.sort(
+            key=lambda row: str(row.get("saved_at") or ""),
+            reverse=True,
         )
-
-        return response.data or []
+        return collected
 
     except Exception:
 
@@ -26988,6 +27345,36 @@ def load_saved_opportunities(user_sub):
         )
 
         return []
+
+
+def student_row_owner_for_mutation(table_name, row_id, auth_user_id):
+    """
+    Return the row's user_sub when it is owned by this Auth UUID or an
+    approved linked legacy Google key. Never matches by email.
+    """
+
+    if not row_id or not require_user_sub(auth_user_id) or not supabase_connected:
+        return None
+
+    allowed = set(ownership_read_keys(auth_user_id))
+    try:
+        response = (
+            supabase
+            .table(table_name)
+            .select("id,user_sub")
+            .eq("id", row_id)
+            .limit(1)
+            .execute()
+        )
+        if not response.data:
+            return None
+        owner = str(response.data[0].get("user_sub") or "").strip()
+        if owner in allowed:
+            return owner
+        return None
+    except Exception:
+        log_supabase_exception(f"student_row_owner_for_mutation:{table_name}")
+        return None
 
 
 def save_opportunity(user_sub, opportunity_name):
@@ -27024,19 +27411,20 @@ def save_opportunity(user_sub, opportunity_name):
     }
 
     try:
-
-        existing = (
-            supabase
-            .table("saved_opportunities")
-            .select("id")
-            .eq("user_sub", user_sub)
-            .eq("opportunity_name", opportunity_name)
-            .limit(1)
-            .execute()
-        )
-
-        if existing.data:
-            return True
+        # Avoid creating a second ownership key when an approved legacy row
+        # already holds this program. New inserts still use Auth UUID only.
+        for owner_key in ownership_read_keys(user_sub):
+            existing = (
+                supabase
+                .table("saved_opportunities")
+                .select("id")
+                .eq("user_sub", owner_key)
+                .eq("opportunity_name", opportunity_name)
+                .limit(1)
+                .execute()
+            )
+            if existing.data:
+                return True
 
         try:
 
@@ -27115,6 +27503,14 @@ def update_saved_opportunity(
         return False
 
     try:
+        row_owner = student_row_owner_for_mutation(
+            "saved_opportunities",
+            saved_id,
+            user_sub,
+        )
+        if not row_owner:
+            notify_student_data_error()
+            return False
 
         updated = (
             supabase
@@ -27132,7 +27528,7 @@ def update_saved_opportunity(
                     ).isoformat()
             })
             .eq("id", saved_id)
-            .eq("user_sub", user_sub)
+            .eq("user_sub", row_owner)
             .execute()
         )
 
@@ -27162,13 +27558,21 @@ def delete_saved_opportunity(user_sub, saved_id):
         return False
 
     try:
+        row_owner = student_row_owner_for_mutation(
+            "saved_opportunities",
+            saved_id,
+            user_sub,
+        )
+        if not row_owner:
+            notify_student_data_error()
+            return False
 
         deleted = (
             supabase
             .table("saved_opportunities")
             .delete()
             .eq("id", saved_id)
-            .eq("user_sub", user_sub)
+            .eq("user_sub", row_owner)
             .execute()
         )
 
@@ -27214,17 +27618,34 @@ def load_favorite_colleges(user_sub):
         return []
 
     try:
+        collected = []
+        seen_ids = set()
+        for owner_key in ownership_read_keys(user_sub):
+            response = (
+                supabase
+                .table("favorite_colleges")
+                .select("*")
+                .eq("user_sub", owner_key)
+                .order("rank_order")
+                .execute()
+            )
+            for row in response.data or []:
+                if not isinstance(row, dict):
+                    continue
+                row_id = row.get("id")
+                marker = row_id if row_id is not None else id(row)
+                if marker in seen_ids:
+                    continue
+                seen_ids.add(marker)
+                collected.append(row)
 
-        response = (
-            supabase
-            .table("favorite_colleges")
-            .select("*")
-            .eq("user_sub", user_sub)
-            .order("rank_order")
-            .execute()
+        collected.sort(
+            key=lambda row: (
+                safe_int(row.get("rank_order", 0), 0),
+                str(row.get("college_name") or "").lower(),
+            )
         )
-
-        return response.data or []
+        return collected
 
     except Exception:
 
@@ -27253,19 +27674,18 @@ def add_favorite_college(
         return False
 
     try:
-
-        existing = (
-            supabase
-            .table("favorite_colleges")
-            .select("id")
-            .eq("user_sub", user_sub)
-            .eq("college_name", college_name)
-            .limit(1)
-            .execute()
-        )
-
-        if existing.data:
-            return True
+        for owner_key in ownership_read_keys(user_sub):
+            existing = (
+                supabase
+                .table("favorite_colleges")
+                .select("id")
+                .eq("user_sub", owner_key)
+                .eq("college_name", college_name)
+                .limit(1)
+                .execute()
+            )
+            if existing.data:
+                return True
 
         current = load_favorite_colleges(
             user_sub
@@ -27372,6 +27792,14 @@ def update_favorite_college_notes(
         return False
 
     try:
+        row_owner = student_row_owner_for_mutation(
+            "favorite_colleges",
+            favorite_id,
+            user_sub,
+        )
+        if not row_owner:
+            notify_student_data_error()
+            return False
 
         updated = (
             supabase
@@ -27386,7 +27814,7 @@ def update_favorite_college_notes(
                     ).isoformat()
             })
             .eq("id", favorite_id)
-            .eq("user_sub", user_sub)
+            .eq("user_sub", row_owner)
             .execute()
         )
 
@@ -27469,6 +27897,12 @@ def reorder_favorite_colleges(
     ]
 
     try:
+        current_owner = str(current_item.get("user_sub") or "").strip()
+        swap_owner = str(swap_item.get("user_sub") or "").strip()
+        allowed = set(ownership_read_keys(user_sub))
+        if current_owner not in allowed or swap_owner not in allowed:
+            notify_student_data_error()
+            return False
 
         first_update = (
             supabase
@@ -27490,7 +27924,7 @@ def reorder_favorite_colleges(
             )
             .eq(
                 "user_sub",
-                user_sub
+                current_owner
             )
             .execute()
         )
@@ -27515,7 +27949,7 @@ def reorder_favorite_colleges(
             )
             .eq(
                 "user_sub",
-                user_sub
+                swap_owner
             )
             .execute()
         )
@@ -27553,13 +27987,21 @@ def remove_favorite_college(
         return False
 
     try:
+        row_owner = student_row_owner_for_mutation(
+            "favorite_colleges",
+            favorite_id,
+            user_sub,
+        )
+        if not row_owner:
+            notify_student_data_error()
+            return False
 
         deleted = (
             supabase
             .table("favorite_colleges")
             .delete()
             .eq("id", favorite_id)
-            .eq("user_sub", user_sub)
+            .eq("user_sub", row_owner)
             .execute()
         )
 
@@ -27582,6 +28024,7 @@ def remove_favorite_college(
                 "rank_order"
             ) != index:
 
+                item_owner = str(item.get("user_sub") or row_owner).strip()
                 ranked = (
                     supabase
                     .table("favorite_colleges")
@@ -27600,7 +28043,7 @@ def remove_favorite_college(
                     )
                     .eq(
                         "user_sub",
-                        user_sub
+                        item_owner
                     )
                     .execute()
                 )
@@ -27636,19 +28079,17 @@ def load_user_feedback(user_sub):
         return None
 
     try:
-
-        response = (
-            supabase
-            .table("user_feedback")
-            .select("*")
-            .eq("user_sub", user_sub)
-            .limit(1)
-            .execute()
-        )
-
-        if response.data:
-            return response.data[0]
-
+        for owner_key in ownership_read_keys(user_sub):
+            response = (
+                supabase
+                .table("user_feedback")
+                .select("*")
+                .eq("user_sub", owner_key)
+                .limit(1)
+                .execute()
+            )
+            if response.data:
+                return response.data[0]
         return None
 
     except Exception:
@@ -28012,6 +28453,10 @@ def clear_admin_accounts_caches():
 
     load_admin_metrics.clear()
     list_all_auth_users_admin.clear()
+    try:
+        map_google_provider_sub_to_auth_user_id.clear()
+    except Exception:
+        pass
 
 
 def admin_browser_timezone():
@@ -28140,6 +28585,9 @@ def list_all_auth_users_admin():
                         "email": str(getattr(user, "email", "") or "").strip(),
                         "created_at": created_at,
                         "display_name": _admin_safe_display_name(metadata),
+                        "google_provider_subs": _google_identity_provider_subs_from_auth_user(
+                            user
+                        ),
                     }
                 )
 
@@ -28414,6 +28862,117 @@ def build_admin_student_pathways(auth_users, admin_data):
     )
 
     return pathways
+
+
+def build_admin_unmatched_legacy_ownership_report(auth_users, admin_data):
+    """
+    Administrator-only report of student rows whose owner IDs are not the
+    Auth UUID of any listed account and are not covered by an approved
+    account_identity_links row.
+
+    Never rewrites or deletes student data. Never matches by email.
+    """
+
+    auth_ids = {
+        str(user.get("user_sub") or "").strip()
+        for user in (auth_users or [])
+        if is_canonical_auth_uuid(user.get("user_sub"))
+    }
+
+    # Google provider subjects already attached to Auth users (identity map).
+    known_google_subs = set()
+    for user in auth_users or []:
+        for google_sub in user.get("google_provider_subs") or []:
+            google_sub = str(google_sub or "").strip()
+            if google_sub:
+                known_google_subs.add(google_sub)
+
+    linked_google_subs = set()
+    linked_auth_ids = set()
+    for link in admin_data.get("identity_links") or []:
+        if not isinstance(link, dict):
+            continue
+        if str(link.get("status") or "").strip().lower() != "approved":
+            continue
+        auth_id = str(link.get("auth_user_id") or "").strip()
+        google_sub = str(link.get("google_user_sub") or "").strip()
+        if is_canonical_auth_uuid(auth_id):
+            linked_auth_ids.add(auth_id)
+        if google_sub:
+            linked_google_subs.add(google_sub)
+
+    covered_owners = set(auth_ids) | linked_google_subs | linked_auth_ids
+
+    table_specs = (
+        (
+            "student_profiles",
+            admin_data.get("profiles") or [],
+            admin_data.get("profile_owner_column")
+            or admin_detect_owner_id_column(admin_data.get("profiles") or [])
+            or "user_sub",
+        ),
+        (
+            "saved_opportunities",
+            admin_data.get("saved_opportunities") or [],
+            admin_data.get("saved_owner_column")
+            or admin_detect_owner_id_column(
+                admin_data.get("saved_opportunities") or []
+            )
+            or "user_sub",
+        ),
+        (
+            "favorite_colleges",
+            admin_data.get("favorite_colleges") or [],
+            admin_data.get("favorite_owner_column")
+            or admin_detect_owner_id_column(
+                admin_data.get("favorite_colleges") or []
+            )
+            or "user_sub",
+        ),
+        (
+            "user_feedback",
+            admin_data.get("feedback") or [],
+            admin_detect_owner_id_column(admin_data.get("feedback") or [])
+            or "user_sub",
+        ),
+    )
+
+    # owner_id -> aggregated row
+    by_owner = {}
+
+    for table_name, rows, owner_col in table_specs:
+        for row in rows or []:
+            if not isinstance(row, dict):
+                continue
+            owner_id = admin_row_owner_id(row, owner_col)
+            if not owner_id:
+                continue
+            if owner_id in covered_owners:
+                continue
+            # Owner matches a Google identity already on an Auth user but
+            # student rows were not joined via approved links — still report
+            # when the Auth UUID itself is not the row owner (legacy key).
+            entry = by_owner.setdefault(
+                owner_id,
+                {
+                    "owner_id": owner_id,
+                    "owner_preview": (
+                        f"{owner_id[:10]}…{owner_id[-4:]}"
+                        if len(owner_id) > 18
+                        else owner_id
+                    ),
+                    "looks_like_auth_uuid": is_canonical_auth_uuid(owner_id),
+                    "matches_known_google_identity": owner_id in known_google_subs,
+                    "tables": {},
+                    "row_count": 0,
+                },
+            )
+            entry["tables"][table_name] = entry["tables"].get(table_name, 0) + 1
+            entry["row_count"] += 1
+
+    report = list(by_owner.values())
+    report.sort(key=lambda item: (-int(item.get("row_count") or 0), item.get("owner_id") or ""))
+    return report
 
 
 
@@ -29066,12 +29625,30 @@ if not app_user:
 # app_user was resolved once above for this Streamlit rerun.
 # ============================================================
 
-if not app_user or not app_user.get("user_sub"):
+if not app_user or not is_canonical_auth_uuid(app_user.get("user_sub")):
 
-    st.error(
-        "Sign-in succeeded, but the app could not retrieve "
-        "your account identifier."
+    bridge_failed = bool(
+        isinstance(app_user, dict)
+        and (
+            app_user.get("auth_bridge_error")
+            or app_user.get("provider") == "google"
+        )
     )
+
+    if bridge_failed:
+        st.error(
+            "Google sign-in worked, but STEM Pathways NYC could not connect "
+            "it to your Supabase Auth account. Student data is only saved under "
+            "your Supabase account ID — not your Google provider ID. "
+            "Ask an administrator to enable Google ID token exposure "
+            "(auth.expose_tokens = [\"id\"]) and confirm Google is enabled "
+            "in Supabase Auth, then sign in again."
+        )
+    else:
+        st.error(
+            "Sign-in succeeded, but the app could not retrieve "
+            "your Supabase account identifier."
+        )
 
     if st.button(
         "Sign Out",
@@ -40282,6 +40859,60 @@ elif page == "Admin Dashboard":
                         + "".join(college_items)
                         + '</ul>'
                     )
+
+    unmatched_legacy = build_admin_unmatched_legacy_ownership_report(
+        auth_users,
+        admin_data,
+    )
+
+    st.html(
+        '<div class="sp-admin-section" style="margin-top:1.4rem;">'
+        '<div class="sp-admin-section-title">'
+        'Legacy ownership diagnostic'
+        '</div>'
+        '<p class="sp-admin-section-sub">'
+        'Administrator only. Lists student rows whose owner IDs are not a '
+        'listed Auth UUID and are not covered by an approved '
+        'account_identity_links row. Nothing is rewritten or deleted here. '
+        'Email is never used to auto-connect accounts.'
+        '</p>'
+        '</div>'
+    )
+
+    if not unmatched_legacy:
+        st.success(
+            "No unmatched legacy ownership keys found in the loaded student tables."
+        )
+    else:
+        st.warning(
+            f"{len(unmatched_legacy)} unmatched owner key(s) found. "
+            "Use approved account_identity_links to connect legitimate older "
+            "Google records to the current Auth UUID when verified."
+        )
+        for item in unmatched_legacy:
+            owner_preview = str(item.get("owner_preview") or "")
+            tables = item.get("tables") or {}
+            table_bits = [
+                f"{name}: {count}"
+                for name, count in sorted(tables.items())
+            ]
+            flags = []
+            if item.get("looks_like_auth_uuid"):
+                flags.append("UUID-shaped (not in Auth list)")
+            else:
+                flags.append("Likely legacy Google provider subject")
+            if item.get("matches_known_google_identity"):
+                flags.append(
+                    "Matches a Google identity on an Auth user "
+                    "(approve an account_identity_links row to join)"
+                )
+            with st.expander(
+                f"{owner_preview} · {item.get('row_count', 0)} row(s)",
+                expanded=False,
+            ):
+                st.caption(" · ".join(flags))
+                st.write("; ".join(table_bits) if table_bits else "No tables")
+                st.code(str(item.get("owner_id") or ""), language=None)
 
     st.html(
         '<p class="sp-admin-footer-note">'
