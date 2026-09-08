@@ -19836,6 +19836,62 @@ extra_opportunities = [
         "requirements": "Putney Student Travel online application, agreement form, and required payments; rolling admissions historically until capacity",
         "url": "https://www.climate.columbia.edu/pre-college-programs",
         "last_verified": "2026-09-08"
+    },
+    {
+        "name": "Thrive Scholars",
+        "organization": "Thrive Scholars",
+        "description": "Free six-year college and career success program supporting high-achieving students from limited-income communities from junior year of high school through college and into their first career. Support includes college-access coaching, academic preparation, Summer Academies, college-success advising, and career development. Students may pursue any college major or career field.",
+        "opportunity_type": "College Access Program",
+        "fields": "Any Major;All Fields;General High School;College Preparation;Leadership;Career Exploration",
+        "eligible_interest_scope": "Any major",
+        "grades": "11",
+        "age_range": "Current U.S. high school juniors",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free",
+        "financial_aid": "Not needed — Thrive Scholars states the program is offered at no cost; the organization does not itself award college scholarships but provides financial-aid guidance",
+        "application_status": "Opening Fall 2026",
+        "deadline": "December 20, 2026 at 11:59 p.m. Pacific Time; recommendation forms due January 18, 2027",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 4,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Current junior at a U.S. high school; cumulative unweighted GPA of at least 3.60; total annual household income of $125,000 or less. U.S. citizenship or permanent residency is not required. Selection is holistic.",
+        "stipend_display": "Not paid — free long-term college and career support program",
+        "internship_potential": "May include career coaching and support pursuing internships later in college; no specific internship placement is guaranteed",
+        "format": "Multi-year hybrid support; Summer Academies are residential on a college campus",
+        "paid_status": "Not paid",
+        "requirements": "Application, essays and short responses, household-income documentation, transcript, current 11th-grade report card, counselor recommendation, and teacher recommendation",
+        "url": "https://thrivescholars.org/scholars/how-to-apply/",
+        "last_verified": "2026-09-07"
+    },
+    {
+        "name": "LEDA Scholars Program",
+        "organization": "Leadership Enterprise for a Diverse America (LEDA)",
+        "description": "Completely free college-access and leadership program for high-achieving students from under-resourced backgrounds. The program includes an intensive residential summer experience, academic preparation, leadership training, standardized-test preparation, and individualized college guidance. Scholars may pursue any college major or career field.",
+        "opportunity_type": "College Access Program",
+        "fields": "Any Major;All Fields;General High School;College Preparation;Leadership;Career Exploration",
+        "eligible_interest_scope": "Any major",
+        "grades": "11",
+        "age_range": "High school juniors who meet the current cohort requirements",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "bronx_priority": "no",
+        "cost": "Free — official LEDA materials describe the residential program as completely free",
+        "financial_aid": "Not needed — program costs are fully covered for admitted Scholars; college financial-aid outcomes vary by institution and are not guaranteed",
+        "application_status": "Next Cycle Not Announced",
+        "deadline": "The next application deadline and graduating-class eligibility have not yet been announced on the current official page; check LEDA before applying",
+        "selectivity": "Highly Competitive",
+        "selectivity_stars": 5,
+        "acceptance_rate": "Not publicly reported",
+        "acceptance_rate_confidence": "Not available",
+        "eligibility_summary": "Typically a junior attending a U.S. public high school, with a cumulative unweighted GPA of at least 3.5 and annual household income of $90,000 or less; U.S. citizen, permanent resident, or DACA status. Certain low- or no-tuition private-school students may be eligible after confirming with LEDA. Verify the next cohort rules.",
+        "stipend_display": "Not paid — fully funded college-access and leadership program",
+        "internship_potential": "May provide long-term professional and career-network support; no specific internship placement is guaranteed",
+        "format": "Multi-year support with a fully funded residential summer component at partner college campuses",
+        "paid_status": "Not paid",
+        "requirements": "Multi-stage application; academic record, household-income eligibility, leadership potential, citizenship/residency eligibility, essays, and supporting materials for the current cycle",
+        "url": "https://ledascholars.org/our-program/leda-scholars-program/recruitment-admissions/",
+        "last_verified": "2026-09-07"
     }
 ]
 
@@ -26774,14 +26830,8 @@ def opportunity_scope_matches_interests(opportunity, expanded_interests):
         or ""
     ).strip().lower()
 
-    if not scope or not expanded_interests:
+    if not scope:
         return False
-
-    interests_lower = {
-        str(item).strip().lower()
-        for item in expanded_interests
-        if str(item).strip()
-    }
 
     if scope in {
         "any major",
@@ -26789,6 +26839,15 @@ def opportunity_scope_matches_interests(opportunity, expanded_interests):
         "general"
     }:
         return True
+
+    if not expanded_interests:
+        return False
+
+    interests_lower = {
+        str(item).strip().lower()
+        for item in expanded_interests
+        if str(item).strip()
+    }
 
     if scope in {"business-related", "business related"}:
         return bool(
