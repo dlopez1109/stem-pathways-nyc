@@ -11226,10 +11226,106 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
     }
 
     html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stExpander"],
-    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stExpander"]:hover {
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stExpander"]:hover,
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"] [data-testid="stExpander"],
+    html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"] [data-testid="stExpander"]:hover {
         border: 1px solid #D5DEE6 !important;
         box-shadow: none !important;
         border-radius: 14px !important;
+    }
+
+    .sp-best-match-card .sp-rec-match {
+        min-width: 9.5rem;
+        max-width: 12rem;
+        text-align: right;
+    }
+
+    .sp-best-match-card .sp-rec-match-value {
+        font-size: 0.92rem !important;
+        line-height: 1.25 !important;
+        font-weight: 700 !important;
+        color: #0B4568 !important;
+    }
+
+    .sp-best-match-card .sp-rec-match-strong .sp-rec-match-value {
+        color: #0B4568 !important;
+    }
+
+    .sp-best-match-card .sp-rec-match-confirm .sp-rec-match-value {
+        color: #5C4B00 !important;
+    }
+
+    .sp-best-match-card .sp-rec-match-strong {
+        border-left: 3px solid #0B4568;
+        padding-left: 0.55rem;
+    }
+
+    .sp-best-match-card .sp-rec-match-confirm {
+        border-left: 3px solid #B08900;
+        padding-left: 0.55rem;
+    }
+
+    .sp-rec-why {
+        margin: 0.65rem 0 0.85rem;
+        padding: 0.7rem 0.85rem;
+        border: 1px solid #D5DEE6;
+        border-radius: 12px;
+        background: #F7FAFC;
+    }
+
+    .sp-rec-why-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: #0B4568;
+        margin-bottom: 0.35rem;
+    }
+
+    .sp-rec-why-list {
+        margin: 0;
+        padding-left: 1.1rem;
+        color: #1F2A33;
+    }
+
+    .sp-rec-why-list li {
+        margin: 0.2rem 0;
+        line-height: 1.35;
+    }
+
+    .sp-opp-page-indicator {
+        margin: 0.55rem 0 0;
+        text-align: center;
+        color: #0B4568;
+        font-weight: 600;
+    }
+
+    @media (max-width: 720px) {
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stHorizontalBlock"],
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"] [data-testid="stHorizontalBlock"],
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stHorizontalBlock"] {
+            flex-direction: column !important;
+            gap: 0.35rem !important;
+        }
+
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
+        html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+            min-width: 0 !important;
+        }
+
+        .sp-best-match-card .sp-rec-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.55rem !important;
+        }
+
+        .sp-best-match-card .sp-rec-match {
+            text-align: left;
+            max-width: 100%;
+        }
     }
 
     html body .stApp [data-testid="stMain"] [data-testid="stElementContainer"]:has(.sp-project-explorer-page) {
@@ -21982,7 +22078,9 @@ def opportunity_info_grid_html(
 
 def opportunity_recommendation_card_html(
     opportunity,
-    match_score
+    match_score=None,
+    match_label=None,
+    match_reasons=None,
 ):
 
     window_status = opportunity_window_status(
@@ -21991,10 +22089,13 @@ def opportunity_recommendation_card_html(
 
     if window_status == "OPEN NOW":
         badge_class = "sp-deadline-badge-open"
+        badge_text = "Open"
     elif window_status == "CLOSED":
         badge_class = "sp-deadline-badge-closed"
+        badge_text = "Closed"
     else:
         badge_class = "sp-deadline-badge-upcoming"
+        badge_text = "Opens soon"
 
     name_safe = html_module.escape(
         opportunity_text(
@@ -22024,28 +22125,60 @@ def opportunity_recommendation_card_html(
         )
     )
 
-    match_safe = html_module.escape(
-        str(
-            match_score
+    label_text = str(
+        match_label
+        or
+        "Potential match — confirm requirements"
+    ).strip()
+    label_safe = html_module.escape(label_text)
+    if "Strong eligibility" in label_text:
+        label_class = "sp-rec-match-strong"
+    else:
+        label_class = "sp-rec-match-confirm"
+
+    reasons = [
+        str(item).strip()
+        for item in (match_reasons or [])
+        if str(item).strip()
+    ][:4]
+    if not reasons and match_score is not None:
+        # Legacy callers may still pass a numeric score without reasons.
+        reasons = [
+            "Personalized from your saved profile interests and eligibility."
+        ]
+
+    reasons_html = ""
+    if reasons:
+        items = "".join(
+            f'<li>{html_module.escape(reason)}</li>'
+            for reason in reasons
         )
-    )
+        reasons_html = (
+            '<div class="sp-rec-why" role="region" '
+            'aria-label="Why this matches">'
+            '<div class="sp-rec-why-label">Why this matches</div>'
+            f'<ul class="sp-rec-why-list">{items}</ul>'
+            '</div>'
+        )
 
     return (
-        '<div class="sp-deadline-card">'
-        f'<span class="sp-deadline-badge {badge_class}">'
-        f'{window_status}'
+        '<div class="sp-deadline-card sp-best-match-card">'
+        f'<span class="sp-deadline-badge {badge_class}" '
+        f'title="{html_module.escape(window_status)}">'
+        f'{badge_text}'
         '</span>'
         '<div class="sp-rec-header">'
         '<div class="sp-rec-heading">'
         f'<h3>{name_safe}</h3>'
         f'<p class="sp-rec-org">{org_safe}</p>'
         '</div>'
-        '<div class="sp-rec-match">'
-        '<div class="sp-rec-match-label">Your Match</div>'
-        f'<div class="sp-rec-match-value">{match_safe}%</div>'
+        f'<div class="sp-rec-match {label_class}" role="status">'
+        '<div class="sp-rec-match-label">Match type</div>'
+        f'<div class="sp-rec-match-value">{label_safe}</div>'
         '</div>'
         '</div>'
         f'<p class="sp-rec-desc">{desc_safe}</p>'
+        + reasons_html
         + opportunity_info_grid_html(
             opportunity
         )
@@ -27242,26 +27375,687 @@ def opportunity_matches_format(format_value, selected_formats):
     if not selected:
         return True
 
+    # UI labels: Virtual / Online / In person / Hybrid
+    normalized_selected = set()
+    for item in selected:
+        if item in {"virtual", "online", "remote"}:
+            normalized_selected.add("virtual")
+        elif item in {"in person", "in-person", "onsite", "on-site"}:
+            normalized_selected.add("in person")
+        elif item == "hybrid":
+            normalized_selected.add("hybrid")
+        else:
+            normalized_selected.add(item)
+
+    buckets = normalize_opportunity_format_buckets(format_value)
+    if not buckets:
+        return False
+
+    return bool(buckets.intersection(normalized_selected))
+
+
+NYC_BOROUGH_TOKENS = {
+    "bronx",
+    "brooklyn",
+    "manhattan",
+    "queens",
+    "staten island",
+    "nyc",
+    "new york city",
+    "new york",
+    "five boroughs",
+    "all nyc boroughs",
+}
+
+
+def normalize_opportunity_cost_bucket(opportunity):
+    """Return 'free', 'paid', or 'unknown' from structured cost fields only."""
+
+    getter = opportunity.get if hasattr(opportunity, "get") else (lambda key, default=None: default)
+    parts = [
+        getter("cost"),
+        getter("cost_category"),
+        getter("paid_status"),
+        getter("tuition_cost"),
+    ]
+    text = " ".join(str(part or "") for part in parts).strip().lower()
+    if not text or text in {"nan", "none"}:
+        return "unknown"
+
+    if any(
+        marker in text
+        for marker in [
+            "check official",
+            "not listed",
+            "not published",
+            "not stated",
+            "confirm with",
+            "program fee not listed",
+        ]
+    ) and "free" not in text and not re.search(r"\$\s*\d", text):
+        return "unknown"
+
+    if any(
+        marker in text
+        for marker in [
+            "free",
+            "no cost",
+            "tuition-free",
+            "tuition free",
+            "$0",
+            "offered at no cost",
+            "full scholarship / no cost",
+            "not needed — paid",
+            "not needed — stipend",
+            "not needed — fully funded",
+        ]
+    ):
+        if "not free" in text:
+            return "paid"
+        return "free"
+
+    if re.search(r"\$\s*\d", text) or any(
+        marker in text
+        for marker in [
+            "tuition required",
+            "tuition-based",
+            "paid program",
+            "application fee",
+        ]
+    ):
+        return "paid"
+
+    aid = str(getter("financial_aid") or "").strip().lower()
+    if aid.startswith("not needed") and "paid" in aid:
+        return "free"
+
+    return "unknown"
+
+
+def normalize_opportunity_format_buckets(format_value):
+    """Return a set of {'virtual','in person','hybrid'}; empty means unknown."""
+
     format_text = str(format_value or "").strip().lower()
-    if not format_text:
-        return False
+    if not format_text or format_text in {"nan", "none", "check official site"}:
+        return set()
 
+    buckets = set()
     if "hybrid" in format_text:
-        opportunity_format = "hybrid"
-    elif any(
+        buckets.add("hybrid")
+    if any(
         token in format_text
-        for token in ["online", "virtual", "remote"]
+        for token in ["online", "virtual", "remote", "web-based", "web based"]
     ):
-        opportunity_format = "online"
-    elif any(
+        buckets.add("virtual")
+    if any(
         token in format_text
-        for token in ["in person", "in-person", "onsite", "on-site"]
+        for token in [
+            "in person",
+            "in-person",
+            "onsite",
+            "on-site",
+            "residential",
+            "on campus",
+            "on-campus",
+            "commuter",
+        ]
     ):
-        opportunity_format = "in person"
-    else:
-        return False
+        buckets.add("in person")
 
-    return opportunity_format in selected
+    return buckets
+
+
+def parse_opportunity_grades(grades_value):
+    """
+    Parse eligible grades into a set of {'9','10','11','12'}.
+    Returns None when grade eligibility is missing or too ambiguous to assert.
+    """
+
+    text = str(grades_value or "").strip()
+    if not text or text.lower() in {"nan", "none", "check official eligibility"}:
+        return None
+
+    lower = text.lower()
+    ambiguous = [
+        "varies",
+        "check official",
+        "not stated",
+        "see official",
+        "confirm",
+    ]
+    if any(token in lower for token in ambiguous) and not re.search(r"\b(9|10|11|12)\b", text):
+        return None
+
+    grades = set()
+
+    # Explicit semicolon / comma lists: "9;10;11" or "10, 11, 12"
+    for token in re.split(r"[;,/|]", text):
+        token = token.strip()
+        if re.fullmatch(r"9|10|11|12", token):
+            grades.add(token)
+
+    # Ranges such as "9-12" or "Grades 10–12"
+    for match in re.finditer(r"\b(9|10|11|12)\s*[–-]\s*(9|10|11|12)\b", text):
+        start = int(match.group(1))
+        end = int(match.group(2))
+        if start > end:
+            start, end = end, start
+        for grade in range(start, end + 1):
+            if 9 <= grade <= 12:
+                grades.add(str(grade))
+
+    # Standalone grade numbers already handled; also catch "grade 11"
+    for match in re.finditer(r"\b(?:grade|grades)?\s*(9|10|11|12)\b", lower):
+        grades.add(match.group(1))
+
+    return grades or None
+
+
+def normalize_opportunity_nyc_eligibility(opportunity):
+    """Return 'yes', 'no', or 'unknown' for NYC student eligibility."""
+
+    parts = []
+    if hasattr(opportunity, "get"):
+        parts = [
+            opportunity.get("boroughs_served"),
+            opportunity.get("location"),
+            opportunity.get("borough_restrictions"),
+            opportunity.get("nyc_residency_required"),
+            opportunity.get("eligibility_summary"),
+        ]
+    text = " ".join(str(part or "") for part in parts).strip().lower()
+    if not text or text in {"nan", "none"}:
+        return "unknown"
+
+    has_outside = any(
+        marker in text
+        for marker in [
+            "outside nyc",
+            "outside of nyc",
+            "not nyc",
+            "non-nyc",
+            "greater rochester",
+            "baltimore only",
+            "local students only — not nyc",
+        ]
+    )
+
+    def _has_nyc_positive(value: str) -> bool:
+        return any(
+            token in value
+            for token in [
+                "bronx",
+                "brooklyn",
+                "manhattan",
+                "queens",
+                "staten island",
+                "new york city",
+                "five boroughs",
+                "all nyc boroughs",
+            ]
+        ) or bool(
+            # Standalone NYC token, but not the NYC inside phrases like "outside nyc".
+            re.search(r"(?<![a-z])nyc(?![a-z])", value)
+            and "outside nyc" not in value
+            and "outside of nyc" not in value
+            and "not nyc" not in value
+            and "non-nyc" not in value
+        )
+
+    if has_outside and not _has_nyc_positive(text):
+        return "no"
+
+    if _has_nyc_positive(text):
+        return "yes"
+
+    if "national" in text or "worldwide" in text or "global" in text or "remote" in text:
+        # National/global programs are available to NYC students unless excluded.
+        return "yes"
+
+    if any(
+        marker in text
+        for marker in ["check official", "varies", "confirm", "see official"]
+    ):
+        return "unknown"
+
+    return "unknown"
+
+
+def normalize_application_status_bucket(opportunity):
+    """Map an opportunity to open / opens_soon / closed / unknown."""
+
+    try:
+        window = opportunity_window_status(opportunity)
+    except Exception:
+        window = None
+
+    window_text = str(window or "").strip().upper()
+    if window_text == "OPEN NOW":
+        return "open"
+    if window_text == "CLOSED":
+        return "closed"
+    if window_text == "UPCOMING":
+        return "opens_soon"
+
+    status = str(
+        (opportunity.get("application_status") if hasattr(opportunity, "get") else "")
+        or ""
+    ).strip().lower()
+    if "closed" in status:
+        return "closed"
+    if "open now" in status or status == "open" or status.startswith("open "):
+        return "open"
+    if any(
+        token in status
+        for token in ["future", "opens", "upcoming", "seasonal", "not yet"]
+    ):
+        return "opens_soon"
+    return "unknown"
+
+
+def opportunity_matches_cost_filter(opportunity, selected_cost):
+    selected = str(selected_cost or "All").strip()
+    if selected in {"", "All"}:
+        return True
+    bucket = normalize_opportunity_cost_bucket(opportunity)
+    if selected == "Free":
+        return bucket == "free"
+    if selected == "Paid":
+        return bucket == "paid"
+    return True
+
+
+def opportunity_matches_location_filter(opportunity, selected_location):
+    selected = str(selected_location or "All").strip()
+    if selected in {"", "All"}:
+        return True
+    if selected != "NYC only":
+        return True
+    nyc = normalize_opportunity_nyc_eligibility(opportunity)
+    # NYC-only filter includes programs confirmed available to NYC students.
+    # Unknown location is excluded from NYC-only (not silently treated as NYC).
+    return nyc == "yes"
+
+
+def opportunity_matches_grade_filter(opportunity, selected_grades):
+    selected = [
+        str(item).strip()
+        for item in (selected_grades or [])
+        if str(item).strip() and str(item).strip() != "All"
+    ]
+    if not selected:
+        return True
+
+    parsed = parse_opportunity_grades(
+        opportunity.get("grades") if hasattr(opportunity, "get") else ""
+    )
+    if parsed is None:
+        # Missing grade data should not pass a specific grade filter.
+        return False
+    return bool(parsed.intersection(set(selected)))
+
+
+def opportunity_matches_status_filter(opportunity, selected_status):
+    selected = str(selected_status or "All").strip()
+    if selected in {"", "All"}:
+        return True
+    bucket = normalize_application_status_bucket(opportunity)
+    mapping = {
+        "Open": "open",
+        "Opens soon": "opens_soon",
+        "Closed": "closed",
+    }
+    wanted = mapping.get(selected)
+    if not wanted:
+        return True
+    return bucket == wanted
+
+
+def opportunity_age_eligibility(age_range_value, student_age):
+    """
+    Return 'eligible', 'ineligible', or 'confirm'.
+    Missing/ambiguous age requirements are confirm, never hard ineligible.
+    """
+
+    if student_age is None or str(student_age).strip() in {"", "Any age", "nan"}:
+        return "confirm"
+
+    age_text = str(age_range_value or "").strip().lower()
+    if (
+        not age_text
+        or age_text == "nan"
+        or any(
+            phrase in age_text
+            for phrase in [
+                "check official",
+                "varies",
+                "not publicly",
+                "no simple age",
+                "confirm",
+            ]
+        )
+    ):
+        return "confirm"
+
+    try:
+        age_num = 19 if str(student_age) == "19+" else int(student_age)
+    except Exception:
+        return "confirm"
+
+    range_match = re.search(r"(\d{1,2})\s*[–-]\s*(\d{1,2})", age_text)
+    if range_match:
+        minimum = int(range_match.group(1))
+        maximum = int(range_match.group(2))
+        return "eligible" if minimum <= age_num <= maximum else "ineligible"
+
+    plus_match = re.search(r"(\d{1,2})\s*\+", age_text)
+    if plus_match:
+        return (
+            "eligible"
+            if age_num >= int(plus_match.group(1))
+            else "ineligible"
+        )
+
+    numbers = [int(value) for value in re.findall(r"\b\d{1,2}\b", age_text)]
+    if len(numbers) == 1:
+        return "eligible" if age_num == numbers[0] else "ineligible"
+
+    # Phrases without a clear numeric rule.
+    return "confirm"
+
+
+def evaluate_opportunity_profile_eligibility(opportunity, profile):
+    """
+    Evaluate hard eligibility before interest scoring.
+
+    Returns dict with:
+      status: 'eligible' | 'confirm' | 'ineligible'
+      checks: {grade, location, age} each eligible/confirm/ineligible
+      hard_conflicts: list of conflict strings
+      confirm_notes: list of confirmation strings
+    """
+
+    profile = profile or {}
+    checks = {
+        "grade": "confirm",
+        "location": "confirm",
+        "age": "confirm",
+    }
+    hard_conflicts = []
+    confirm_notes = []
+
+    student_grade = str(profile.get("grade") or "").strip()
+    parsed_grades = parse_opportunity_grades(
+        opportunity.get("grades") if hasattr(opportunity, "get") else ""
+    )
+    if not student_grade:
+        checks["grade"] = "confirm"
+        confirm_notes.append(
+            "Confirm this requirement on the official program website."
+        )
+    elif parsed_grades is None:
+        checks["grade"] = "confirm"
+        confirm_notes.append(
+            "Confirm grade eligibility on the official program website."
+        )
+    elif student_grade in parsed_grades:
+        checks["grade"] = "eligible"
+    else:
+        checks["grade"] = "ineligible"
+        hard_conflicts.append(
+            f"Listed grades are {', '.join(sorted(parsed_grades, key=int))}; "
+            f"your profile grade is {student_grade}."
+        )
+
+    student_borough = str(profile.get("borough") or "").strip()
+    nyc_status = normalize_opportunity_nyc_eligibility(opportunity)
+    boroughs_raw = str(
+        (opportunity.get("boroughs_served") if hasattr(opportunity, "get") else "")
+        or ""
+    )
+    borough_tokens = {
+        item.strip()
+        for item in boroughs_raw.split(";")
+        if item.strip()
+    }
+    if student_borough and student_borough in borough_tokens:
+        checks["location"] = "eligible"
+    elif nyc_status == "yes" and student_borough:
+        checks["location"] = "eligible"
+    elif nyc_status == "no" and student_borough:
+        checks["location"] = "ineligible"
+        hard_conflicts.append(
+            "This program’s listed location does not include NYC students."
+        )
+    else:
+        checks["location"] = "confirm"
+        confirm_notes.append(
+            "Confirm location eligibility on the official program website."
+        )
+
+    age_status = opportunity_age_eligibility(
+        opportunity.get("age_range") if hasattr(opportunity, "get") else "",
+        profile.get("age"),
+    )
+    checks["age"] = age_status
+    if age_status == "ineligible":
+        hard_conflicts.append(
+            "Your age does not match the program’s stated age requirement."
+        )
+    elif age_status == "confirm":
+        confirm_notes.append(
+            "Confirm age eligibility on the official program website."
+        )
+
+    if hard_conflicts:
+        status = "ineligible"
+    elif any(value == "confirm" for value in checks.values()):
+        status = "confirm"
+    else:
+        status = "eligible"
+
+    return {
+        "status": status,
+        "checks": checks,
+        "hard_conflicts": hard_conflicts,
+        "confirm_notes": list(dict.fromkeys(confirm_notes)),
+    }
+
+
+def profile_potential_majors(profile, limit=3):
+    """Potential majors from quiz results (max 3) plus profile STEM interests."""
+
+    majors = []
+    seen = set()
+
+    career_results = []
+    try:
+        career_results = st.session_state.get("career_results") or []
+    except Exception:
+        career_results = []
+
+    for item in career_results:
+        if isinstance(item, (list, tuple)) and item:
+            name = str(item[0] or "").strip()
+        elif isinstance(item, dict):
+            name = str(item.get("major") or item.get("field") or "").strip()
+        else:
+            name = str(item or "").strip()
+        if not name:
+            continue
+        key = name.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        majors.append(name)
+        if len(majors) >= limit:
+            return majors
+
+    for interest in (profile or {}).get("interests") or []:
+        name = str(interest or "").strip()
+        if not name or name.casefold() in {
+            "i'm not sure yet",
+            "i am not sure yet",
+            "not sure yet",
+        }:
+            continue
+        canonical = canonicalize_stem_field(name) or name
+        key = canonical.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        majors.append(canonical)
+        if len(majors) >= limit:
+            break
+
+    return majors
+
+
+def score_best_match_opportunity(opportunity, profile, potential_majors=None):
+    """
+    Score a personalized opportunity after eligibility gating.
+
+    Returns None when hard-ineligible. Otherwise:
+      {
+        'rank_score': int,
+        'label': 'Strong eligibility match' | 'Potential match — confirm requirements',
+        'reasons': [str, ...],  # 2-4 evidence-based reasons
+        'eligibility': evaluate_opportunity_profile_eligibility(...),
+      }
+    Never invents eligibility. Does not return an admission-chance percentage.
+    """
+
+    profile = profile or {}
+    eligibility = evaluate_opportunity_profile_eligibility(opportunity, profile)
+    if eligibility["status"] == "ineligible":
+        return None
+
+    reasons = []
+    rank_score = 0
+
+    checks = eligibility["checks"]
+    student_grade = str(profile.get("grade") or "").strip()
+    if checks["grade"] == "eligible" and student_grade:
+        reasons.append(f"Open to students in Grade {student_grade}")
+        rank_score += 30
+    elif checks["grade"] == "confirm":
+        reasons.append(
+            "Confirm this requirement on the official program website."
+        )
+
+    if checks["location"] == "eligible":
+        borough = str(profile.get("borough") or "").strip()
+        if borough:
+            reasons.append(f"Available to NYC students ({borough})")
+        else:
+            reasons.append("Available to NYC students")
+        rank_score += 20
+    elif checks["location"] == "confirm":
+        if "Confirm location eligibility on the official program website." not in reasons:
+            reasons.append(
+                "Confirm location eligibility on the official program website."
+            )
+
+    expanded_interests = expand_stem_fields(profile.get("interests") or [])
+    majors = list(potential_majors or [])[:3]
+    expanded_majors = expand_stem_fields(majors)
+    interest_pool = set(expanded_interests) | set(expanded_majors)
+
+    opportunity_fields = opportunity_field_match_set(
+        opportunity.get("fields") if hasattr(opportunity, "get") else ""
+    )
+    scope_hit = opportunity_scope_matches_interests(
+        opportunity,
+        interest_pool or expanded_interests,
+    )
+    matched_labels = sorted(
+        {
+            str(item)
+            for item in interest_pool.intersection(opportunity_fields)
+            if str(item).strip()
+        },
+        key=lambda value: value.casefold(),
+    )
+
+    if scope_hit and not matched_labels:
+        reasons.append(
+            "Open across fields and intended majors (general-access program)"
+        )
+        rank_score += 35
+    elif matched_labels:
+        label = matched_labels[0]
+        reasons.append(f"Matches your {label.casefold()} interest")
+        rank_score += 35
+        if len(matched_labels) > 1:
+            rank_score += 5
+
+    cost_bucket = normalize_opportunity_cost_bucket(opportunity)
+    if profile.get("financial_support"):
+        if cost_bucket == "free":
+            reasons.append("Free program")
+            rank_score += 15
+        elif str(
+            (opportunity.get("financial_aid") if hasattr(opportunity, "get") else "")
+            or ""
+        ).strip() and "not needed" not in str(
+            opportunity.get("financial_aid") or ""
+        ).lower() and "no financial aid" not in str(
+            opportunity.get("financial_aid") or ""
+        ).lower():
+            reasons.append("Lists financial aid or scholarship options")
+            rank_score += 10
+
+    status_bucket = normalize_application_status_bucket(opportunity)
+    if status_bucket == "open":
+        reasons.append("Applications are currently open")
+        rank_score += 15
+    elif status_bucket == "opens_soon":
+        reasons.append("Applications open soon / next cycle upcoming")
+        rank_score += 8
+
+    secondary_reasons = []
+    if checks["age"] == "eligible":
+        secondary_reasons.append(f"Fits your age ({profile.get('age')})")
+        rank_score += 10
+
+    format_buckets = normalize_opportunity_format_buckets(
+        opportunity.get("format") if hasattr(opportunity, "get") else ""
+    )
+    if format_buckets:
+        if "virtual" in format_buckets and "in person" not in format_buckets:
+            secondary_reasons.append("Virtual / online format")
+            rank_score += 5
+        elif "hybrid" in format_buckets:
+            secondary_reasons.append("Hybrid format available")
+            rank_score += 5
+        elif "in person" in format_buckets:
+            secondary_reasons.append("In-person format")
+            rank_score += 3
+
+    # Deduplicate while preserving priority; keep 2–4 evidence lines.
+    cleaned = []
+    for reason in reasons + secondary_reasons:
+        text = str(reason or "").strip()
+        if text and text not in cleaned:
+            cleaned.append(text)
+    if len(cleaned) < 2:
+        cleaned.append(
+            "Confirm this requirement on the official program website."
+        )
+    cleaned = cleaned[:4]
+
+    label = (
+        "Strong eligibility match"
+        if eligibility["status"] == "eligible"
+        else "Potential match — confirm requirements"
+    )
+
+    return {
+        "rank_score": int(rank_score),
+        "label": label,
+        "reasons": cleaned,
+        "eligibility": eligibility,
+    }
 
 
 def expand_stem_fields(values):
@@ -36316,6 +37110,27 @@ elif page == "Opportunities":
                 else [saved_stem_area]
             )
 
+        # Format labels changed from Online → Virtual.
+        saved_formats = st.session_state.get("opportunity_filter_formats")
+        if isinstance(saved_formats, list) and "Online" in saved_formats:
+            st.session_state["opportunity_filter_formats"] = [
+                "Virtual" if item == "Online" else item
+                for item in saved_formats
+            ]
+        saved_search_formats = st.session_state.get("opportunity_search_formats")
+        if isinstance(saved_search_formats, list) and "Online" in saved_search_formats:
+            st.session_state["opportunity_search_formats"] = [
+                "Virtual" if item == "Online" else item
+                for item in saved_search_formats
+            ]
+
+        if not st.session_state.get("opportunity_filters_v3_defaults"):
+            st.session_state.setdefault("opportunity_filter_cost", "All")
+            st.session_state.setdefault("opportunity_filter_location", "All")
+            st.session_state.setdefault("opportunity_filter_status", "All")
+            st.session_state.setdefault("opportunity_filter_grades", [])
+            st.session_state["opportunity_filters_v3_defaults"] = True
+
         with st.container(key="opportunity_search_panel"):
             with st.form(
                 "opportunity_search_form",
@@ -36325,6 +37140,7 @@ elif page == "Opportunities":
                     "Search opportunities",
                     placeholder="Name, organization, description, field, or type",
                     key="opportunity_filter_keyword",
+                    help="Optional text search across name, organization, description, fields, and type.",
                 )
 
                 filter_col_left, filter_col_right = st.columns(2)
@@ -36348,9 +37164,30 @@ elif page == "Opportunities":
                         ),
                     )
 
+                    cost_filter = st.selectbox(
+                        "Cost",
+                        ["All", "Free", "Paid"],
+                        key="opportunity_filter_cost",
+                        help=(
+                            "Free matches catalog values such as Free, $0, or no cost. "
+                            "Paid matches listed tuition or fees. Unknown costs are excluded "
+                            "from Free and Paid."
+                        ),
+                    )
+
+                    location_filter = st.selectbox(
+                        "Location",
+                        ["All", "NYC only"],
+                        key="opportunity_filter_location",
+                        help=(
+                            "NYC only keeps programs that list NYC boroughs or clearly "
+                            "serve New York City students."
+                        ),
+                    )
+
                 with filter_col_right:
                     stem_areas = st.multiselect(
-                        "STEM Areas",
+                        "STEM field / major area",
                         [
                             area
                             for area in OPPORTUNITY_STEM_AREA_OPTIONS
@@ -36359,9 +37196,28 @@ elif page == "Opportunities":
                         key="opportunity_filter_stem_area",
                         help=(
                             "Leave empty to include every STEM area. Selecting multiple "
-                            "areas uses OR logic. Each broad area matches any field in its group "
-                            "(for example, Engineering & Technology includes electrical, "
-                            "computer, mechanical, civil, biomedical, and related majors)."
+                            "areas uses OR logic. Each broad area matches any field in its group."
+                        ),
+                    )
+
+                    grade_filter = st.multiselect(
+                        "Grade eligibility",
+                        ["9", "10", "11", "12"],
+                        key="opportunity_filter_grades",
+                        help=(
+                            "Leave empty to include every grade. Selecting grades uses OR logic. "
+                            "Programs without clear grade data are excluded when a grade is selected."
+                        ),
+                    )
+
+                    status_filter = st.selectbox(
+                        "Application status",
+                        ["All", "Open", "Opens soon", "Closed"],
+                        key="opportunity_filter_status",
+                        help=(
+                            "Open = currently accepting applications. "
+                            "Opens soon = future cycle / upcoming. "
+                            "Closed = current cycle closed."
                         ),
                     )
 
@@ -36401,14 +37257,14 @@ elif page == "Opportunities":
                         format_filter = st.multiselect(
                             "Format",
                             [
-                                "Online",
-                                "Hybrid",
+                                "Virtual",
                                 "In person",
+                                "Hybrid",
                             ],
                             key="opportunity_filter_formats",
                             help=(
-                                "Leave empty to include every format. Selecting "
-                                "multiple formats uses OR logic between them."
+                                "Leave empty to include every format. Virtual includes online "
+                                "and remote programs. Selecting multiple formats uses OR logic."
                             ),
                         )
 
@@ -36456,6 +37312,26 @@ elif page == "Opportunities":
                 "opportunity_search_stem_area"
             ] = stem_areas
 
+            st.session_state[
+                "opportunity_search_cost"
+            ] = cost_filter
+
+            st.session_state[
+                "opportunity_search_location"
+            ] = location_filter
+
+            st.session_state[
+                "opportunity_search_grades"
+            ] = grade_filter
+
+            st.session_state[
+                "opportunity_search_status"
+            ] = status_filter
+
+            st.session_state[
+                "opportunity_search_page"
+            ] = 1
+
             # Derive concrete STEM fields from every selected broad area.
             # Areas use OR matching within the STEM category.
             area_fields = []
@@ -36501,6 +37377,26 @@ elif page == "Opportunities":
             )
             or ""
         ).strip()
+
+        active_cost = st.session_state.get(
+            "opportunity_search_cost",
+            "All"
+        )
+
+        active_location = st.session_state.get(
+            "opportunity_search_location",
+            "All"
+        )
+
+        active_grades = st.session_state.get(
+            "opportunity_search_grades",
+            []
+        )
+
+        active_status = st.session_state.get(
+            "opportunity_search_status",
+            "All"
+        )
 
         active_stem_areas = st.session_state.get(
             "opportunity_search_stem_area",
@@ -36914,6 +37810,138 @@ elif page == "Opportunities":
 
 
         # ----------------------------------------------------
+        # BEST MATCHES FOR YOU (above the full opportunity list)
+        # ----------------------------------------------------
+
+        profile_ready = bool(
+            st.session_state.get("profile_completed")
+            and profile
+            and str(profile.get("grade") or "").strip()
+            and (profile.get("interests") or [])
+        )
+
+        if profile_ready and require_user_sub(user_sub):
+
+            st.divider()
+            st.header("Best matches for you")
+            st.caption(
+                "Eligibility is checked before interests. Hard conflicts are excluded. "
+                "Missing requirements are labeled for confirmation and are never treated as "
+                "guaranteed eligibility. Labels are not admission chances."
+            )
+
+            potential_majors = profile_potential_majors(profile, limit=3)
+            best_matches = []
+            best_hidden_saved = 0
+
+            for _, candidate in opportunities.iterrows():
+                catalog_id = opportunity_catalog_id(candidate)
+                if catalog_id and catalog_id in saved_opportunity_catalog_ids:
+                    best_hidden_saved += 1
+                    continue
+
+                scored = score_best_match_opportunity(
+                    candidate,
+                    profile,
+                    potential_majors=potential_majors,
+                )
+                if scored is None:
+                    continue
+
+                best_matches.append((scored, candidate))
+
+            best_matches.sort(
+                key=lambda item: (
+                    0 if item[0]["label"].startswith("Strong") else 1,
+                    -int(item[0]["rank_score"]),
+                    str(item[1].get("name") or ""),
+                )
+            )
+            best_matches = best_matches[:6]
+
+            if not best_matches:
+                if best_hidden_saved > 0:
+                    st.info(
+                        "You've already saved your best-match opportunities. "
+                        "Open **My Applications** to manage them, or adjust filters below "
+                        "to discover more programs."
+                    )
+                else:
+                    st.info(
+                        "No best matches are available yet. Update your profile grade, "
+                        "borough, age, and STEM interests, then return here."
+                    )
+            else:
+                for rec_index, (scored, recommended_opportunity) in enumerate(
+                    best_matches
+                ):
+                    with st.container(key=f"best_match_card_{rec_index}"):
+                        st.html(
+                            opportunity_recommendation_card_html(
+                                recommended_opportunity,
+                                match_label=scored["label"],
+                                match_reasons=scored["reasons"],
+                            )
+                        )
+
+                        with st.expander("Eligibility details"):
+                            for reason in scored["reasons"]:
+                                st.write(f"• {reason}")
+                            for note in scored["eligibility"].get(
+                                "confirm_notes",
+                                [],
+                            ):
+                                st.write(f"• {note}")
+                            st.write(
+                                "**Requirements:** "
+                                f"{recommended_opportunity.get('requirements', 'Check official site')}"
+                            )
+
+                        recommended_calendar_url = google_calendar_deadline_url(
+                            str(recommended_opportunity["name"]),
+                            recommended_opportunity.get("deadline"),
+                            str(recommended_opportunity.get("url", "")),
+                            str(
+                                recommended_opportunity.get(
+                                    "organization",
+                                    "",
+                                )
+                            ),
+                        )
+                        recommended_official_url = safe_http_url(
+                            recommended_opportunity.get("url")
+                        )
+                        rec_action1, rec_action2 = st.columns(2)
+                        with rec_action1:
+                            if st.button(
+                                "Save Opportunity",
+                                key=(
+                                    "best_match_save_"
+                                    f"{rec_index}_{recommended_opportunity['name']}"
+                                ),
+                                width="stretch",
+                            ):
+                                if save_opportunity(
+                                    user_sub,
+                                    str(recommended_opportunity["name"]),
+                                ):
+                                    st.success("Saved to My Applications.")
+                                    st.rerun()
+                        with rec_action2:
+                            if recommended_official_url:
+                                st.link_button(
+                                    "View Official Opportunity",
+                                    recommended_official_url,
+                                    width="stretch",
+                                )
+                        if recommended_calendar_url:
+                            st.link_button(
+                                "Add to Google Calendar",
+                                recommended_calendar_url,
+                                width="stretch",
+                            )
+
+        # ----------------------------------------------------
         # SEARCH RESULTS
         # ----------------------------------------------------
 
@@ -36986,6 +38014,30 @@ elif page == "Opportunities":
                     active_formats
                 ):
 
+                    continue
+
+                if not opportunity_matches_cost_filter(
+                    opportunity,
+                    active_cost
+                ):
+                    continue
+
+                if not opportunity_matches_location_filter(
+                    opportunity,
+                    active_location
+                ):
+                    continue
+
+                if not opportunity_matches_grade_filter(
+                    opportunity,
+                    active_grades
+                ):
+                    continue
+
+                if not opportunity_matches_status_filter(
+                    opportunity,
+                    active_status
+                ):
                     continue
 
                 # STEM area fields: OR within the expanded group.
@@ -37112,6 +38164,23 @@ elif page == "Opportunities":
                     f"{format_label}: "
                     + html_module.escape(", ".join(active_formats))
                 )
+            if active_cost and active_cost != "All":
+                active_chips.append(
+                    "Cost: " + html_module.escape(str(active_cost))
+                )
+            if active_location and active_location != "All":
+                active_chips.append(
+                    "Location: " + html_module.escape(str(active_location))
+                )
+            if active_grades:
+                active_chips.append(
+                    "Grades: "
+                    + html_module.escape(", ".join(active_grades))
+                )
+            if active_status and active_status != "All":
+                active_chips.append(
+                    "Status: " + html_module.escape(str(active_status))
+                )
 
             if active_chips:
                 chips_html = "".join(
@@ -37149,6 +38218,10 @@ elif page == "Opportunities":
                         "opportunity_filter_keyword",
                         "opportunity_filter_stem_area",
                         "opportunity_filter_research_areas",
+                        "opportunity_filter_cost",
+                        "opportunity_filter_location",
+                        "opportunity_filter_grades",
+                        "opportunity_filter_status",
                         "opportunity_search_types",
                         "opportunity_search_selectivity",
                         "opportunity_search_formats",
@@ -37156,6 +38229,11 @@ elif page == "Opportunities":
                         "opportunity_search_keyword",
                         "opportunity_search_stem_area",
                         "opportunity_search_research_areas",
+                        "opportunity_search_cost",
+                        "opportunity_search_location",
+                        "opportunity_search_grades",
+                        "opportunity_search_status",
+                        "opportunity_search_page",
                         "opportunity_search_submitted",
                     ] + _obsolete_opp_filter_keys:
                         st.session_state.pop(key, None)
@@ -37169,6 +38247,10 @@ elif page == "Opportunities":
                     1 if active_selectivity else 0,
                     1 if active_formats else 0,
                     1 if active_age and active_age != "Any age" else 0,
+                    1 if active_cost and active_cost != "All" else 0,
+                    1 if active_location and active_location != "All" else 0,
+                    1 if active_grades else 0,
+                    1 if active_status and active_status != "All" else 0,
                 ]
             )
 
@@ -37196,10 +38278,52 @@ elif page == "Opportunities":
                     )
                 else:
                     st.warning(
-                        "No opportunities matched every filter. Filters across categories "
-                        "are combined with AND, so try clearing Opportunity Type, Selectivity, "
-                        "or STEM Area and search again."
+                        "No opportunities matched every selected filter. "
+                        "Filters across categories are combined with AND. "
+                        "Try clearing Cost, Location, Grade eligibility, Application status, "
+                        "Opportunity Type, or STEM field / major area, then search again."
                     )
+
+            page_size = 10
+            total_results = len(search_results)
+            total_pages = max(1, (total_results + page_size - 1) // page_size)
+            current_page = int(st.session_state.get("opportunity_search_page", 1) or 1)
+            current_page = min(max(1, current_page), total_pages)
+            st.session_state["opportunity_search_page"] = current_page
+            page_start = (current_page - 1) * page_size
+            page_results = search_results[page_start:page_start + page_size]
+
+            if total_results:
+                st.caption(
+                    f"Showing {page_start + 1}–{page_start + len(page_results)} of {total_results}. "
+                    f"Page {current_page} of {total_pages}."
+                )
+                if total_pages > 1:
+                    prev_col, page_col, next_col = st.columns([1, 2, 1])
+                    with prev_col:
+                        if st.button(
+                            "Previous page",
+                            key="opportunity_search_prev_page",
+                            disabled=current_page <= 1,
+                            width="stretch",
+                        ):
+                            st.session_state["opportunity_search_page"] = current_page - 1
+                            st.rerun()
+                    with page_col:
+                        st.markdown(
+                            f'<p class="sp-opp-page-indicator" role="status" aria-live="polite">'
+                            f'Page {current_page} of {total_pages}</p>',
+                            unsafe_allow_html=True,
+                        )
+                    with next_col:
+                        if st.button(
+                            "Next page",
+                            key="opportunity_search_next_page",
+                            disabled=current_page >= total_pages,
+                            width="stretch",
+                        ):
+                            st.session_state["opportunity_search_page"] = current_page + 1
+                            st.rerun()
 
             for (
                 result_index,
@@ -37208,21 +38332,30 @@ elif page == "Opportunities":
                     reasons,
                     opportunity
                 )
-            ) in enumerate(search_results):
+            ) in enumerate(page_results):
+
+                absolute_index = page_start + result_index
+                status_bucket = normalize_application_status_bucket(opportunity)
+                search_label = {
+                    "open": "Applications open",
+                    "opens_soon": "Opens soon",
+                    "closed": "Closed",
+                }.get(status_bucket, "Browse result")
 
                 with st.container(
-                    key=f"recommended_card_search_{result_index}"
+                    key=f"recommended_card_search_{absolute_index}"
                 ):
 
                     st.html(
                         opportunity_recommendation_card_html(
                             opportunity,
-                            score
+                            match_label=search_label,
+                            match_reasons=(reasons[:4] if reasons else None),
                         )
                     )
 
                     with st.expander(
-                        "Why this is recommended"
+                        "Why this matched your filters"
                     ):
 
                         if reasons:
@@ -37284,7 +38417,7 @@ elif page == "Opportunities":
 
                         if st.button(
                             "Save Opportunity",
-                            key=f"search_save_{result_index}_{opportunity['name']}",
+                            key=f"search_save_{absolute_index}_{opportunity['name']}",
                             width="stretch"
                         ):
 
@@ -37325,7 +38458,7 @@ elif page == "Opportunities":
             st.divider()
 
             st.caption(
-                "Profile Match measures fit with your interests and preferences; "
+                "Filter ranking uses your profile preferences when available; "
                 "it is not an admission probability. Always confirm age, grade, "
                 "deadline, and eligibility requirements on the official website."
             )
@@ -37342,221 +38475,9 @@ elif page == "Opportunities":
 
                 st.rerun()
 
-        # ----------------------------------------------------
-        # RECOMMENDED FOR YOU
-        # ----------------------------------------------------
-
-        st.divider()
-
-        st.header(
-            "Recommended for You"
+        st.caption(
+            "Best-match labels reflect eligibility fit with your profile; they are not admission probabilities. Always confirm age, grade, deadline, and eligibility on the official website."
         )
-
-        st.write(
-            "These are personalized suggestions based on your saved profile, "
-            "including your STEM interests, grade, borough, age, and support preferences."
-        )
-
-        recommended_results = []
-        recommended_hidden_saved = 0
-
-        for _, recommended_opportunity in opportunities.iterrows():
-
-            try:
-
-                if not is_eligible(
-                    recommended_opportunity
-                ):
-
-                    continue
-
-            except Exception:
-
-                pass
-
-            try:
-
-                profile_age = str(
-                    profile.get(
-                        "age",
-                        "Any age"
-                    )
-                )
-
-                if not age_matches(
-                    recommended_opportunity.get(
-                        "age_range",
-                        "Check official eligibility"
-                    ),
-                    profile_age
-                ):
-
-                    continue
-
-            except Exception:
-
-                pass
-
-            try:
-
-                recommended_score, recommended_reasons = (
-                    calculate_match(
-                        recommended_opportunity
-                    )
-                )
-
-            except Exception:
-
-                recommended_score = 50
-                recommended_reasons = []
-
-            catalog_id = opportunity_catalog_id(recommended_opportunity)
-            if catalog_id and catalog_id in saved_opportunity_catalog_ids:
-                recommended_hidden_saved += 1
-                continue
-
-            recommended_results.append(
-                (
-                    recommended_score,
-                    recommended_reasons,
-                    recommended_opportunity
-                )
-            )
-
-        recommended_results.sort(
-            key=lambda item:
-                item[0],
-            reverse=True
-        )
-
-        if not recommended_results:
-
-            if recommended_hidden_saved > 0:
-                st.info(
-                    "You've already saved your personalized opportunity recommendations. "
-                    "Open **My Applications** to manage them, or explore new programs "
-                    "with Search & Filters above."
-                )
-            else:
-                st.info(
-                    "No personalized recommendations are available yet. "
-                    "Try updating your profile interests."
-                )
-
-        for (
-            rec_index,
-            (
-                recommended_score,
-                recommended_reasons,
-                recommended_opportunity
-            )
-        ) in enumerate(recommended_results[:4]):
-
-
-            with st.container(
-                key=f"recommended_card_{rec_index}"
-            ):
-
-                st.html(
-                    opportunity_recommendation_card_html(
-                        recommended_opportunity,
-                        recommended_score
-                    )
-                )
-
-                with st.expander(
-                    "Why this is recommended"
-                ):
-
-                    if recommended_reasons:
-
-                        for reason in recommended_reasons:
-
-                            st.write(
-                                f"• {reason}"
-                            )
-
-                    else:
-
-                        st.write(
-                            "This opportunity fits information in your saved profile."
-                        )
-
-                    st.write(
-                        f"**Requirements:** "
-                        f"{recommended_opportunity.get('requirements', 'Check official site')}"
-                    )
-
-                recommended_calendar_url = google_calendar_deadline_url(
-                    str(
-                        recommended_opportunity[
-                            "name"
-                        ]
-                    ),
-                    recommended_opportunity.get(
-                        "deadline"
-                    ),
-                    str(
-                        recommended_opportunity.get(
-                            "url",
-                            ""
-                        )
-                    ),
-                    str(
-                        recommended_opportunity.get(
-                            "organization",
-                            ""
-                        )
-                    )
-                )
-
-                recommended_official_url = safe_http_url(
-                    recommended_opportunity.get(
-                        "url"
-                    )
-                )
-
-                rec_action1, rec_action2 = st.columns(2)
-
-                with rec_action1:
-
-                    if st.button(
-                        "Save Opportunity",
-                        key=f"recommended_save_{rec_index}_{recommended_opportunity['name']}",
-                        width="stretch"
-                    ):
-
-                        if save_opportunity(
-                            user_sub,
-                            str(
-                                recommended_opportunity[
-                                    "name"
-                                ]
-                            )
-                        ):
-
-                            st.success(
-                                "Saved to My Applications."
-                            )
-                            st.rerun()
-
-                with rec_action2:
-
-                    if recommended_official_url:
-
-                        st.link_button(
-                            "View Official Opportunity",
-                            recommended_official_url,
-                            width="stretch"
-                        )
-
-                if recommended_calendar_url:
-
-                    st.link_button(
-                        "Add to Google Calendar",
-                        recommended_calendar_url,
-                        width="stretch"
-                    )
 
 
 # ============================================================
