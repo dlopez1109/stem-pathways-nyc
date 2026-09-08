@@ -13,6 +13,7 @@ query parameters, HTML, or localStorage.
 from __future__ import annotations
 
 from pathlib import Path
+from urllib.parse import urlencode
 
 import streamlit as st
 from starlette.requests import Request
@@ -22,6 +23,37 @@ from starlette.routing import Route
 import auth_persist
 
 SCRIPT_PATH = str(Path(__file__).resolve().with_name("app.py"))
+
+PAGE_PATHS = {
+    "dashboard": "/dashboard",
+    "pathway": "/pathway",
+    "opportunities": "/opportunities",
+    "deadlines": "/deadlines",
+    "colleges": "/colleges",
+    "projects": "/projects",
+    "resources": "/resources",
+    "applications": "/applications",
+    "favorite-colleges": "/favorite-colleges",
+    "gpa-calculator": "/gpa-calculator",
+    "feedback": "/feedback",
+    "profile": "/profile",
+    "admin": "/admin",
+}
+
+
+def _safe_return_path(request: Request, default: str = "/") -> str:
+    candidate = str(request.query_params.get("return_to") or "").strip()
+    return candidate if candidate in PAGE_PATHS.values() else default
+
+
+async def stable_page(request: Request):
+    """Boot the single Streamlit app with the requested friendly page selected."""
+
+    slug = str(request.url.path or "").strip("/").lower()
+    if slug not in PAGE_PATHS:
+        return RedirectResponse(url="/", status_code=303)
+    query = urlencode({"page": slug, "sp_route": "1"})
+    return RedirectResponse(url=f"/?{query}", status_code=303)
 
 
 def _request_host(request: Request) -> str:
@@ -37,14 +69,14 @@ async def persist_session(request: Request):
     payload = auth_persist.consume_cookie_ticket(ticket)
 
     if payload is None:
-        response = RedirectResponse(url="/", status_code=303)
+        response = RedirectResponse(url=_safe_return_path(request), status_code=303)
         auth_persist.apply_clear_session_cookie(response, host=host)
         return response
 
     purpose = str(payload.get("purpose") or "").strip().lower()
     session_id = str(payload.get("session_id") or "").strip()
 
-    response = RedirectResponse(url="/", status_code=303)
+    response = RedirectResponse(url=_safe_return_path(request), status_code=303)
     try:
         if purpose == "clear":
             auth_persist.apply_clear_session_cookie(response, host=host)
@@ -80,6 +112,10 @@ app = st.App(
     routes=[
         Route("/auth/persist-session", persist_session, methods=["GET"]),
         Route("/auth/clear-session", clear_session, methods=["GET"]),
+        *[
+            Route(path, stable_page, methods=["GET"], name=f"page-{slug}")
+            for slug, path in PAGE_PATHS.items()
+        ],
     ],
 )
 

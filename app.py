@@ -15367,8 +15367,50 @@ def sidebar_nav_button(
         st.session_state.current_page = (
             page_name
         )
+        st.session_state[SP_ROUTE_HISTORY_MODE_KEY] = "push"
 
         st.rerun()
+
+
+def sync_browser_page_path(page_name):
+    """Keep a friendly URL in sync with the single authenticated app shell."""
+
+    path = PAGE_TO_PATH.get(str(page_name or "").strip())
+    if not path:
+        return
+
+    previous_page = st.session_state.get(SP_ROUTE_SYNCED_PAGE_KEY)
+    mode = st.session_state.pop(SP_ROUTE_HISTORY_MODE_KEY, None)
+    if mode not in {"push", "replace"}:
+        mode = "replace" if previous_page is None else (
+            "push" if previous_page != page_name else "replace"
+        )
+    st.session_state[SP_ROUTE_SYNCED_PAGE_KEY] = page_name
+
+    path_json = json.dumps(path)
+    mode_json = json.dumps(mode)
+    st.html(
+        f"""
+<script>
+(function () {{
+  const desiredPath = {path_json};
+  const mode = {mode_json};
+  const current = window.location.pathname;
+  if (current !== desiredPath || window.location.search) {{
+    const method = mode === "push" ? "pushState" : "replaceState";
+    window.history[method]({{spPage: desiredPath}}, "", desiredPath);
+  }}
+  if (!window.__spStableRoutePopstate) {{
+    window.__spStableRoutePopstate = true;
+    window.addEventListener("popstate", function () {{
+      window.location.reload();
+    }});
+  }}
+}})();
+</script>
+        """,
+        unsafe_allow_javascript=True,
+    )
 
 
 
@@ -27581,6 +27623,28 @@ SP_AUTH_SESSION_ID_KEY = "_sp_auth_session_id"
 SP_AUTH_COOKIE_NAV_KEY = "_sp_auth_cookie_nav"
 SP_AUTH_VALIDATED_AT_KEY = "_sp_auth_validated_at"
 SP_AUTH_TOUCHED_AT_KEY = "_sp_auth_idle_touched_at"
+SP_ROUTE_CONSUMED_KEY = "_sp_route_consumed"
+SP_ROUTE_SYNCED_PAGE_KEY = "_sp_route_synced_page"
+SP_ROUTE_HISTORY_MODE_KEY = "_sp_route_history_mode"
+
+PAGE_TO_PATH = {
+    "Dashboard": "/dashboard",
+    "My STEM Pathway": "/pathway",
+    "Opportunities": "/opportunities",
+    "Deadline Calendar": "/deadlines",
+    "College Suggestions": "/colleges",
+    "Project Explorer": "/projects",
+    "Resources": "/resources",
+    "My Applications": "/applications",
+    "Favorite Colleges": "/favorite-colleges",
+    "GPA Calculator": "/gpa-calculator",
+    "Feedback": "/feedback",
+    "My Profile": "/profile",
+    "Admin Dashboard": "/admin",
+}
+PATH_SLUG_TO_PAGE = {
+    path.lstrip("/"): page_name for page_name, path in PAGE_TO_PATH.items()
+}
 # Skip remote Auth revalidation / idle DB touch on every Streamlit rerun.
 AUTH_REVALIDATE_SECONDS = 10 * 60
 AUTH_IDLE_TOUCH_SECONDS = 30 * 60
@@ -27874,8 +27938,10 @@ def _schedule_auth_cookie_set(session_id):
     if not ticket:
         log_auth_event("auth_cookie_ticket_create_failed")
         return False
+    current_page = str(st.session_state.get("current_page") or "").strip()
+    return_path = PAGE_TO_PATH.get(current_page, "/dashboard")
     st.session_state[SP_AUTH_COOKIE_NAV_KEY] = (
-        f"/auth/persist-session?ticket={ticket}"
+        f"/auth/persist-session?{urlencode({'ticket': ticket, 'return_to': return_path})}"
     )
     return True
 
@@ -31985,6 +32051,16 @@ if "student_profile" not in st.session_state:
 if "current_page" not in st.session_state:
     st.session_state.current_page = "Dashboard"
 
+# A friendly ASGI route boots the app with `?page=<slug>`. Consume it only
+# once per websocket session so later widget reruns cannot overwrite clicks.
+route_slug = str(st.query_params.get("page", "") or "").strip().lower()
+route_page = PATH_SLUG_TO_PAGE.get(route_slug)
+route_token = f"{route_slug}:{st.query_params.get('sp_route', '')}"
+if route_page and st.session_state.get(SP_ROUTE_CONSUMED_KEY) != route_token:
+    st.session_state.current_page = route_page
+    st.session_state[SP_ROUTE_CONSUMED_KEY] = route_token
+    st.session_state[SP_ROUTE_HISTORY_MODE_KEY] = "replace"
+
 if "career_results" not in st.session_state:
     st.session_state.career_results = None
 
@@ -33018,6 +33094,7 @@ st.html(
 )
 
 page = st.session_state.current_page
+sync_browser_page_path(page)
 
 
 # ============================================================

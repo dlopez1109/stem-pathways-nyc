@@ -416,6 +416,8 @@ def test_process_callback_uses_ticket_not_session_verifier() -> None:
     ns["SP_AUTH_COOKIE_NAV_KEY"] = "_sp_auth_cookie_nav"
     ns["SP_AUTH_VALIDATED_AT_KEY"] = "_sp_auth_validated_at"
     ns["SP_AUTH_TOUCHED_AT_KEY"] = "_sp_auth_idle_touched_at"
+    ns["PAGE_TO_PATH"] = {"Dashboard": "/dashboard"}
+    ns["urlencode"] = __import__("urllib.parse", fromlist=["urlencode"]).urlencode
     ns["AUTH_REVALIDATE_SECONDS"] = 10 * 60
     ns["AUTH_IDLE_TOUCH_SECONDS"] = 30 * 60
     ns["SP_EMAIL_AUTH_STATE_KEY"] = "sp_email_auth"
