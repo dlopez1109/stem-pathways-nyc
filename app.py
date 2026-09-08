@@ -35328,16 +35328,19 @@ elif page == "My STEM Pathway":
                 )
             ]
 
-            selected = (
-                strong[:5]
-                if len(strong) >= 3
-                else ranked[: max(3, min(5, len(strong) or 3))]
-            )
-
+            # Score the complete supported-major catalog, but keep the page
+            # focused: show no more than three potential directions. Mixed
+            # answers can therefore surface several valid paths without an
+            # overwhelming five-card result set.
+            selected = strong[:3] if strong else ranked[:3]
             if len(selected) < 3:
-                selected = ranked[:3]
-            elif len(selected) > 5:
-                selected = selected[:5]
+                selected_fields = {field for field, _ in selected}
+                selected.extend(
+                    item
+                    for item in ranked
+                    if item[0] not in selected_fields and item[1] > 0
+                )
+                selected = selected[:3]
 
             st.session_state.career_results = selected
             st.session_state.career_match_reasons = {
@@ -35458,22 +35461,6 @@ elif page == "My STEM Pathway":
                 + "</div>"
             )
 
-        # Worth Exploring (#4–5)
-        explore_items = top_matches[3:5]
-        if explore_items:
-            st.subheader("Worth Exploring")
-            explore_cards = []
-            for index, (field, score) in enumerate(explore_items, start=4):
-                card, _ = build_major_card(
-                    index, field, score, "Worth Exploring"
-                )
-                explore_cards.append(card)
-            st.html(
-                '<div class="sp-stem-path-grid">'
-                + "".join(explore_cards)
-                + "</div>"
-            )
-
         st.html('<div class="sp-pathway-section-gap"></div>')
 
         top_field_name = top_matches[0][0]
@@ -35504,72 +35491,100 @@ elif page == "My STEM Pathway":
         )
 
         career_cards_html = []
+        seen_careers = set()
 
-        for career_name in top_info["careers"]:
-
-            if careers.empty:
-                career_cards_html.append(
-                    '<article class="sp-career-explore-card">'
-                    f'<h3 class="sp-career-explore-title">{html_module.escape(str(career_name))}</h3>'
-                    '<p class="sp-career-explore-empty">Career database unavailable.</p>'
-                    "</article>"
-                )
-                continue
-
-            career_match = careers[
-                careers["career"].astype(str).str.lower()
-                == career_name.lower()
-            ]
-
-            if career_match.empty:
-                career_cards_html.append(
-                    '<article class="sp-career-explore-card">'
-                    f'<h3 class="sp-career-explore-title">{html_module.escape(str(career_name))}</h3>'
-                    '<div class="sp-career-explore-major-block">'
-                    '<div class="sp-career-explore-major-label">Recommended Major</div>'
-                    f'<span class="sp-career-explore-major">{html_module.escape(str(recommended_major_name))}</span>'
-                    "</div>"
-                    '<p class="sp-career-explore-empty">'
-                    "Related career path based on your top major match."
-                    "</p>"
-                    "</article>"
-                )
-                continue
-
-            career_data = career_match.iloc[0]
-
-            def _field(name):
-                if name not in career_data.index:
-                    return ""
-                value = career_data[name]
-                try:
-                    if pd.isna(value):
-                        return ""
-                except (TypeError, ValueError):
-                    pass
-                return value
-
-            card_major = _field("recommended_major") or recommended_major_name
-
-            career_cards_html.append(
-                career_explore_card_html(
-                    career_name,
-                    recommended_major=card_major,
-                    description=_field("description"),
-                    early_career_salary=_field("early_career_salary"),
-                    median_salary=_field("median_salary"),
-                    experienced_salary=_field("experienced_salary"),
-                    average_salary=_field("average_salary"),
-                    education=_field("education"),
-                    skills=_field("skills"),
-                    salary_mapping_note=_field("salary_mapping_note"),
-                    source_url=_field("source_url"),
-                    job_outlook=_field("job_outlook"),
-                    industries=_field("industries"),
-                    companies=_field("companies"),
-                    related_majors=_field("related_majors"),
-                )
+        # Include a compact sample of careers for every displayed potential
+        # major (maximum 3 majors x 2 careers) rather than only the #1 result.
+        for match_field, _match_score in top_matches[:3]:
+            match_info = (
+                career_database.get(match_field)
+                or career_database.get(canonicalize_stem_field(match_field))
+                or {"majors": [match_field], "careers": []}
             )
+            match_major_name = (
+                (match_info.get("majors") or [match_field])[0]
+                if isinstance(match_info, dict)
+                else match_field
+            )
+            match_careers = []
+            for career_name in (match_info.get("careers") or []):
+                career_key = str(career_name).strip().casefold()
+                if not career_key or career_key in seen_careers:
+                    continue
+                seen_careers.add(career_key)
+                match_careers.append(career_name)
+                if len(match_careers) >= 2:
+                    break
+
+            for career_name in match_careers:
+
+                if careers.empty:
+                    career_cards_html.append(
+                        '<article class="sp-career-explore-card">'
+                        f'<h3 class="sp-career-explore-title">{html_module.escape(str(career_name))}</h3>'
+                        '<div class="sp-career-explore-major-block">'
+                        '<div class="sp-career-explore-major-label">Potential Major</div>'
+                        f'<span class="sp-career-explore-major">{html_module.escape(str(match_major_name))}</span>'
+                        "</div>"
+                        '<p class="sp-career-explore-empty">Career database unavailable.</p>'
+                        "</article>"
+                    )
+                    continue
+
+                career_match = careers[
+                    careers["career"].astype(str).str.lower()
+                    == career_name.lower()
+                ]
+
+                if career_match.empty:
+                    career_cards_html.append(
+                        '<article class="sp-career-explore-card">'
+                        f'<h3 class="sp-career-explore-title">{html_module.escape(str(career_name))}</h3>'
+                        '<div class="sp-career-explore-major-block">'
+                        '<div class="sp-career-explore-major-label">Potential Major</div>'
+                        f'<span class="sp-career-explore-major">{html_module.escape(str(match_major_name))}</span>'
+                        "</div>"
+                        '<p class="sp-career-explore-empty">'
+                        "Related career path based on this potential major."
+                        "</p>"
+                        "</article>"
+                    )
+                    continue
+
+                career_data = career_match.iloc[0]
+
+                def _field(name):
+                    if name not in career_data.index:
+                        return ""
+                    value = career_data[name]
+                    try:
+                        if pd.isna(value):
+                            return ""
+                    except (TypeError, ValueError):
+                        pass
+                    return value
+
+                card_major = _field("recommended_major") or match_major_name
+
+                career_cards_html.append(
+                    career_explore_card_html(
+                        career_name,
+                        recommended_major=card_major,
+                        description=_field("description"),
+                        early_career_salary=_field("early_career_salary"),
+                        median_salary=_field("median_salary"),
+                        experienced_salary=_field("experienced_salary"),
+                        average_salary=_field("average_salary"),
+                        education=_field("education"),
+                        skills=_field("skills"),
+                        salary_mapping_note=_field("salary_mapping_note"),
+                        source_url=_field("source_url"),
+                        job_outlook=_field("job_outlook"),
+                        industries=_field("industries"),
+                        companies=_field("companies"),
+                        related_majors=_field("related_majors"),
+                    )
+                )
 
         if career_cards_html:
             st.html(
