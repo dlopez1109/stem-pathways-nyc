@@ -7,6 +7,7 @@ import streamlit as st
 import pandas as pd
 import json
 import re
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from functools import lru_cache
 from zoneinfo import ZoneInfo
@@ -140,6 +141,7 @@ def college_logo_slug(college_name):
 def load_stem_college_catalog(): 
     """Load curated Scorecard/IPEDS-backed college catalog from data/college_catalog.json."""
 
+    started_at = time.perf_counter()
     path = APP_DIR / "data" / "college_catalog.json"
     if not path.is_file():
         return []
@@ -176,6 +178,7 @@ def load_stem_college_catalog():
             continue
         seen.add(key)
         deduped.append(college)
+    log_action_duration("load_college_catalog", started_at)
     return deduped
 
 
@@ -205,6 +208,52 @@ def favorite_details_from_college_catalog(catalog):
 
 
 logger = logging.getLogger(__name__)
+
+
+@contextmanager
+def measure_slow_action(action):
+    """Log only genuinely slow operations; never include user data or secrets."""
+
+    started_at = time.perf_counter()
+    try:
+        yield
+    finally:
+        log_action_duration(action, started_at)
+
+
+def log_action_duration(action, started_at):
+    """Record sanitized timing only when an action crosses one second."""
+
+    elapsed_ms = int((time.perf_counter() - float(started_at)) * 1000)
+    if elapsed_ms >= 1000:
+        safe_action = re.sub(r"[^a-z0-9_:-]+", "_", str(action).lower())[:64]
+        logger.info("slow_action action=%s ms=%s", safe_action, elapsed_ms)
+
+
+@st.cache_resource
+def large_dataset_cache():
+    """Process-wide cache for immutable, fully prepared catalog DataFrames."""
+
+    return {}
+
+
+@st.cache_data(show_spinner=False)
+def load_local_csv_dataset(relative_path, modified_ns):
+    """Read a local catalog once per file version and return a safe copy."""
+
+    del modified_ns  # The value is intentionally part of the cache key.
+    path = APP_DIR / relative_path
+    try:
+        return pd.read_csv(path)
+    except Exception:
+        return pd.DataFrame()
+
+
+def local_file_version(relative_path):
+    try:
+        return (APP_DIR / relative_path).stat().st_mtime_ns
+    except OSError:
+        return 0
 
 # Streamlit OAuth loads Google metadata from this process. Inherited
 # HTTP(S)_PROXY values (for example from the IDE) return 403 and break
@@ -15454,10 +15503,10 @@ except Exception:
 # ============================================================
 
 
-try:
-    opportunities = pd.read_csv("data/opportunities.csv")
-except Exception:
-    opportunities = pd.DataFrame()
+opportunities = load_local_csv_dataset(
+    "data/opportunities.csv",
+    local_file_version("data/opportunities.csv"),
+).copy()
 
 # ------------------------------------------------------------
 # CURATED OPPORTUNITY EXPANSION
@@ -20220,7 +20269,18 @@ def normalize_opportunity_selectivity(record):
     return record
 
 
-if opportunities.empty:
+_opportunity_catalog_cache_key = (
+    local_file_version("data/opportunities.csv"),
+    local_file_version("app.py"),
+)
+_catalog_cache = large_dataset_cache()
+_cached_opportunities = _catalog_cache.get(
+    ("opportunities", _opportunity_catalog_cache_key)
+)
+
+if _cached_opportunities is not None:
+    opportunities = _cached_opportunities.copy()
+elif opportunities.empty:
     opportunities = extra_df.copy()
 else:
     # Ensure older CSV rows support the new Opportunity 2.0 fields.
@@ -20360,26 +20420,31 @@ else:
         + leftover_extra
     )
 
-normalized_opportunity_records = apply_opportunity_opens_dates(
-    apply_opportunity_transparency(
-        opportunities.to_dict(
-            "records"
+if _cached_opportunities is None:
+    with measure_slow_action("prepare_opportunity_catalog"):
+        normalized_opportunity_records = apply_opportunity_opens_dates(
+            apply_opportunity_transparency(
+                opportunities.to_dict(
+                    "records"
+                )
+            )
         )
+
+        opportunities = pd.DataFrame(
+            [
+                normalize_opportunity_selectivity(record)
+                for record in normalized_opportunity_records
+            ]
+        )
+    _catalog_cache[("opportunities", _opportunity_catalog_cache_key)] = (
+        opportunities.copy()
     )
-)
-
-opportunities = pd.DataFrame(
-    [
-        normalize_opportunity_selectivity(record)
-        for record in normalized_opportunity_records
-    ]
-)
 
 
-try:
-    careers = pd.read_csv("data/careers.csv")
-except Exception:
-    careers = pd.DataFrame()
+careers = load_local_csv_dataset(
+    "data/careers.csv",
+    local_file_version("data/careers.csv"),
+).copy()
 
 
 def career_database_stat_counts(careers_df=None):
@@ -36201,7 +36266,15 @@ elif page == "Opportunities":
                     type="primary",
                 )
 
+        opportunity_search_status = None
+        opportunity_search_started = None
         if search_opportunities:
+
+            opportunity_search_started = time.perf_counter()
+            opportunity_search_status = st.status(
+                "Searching opportunities…",
+                expanded=False,
+            )
 
             st.session_state[
                 "opportunity_search_submitted"
@@ -36830,6 +36903,18 @@ elif page == "Opportunities":
                     item[0],
                 reverse=True
             )
+
+            if opportunity_search_started is not None:
+                log_action_duration(
+                    "opportunity_search",
+                    opportunity_search_started,
+                )
+            if opportunity_search_status is not None:
+                opportunity_search_status.update(
+                    label=f"Found {len(search_results)} matching opportunities",
+                    state="complete",
+                    expanded=False,
+                )
 
             active_chips = []
             if active_keyword:
@@ -39078,6 +39163,12 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
             use_container_width=True
         ):
 
+            college_search_started = time.perf_counter()
+            college_search_status = st.status(
+                "Finding your best-fit colleges…",
+                expanded=False,
+            )
+
             ranked_fields = sorted(
                 field_scores.items(),
                 key=lambda x: x[1],
@@ -39114,6 +39205,12 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
             st.session_state["college_discovery_results_v3"] = top_fields
             st.session_state["college_match_results_v3"] = results
             st.session_state["college_matches_visible_count"] = 16
+            log_action_duration("college_match_search", college_search_started)
+            college_search_status.update(
+                label=f"Compared {len(results)} colleges",
+                state="complete",
+                expanded=False,
+            )
             st.rerun()
 
     discovery_results = st.session_state.get(
@@ -43026,6 +43123,11 @@ elif page == "Admin Dashboard":
 
     if refresh_accounts_clicked:
         clear_admin_accounts_caches()
+        admin_refresh_started = time.perf_counter()
+        admin_refresh_status = st.status(
+            "Refreshing administrator data…",
+            expanded=False,
+        )
         try:
             if not supabase_connected:
                 raise RuntimeError("Supabase is not connected.")
@@ -43047,12 +43149,23 @@ elif page == "Admin Dashboard":
                 timezone.utc
             )
             st.session_state[admin_refresh_error_key] = None
+            admin_refresh_status.update(
+                label="Administrator data refreshed",
+                state="complete",
+                expanded=False,
+            )
         except Exception as refresh_exc:
             st.session_state[admin_refresh_error_key] = (
                 "Account refresh failed. Showing the last successfully "
                 "loaded results. "
                 f"({type(refresh_exc).__name__}: {refresh_exc})"
             )
+            admin_refresh_status.update(
+                label="Administrator refresh failed",
+                state="error",
+                expanded=False,
+            )
+        log_action_duration("admin_dashboard_refresh", admin_refresh_started)
         st.rerun()
 
     refresh_error_message = st.session_state.get(admin_refresh_error_key)
@@ -43060,8 +43173,11 @@ elif page == "Admin Dashboard":
         st.error(refresh_error_message)
 
     if admin_snapshot_key not in st.session_state:
-        initial_admin_data = load_admin_metrics()
-        initial_auth_users, initial_auth_error = list_all_auth_users_admin()
+        with st.spinner("Loading private administrator data…"):
+            admin_initial_started = time.perf_counter()
+            initial_admin_data = load_admin_metrics()
+            initial_auth_users, initial_auth_error = list_all_auth_users_admin()
+            log_action_duration("admin_dashboard_initial_load", admin_initial_started)
         st.session_state[admin_snapshot_key] = {
             "admin_data": initial_admin_data,
             "auth_users": initial_auth_users,
