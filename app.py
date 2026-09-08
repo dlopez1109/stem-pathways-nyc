@@ -23078,7 +23078,7 @@ def stem_direction_card_html(
         '<div class="sp-stem-dir-top">'
         f'<h3 class="sp-stem-dir-title">{field_safe}</h3>'
         '<div class="sp-stem-dir-score">'
-        '<div class="sp-stem-dir-score-label">Match Score</div>'
+        '<div class="sp-stem-dir-score-label">Alignment Score</div>'
         f'<div class="sp-stem-dir-score-value">{percent_safe}%</div>'
         "</div>"
         "</div>"
@@ -23348,7 +23348,8 @@ def personalized_stem_major_explanation(
         "math": "mathematics and statistics",
         "data_ai": "data science / AI",
         "health": "health / biomedical topics",
-        "business": "business, finance, and economics",
+        "business": "business and entrepreneurship",
+        "finance": "finance and economics",
     }
 
     field_category_tokens = {
@@ -23381,10 +23382,15 @@ def personalized_stem_major_explanation(
             "health science", "pharmacy", "neuroscience",
         ],
         "business": [
-            "finance", "econom", "business", "accounting", "entrepreneur",
-            "fintech", "actuar", "supply chain", "operations management",
-            "management information", "quantitative finance",
-            "financial engineering", "business analytics",
+            "business", "accounting", "entrepreneur", "supply chain",
+            "operations management", "management information",
+            "information systems", "industrial engineering",
+            "operations research", "business analytics",
+        ],
+        "finance": [
+            "finance", "econom", "fintech", "actuar", "investment",
+            "quantitative finance", "financial engineering",
+            "corporate finance",
         ],
     }
 
@@ -33777,6 +33783,7 @@ elif page == "My STEM Pathway":
                     "data_ai": resolve_stem_rating_default("data_ai"),
                     "health": resolve_stem_rating_default("health"),
                     "business": resolve_stem_rating_default("business"),
+                    "finance": resolve_stem_rating_default("finance"),
                 }
 
                 # Seed widget state once so new users start at 1, while
@@ -33790,6 +33797,7 @@ elif page == "My STEM Pathway":
                     "data_ai": "stemq_rating_data_ai_v2",
                     "health": "stemq_rating_health_v2",
                     "business": "stemq_rating_business_v3",
+                    "finance": "stemq_rating_finance_v1",
                 }
                 for name, widget_key in rating_widget_keys.items():
                     if widget_key not in st.session_state:
@@ -33838,10 +33846,16 @@ elif page == "My STEM Pathway":
                     rating_defaults["health"],
                 )
                 rating_business = stemq_interest_slider(
-                    "Business, Finance & Economics",
+                    "Business & Entrepreneurship",
                     "stemq_s_rating_business_v3",
                     rating_widget_keys["business"],
                     rating_defaults["business"],
+                )
+                rating_finance = stemq_interest_slider(
+                    "Finance & Economics",
+                    "stemq_s_rating_finance_v1",
+                    rating_widget_keys["finance"],
+                    rating_defaults["finance"],
                 )
 
         st.html(
@@ -35031,6 +35045,7 @@ elif page == "My STEM Pathway":
         "data_ai": int(rating_data_ai),
         "health": int(rating_health),
         "business": int(rating_business),
+        "finance": int(rating_finance),
     }
 
     # Majors belonging to each broad interest area.
@@ -35080,13 +35095,15 @@ elif page == "My STEM Pathway":
             "Biotechnology",
         ],
         "business": [
-            "Finance", "Economics", "Business", "Accounting",
-            "Entrepreneurship", "Business Analytics",
-            "Financial Engineering", "Quantitative Finance", "FinTech",
-            "Quantitative Economics", "Actuarial Science",
+            "Business", "Accounting", "Entrepreneurship", "Business Analytics",
             "Supply Chain Management", "Operations Management",
             "Management Information Systems", "Information Systems",
             "Industrial Engineering", "Operations Research",
+        ],
+        "finance": [
+            "Finance", "Economics", "Financial Engineering",
+            "Quantitative Finance", "FinTech", "Quantitative Economics",
+            "Actuarial Science", "Corporate Finance", "Investment Banking",
         ],
     }
 
@@ -35098,7 +35115,23 @@ elif page == "My STEM Pathway":
         "math": "Mathematics & Statistics",
         "data_ai": "Data Science / AI",
         "health": "Health / Biomedical",
-        "business": "Business, Finance & Economics",
+        "business": "Business & Entrepreneurship",
+        "finance": "Finance & Economics",
+    }
+
+    # The broad category name itself should be the natural default result when
+    # a student supplies only a rating and skips refinements. Specific answers
+    # can still move a related major above it.
+    category_anchor_map = {
+        "engineering": "Engineering",
+        "computing": "Computer Science",
+        "physical": "Physics",
+        "life": "Biology",
+        "math": "Mathematics",
+        "data_ai": "Data Science",
+        "health": "Health Science",
+        "business": "Business",
+        "finance": "Finance",
     }
 
     def note_reason(field, reason):
@@ -35119,7 +35152,10 @@ elif page == "My STEM Pathway":
             # Keep the strongest category rating for soft-gating later.
             if rating > field_category_rating[target]:
                 field_category_rating[target] = rating
-            primary_scores[target] += primary_points
+            anchor_multiplier = (
+                1.05 if target == category_anchor_map.get(category) else 1.0
+            )
+            primary_scores[target] += primary_points * anchor_multiplier
             if rating >= 7:
                 field_signal_counts[target] += 1
                 note_reason(target, reason)
@@ -35670,7 +35706,6 @@ elif page == "My STEM Pathway":
     if st.session_state.career_results:
 
         top_matches = st.session_state.career_results
-        max_score_value = top_matches[0][1] or 1
         # Prefer reasons saved with the generated results; fall back to the
         # live answer_reasons map built during this page's scoring pass.
         reasons_lookup = st.session_state.get("career_match_reasons") or {}
@@ -35693,7 +35728,10 @@ elif page == "My STEM Pathway":
         )
 
         def build_major_card(index, field, score, badge_label=""):
-            percentage = round((score / max_score_value) * 100)
+            # `score` is already a weighted 0–100 alignment value. Dividing by
+            # the winning result made every #1 result display 100%, even when
+            # evidence was limited.
+            percentage = round(max(0.0, min(100.0, float(score))))
             major_info = (
                 career_database.get(field)
                 or career_database.get(canonicalize_stem_field(field))
