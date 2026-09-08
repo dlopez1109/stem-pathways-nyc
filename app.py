@@ -15347,6 +15347,143 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
     unsafe_allow_html=True
 )
 
+# Final accessibility layer. It is intentionally loaded after the legacy theme
+# rules so keyboard focus and button contrast cannot be accidentally removed by
+# a page-specific selector.
+st.html(
+    """
+<a class="sp-skip-link" href="#sp-main-content">Skip to main content</a>
+<div id="sp-main-content" class="sp-main-focus-target" tabindex="-1"></div>
+<style id="sp-accessibility-v1">
+.sp-skip-link {
+  position: fixed !important;
+  top: 0.5rem !important;
+  left: 0.5rem !important;
+  z-index: 1000000 !important;
+  transform: translateY(-160%) !important;
+  padding: 0.7rem 1rem !important;
+  border: 3px solid #F5B82E !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  color: #083B5C !important;
+  -webkit-text-fill-color: #083B5C !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+}
+.sp-skip-link:focus {
+  transform: translateY(0) !important;
+  outline: 3px solid #041E33 !important;
+  outline-offset: 2px !important;
+}
+
+html body .stApp button:focus-visible,
+html body .stApp a:focus-visible,
+html body .stApp input:focus-visible,
+html body .stApp textarea:focus-visible,
+html body .stApp select:focus-visible,
+html body .stApp [role="button"]:focus-visible,
+html body .stApp [role="option"]:focus-visible,
+html body .stApp [role="slider"]:focus-visible,
+html body .stApp [tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 3px solid #F5B82E !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 5px rgba(4, 30, 51, 0.72) !important;
+}
+
+html body .stApp [data-testid="stMain"] .stButton > button,
+html body .stApp [data-testid="stMain"] [data-testid="stFormSubmitButton"] > button,
+html body .stApp [data-testid="stMain"] .stLinkButton > a,
+html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] > button,
+html body .stApp [data-testid="stMain"] [data-testid="stPageLink-NavLink"] {
+  min-height: 44px !important;
+  font-weight: 700 !important;
+}
+
+/* Light button shells always use dark navy text in every interaction state. */
+html body .stApp [data-testid="stMain"] button[kind="secondary"],
+html body .stApp [data-testid="stMain"] button[kind="secondary"] *,
+html body .stApp [data-testid="stMain"] [data-testid="stBaseButton-secondary"],
+html body .stApp [data-testid="stMain"] [data-testid="stBaseButton-secondary"] *,
+html body .stApp [data-testid="stMain"] .stLinkButton > a,
+html body .stApp [data-testid="stMain"] .stLinkButton > a:visited,
+html body .stApp [data-testid="stMain"] .stLinkButton > a *,
+html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button,
+html body .stApp [data-testid="stMain"] [data-testid="stDownloadButton"] button * {
+  color: #083B5C !important;
+  -webkit-text-fill-color: #083B5C !important;
+  opacity: 1 !important;
+}
+
+/* Cyan and gradient primary buttons have stronger contrast with near-black navy. */
+html body .stApp [data-testid="stMain"] button[kind="primary"],
+html body .stApp [data-testid="stMain"] button[kind="primary"] *,
+html body .stApp [data-testid="stMain"] [data-testid="stBaseButton-primary"],
+html body .stApp [data-testid="stMain"] [data-testid="stBaseButton-primary"] * {
+  color: #041E33 !important;
+  -webkit-text-fill-color: #041E33 !important;
+  opacity: 1 !important;
+}
+
+html body .stApp [data-testid="stSidebar"] button,
+html body .stApp [data-testid="stSidebar"] button * {
+  min-height: 44px !important;
+  color: #F8FBFF !important;
+  -webkit-text-fill-color: #F8FBFF !important;
+  opacity: 1 !important;
+}
+
+html body .stApp button:disabled,
+html body .stApp button:disabled * {
+  color: #526879 !important;
+  -webkit-text-fill-color: #526879 !important;
+  opacity: 1 !important;
+}
+
+.sp-sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@media (max-width: 720px) {
+  html body .stApp [data-testid="stMainBlockContainer"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+    overflow-x: hidden !important;
+  }
+  html body .stApp [data-testid="stHorizontalBlock"] {
+    max-width: 100% !important;
+  }
+  html body .stApp button,
+  html body .stApp [role="button"],
+  html body .stApp .stLinkButton > a {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .stApp *,
+  html body .stApp *::before,
+  html body .stApp *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+    """
+)
+
 
 def render_page_header(
     title,
@@ -15438,8 +15575,12 @@ def sync_browser_page_path(page_name):
 
     path_json = json.dumps(path)
     mode_json = json.dumps(mode)
+    page_announcement = html_module.escape(f"Viewing {page_name}")
     st.html(
         f"""
+<div class="sp-sr-only" role="status" aria-live="polite" aria-atomic="true">
+  {page_announcement}
+</div>
 <script>
 (function () {{
   const desiredPath = {path_json};
@@ -15453,6 +15594,17 @@ def sync_browser_page_path(page_name):
     window.__spStableRoutePopstate = true;
     window.addEventListener("popstate", function () {{
       window.location.reload();
+    }});
+  }}
+  const sidebar = document.querySelector('[data-testid="stSidebar"]');
+  if (sidebar) {{
+    sidebar.setAttribute("aria-label", "Primary navigation");
+    sidebar.querySelectorAll("button").forEach(function (button) {{
+      if (button.getAttribute("kind") === "primary") {{
+        button.setAttribute("aria-current", "page");
+      }} else {{
+        button.removeAttribute("aria-current");
+      }}
     }});
   }}
 }})();
