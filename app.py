@@ -15520,11 +15520,20 @@ html body .stApp [data-testid="stMain"] [data-testid="stBaseButton-primary"] * {
   opacity: 1 !important;
 }
 
-html body .stApp [data-testid="stSidebar"] button,
-html body .stApp [data-testid="stSidebar"] button * {
+html body .stApp [data-testid="stSidebar"] button {
   min-height: 44px !important;
   color: #F8FBFF !important;
   -webkit-text-fill-color: #F8FBFF !important;
+  opacity: 1 !important;
+}
+
+/* Do not apply the 44px touch target to every nested label node. Doing so
+   stacks several 44px children inside one navigation button. */
+html body .stApp [data-testid="stSidebar"] button * {
+  min-height: 0 !important;
+  height: auto !important;
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
   opacity: 1 !important;
 }
 
@@ -15574,6 +15583,113 @@ html body .stApp button:disabled * {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   OPPORTUNITY VISUAL REGRESSION GUARD
+   Keep filters/cards inside the content column and restore the intended
+   light-card palette after broad authenticated-shell rules.
+   ============================================================ */
+html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page),
+html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stMainBlockContainer"],
+html body .stApp:has(.sp-app-shell) [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-x: clip !important;
+  box-sizing: border-box !important;
+}
+
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"],
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] form,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stVerticalBlock"],
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stElementContainer"] {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stHorizontalBlock"] {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)) !important;
+  gap: 0.8rem 1rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  align-items: start !important;
+}
+
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  flex: none !important;
+}
+
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"],
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"],
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-best-match-card),
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-deadline-card) {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: auto !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  padding: 1.2rem 1.25rem 1.1rem !important;
+  margin: 0 0 1rem 0 !important;
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid #D5E3EC !important;
+  border-radius: 16px !important;
+  box-shadow: 0 6px 18px rgba(8, 60, 93, 0.08) !important;
+}
+
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-best-match-card,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-deadline-card,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-header,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-info-grid {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-heading h3,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-stat-label,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-stat-value {
+  color: #083C5D !important;
+  -webkit-text-fill-color: #083C5D !important;
+  opacity: 1 !important;
+}
+
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-org,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-desc,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-stat-note {
+  color: #4A5D6B !important;
+  -webkit-text-fill-color: #4A5D6B !important;
+  opacity: 1 !important;
+}
+
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-heading,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-stat,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-stat-value,
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-desc {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+@media (max-width: 720px) {
+  html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-opportunity_search_panel"] [data-testid="stHorizontalBlock"],
+  html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-rec-info-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"],
+  html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] {
+    padding: 1rem !important;
   }
 }
 </style>
@@ -30072,6 +30188,73 @@ def sign_out_current_user():
     st.rerun()
 
 
+def clear_student_recommendation_state():
+    """Discard derived recommendations so they are rebuilt from current answers."""
+
+    exact_keys = {
+        "career_results",
+        "career_match_reasons",
+        "career_match_meta",
+        "career_signal_counts",
+        "career_answer_snapshot",
+    }
+    prefixes = (
+        "stemq_",
+        "_sp_best_match_",
+    )
+    for key in list(st.session_state.keys()):
+        key_text = str(key)
+        if key_text in exact_keys or key_text.startswith(prefixes):
+            st.session_state.pop(key, None)
+
+
+def delete_current_student_account(user_sub):
+    """
+    Atomically remove the current Auth account and its owned student data.
+
+    The SECURITY DEFINER RPC is service-role only and validates a UUID. It also
+    removes rows attached through an explicitly approved legacy identity link.
+    """
+
+    if not supabase_can_write() or not require_user_sub(user_sub):
+        return False
+
+    try:
+        response = (
+            supabase
+            .rpc("delete_student_account", {"target_user_id": user_sub})
+            .execute()
+        )
+        result = getattr(response, "data", None)
+        return result is True or result == [True]
+    except Exception:
+        log_supabase_exception("delete_student_account")
+        return False
+
+
+def finish_deleted_student_session():
+    """Forget local auth/profile state and clear the opaque browser cookie."""
+
+    clear_email_auth_session()
+    for key in list(st.session_state.keys()):
+        key_text = str(key)
+        if (
+            key_text.startswith("_sp_")
+            or key_text.startswith("opportunity_search_")
+            or key_text.startswith("profile_")
+            or key_text in {
+                "student_profile",
+                "profile_loaded",
+                "profile_completed",
+                "current_page",
+            }
+        ):
+            st.session_state.pop(key, None)
+    _schedule_auth_cookie_clear()
+    flush_pending_auth_cookie_navigation()
+    st.rerun()
+
+
 def load_profile(user_sub):
 
     if not supabase_connected:
@@ -33797,6 +33980,10 @@ html:has(.sp-profile-setup-page) body .stApp [data-testid="stMain"] [data-testid
                 )
 
                 if saved:
+
+                    # Profile changes can alter majors, careers, projects, and
+                    # opportunity eligibility. Never retain stale results.
+                    clear_student_recommendation_state()
 
                     st.session_state.student_profile = (
                         profile
@@ -45693,6 +45880,8 @@ elif page == "My Profile":
                 width=320
             ):
 
+                clear_student_recommendation_state()
+
                 st.session_state.profile_completed = (
                     False
                 )
@@ -45700,11 +45889,83 @@ elif page == "My Profile":
                 st.rerun()
 
             if st.button(
+                "Regenerate Recommendations",
+                width=320,
+                help="Clear previous results and answer the pathway questions again.",
+            ):
+
+                clear_student_recommendation_state()
+                navigate_to_page("My STEM Pathway")
+
+            if st.button(
                 "Sign Out",
                 width=320
             ):
 
                 sign_out_current_user()
+
+    st.divider()
+
+    with st.expander("Your information and privacy"):
+        st.markdown(
+            """
+            **What is collected**
+
+            - Your Supabase account ID, email address, sign-in provider, and basic
+              session information needed to keep you securely signed in.
+            - The profile answers you provide, such as your name, age, grade,
+              borough, STEM interests, experience, goals, and preferences.
+            - Opportunities and colleges you save, application notes/statuses,
+              and feedback you choose to submit.
+
+            **Why it is collected**
+
+            This information keeps your work attached to your account and helps
+            personalize majors, careers, colleges, projects, and opportunities.
+            Administrator access is limited to operating and improving STEM
+            Pathways NYC. Passwords and Google credentials are not stored by this
+            app, and account ownership is based on your private Auth UUID—not your
+            email address.
+
+            Deleting your account permanently removes the Auth account and its
+            profile, saved opportunities, favorite colleges, feedback, approved
+            legacy identity links, and active login sessions. This cannot be undone.
+            """
+        )
+
+    with st.expander("Delete my account and saved data"):
+        st.warning(
+            "This permanently deletes your account and saved student data. "
+            "It cannot be undone."
+        )
+        delete_confirmation = st.text_input(
+            'Type DELETE to confirm',
+            key="delete_account_confirmation",
+            autocomplete="off",
+        )
+        delete_acknowledged = st.checkbox(
+            "I understand that my account and saved data will be permanently deleted.",
+            key="delete_account_acknowledged",
+        )
+        delete_ready = (
+            delete_confirmation.strip() == "DELETE"
+            and delete_acknowledged
+        )
+        if st.button(
+            "Permanently Delete My Account",
+            key="delete_student_account_button",
+            type="primary",
+            disabled=not delete_ready,
+        ):
+            with st.spinner("Deleting your account and saved data…"):
+                deleted = delete_current_student_account(user_sub)
+            if deleted:
+                finish_deleted_student_session()
+            else:
+                st.error(
+                    "Your account was not deleted. Please try again later or "
+                    "contact the site administrator."
+                )
 
 
 else:
