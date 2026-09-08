@@ -2142,6 +2142,19 @@ NAME_ALIASES = {
     "NASA GeneLab for High Schools": "NASA GeneLab for High Schools (GL4HS)",
     "Boston University RISE": "Boston University RISE Internship",
     "CCNY STEM Research Academy": "CUNY STEM Research Academy",
+    "CS4CS": "NYU Tandon Computer Science for Cyber Security (CS4CS)",
+    "NYU CS4CS": "NYU Tandon Computer Science for Cyber Security (CS4CS)",
+    "AIMI Summer Research Internship": "Stanford AIMI Summer Research Internship",
+    "AIMI Summer Health AI Bootcamp": "Stanford AIMI Summer Health AI Bootcamp",
+    "Explore Engineering Innovation": "Johns Hopkins Explore Engineering Innovation",
+    "JHU EEI": "Johns Hopkins Explore Engineering Innovation",
+    "Engineering Innovation Research Program": "Johns Hopkins Engineering Innovation Research Program",
+    "JHU EI Research Program": "Johns Hopkins Engineering Innovation Research Program",
+    "CDC Online Summer Course": "CDC Museum Public Health Academy Online Summer Course",
+    "EFL": "Economics for Leaders",
+    "YYGS IST": "Yale Young Global Scholars — Innovations in Science & Technology",
+    "Yale Young Global Scholars IST": "Yale Young Global Scholars — Innovations in Science & Technology",
+    "Columbia Climate School Green Mountains": "Columbia Climate School Pre-College Programs",
 }
 
 
