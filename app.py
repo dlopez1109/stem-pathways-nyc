@@ -45916,7 +45916,9 @@ elif page == "My Profile":
             ):
 
                 clear_student_recommendation_state()
-                navigate_to_page("My STEM Pathway")
+                st.session_state.current_page = "My STEM Pathway"
+                st.session_state[SP_ROUTE_HISTORY_MODE_KEY] = "push"
+                st.rerun()
 
             if st.button(
                 "Sign Out",
