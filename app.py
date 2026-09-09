@@ -15545,6 +15545,26 @@ html body .stApp button:disabled * {
   opacity: 1 !important;
 }
 
+/* Keep every profile action readable on its white button shell. This late,
+   section-scoped rule wins over older card and primary-button text rules. */
+html body .stApp [data-testid="stMain"] .st-key-profile_actions .stButton > button,
+html body .stApp [data-testid="stMain"] .st-key-profile_actions .stButton > button p,
+html body .stApp [data-testid="stMain"] .st-key-profile_actions .stButton > button span,
+html body .stApp [data-testid="stMain"] .st-key-profile_actions .stButton > button div {
+  color: #083B5C !important;
+  -webkit-text-fill-color: #083B5C !important;
+  font-weight: 700 !important;
+}
+
+html body .stApp [data-testid="stMain"] .st-key-profile_actions .stButton > button:disabled,
+html body .stApp [data-testid="stMain"] .st-key-profile_actions .stButton > button:disabled * {
+  background: #F1F6F9 !important;
+  color: #35566D !important;
+  -webkit-text-fill-color: #35566D !important;
+  border-color: #76B7D0 !important;
+  opacity: 1 !important;
+}
+
 .sp-sr-only {
   position: absolute !important;
   width: 1px !important;
