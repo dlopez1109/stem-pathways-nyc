@@ -24,6 +24,7 @@ from opportunity_transparency import (
 
 APP_DIR = Path(__file__).resolve().parent
 COLLEGE_LOGO_DIR = APP_DIR / "assets" / "college_logos"
+SITE_FAVICON_PATH = APP_DIR / "assets" / "stem_pathways_favicon.png"
 
 # Exact college-catalog names -> local logo filenames in assets/college_logos/
 # Prefer SVG; PNG/WebP allowed. Colleges omitted here fall back to slug match,
@@ -275,7 +276,7 @@ for _proxy_key in (
 
 st.set_page_config(
     page_title="STEM Pathways NYC",
-    page_icon="🧭",
+    page_icon=str(SITE_FAVICON_PATH),
     layout="wide",
     initial_sidebar_state="expanded"
 )
