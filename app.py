@@ -12066,9 +12066,9 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
 
     .sp-career-explore-highlight-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.55rem;
-        margin: 0 0 0.85rem 0;
+        margin: 0 0 0.55rem 0;
         width: 100%;
         min-width: 0;
     }
@@ -12115,6 +12115,44 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
     .sp-career-explore-highlight-value.is-muted {
         font-size: 0.88rem !important;
         font-weight: 650 !important;
+        color: #5A7386 !important;
+        -webkit-text-fill-color: #5A7386 !important;
+    }
+
+    .sp-career-explore-outlook {
+        margin: 0 0 0.85rem 0;
+        padding: 0.7rem 0.8rem;
+        background: #F7FBFD;
+        border: 1px solid #D5DEE6;
+        border-radius: 11px;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .sp-career-explore-outlook-label {
+        margin: 0 0 0.25rem 0;
+        color: #083C5D !important;
+        -webkit-text-fill-color: #083C5D !important;
+        font-size: 0.74rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
+
+    .sp-career-explore-outlook-value {
+        margin: 0;
+        color: #425D70 !important;
+        -webkit-text-fill-color: #425D70 !important;
+        font-size: 0.86rem !important;
+        font-weight: 550 !important;
+        line-height: 1.45 !important;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+    .sp-career-explore-outlook-value.is-muted {
         color: #5A7386 !important;
         -webkit-text-fill-color: #5A7386 !important;
     }
@@ -26059,8 +26097,17 @@ def career_explore_card_html(
         '<div class="sp-career-explore-highlight-grid">'
         + _highlight("Median Salary", median_display, median_muted)
         + _highlight("Typical Education", edu_display, edu_is_muted)
-        + _highlight("Job Outlook", outlook_display, outlook_muted)
         + "</div>"
+    )
+
+    outlook_muted_class = " is-muted" if outlook_muted else ""
+    outlook_html = (
+        '<div class="sp-career-explore-outlook">'
+        '<div class="sp-career-explore-outlook-label">Job Outlook</div>'
+        f'<p class="sp-career-explore-outlook-value{outlook_muted_class}">'
+        f"{outlook_display}"
+        "</p>"
+        "</div>"
     )
 
     salary_items = [
@@ -26173,6 +26220,7 @@ def career_explore_card_html(
         f"{major_html}"
         f"{desc_html}"
         f"{highlights_html}"
+        f"{outlook_html}"
         f"{extra_salary_html}"
         f"{skills_html}"
         f"{extras_html}"
@@ -45880,6 +45928,28 @@ elif page == "My Profile":
         height="content"
     ):
 
+        # This page-local rule is emitted after the legacy theme CSS. Target
+        # the regenerate control by its own stable key so no broad button or
+        # card selector can fade its label again.
+        st.html(
+            """
+<style id="sp-profile-regenerate-contrast-v2">
+html body .stApp [data-testid="stMain"] [class*="st-key-profile_regenerate_recommendations"] .stButton > button,
+html body .stApp [data-testid="stMain"] [class*="st-key-profile_regenerate_recommendations"] .stButton > button:hover,
+html body .stApp [data-testid="stMain"] [class*="st-key-profile_regenerate_recommendations"] .stButton > button:focus,
+html body .stApp [data-testid="stMain"] [class*="st-key-profile_regenerate_recommendations"] .stButton > button:active,
+html body .stApp [data-testid="stMain"] [class*="st-key-profile_regenerate_recommendations"] .stButton > button p,
+html body .stApp [data-testid="stMain"] [class*="st-key-profile_regenerate_recommendations"] .stButton > button span,
+html body .stApp [data-testid="stMain"] [class*="st-key-profile_regenerate_recommendations"] .stButton > button div {
+  color: #083B5C !important;
+  -webkit-text-fill-color: #083B5C !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+</style>
+            """
+        )
+
         with st.container(
             key="profile_action_divider",
             height="content"
@@ -45913,6 +45983,7 @@ elif page == "My Profile":
                 "Regenerate Recommendations",
                 width=320,
                 help="Clear previous results and answer the pathway questions again.",
+                key="profile_regenerate_recommendations",
             ):
 
                 clear_student_recommendation_state()
