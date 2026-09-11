@@ -5,23 +5,26 @@ from pathlib import Path
 
 SOURCE = (Path(__file__).resolve().parent / "app.py").read_text(encoding="utf-8")
 
-assert "@st.cache_data(show_spinner=False)\ndef load_stem_college_catalog" in SOURCE
-assert "@st.cache_data(show_spinner=False)\ndef load_local_csv_dataset" in SOURCE
+assert "@st.cache_data(show_spinner=False, max_entries=2)\ndef load_stem_college_catalog" in SOURCE
+assert "@st.cache_data(show_spinner=False, max_entries=8)\ndef load_local_csv_dataset" in SOURCE
 assert '"data/opportunities.csv"' in SOURCE
 assert '"data/careers.csv"' in SOURCE
-assert "large_dataset_cache()" in SOURCE
+assert "def prepare_opportunity_catalog(" in SOURCE
+assert "large_dataset_cache" not in SOURCE
 assert 'measure_slow_action("prepare_opportunity_catalog")' in SOURCE
 
 admin_branch = SOURCE.index('elif page == "Admin Dashboard":')
-admin_metrics_call = SOURCE.index("initial_admin_data = load_admin_metrics()")
-admin_auth_call = SOURCE.index("initial_auth_users, initial_auth_error")
+admin_metrics_call = SOURCE.index("admin_data = load_admin_metrics(")
+admin_auth_call = SOURCE.index("auth_users, auth_users_error = list_all_auth_users_admin(")
 assert admin_metrics_call > admin_branch
 assert admin_auth_call > admin_branch
 assert "Loading private administrator data…" in SOURCE
+assert 'st.session_state.pop("admin_accounts_snapshot", None)' in SOURCE
 
 assert "Searching opportunities…" in SOURCE
 assert "Finding your best-fit colleges…" in SOURCE
 assert "if elapsed_ms >= 1000" in SOURCE
 assert 'logger.info("slow_action action=%s ms=%s"' in SOURCE
+assert 'logger.info("memory_check location=%s rss_mb=%.1f"' in SOURCE
 
 print("PASS: catalogs cached, admin lazy, searches visible, slow actions measured")

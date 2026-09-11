@@ -138,7 +138,7 @@ def college_logo_slug(college_name):
     return slug.strip("-")
 
 
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, max_entries=2)
 def load_stem_college_catalog(): 
     """Load curated Scorecard/IPEDS-backed college catalog from data/college_catalog.json."""
 
@@ -211,6 +211,24 @@ def favorite_details_from_college_catalog(catalog):
 logger = logging.getLogger(__name__)
 
 
+def log_memory_check(location):
+    """Server-side RSS diagnostic. Never logs user data or secrets."""
+
+    try:
+        import psutil
+
+        rss_mb = psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024)
+        safe_location = re.sub(r"[^a-z0-9_:-]+", "_", str(location or "unknown").lower())[
+            :64
+        ]
+        logger.info("memory_check location=%s rss_mb=%.1f", safe_location, rss_mb)
+    except Exception:
+        pass
+
+
+log_memory_check("app_startup")
+
+
 @contextmanager
 def measure_slow_action(action):
     """Log only genuinely slow operations; never include user data or secrets."""
@@ -231,14 +249,7 @@ def log_action_duration(action, started_at):
         logger.info("slow_action action=%s ms=%s", safe_action, elapsed_ms)
 
 
-@st.cache_resource
-def large_dataset_cache():
-    """Process-wide cache for immutable, fully prepared catalog DataFrames."""
-
-    return {}
-
-
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, max_entries=8)
 def load_local_csv_dataset(relative_path, modified_ns):
     """Read a local catalog once per file version and return a safe copy."""
 
@@ -15925,11 +15936,8 @@ except Exception:
 # LOCAL DATABASES
 # ============================================================
 
-
-opportunities = load_local_csv_dataset(
-    "data/opportunities.csv",
-    local_file_version("data/opportunities.csv"),
-).copy()
+# CSV rows are merged with curated extras in prepare_opportunity_catalog().
+# Keep a temporary name only until the prepared catalog is assigned below.
 
 # ------------------------------------------------------------
 # CURATED OPPORTUNITY EXPANSION
@@ -20534,10 +20542,6 @@ apply_opportunity_opens_dates(
     fill_missing=False
 )
 
-extra_df = pd.DataFrame(
-    extra_opportunities
-)
-
 
 def canonical_opportunity_name(
     name
@@ -20692,182 +20696,112 @@ def normalize_opportunity_selectivity(record):
     return record
 
 
-_opportunity_catalog_cache_key = (
-    local_file_version("data/opportunities.csv"),
-    local_file_version("app.py"),
-)
-_catalog_cache = large_dataset_cache()
-_cached_opportunities = _catalog_cache.get(
-    ("opportunities", _opportunity_catalog_cache_key)
-)
+@st.cache_data(show_spinner=False, max_entries=2)
+def prepare_opportunity_catalog(csv_version, app_version):
+    """Merge CSV + curated extras once per file version (single Streamlit cache)."""
 
-if _cached_opportunities is not None:
-    opportunities = _cached_opportunities.copy()
-elif opportunities.empty:
-    opportunities = extra_df.copy()
-else:
-    # Ensure older CSV rows support the new Opportunity 2.0 fields.
-    opportunity_defaults = {
-        "selectivity": "Not rated yet",
-        "selectivity_stars": 0,
-        "acceptance_rate": "Not publicly reported",
-        "acceptance_rate_confidence": "Not available",
-        "acceptance_rate_source": "Not publicly reported",
-        "internship_potential": "Not specified",
-        "format": "Check official site",
-        "paid_status": "Check official site",
-        "requirements": "Check official site",
-        "deadline": "Check official site",
-        "application_opens": "",
-        "opens_date_type": "unknown",
-        "age_range": "Check official eligibility",
-        "eligibility_summary": "Check official eligibility",
-        "cost_category": "Unknown / check official site",
-        "tuition_cost": "",
-        "financial_aid_status": "Unknown / check official site",
-        "scholarship_availability": "No aid stated",
-        "stipend_status": "Unknown",
-        "stipend_amount": "",
-        "stipend_display": "Check official site",
-        "last_verified": "2026-08-19"
-    }
-
-    for column, default_value in opportunity_defaults.items():
-        if column not in opportunities.columns:
-            opportunities[column] = default_value
-
-    extra_by_name = {}
-
-    for extra_row in extra_opportunities:
-
-        extra_name = str(
-            extra_row.get(
-                "name",
-                ""
-            )
-        ).strip()
-
-        extra_by_name[extra_name.lower()] = extra_row
-        extra_by_name[
-            canonical_opportunity_name(
-                extra_name
-            ).lower()
-        ] = extra_row
-
-    merged_rows = []
-    used_extra_names = set()
-
-    for csv_row in opportunities.to_dict(
-        "records"
-    ):
-
-        csv_row = normalize_opportunity_selectivity(
-            csv_row
-        )
-
-        csv_name = str(
-            csv_row.get(
-                "name",
-                ""
-            )
-        ).strip()
-
-        extra_match = extra_by_name.get(
-            csv_name.lower()
-        ) or extra_by_name.get(
-            canonical_opportunity_name(
-                csv_name
-            ).lower()
-        )
-
-        if extra_match:
-
-            csv_row = merge_opportunity_fields(
-                csv_row,
-                extra_match
-            )
-
-            used_extra_names.add(
-                str(
-                    extra_match.get(
-                        "name",
-                        ""
-                    )
-                ).strip().lower()
-            )
-
-            used_extra_names.add(
-                canonical_opportunity_name(
-                    extra_match.get(
-                        "name",
-                        ""
-                    )
-                ).lower()
-            )
-
-        merged_rows.append(
-            csv_row
-        )
-
-    leftover_extra = []
-
-    for extra_row in extra_opportunities:
-
-        extra_name = str(
-            extra_row.get(
-                "name",
-                ""
-            )
-        ).strip().lower()
-
-        extra_canonical = canonical_opportunity_name(
-            extra_row.get(
-                "name",
-                ""
-            )
-        ).lower()
-
-        if (
-            extra_name in used_extra_names
-            or
-            extra_canonical in used_extra_names
-        ):
-            continue
-
-        leftover_extra.append(
-            extra_row
-        )
-
-    opportunities = pd.DataFrame(
-        merged_rows
-        + leftover_extra
+    del app_version  # Included in the cache key; extras live in app.py.
+    base = load_local_csv_dataset(
+        "data/opportunities.csv",
+        csv_version,
     )
 
-if _cached_opportunities is None:
-    with measure_slow_action("prepare_opportunity_catalog"):
-        normalized_opportunity_records = apply_opportunity_opens_dates(
-            apply_opportunity_transparency(
-                opportunities.to_dict(
-                    "records"
+    if base is None or getattr(base, "empty", True):
+        working_records = [
+            normalize_opportunity_selectivity(dict(row))
+            for row in extra_opportunities
+        ]
+    else:
+        opportunity_defaults = {
+            "selectivity": "Not rated yet",
+            "selectivity_stars": 0,
+            "acceptance_rate": "Not publicly reported",
+            "acceptance_rate_confidence": "Not available",
+            "acceptance_rate_source": "Not publicly reported",
+            "internship_potential": "Not specified",
+            "format": "Check official site",
+            "paid_status": "Check official site",
+            "requirements": "Check official site",
+            "deadline": "Check official site",
+            "application_opens": "",
+            "opens_date_type": "unknown",
+            "age_range": "Check official eligibility",
+            "eligibility_summary": "Check official eligibility",
+            "cost_category": "Unknown / check official site",
+            "tuition_cost": "",
+            "financial_aid_status": "Unknown / check official site",
+            "scholarship_availability": "No aid stated",
+            "stipend_status": "Unknown",
+            "stipend_amount": "",
+            "stipend_display": "Check official site",
+            "last_verified": "2026-08-19",
+        }
+
+        extra_by_name = {}
+        for extra_row in extra_opportunities:
+            extra_name = str(extra_row.get("name", "")).strip()
+            extra_by_name[extra_name.lower()] = extra_row
+            extra_by_name[
+                canonical_opportunity_name(extra_name).lower()
+            ] = extra_row
+
+        merged_rows = []
+        used_extra_names = set()
+        for csv_row in base.to_dict("records"):
+            for column, default_value in opportunity_defaults.items():
+                if column not in csv_row or csv_row.get(column) in (None, ""):
+                    if column not in csv_row:
+                        csv_row[column] = default_value
+            csv_row = normalize_opportunity_selectivity(csv_row)
+            csv_name = str(csv_row.get("name", "")).strip()
+            extra_match = extra_by_name.get(csv_name.lower()) or extra_by_name.get(
+                canonical_opportunity_name(csv_name).lower()
+            )
+            if extra_match:
+                csv_row = merge_opportunity_fields(csv_row, extra_match)
+                used_extra_names.add(
+                    str(extra_match.get("name", "")).strip().lower()
                 )
-            )
-        )
+                used_extra_names.add(
+                    canonical_opportunity_name(extra_match.get("name", "")).lower()
+                )
+            merged_rows.append(csv_row)
 
-        opportunities = pd.DataFrame(
-            [
-                normalize_opportunity_selectivity(record)
-                for record in normalized_opportunity_records
-            ]
-        )
-    _catalog_cache[("opportunities", _opportunity_catalog_cache_key)] = (
-        opportunities.copy()
+        leftover_extra = []
+        for extra_row in extra_opportunities:
+            extra_name = str(extra_row.get("name", "")).strip().lower()
+            extra_canonical = canonical_opportunity_name(
+                extra_row.get("name", "")
+            ).lower()
+            if extra_name in used_extra_names or extra_canonical in used_extra_names:
+                continue
+            leftover_extra.append(extra_row)
+        working_records = merged_rows + leftover_extra
+
+    normalized_opportunity_records = apply_opportunity_opens_dates(
+        apply_opportunity_transparency(working_records)
     )
+    return pd.DataFrame(
+        [
+            normalize_opportunity_selectivity(record)
+            for record in normalized_opportunity_records
+        ]
+    )
+
+
+with measure_slow_action("prepare_opportunity_catalog"):
+    opportunities = prepare_opportunity_catalog(
+        local_file_version("data/opportunities.csv"),
+        local_file_version("app.py"),
+    )
+log_memory_check("after_opportunity_catalog")
 
 
 careers = load_local_csv_dataset(
     "data/careers.csv",
     local_file_version("data/careers.csv"),
-).copy()
+)
+log_memory_check("after_data_catalogs")
 
 
 def career_database_stat_counts(careers_df=None):
@@ -25544,7 +25478,7 @@ def resolve_college_logo_path(college_name):
     return None
 
 
-@lru_cache(maxsize=256)
+@lru_cache(maxsize=24)
 def college_logo_data_uri(college_name, _mtime_ns=0):
 
     path = resolve_college_logo_path(college_name)
@@ -28670,6 +28604,60 @@ def college_selectivity_from_acceptance_rate(rate):
     return 1, "More Accessible"
 
 
+def college_match_result_light(college, match_score, reasons, stars, competitive_label):
+    """Compact match row for session_state (avoids storing full college dicts)."""
+
+    return {
+        "college_name": str((college or {}).get("name") or "").strip(),
+        "unitid": (college or {}).get("unitid"),
+        "match_score": match_score,
+        "reasons": list(reasons or []),
+        "stars": stars,
+        "competitive_label": competitive_label,
+    }
+
+
+def hydrate_college_match_results(results, college_catalog):
+    """Reconnect lightweight match rows to the cached college catalog for rendering."""
+
+    by_unitid = {}
+    by_name = {}
+    for college in college_catalog or []:
+        name = str(college.get("name") or "").strip()
+        if name:
+            by_name[name] = college
+        unitid = college.get("unitid")
+        if unitid is not None and str(unitid).strip() != "":
+            by_unitid[str(unitid)] = college
+
+    hydrated = []
+    for result in results or []:
+        if not isinstance(result, dict):
+            continue
+        college = result.get("college")
+        if not isinstance(college, dict) or not str(college.get("name") or "").strip():
+            college = None
+            unitid = result.get("unitid")
+            if unitid is not None and str(unitid).strip() != "":
+                college = by_unitid.get(str(unitid))
+            if college is None:
+                college = by_name.get(str(result.get("college_name") or "").strip())
+        if not isinstance(college, dict) or not college.get("name"):
+            continue
+        hydrated.append(
+            {
+                "college": college,
+                "college_name": college.get("name"),
+                "unitid": college.get("unitid"),
+                "match_score": result.get("match_score"),
+                "reasons": list(result.get("reasons") or []),
+                "stars": result.get("stars"),
+                "competitive_label": result.get("competitive_label"),
+            }
+        )
+    return hydrated
+
+
 STUDENT_DATA_RETRY_MESSAGE = (
     "Something went wrong while saving your data. "
     "Please try again in a moment."
@@ -31747,8 +31735,10 @@ def is_admin_user(email):
     )
 
 
-@st.cache_data(show_spinner=False)
-def load_admin_metrics():
+@st.cache_data(show_spinner=False, ttl=300, max_entries=2)
+def load_admin_metrics(refresh_token=0):
+    # refresh_token is a cache-busting key only; it is not logged or shown.
+    _ = refresh_token
 
     if not supabase_connected:
 
@@ -31774,21 +31764,32 @@ def load_admin_metrics():
         "favorite_owner_column": None,
     }
 
-    table_map = {
-        "profiles":
+    # Only columns required by Admin Dashboard pathways / feedback / email status.
+    # Owner-id candidates are included so admin_detect_owner_id_column still works.
+    table_selects = {
+        "profiles": (
             "student_profiles",
-
-        "feedback":
+            "user_sub,user_id,auth_user_id,uid,first_name,middle_name,last_name,"
+            "grade,borough,interests,experience_areas,goals,exploration_stage,"
+            "confidence,weekly_time,financial_support",
+        ),
+        "feedback": (
             "user_feedback",
-
-        "saved_opportunities":
+            "user_sub,user_id,auth_user_id,uid,"
+            "rating,would_recommend,additional_comments,improvements,"
+            "updated_at,created_at",
+        ),
+        "saved_opportunities": (
             "saved_opportunities",
-
-        "favorite_colleges":
-            "favorite_colleges"
+            "user_sub,user_id,auth_user_id,uid,opportunity_name,status",
+        ),
+        "favorite_colleges": (
+            "favorite_colleges",
+            "user_sub,user_id,auth_user_id,uid,college_name",
+        ),
     }
 
-    for key, table_name in table_map.items():
+    for key, (table_name, columns) in table_selects.items():
 
         try:
 
@@ -31797,7 +31798,7 @@ def load_admin_metrics():
                 .table(
                     table_name
                 )
-                .select("*")
+                .select(columns)
                 .execute()
             )
 
@@ -31807,13 +31808,20 @@ def load_admin_metrics():
 
         except Exception:
 
-            log_supabase_exception(
-                f"load_admin_metrics:{table_name}"
-            )
-
-            data[
-                key
-            ] = []
+            # Fallback to * only if a projected column is missing in an older schema.
+            try:
+                response = (
+                    supabase
+                    .table(table_name)
+                    .select("*")
+                    .execute()
+                )
+                data[key] = response.data or []
+            except Exception:
+                log_supabase_exception(
+                    f"load_admin_metrics:{table_name}"
+                )
+                data[key] = []
 
     # Optional approved identity links (Auth UUID <-> Google user_sub).
     # Missing table is fine; never join student rows by email.
@@ -32199,13 +32207,15 @@ def build_admin_registered_account_emails(auth_users, admin_data):
     return rows
 
 
-@st.cache_data(show_spinner=False)
-def list_all_auth_users_admin():
+@st.cache_data(show_spinner=False, ttl=300, max_entries=2)
+def list_all_auth_users_admin(refresh_token=0):
     """
     Server-side only: paginate Supabase Auth Admin list_users with the
     service-role client. Returns (users, error_message).
     Never returns passwords, tokens, or provider secrets.
     """
+
+    _ = refresh_token
 
     if not supabase_connected or supabase is None:
         return [], "Supabase is not connected."
@@ -32809,7 +32819,7 @@ if not app_user:
             not opportunities.empty
         ):
 
-            landing_stats_df = opportunities.copy()
+            landing_stats_df = opportunities
 
         if (
             isinstance(
@@ -32819,8 +32829,6 @@ if not app_user:
             and
             not landing_stats_df.empty
         ):
-
-            landing_stats_df = landing_stats_df.copy()
 
             if "name" in landing_stats_df.columns:
 
@@ -40518,13 +40526,15 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
                     college["admit_rate"]
                 )
 
-                results.append({
-                    "college": college,
-                    "match_score": match_score,
-                    "reasons": reasons,
-                    "stars": stars,
-                    "competitive_label": competitive_label
-                })
+                results.append(
+                    college_match_result_light(
+                        college,
+                        match_score,
+                        reasons,
+                        stars,
+                        competitive_label,
+                    )
+                )
 
             results.sort(
                 key=lambda item: item["match_score"],
@@ -40535,6 +40545,7 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
             st.session_state["college_match_results_v3"] = results
             st.session_state["college_matches_visible_count"] = 16
             log_action_duration("college_match_search", college_search_started)
+            log_memory_check("college_search")
             college_search_status.update(
                 label=f"Compared {len(results)} colleges",
                 state="complete",
@@ -40546,8 +40557,9 @@ html body .stApp [data-testid="stMain"] [class*="st-key-college_discovery_enviro
         "college_discovery_results_v3"
     )
 
-    college_results = st.session_state.get(
-        "college_match_results_v3"
+    college_results = hydrate_college_match_results(
+        st.session_state.get("college_match_results_v3"),
+        college_catalog,
     )
 
     if discovery_results and college_results:
@@ -41015,9 +41027,9 @@ elif page == "My Favorite Colleges":
     # Recover the most recent personalized college matches from this session.
     last_match_lookup = {}
 
-    for result in st.session_state.get(
-        "college_match_results_v3",
-        []
+    for result in hydrate_college_match_results(
+        st.session_state.get("college_match_results_v3", []),
+        load_stem_college_catalog(),
     ):
 
         college_info = result.get(
@@ -44412,9 +44424,17 @@ elif page == "Admin Dashboard":
         '</div>'
     )
 
-    admin_snapshot_key = "admin_accounts_snapshot"
+    # Prefer st.cache_data as the source of truth. Session only tracks
+    # refresh metadata / last auth-list error — not full admin datasets.
     admin_refresh_at_key = "admin_accounts_last_refresh_at"
     admin_refresh_error_key = "admin_accounts_refresh_error"
+    admin_auth_error_key = "admin_accounts_auth_users_error"
+    admin_refresh_token_key = "admin_accounts_refresh_token"
+    # Drop legacy full-dataset snapshot if an older session still holds it.
+    st.session_state.pop("admin_accounts_snapshot", None)
+
+    if admin_refresh_token_key not in st.session_state:
+        st.session_state[admin_refresh_token_key] = 0
 
     # --------------------------------------------------------
     # PLATFORM OVERVIEW (title + refresh control near accounts)
@@ -44451,7 +44471,6 @@ elif page == "Admin Dashboard":
         )
 
     if refresh_accounts_clicked:
-        clear_admin_accounts_caches()
         admin_refresh_started = time.perf_counter()
         admin_refresh_status = st.status(
             "Refreshing administrator data…",
@@ -44461,23 +44480,23 @@ elif page == "Admin Dashboard":
             if not supabase_connected:
                 raise RuntimeError("Supabase is not connected.")
 
-            refreshed_admin_data = load_admin_metrics()
-            refreshed_auth_users, refreshed_auth_error = (
-                list_all_auth_users_admin()
+            # Bust cache with a new token only after the fetch succeeds so a
+            # failed refresh keeps showing the previous cached results.
+            next_token = int(st.session_state.get(admin_refresh_token_key) or 0) + 1
+            load_admin_metrics(next_token)
+            _refreshed_auth_users, refreshed_auth_error = (
+                list_all_auth_users_admin(next_token)
             )
 
             if refreshed_auth_error:
                 raise RuntimeError(refreshed_auth_error)
 
-            st.session_state[admin_snapshot_key] = {
-                "admin_data": refreshed_admin_data,
-                "auth_users": refreshed_auth_users,
-                "auth_users_error": None,
-            }
+            st.session_state[admin_refresh_token_key] = next_token
             st.session_state[admin_refresh_at_key] = datetime.now(
                 timezone.utc
             )
             st.session_state[admin_refresh_error_key] = None
+            st.session_state[admin_auth_error_key] = None
             admin_refresh_status.update(
                 label="Administrator data refreshed",
                 state="complete",
@@ -44501,35 +44520,28 @@ elif page == "Admin Dashboard":
     if refresh_error_message:
         st.error(refresh_error_message)
 
-    if admin_snapshot_key not in st.session_state:
-        with st.spinner("Loading private administrator data…"):
-            admin_initial_started = time.perf_counter()
-            initial_admin_data = load_admin_metrics()
-            initial_auth_users, initial_auth_error = list_all_auth_users_admin()
-            log_action_duration("admin_dashboard_initial_load", admin_initial_started)
-        st.session_state[admin_snapshot_key] = {
-            "admin_data": initial_admin_data,
-            "auth_users": initial_auth_users,
-            "auth_users_error": initial_auth_error,
-        }
-        if not initial_auth_error:
-            st.session_state[admin_refresh_at_key] = datetime.now(
-                timezone.utc
-            )
+    admin_token = int(st.session_state.get(admin_refresh_token_key) or 0)
 
-    admin_snapshot = st.session_state.get(admin_snapshot_key) or {}
-    admin_data = admin_snapshot.get("admin_data") or {
-        "profiles": [],
-        "feedback": [],
-        "saved_opportunities": [],
-        "favorite_colleges": [],
-        "identity_links": [],
-        "profile_owner_column": None,
-        "saved_owner_column": None,
-        "favorite_owner_column": None,
-    }
-    auth_users = admin_snapshot.get("auth_users") or []
-    auth_users_error = admin_snapshot.get("auth_users_error")
+    with st.spinner("Loading private administrator data…"):
+        admin_initial_started = time.perf_counter()
+        admin_data = load_admin_metrics(admin_token)
+        auth_users, auth_users_error = list_all_auth_users_admin(admin_token)
+        log_action_duration("admin_dashboard_initial_load", admin_initial_started)
+        log_memory_check("admin_dashboard_load")
+
+    if auth_users_error:
+        st.session_state[admin_auth_error_key] = auth_users_error
+    elif admin_auth_error_key in st.session_state:
+        # Successful cache read clears a prior auth-list error.
+        st.session_state.pop(admin_auth_error_key, None)
+
+    if not auth_users_error and not st.session_state.get(admin_refresh_at_key):
+        st.session_state[admin_refresh_at_key] = datetime.now(timezone.utc)
+
+    auth_users_error = (
+        auth_users_error
+        or st.session_state.get(admin_auth_error_key)
+    )
 
     profiles = admin_data[
         "profiles"

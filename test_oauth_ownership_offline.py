@@ -117,7 +117,8 @@ def _load_ownership_helpers():
     exec(
         SOURCE[
             SOURCE.index("def _admin_format_created_at") : SOURCE.index(
-                "@st.cache_data(show_spinner=False)\ndef list_all_auth_users_admin"
+                "@st.cache_data(show_spinner=False, ttl=300, max_entries=2)\n"
+                "def list_all_auth_users_admin"
             )
         ],
         ns,
