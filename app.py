@@ -11248,15 +11248,48 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
 
     .sp-best-match-card .sp-rec-match {
         min-width: 9.5rem;
-        max-width: 12rem;
+        max-width: 13.5rem;
         text-align: right;
     }
 
     .sp-best-match-card .sp-rec-match-value {
-        font-size: 0.92rem !important;
-        line-height: 1.25 !important;
-        font-weight: 700 !important;
+        font-size: 1.35rem !important;
+        line-height: 1.2 !important;
+        font-weight: 800 !important;
         color: #0B4568 !important;
+    }
+
+    .sp-best-match-card .sp-rec-match-insufficient .sp-rec-match-value {
+        font-size: 0.92rem !important;
+        font-weight: 700 !important;
+        color: #5C4B00 !important;
+    }
+
+    .sp-best-match-card .sp-rec-match-note {
+        margin: 0.35rem 0 0.45rem 0 !important;
+        font-size: 0.72rem !important;
+        line-height: 1.35 !important;
+        font-weight: 550 !important;
+        color: #526879 !important;
+        -webkit-text-fill-color: #526879 !important;
+        text-align: right;
+    }
+
+    .sp-best-match-card .sp-rec-match-eligibility {
+        margin: 0 !important;
+        font-size: 0.78rem !important;
+        line-height: 1.3 !important;
+        font-weight: 650 !important;
+        color: #0B4568 !important;
+        text-align: right;
+    }
+
+    .sp-best-match-card .sp-rec-match-eligibility-label {
+        font-weight: 800 !important;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        font-size: 0.68rem !important;
+        color: #526879 !important;
     }
 
     .sp-best-match-card .sp-rec-match-strong .sp-rec-match-value {
@@ -11267,14 +11300,34 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
         color: #5C4B00 !important;
     }
 
+    .sp-best-match-card .sp-rec-match-ineligible .sp-rec-match-value {
+        color: #8B1E1E !important;
+    }
+
     .sp-best-match-card .sp-rec-match-strong {
         border-left: 3px solid #0B4568;
         padding-left: 0.55rem;
     }
 
-    .sp-best-match-card .sp-rec-match-confirm {
+    .sp-best-match-card .sp-rec-match-confirm,
+    .sp-best-match-card .sp-rec-match-insufficient {
         border-left: 3px solid #B08900;
         padding-left: 0.55rem;
+    }
+
+    .sp-best-match-card .sp-rec-match-ineligible {
+        border-left: 3px solid #8B1E1E;
+        padding-left: 0.55rem;
+    }
+
+    .sp-rec-score-factors,
+    .sp-rec-score-unverified {
+        margin: 0 0 0.55rem 0;
+    }
+
+    .sp-rec-score-unverified:last-child,
+    .sp-rec-score-factors:last-child {
+        margin-bottom: 0;
     }
 
     .sp-rec-why {
@@ -11337,6 +11390,11 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
         .sp-best-match-card .sp-rec-match {
             text-align: left;
             max-width: 100%;
+        }
+
+        .sp-best-match-card .sp-rec-match-note,
+        .sp-best-match-card .sp-rec-match-eligibility {
+            text-align: left !important;
         }
     }
 
@@ -22011,6 +22069,18 @@ def opportunity_opens_display(opportunity):
     return f"Expected to open: {cleaned or raw}"
 
 
+def sp_card_more_details_html(summary_label, body_html):
+    """Expandable secondary details used to shorten long cards on small screens."""
+
+    label = html_module.escape(str(summary_label or "More details").strip() or "More details")
+    return (
+        f'<details class="sp-card-more">'
+        f"<summary>{label}</summary>"
+        f'<div class="sp-card-more-body">{body_html}</div>'
+        "</details>"
+    )
+
+
 def opportunity_info_grid_html(
     opportunity
 ):
@@ -22125,18 +22195,36 @@ def opportunity_info_grid_html(
             selectivity_label
         )
 
-    return (
-        '<div class="sp-rec-info-grid">'
+    # Always-visible essentials: eligibility, cost, deadline (+ opens note).
+    primary_grid = (
+        '<div class="sp-rec-info-grid sp-rec-info-grid-primary">'
         + opportunity_dash_stat_html(
             "Eligibility",
-            eligibility_html
+            eligibility_html,
+            featured=True,
         )
         + opportunity_dash_stat_html(
             "Cost",
             html_module.escape(
                 cost
+            ),
+            featured=True,
+        )
+        + opportunity_dash_stat_html(
+            "Deadline",
+            html_module.escape(
+                deadline
+            ),
+            featured=True,
+            note=opportunity_opens_display(
+                opportunity
             )
         )
+        + '</div>'
+    )
+
+    secondary_grid = (
+        '<div class="sp-rec-info-grid sp-rec-info-grid-secondary">'
         + opportunity_dash_stat_html(
             "Financial Aid",
             html_module.escape(
@@ -22167,15 +22255,6 @@ def opportunity_info_grid_html(
             selectivity_value
         )
         + opportunity_dash_stat_html(
-            "Deadline",
-            html_module.escape(
-                deadline
-            ),
-            note=opportunity_opens_display(
-                opportunity
-            )
-        )
-        + opportunity_dash_stat_html(
             "Internship Potential",
             html_module.escape(
                 internship
@@ -22184,12 +22263,23 @@ def opportunity_info_grid_html(
         + '</div>'
     )
 
+    return (
+        primary_grid
+        + sp_card_more_details_html(
+            "More program details",
+            secondary_grid,
+        )
+    )
+
 
 def opportunity_recommendation_card_html(
     opportunity,
     match_score=None,
     match_label=None,
     match_reasons=None,
+    score_factors=None,
+    unverified=None,
+    match_score_explanation=None,
 ):
 
     window_status = opportunity_window_status(
@@ -22225,50 +22315,123 @@ def opportunity_recommendation_card_html(
         )
     )
 
-    desc_safe = html_module.escape(
-        opportunity_text(
-            opportunity.get(
-                "description",
-                ""
-            )
+    desc_raw = opportunity_text(
+        opportunity.get(
+            "description",
+            ""
         )
     )
+    desc_safe = html_module.escape(desc_raw)
 
-    label_text = str(
+    eligibility_text = str(
         match_label
         or
-        "Potential match — confirm requirements"
+        "Potential match — verify requirements"
     ).strip()
-    label_safe = html_module.escape(label_text)
-    if "Strong eligibility" in label_text:
+    eligibility_safe = html_module.escape(eligibility_text)
+    if eligibility_text.casefold().startswith("confirmed"):
         label_class = "sp-rec-match-strong"
+    elif eligibility_text.casefold().startswith("ineligible"):
+        label_class = "sp-rec-match-ineligible"
     else:
         label_class = "sp-rec-match-confirm"
+
+    explanation = str(
+        match_score_explanation or MATCH_SCORE_EXPLANATION
+    ).strip()
+    explanation_safe = html_module.escape(explanation)
+
+    if match_score is None:
+        score_value_html = "Not enough information"
+        score_class = "sp-rec-match-insufficient"
+    else:
+        try:
+            score_int = max(0, min(100, int(match_score)))
+        except (TypeError, ValueError):
+            score_int = None
+        if score_int is None:
+            score_value_html = "Not enough information"
+            score_class = "sp-rec-match-insufficient"
+        else:
+            score_value_html = f"{score_int}%"
+            score_class = label_class
+
+    score_value_safe = html_module.escape(score_value_html)
 
     reasons = [
         str(item).strip()
         for item in (match_reasons or [])
         if str(item).strip()
     ][:4]
-    if not reasons and match_score is not None:
-        # Legacy callers may still pass a numeric score without reasons.
-        reasons = [
-            "Personalized from your saved profile interests and eligibility."
-        ]
 
-    reasons_html = ""
-    if reasons:
-        items = "".join(
-            f'<li>{html_module.escape(reason)}</li>'
+    factors = [
+        str(item).strip()
+        for item in (score_factors or [])
+        if str(item).strip()
+    ][:6]
+    unverified_items = [
+        str(item).strip()
+        for item in (unverified or [])
+        if str(item).strip()
+    ][:6]
+
+    transparency_parts = []
+    if factors:
+        factor_items = "".join(
+            f"<li>{html_module.escape(item)}</li>"
+            for item in factors
+        )
+        transparency_parts.append(
+            '<div class="sp-rec-score-factors">'
+            '<div class="sp-rec-why-label">Score factors</div>'
+            f'<ul class="sp-rec-why-list">{factor_items}</ul>'
+            "</div>"
+        )
+    if unverified_items:
+        unverified_lis = "".join(
+            f"<li>{html_module.escape(item)}</li>"
+            for item in unverified_items
+        )
+        transparency_parts.append(
+            '<div class="sp-rec-score-unverified">'
+            '<div class="sp-rec-why-label">Still unverified</div>'
+            f'<ul class="sp-rec-why-list">{unverified_lis}</ul>'
+            "</div>"
+        )
+    if reasons and not factors:
+        # Fallback for callers that only pass legacy reason strings.
+        reason_items = "".join(
+            f"<li>{html_module.escape(reason)}</li>"
             for reason in reasons
         )
-        reasons_html = (
+        transparency_parts.append(
             '<div class="sp-rec-why" role="region" '
             'aria-label="Why this matches">'
             '<div class="sp-rec-why-label">Why this matches</div>'
-            f'<ul class="sp-rec-why-list">{items}</ul>'
-            '</div>'
+            f'<ul class="sp-rec-why-list">{reason_items}</ul>'
+            "</div>"
         )
+
+    transparency_html = ""
+    if transparency_parts:
+        transparency_html = (
+            '<div class="sp-rec-why" role="region" '
+            'aria-label="Match score details">'
+            + "".join(transparency_parts)
+            + "</div>"
+        )
+
+    if len(desc_raw) > 180:
+        preview = desc_raw[:177].rsplit(" ", 1)[0].rstrip(".,;:") + "…"
+        desc_block = (
+            f'<p class="sp-rec-desc">{html_module.escape(preview)}</p>'
+            + sp_card_more_details_html(
+                "Full description",
+                f'<p class="sp-rec-desc sp-rec-desc-full">{desc_safe}</p>',
+            )
+        )
+    else:
+        desc_block = f'<p class="sp-rec-desc">{desc_safe}</p>'
 
     return (
         '<div class="sp-deadline-card sp-best-match-card">'
@@ -22281,13 +22444,19 @@ def opportunity_recommendation_card_html(
         f'<h3>{name_safe}</h3>'
         f'<p class="sp-rec-org">{org_safe}</p>'
         '</div>'
-        f'<div class="sp-rec-match {label_class}" role="status">'
-        '<div class="sp-rec-match-label">Match type</div>'
-        f'<div class="sp-rec-match-value">{label_safe}</div>'
-        '</div>'
-        '</div>'
-        f'<p class="sp-rec-desc">{desc_safe}</p>'
-        + reasons_html
+        f'<div class="sp-rec-match {score_class}" role="status" '
+        f'aria-label="Match score">'
+        '<div class="sp-rec-match-label">Match score</div>'
+        f'<div class="sp-rec-match-value">{score_value_safe}</div>'
+        f'<p class="sp-rec-match-note">{explanation_safe}</p>'
+        f'<div class="sp-rec-match-eligibility">'
+        f'<span class="sp-rec-match-eligibility-label">Eligibility</span> '
+        f'{eligibility_safe}'
+        "</div>"
+        "</div>"
+        "</div>"
+        + desc_block
+        + transparency_html
         + opportunity_info_grid_html(
             opportunity
         )
@@ -25341,19 +25510,21 @@ def college_match_card_html(
         + "</div>"
         "</div>"
         "</div>"
-        '<div class="sp-college-fields-block">'
-        '<div class="sp-college-fields-label">Matching Fields</div>'
-        f'<div class="sp-deadline-fields">{fields_pills_html}</div>'
-        "</div>"
         f"{why_preview_html}"
-        '<details class="sp-college-why">'
-        "<summary>Full match explanation</summary>"
-        '<div class="sp-college-why-body">'
-        f"{best_fit_html}"
-        f"{reasons_html}"
-        "</div>"
-        "</details>"
-        "</div>"
+        + sp_card_more_details_html(
+            "Matching fields & full explanation",
+            (
+                '<div class="sp-college-fields-block">'
+                '<div class="sp-college-fields-label">Matching Fields</div>'
+                f'<div class="sp-deadline-fields">{fields_pills_html}</div>'
+                "</div>"
+                '<div class="sp-college-why-body">'
+                f"{best_fit_html}"
+                f"{reasons_html}"
+                "</div>"
+            ),
+        )
+        + "</div>"
     )
 
 
@@ -25861,11 +26032,15 @@ def favorite_college_card_html(
         f'<div class="sp-fav-college-stat-value">{school_type_safe}</div>'
         "</div>"
         "</div>"
-        '<div class="sp-fav-college-why">'
-        '<div class="sp-fav-college-why-title">Why this fits you</div>'
-        f'<ul class="sp-fav-college-why-list">{why_list_html}</ul>'
-        "</div>"
-        "</div>"
+        + sp_card_more_details_html(
+            "Why this fits you",
+            (
+                '<div class="sp-fav-college-why">'
+                f'<ul class="sp-fav-college-why-list">{why_list_html}</ul>'
+                "</div>"
+            ),
+        )
+        + "</div>"
     )
 
 
@@ -26148,6 +26323,19 @@ def career_explore_card_html(
             "</div>"
         )
 
+    secondary_body = (
+        f"{extra_salary_html}"
+        f"{skills_html}"
+        f"{extras_html}"
+        f"{footer_html}"
+    )
+    secondary_html = ""
+    if secondary_body.strip():
+        secondary_html = sp_card_more_details_html(
+            "Skills, industries & more",
+            secondary_body,
+        )
+
     return (
         '<article class="sp-career-explore-card">'
         f'<h3 class="sp-career-explore-title">{title}</h3>'
@@ -26155,10 +26343,7 @@ def career_explore_card_html(
         f"{desc_html}"
         f"{highlights_html}"
         f"{outlook_html}"
-        f"{extra_salary_html}"
-        f"{skills_html}"
-        f"{extras_html}"
-        f"{footer_html}"
+        f"{secondary_html}"
         "</article>"
     )
 
@@ -28030,63 +28215,170 @@ def profile_potential_majors(profile, limit=3):
     return majors
 
 
-def score_best_match_opportunity(opportunity, profile, potential_majors=None):
-    """
-    Score a personalized opportunity after eligibility gating.
+# ============================================================
+# Opportunity fit score rubric (absolute 0–100)
+# ============================================================
+# Points are awarded only for VERIFIED evidence. Unknown program
+# requirements and missing profile answers never count as satisfied.
+#
+# Eligibility (max 45)
+#   Grade listed + student grade matches:              +20
+#   NYC/borough location verified for the student:     +15
+#   Age rule verified for the student's age:           +10
+#
+# Interest / intended-major alignment (max 45)
+#   Requires ≥1 recorded interest or potential major.
+#   Direct STEM field overlap:                         +40
+#   Two or more distinct matched fields:               +5 (cap 45)
+#   Any-major / general-access scope with interests:   +35
+#   (Take the higher of direct-overlap vs any-major; do not stack.)
+#
+# Financial fit (max 10)
+#   Profile needs financial support AND cost is verified Free: +10
+#
+# Insufficient evidence → fit_score is None ("Not enough information"):
+#   - No recorded interests and no potential majors, OR
+#   - Zero interest/major points AND verified eligibility points < 20
+#
+# Soft signals (open applications, format) affect rank_score tie-breaks
+# only and never the displayed fit percentage.
+#
+# Eligibility status stays separate:
+#   Confirmed match | Potential match — verify requirements | Ineligible
+# ============================================================
 
-    Returns None when hard-ineligible. Otherwise:
-      {
-        'rank_score': int,
-        'label': 'Strong eligibility match' | 'Potential match — confirm requirements',
-        'reasons': [str, ...],  # 2-4 evidence-based reasons
-        'eligibility': evaluate_opportunity_profile_eligibility(...),
-      }
-    Never invents eligibility. Does not return an admission-chance percentage.
+OPPORTUNITY_FIT_GRADE_POINTS = 20
+OPPORTUNITY_FIT_LOCATION_POINTS = 15
+OPPORTUNITY_FIT_AGE_POINTS = 10
+OPPORTUNITY_FIT_FIELD_POINTS = 40
+OPPORTUNITY_FIT_FIELD_MULTI_BONUS = 5
+OPPORTUNITY_FIT_ANY_MAJOR_POINTS = 35
+OPPORTUNITY_FIT_FINANCIAL_POINTS = 10
+OPPORTUNITY_FIT_INSUFFICIENT_ELIGIBILITY_FLOOR = 20
+
+MATCH_SCORE_EXPLANATION = (
+    "How well this opportunity fits your profile—not your chance of acceptance."
+)
+
+
+def compute_opportunity_fit_score(opportunity, profile, potential_majors=None):
+    """
+    Absolute rule-based fit score (0–100), independent of other programs.
+
+    Returns a dict with fit_score (int or None), eligibility_status/label,
+    score_factors, unverified, reasons, and rank_score. Hard-ineligible
+    rows are still returned with eligibility_status='ineligible' so callers
+    can decide whether to exclude them (best matches do).
     """
 
     profile = profile or {}
     eligibility = evaluate_opportunity_profile_eligibility(opportunity, profile)
-    if eligibility["status"] == "ineligible":
-        return None
-
-    reasons = []
-    rank_score = 0
-
     checks = eligibility["checks"]
+    score_factors = []
+    unverified = list(eligibility.get("confirm_notes") or [])
+    reasons = []
+    fit_points = 0
+
     student_grade = str(profile.get("grade") or "").strip()
     if checks["grade"] == "eligible" and student_grade:
-        reasons.append(f"Open to students in Grade {student_grade}")
-        rank_score += 30
-    elif checks["grade"] == "confirm":
-        reasons.append(
-            "Confirm this requirement on the official program website."
+        fit_points += OPPORTUNITY_FIT_GRADE_POINTS
+        factor = (
+            f"Grade {student_grade} matches listed eligibility "
+            f"(+{OPPORTUNITY_FIT_GRADE_POINTS})"
         )
+        score_factors.append(factor)
+        reasons.append(f"Open to students in Grade {student_grade}")
+    elif checks["grade"] == "confirm":
+        note = "Grade eligibility is unverified on the program listing"
+        if note not in unverified:
+            unverified.append(note)
+        if "Confirm this requirement on the official program website." not in reasons:
+            reasons.append(
+                "Confirm this requirement on the official program website."
+            )
+    elif checks["grade"] == "ineligible":
+        unverified.append("Grade conflicts with listed eligibility")
 
+    borough = str(profile.get("borough") or "").strip()
     if checks["location"] == "eligible":
-        borough = str(profile.get("borough") or "").strip()
+        fit_points += OPPORTUNITY_FIT_LOCATION_POINTS
         if borough:
+            factor = (
+                f"Location works for NYC students in {borough} "
+                f"(+{OPPORTUNITY_FIT_LOCATION_POINTS})"
+            )
             reasons.append(f"Available to NYC students ({borough})")
         else:
+            factor = (
+                f"Location works for NYC students "
+                f"(+{OPPORTUNITY_FIT_LOCATION_POINTS})"
+            )
             reasons.append("Available to NYC students")
-        rank_score += 20
+        score_factors.append(factor)
     elif checks["location"] == "confirm":
+        note = "Location eligibility is unverified on the program listing"
+        if note not in unverified:
+            unverified.append(note)
         if "Confirm location eligibility on the official program website." not in reasons:
             reasons.append(
                 "Confirm location eligibility on the official program website."
             )
+    elif checks["location"] == "ineligible":
+        unverified.append("Location conflicts with listed eligibility")
 
-    expanded_interests = expand_stem_fields(profile.get("interests") or [])
-    majors = list(potential_majors or [])[:3]
+    if checks["age"] == "eligible":
+        fit_points += OPPORTUNITY_FIT_AGE_POINTS
+        age_value = profile.get("age")
+        factor = (
+            f"Age {age_value} fits the stated age rule "
+            f"(+{OPPORTUNITY_FIT_AGE_POINTS})"
+        )
+        score_factors.append(factor)
+        # Keep age in score_factors; add to short reason list only if space remains later.
+    elif checks["age"] == "confirm":
+        note = "Age eligibility is unverified on the program listing"
+        if note not in unverified:
+            unverified.append(note)
+        if "Confirm age eligibility on the official program website." not in reasons:
+            reasons.append(
+                "Confirm age eligibility on the official program website."
+            )
+    elif checks["age"] == "ineligible":
+        unverified.append("Age conflicts with listed eligibility")
+
+    majors = [
+        str(item).strip()
+        for item in (potential_majors or [])[:3]
+        if str(item).strip()
+    ]
+    interest_values = []
+    for interest in profile.get("interests") or []:
+        name = str(interest or "").strip()
+        if not name or name.casefold() in {
+            "i'm not sure yet",
+            "i am not sure yet",
+            "not sure yet",
+        }:
+            continue
+        interest_values.append(name)
+
+    has_interest_evidence = bool(interest_values or majors)
+    expanded_interests = expand_stem_fields(interest_values)
     expanded_majors = expand_stem_fields(majors)
     interest_pool = set(expanded_interests) | set(expanded_majors)
 
     opportunity_fields = opportunity_field_match_set(
         opportunity.get("fields") if hasattr(opportunity, "get") else ""
     )
-    scope_hit = opportunity_scope_matches_interests(
-        opportunity,
-        interest_pool or expanded_interests,
-    )
+    scope_hit = False
+    if has_interest_evidence:
+        # Any-major programs stay open across fields, but only score when the
+        # student actually recorded interests / potential majors.
+        scope_hit = opportunity_scope_matches_interests(
+            opportunity,
+            interest_pool or expanded_interests,
+        )
+
     matched_labels = sorted(
         {
             str(item)
@@ -28096,85 +28388,171 @@ def score_best_match_opportunity(opportunity, profile, potential_majors=None):
         key=lambda value: value.casefold(),
     )
 
-    if scope_hit and not matched_labels:
+    interest_points = 0
+    if not has_interest_evidence:
+        unverified.append(
+            "No recorded STEM interests or potential majors to score field fit"
+        )
+    elif matched_labels:
+        interest_points = OPPORTUNITY_FIT_FIELD_POINTS
+        label = matched_labels[0]
+        reasons.append(f"Matches your {label.casefold()} interest")
+        if len(matched_labels) > 1:
+            interest_points = min(
+                45,
+                interest_points + OPPORTUNITY_FIT_FIELD_MULTI_BONUS,
+            )
+            score_factors.append(
+                "Matches multiple STEM interests / potential majors "
+                f"(+{interest_points})"
+            )
+        else:
+            score_factors.append(
+                f"Matches your {label} interest / potential major "
+                f"(+{interest_points})"
+            )
+    elif scope_hit:
+        interest_points = OPPORTUNITY_FIT_ANY_MAJOR_POINTS
         reasons.append(
             "Open across fields and intended majors (general-access program)"
         )
-        rank_score += 35
-    elif matched_labels:
-        label = matched_labels[0]
-        reasons.append(f"Matches your {label.casefold()} interest")
-        rank_score += 35
-        if len(matched_labels) > 1:
-            rank_score += 5
+        score_factors.append(
+            "General-access / any-major program for your recorded interests "
+            f"(+{interest_points})"
+        )
+    else:
+        unverified.append(
+            "No verified field overlap with your interests or potential majors"
+        )
+
+    fit_points += interest_points
 
     cost_bucket = normalize_opportunity_cost_bucket(opportunity)
     if profile.get("financial_support"):
         if cost_bucket == "free":
+            fit_points += OPPORTUNITY_FIT_FINANCIAL_POINTS
+            score_factors.append(
+                f"Verified free program while you need financial support "
+                f"(+{OPPORTUNITY_FIT_FINANCIAL_POINTS})"
+            )
             reasons.append("Free program")
-            rank_score += 15
-        elif str(
-            (opportunity.get("financial_aid") if hasattr(opportunity, "get") else "")
-            or ""
-        ).strip() and "not needed" not in str(
-            opportunity.get("financial_aid") or ""
-        ).lower() and "no financial aid" not in str(
-            opportunity.get("financial_aid") or ""
-        ).lower():
-            reasons.append("Lists financial aid or scholarship options")
-            rank_score += 10
+        else:
+            unverified.append(
+                "Financial-aid / cost fit is not verified as free for your needs"
+            )
 
+    fit_points = max(0, min(100, int(fit_points)))
+
+    # Eligibility-only floor ignores interest and optional financial points.
+    eligibility_only_points = 0
+    if checks["grade"] == "eligible" and student_grade:
+        eligibility_only_points += OPPORTUNITY_FIT_GRADE_POINTS
+    if checks["location"] == "eligible":
+        eligibility_only_points += OPPORTUNITY_FIT_LOCATION_POINTS
+    if checks["age"] == "eligible":
+        eligibility_only_points += OPPORTUNITY_FIT_AGE_POINTS
+
+    insufficient = (
+        eligibility["status"] != "ineligible"
+        and (
+            not has_interest_evidence
+            or (
+                interest_points == 0
+                and eligibility_only_points
+                < OPPORTUNITY_FIT_INSUFFICIENT_ELIGIBILITY_FLOOR
+            )
+        )
+    )
+
+    fit_score = None if insufficient else fit_points
+
+    if eligibility["status"] == "eligible":
+        eligibility_label = "Confirmed match"
+    elif eligibility["status"] == "ineligible":
+        eligibility_label = "Ineligible"
+    else:
+        eligibility_label = "Potential match — verify requirements"
+
+    # Soft tie-breakers for ranking only — never change fit_score.
+    rank_score = int(fit_score if fit_score is not None else -1)
     status_bucket = normalize_application_status_bucket(opportunity)
     if status_bucket == "open":
-        reasons.append("Applications are currently open")
-        rank_score += 15
+        rank_score += 3
+        if "Applications are currently open" not in reasons and len(reasons) < 4:
+            reasons.append("Applications are currently open")
     elif status_bucket == "opens_soon":
-        reasons.append("Applications open soon / next cycle upcoming")
-        rank_score += 8
-
-    secondary_reasons = []
-    if checks["age"] == "eligible":
-        secondary_reasons.append(f"Fits your age ({profile.get('age')})")
-        rank_score += 10
+        rank_score += 1
+        if len(reasons) < 4:
+            reasons.append("Applications open soon / next cycle upcoming")
 
     format_buckets = normalize_opportunity_format_buckets(
         opportunity.get("format") if hasattr(opportunity, "get") else ""
     )
-    if format_buckets:
+    if format_buckets and len(reasons) < 4:
         if "virtual" in format_buckets and "in person" not in format_buckets:
-            secondary_reasons.append("Virtual / online format")
-            rank_score += 5
+            reasons.append("Virtual / online format")
+            rank_score += 1
         elif "hybrid" in format_buckets:
-            secondary_reasons.append("Hybrid format available")
-            rank_score += 5
+            reasons.append("Hybrid format available")
+            rank_score += 1
         elif "in person" in format_buckets:
-            secondary_reasons.append("In-person format")
-            rank_score += 3
+            reasons.append("In-person format")
 
-    # Deduplicate while preserving priority; keep 2–4 evidence lines.
-    cleaned = []
-    for reason in reasons + secondary_reasons:
+    cleaned_reasons = []
+    for reason in reasons:
         text = str(reason or "").strip()
-        if text and text not in cleaned:
-            cleaned.append(text)
-    if len(cleaned) < 2:
-        cleaned.append(
+        if text and text not in cleaned_reasons:
+            cleaned_reasons.append(text)
+    if (
+        checks["age"] == "eligible"
+        and len(cleaned_reasons) < 4
+    ):
+        age_reason = f"Fits your age ({profile.get('age')})"
+        if age_reason not in cleaned_reasons:
+            cleaned_reasons.append(age_reason)
+    if len(cleaned_reasons) < 2 and eligibility["status"] != "ineligible":
+        cleaned_reasons.append(
             "Confirm this requirement on the official program website."
         )
-    cleaned = cleaned[:4]
+    cleaned_reasons = cleaned_reasons[:4]
 
-    label = (
-        "Strong eligibility match"
-        if eligibility["status"] == "eligible"
-        else "Potential match — confirm requirements"
-    )
+    cleaned_unverified = []
+    for note in unverified:
+        text = str(note or "").strip()
+        if text and text not in cleaned_unverified:
+            cleaned_unverified.append(text)
 
     return {
+        "fit_score": fit_score,
+        "eligibility_status": eligibility["status"],
+        "eligibility_label": eligibility_label,
+        "label": eligibility_label,
+        "score_factors": score_factors,
+        "unverified": cleaned_unverified,
+        "reasons": cleaned_reasons,
         "rank_score": int(rank_score),
-        "label": label,
-        "reasons": cleaned,
         "eligibility": eligibility,
+        "match_score_explanation": MATCH_SCORE_EXPLANATION,
     }
+
+
+def score_best_match_opportunity(opportunity, profile, potential_majors=None):
+    """
+    Score a personalized opportunity after eligibility gating.
+
+    Returns None when hard-ineligible. Otherwise returns
+    compute_opportunity_fit_score(...), including absolute fit_score.
+    Never invents eligibility. fit_score is a rule-based fit, not admission chance.
+    """
+
+    result = compute_opportunity_fit_score(
+        opportunity,
+        profile,
+        potential_majors=potential_majors,
+    )
+    if result["eligibility_status"] == "ineligible":
+        return None
+    return result
 
 
 def expand_stem_fields(values):
@@ -38090,8 +38468,9 @@ elif page == "Opportunities":
             st.header("Best matches for you")
             st.caption(
                 "Eligibility is checked before interests. Hard conflicts are excluded. "
-                "Missing requirements are labeled for confirmation and are never treated as "
-                "guaranteed eligibility. Labels are not admission chances."
+                "Match score is a rule-based fit (0–100) from verified profile evidence—"
+                "not an admission chance, and never forced to 100% for the top result. "
+                "Missing requirements stay unverified and are never treated as satisfied."
             )
 
             potential_majors = profile_potential_majors(profile, limit=3)
@@ -38116,7 +38495,8 @@ elif page == "Opportunities":
 
             best_matches.sort(
                 key=lambda item: (
-                    0 if item[0]["label"].startswith("Strong") else 1,
+                    0 if item[0]["eligibility_status"] == "eligible" else 1,
+                    0 if item[0].get("fit_score") is not None else 1,
                     -int(item[0]["rank_score"]),
                     str(item[1].get("name") or ""),
                 )
@@ -38143,19 +38523,35 @@ elif page == "Opportunities":
                         st.html(
                             opportunity_recommendation_card_html(
                                 recommended_opportunity,
-                                match_label=scored["label"],
-                                match_reasons=scored["reasons"],
+                                match_score=scored.get("fit_score"),
+                                match_label=scored.get("eligibility_label")
+                                or scored.get("label"),
+                                match_reasons=scored.get("reasons"),
+                                score_factors=scored.get("score_factors"),
+                                unverified=scored.get("unverified"),
+                                match_score_explanation=scored.get(
+                                    "match_score_explanation"
+                                ),
                             )
                         )
 
                         with st.expander("Eligibility details"):
-                            for reason in scored["reasons"]:
+                            fit_display = scored.get("fit_score")
+                            if fit_display is None:
+                                st.write("**Match score:** Not enough information")
+                            else:
+                                st.write(f"**Match score:** {int(fit_display)}%")
+                            st.caption(MATCH_SCORE_EXPLANATION)
+                            st.write(
+                                "**Eligibility:** "
+                                f"{scored.get('eligibility_label') or scored.get('label')}"
+                            )
+                            for factor in scored.get("score_factors") or []:
+                                st.write(f"• {factor}")
+                            for note in scored.get("unverified") or []:
+                                st.write(f"• Unverified: {note}")
+                            for reason in scored.get("reasons") or []:
                                 st.write(f"• {reason}")
-                            for note in scored["eligibility"].get(
-                                "confirm_notes",
-                                [],
-                            ):
-                                st.write(f"• {note}")
                             st.write(
                                 "**Requirements:** "
                                 f"{recommended_opportunity.get('requirements', 'Check official site')}"
@@ -38606,17 +39002,47 @@ elif page == "Opportunities":
                     "closed": "Closed",
                 }.get(status_bucket, "Browse result")
 
+                personal = None
+                if profile_ready:
+                    personal = compute_opportunity_fit_score(
+                        opportunity,
+                        profile,
+                        potential_majors=profile_potential_majors(profile, limit=3),
+                    )
+
                 with st.container(
                     key=f"recommended_card_search_{absolute_index}"
                 ):
 
-                    st.html(
-                        opportunity_recommendation_card_html(
-                            opportunity,
-                            match_label=search_label,
-                            match_reasons=(reasons[:4] if reasons else None),
+                    if personal is not None:
+                        st.html(
+                            opportunity_recommendation_card_html(
+                                opportunity,
+                                match_score=personal.get("fit_score"),
+                                match_label=personal.get("eligibility_label")
+                                or search_label,
+                                match_reasons=(
+                                    personal.get("reasons")
+                                    or (reasons[:4] if reasons else None)
+                                ),
+                                score_factors=personal.get("score_factors"),
+                                unverified=personal.get("unverified"),
+                                match_score_explanation=personal.get(
+                                    "match_score_explanation"
+                                ),
+                            )
                         )
-                    )
+                    else:
+                        st.html(
+                            opportunity_recommendation_card_html(
+                                opportunity,
+                                match_score=None,
+                                match_label=(
+                                    "Complete your profile to verify eligibility"
+                                ),
+                                match_reasons=(reasons[:4] if reasons else None),
+                            )
+                        )
 
                     with st.expander(
                         "Why this matched your filters"
