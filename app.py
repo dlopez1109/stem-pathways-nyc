@@ -5954,8 +5954,7 @@ st.markdown(
         min-height: 36rem;
     }
 
-    /* Outer welcome stack only — do NOT force gap:0 into nested auth form blocks */
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"][data-testid="stVerticalBlock"],
+    /* Only inner stacks stretch; the outer welcome card keeps its max-width. */
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] > [data-testid="stVerticalBlockBorderWrapper"] > [data-testid="stVerticalBlock"],
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] > [data-testid="stVerticalBlock"] {
         background: transparent !important;
@@ -6113,7 +6112,7 @@ st.markdown(
 
     [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
         display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         width: 100% !important;
         max-width: 100% !important;
         gap: 0.35rem !important;
@@ -6815,7 +6814,6 @@ st.markdown(
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stElementContainer"]:has([class*="st-key-landing_welcome"]),
         [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"],
         [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] {
             max-width: min(1180px, calc(100vw - 48px)) !important;
@@ -7008,12 +7006,13 @@ st.markdown(
             gap: 0 !important;
         }
 
-        [data-testid="stMain"]:has(.sp-landing-hero) [data-testid="stElementContainer"]:has([class*="st-key-landing_welcome"]),
         [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"],
         [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [data-testid="stVerticalBlockBorderWrapper"] {
             padding: 1.85rem 1.15rem 1.75rem !important;
             max-width: calc(100vw - 32px) !important;
             width: calc(100vw - 32px) !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
             min-height: 0 !important;
             margin: 3.85rem auto 1.5rem auto !important;
             border-radius: 16px !important;
