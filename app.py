@@ -6097,101 +6097,171 @@ st.markdown(
         -webkit-text-fill-color: #8FB4C8 !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] {
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [class*="st-key-landing_auth_mode"] {
         margin: 0 0 2.35rem 0 !important;
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         display: block !important;
+        box-sizing: border-box !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadio"],
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] > div {
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadio"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] > div {
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioGroup"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
         display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        grid-template-rows: auto !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: stretch !important;
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         gap: 0.35rem !important;
         padding: 0.35rem !important;
         background: rgba(4, 24, 40, 0.45) !important;
         border: 1px solid rgba(148, 185, 208, 0.24) !important;
         border-radius: 13px !important;
         box-sizing: border-box !important;
+        overflow: hidden !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label {
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] > label,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label {
         position: relative !important;
         display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
         align-items: center !important;
         justify-content: center !important;
         width: 100% !important;
+        max-width: 100% !important;
         min-width: 0 !important;
+        flex: 1 1 0 !important;
         height: 3.1rem !important;
         min-height: 3.1rem !important;
         max-height: 3.1rem !important;
         margin: 0 !important;
-        padding: 0 !important;
+        padding: 0 0.65rem !important;
         border-radius: 9px !important;
         color: #A8C4D6 !important;
+        -webkit-text-fill-color: #A8C4D6 !important;
         font-weight: 750 !important;
         cursor: pointer !important;
         transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease !important;
         box-sizing: border-box !important;
         text-align: center !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) {
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"]:has(input:checked),
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) {
         color: #041E33 !important;
+        -webkit-text-fill-color: #041E33 !important;
         background: linear-gradient(135deg, #5EC8F2 0%, #2DD4BF 100%) !important;
         box-shadow: 0 4px 12px rgba(45, 212, 191, 0.22) !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) p,
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) span {
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"]:has(input:checked) p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"]:has(input:checked) [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) [data-testid="stMarkdownContainer"] {
         color: #041E33 !important;
         -webkit-text-fill-color: #041E33 !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] input[type="radio"] {
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] input[type="radio"] {
         position: absolute !important;
         opacity: 0 !important;
         pointer-events: none !important;
-        width: 0 !important;
-        height: 0 !important;
-        margin: 0 !important;
+        width: 1px !important;
+        height: 1px !important;
+        margin: -1px !important;
         padding: 0 !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        border: 0 !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div,
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div,
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div > div {
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > span:has(input[type="radio"]) {
+        position: absolute !important;
+        width: 1px !important;
+        max-width: 1px !important;
+        height: 1px !important;
+        margin: -1px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+        display: block !important;
+        pointer-events: none !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"] > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"] > div > div {
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
         display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
         box-sizing: border-box !important;
+        overflow: hidden !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div > div:first-child {
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div > div:first-child:not([data-testid="stMarkdownContainer"]),
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"] > div > div > div:first-child:not([data-testid="stMarkdownContainer"]) {
         display: none !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        flex: 0 0 0 !important;
     }
 
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label p,
-    [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label span {
-        width: 100% !important;
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"] [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label p,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"] p {
+        width: auto !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
         margin: 0 !important;
-        padding: 0 0.75rem !important;
+        padding: 0 !important;
         text-align: center !important;
         display: block !important;
         line-height: 1.2 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: clip !important;
+        word-break: keep-all !important;
+        overflow-wrap: normal !important;
+        box-sizing: border-box !important;
+        font-weight: 750 !important;
+        color: inherit !important;
+        -webkit-text-fill-color: inherit !important;
     }
 
     /* Landing email auth form — nested dark panel fields */
@@ -7034,8 +7104,12 @@ st.markdown(
             box-shadow: none !important;
         }
 
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioGroup"],
         html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
             width: 100% !important;
+            min-width: 0 !important;
             gap: 0.3rem !important;
             padding: 0.3rem !important;
         }
@@ -7045,9 +7119,10 @@ st.markdown(
             width: 100%;
         }
 
-        [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] {
+        html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] {
             margin: 0 0 1.75rem 0 !important;
             width: 100% !important;
+            min-width: 0 !important;
         }
 
         .sp-auth-trust {
@@ -15543,7 +15618,41 @@ html:has([class*="st-key-feedback_page"]) [data-baseweb="popover"],
         }
     }
 
+    /* LANDING AUTH MODE TABS — late cascade guard.
+       Beats FINAL TYPOGRAPHY and VerticalBlockBorderWrapper p/span/div/label
+       rules that otherwise shrink Streamlit radio labels to one letter. */
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [class*="st-key-landing_auth_mode"] [data-testid="stRadioGroup"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioGroup"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_welcome"] [class*="st-key-landing_auth_mode"] [role="radiogroup"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
 
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label p {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label,
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label [data-testid="stMarkdownContainer"],
+    html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label p {
+        white-space: nowrap !important;
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+        text-align: center !important;
+    }
 
     </style>
     """,
@@ -15681,6 +15790,46 @@ html body .stApp [data-testid="stMain"] .st-key-profile_actions .stButton > butt
   clip: rect(0, 0, 0, 0) !important;
   white-space: nowrap !important;
   border: 0 !important;
+}
+
+/* Landing Sign In / Create Account tabs. Loaded after legacy theme CSS so
+   global VerticalBlockBorderWrapper p/span/div/label rules cannot squeeze
+   the radio labels to one character. */
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioGroup"],
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"],
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label,
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div,
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label > div > div,
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label [data-testid="stMarkdownContainer"],
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label p {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"],
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label,
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label [data-testid="stMarkdownContainer"],
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label p {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked),
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"]:has(input:checked) {
+  background: linear-gradient(135deg, #5EC8F2 0%, #2DD4BF 100%) !important;
+  color: #041E33 !important;
+}
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked) p,
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"]:has(input:checked) p {
+  color: #041E33 !important;
+  -webkit-text-fill-color: #041E33 !important;
 }
 
 @media (max-width: 720px) {
