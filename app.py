@@ -15821,6 +15821,20 @@ html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-la
   overflow-wrap: normal !important;
   word-break: keep-all !important;
 }
+/* Streamlit versions wrap the native radio indicator at different depths.
+   Hide the element immediately before the Markdown label instead of relying
+   on a generated class name or a fixed wrapper depth. */
+html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label div:has(+ [data-testid="stMarkdownContainer"]) {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  height: 0 !important;
+  flex: 0 0 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
 html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [role="radiogroup"] label:has(input:checked),
 html body .stApp [data-testid="stMain"]:has(.sp-landing-hero) [class*="st-key-landing_auth_mode"] [data-testid="stRadioOption"]:has(input:checked) {
   background: linear-gradient(135deg, #5EC8F2 0%, #2DD4BF 100%) !important;
