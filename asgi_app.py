@@ -12,6 +12,7 @@ query parameters, HTML, or localStorage.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from urllib.parse import urlencode
 
@@ -21,6 +22,9 @@ from starlette.responses import RedirectResponse
 from starlette.routing import Route
 
 import auth_persist
+
+# app.py only redirects through /auth/* when this process actually mounted them.
+os.environ["SP_AUTH_COOKIE_ROUTES"] = "1"
 
 SCRIPT_PATH = str(Path(__file__).resolve().with_name("app.py"))
 

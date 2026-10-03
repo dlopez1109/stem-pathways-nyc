@@ -6,6 +6,7 @@ Does not touch secrets, network, or live Auth.
 
 from __future__ import annotations
 
+import os
 import re
 import sys
 from datetime import datetime, timedelta, timezone
@@ -31,7 +32,9 @@ def test_source_contracts() -> None:
         "def _consume_oauth_pkce_ticket(",
         "exchange_code_for_session",
         "sign_in_with_oauth",
-        'SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD = "https://stempathwaysnyc.com"',
+        'APP_BASE_URL_PRODUCTION = "https://stempathwaysnyc.com"',
+        "APP_BASE_URL_LOCAL = \"http://localhost:8501\"",
+        "SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD = APP_BASE_URL_PRODUCTION",
         "OAUTH_PKCE_TICKET_TTL_SECONDS = 10 * 60",
         "oauth_pkce_tickets",
         "google_oauth_ticket_missing",
@@ -96,6 +99,7 @@ def _load_ownership_helpers():
         "urlparse": urlparse,
         "urlunparse": urlunparse,
         "quote_plus": quote_plus,
+        "os": os,
     }
 
     exec(
@@ -132,6 +136,8 @@ def _load_ownership_helpers():
         ns,
     )
 
+    ns["APP_BASE_URL_LOCAL"] = "http://localhost:8501"
+    ns["APP_BASE_URL_PRODUCTION"] = "https://stempathwaysnyc.com"
     ns["SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD"] = "https://stempathwaysnyc.com"
     ns["SUPABASE_AUTH_STORAGE_KEY"] = "supabase.auth.token"
     ns["SP_OAUTH_TICKET_QUERY_KEY"] = "sp_oauth"
@@ -141,7 +147,7 @@ def _load_ownership_helpers():
 
     exec(
         SOURCE[
-            SOURCE.index("def supabase_google_oauth_redirect_to(") : SOURCE.index(
+            SOURCE.index("def _normalize_app_base_url(") : SOURCE.index(
                 "def _clear_oauth_query_params("
             )
         ],
@@ -247,8 +253,31 @@ def test_callback_query_clear_and_redirect_constant() -> None:
     assert "sp_oauth" not in fake_st.query_params
     assert fake_st.query_params.get("auth") == "signin"
 
-    fake_st.context.headers = {"Host": "stempathwaysnyc.com"}
-    assert ns["supabase_google_oauth_redirect_to"]() == "https://stempathwaysnyc.com"
+    saved_env = {
+        key: os.environ.get(key)
+        for key in ("APP_BASE_URL", "RENDER", "RENDER_SERVICE_ID")
+    }
+    for key in saved_env:
+        os.environ.pop(key, None)
+    try:
+        fake_st.context.headers = {"Host": "stempathwaysnyc.com"}
+        assert ns["supabase_google_oauth_redirect_to"]() == "https://stempathwaysnyc.com"
+        fake_st.context.headers = {"Host": "localhost:8501"}
+        assert ns["supabase_google_oauth_redirect_to"]() == "http://localhost:8501"
+        fake_st.context.headers = {}
+        assert ns["supabase_google_oauth_redirect_to"]() == "http://localhost:8501"
+        os.environ["APP_BASE_URL"] = "https://stempathwaysnyc.com/"
+        fake_st.context.headers = {"Host": "localhost:8501"}
+        assert ns["supabase_google_oauth_redirect_to"]() == "https://stempathwaysnyc.com"
+        os.environ["APP_BASE_URL"] = "http://localhost:8501"
+        fake_st.context.headers = {"Host": "stempathwaysnyc.com"}
+        assert ns["supabase_google_oauth_redirect_to"]() == "http://localhost:8501"
+    finally:
+        for key, value in saved_env.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
 
 
 def test_ticket_redirect_contains_only_opaque_ticket() -> None:
@@ -454,7 +483,7 @@ def test_process_callback_uses_ticket_not_session_verifier() -> None:
     )
     exec(
         SOURCE[
-            SOURCE.index("def process_supabase_auth_callback(") : SOURCE.index(
+            SOURCE.index("def _oauth_code_fingerprint(") : SOURCE.index(
                 "def get_app_user("
             )
         ],
@@ -501,6 +530,121 @@ def test_process_callback_uses_ticket_not_session_verifier() -> None:
     assert "code" not in fake_st.query_params
     assert "sp_oauth" not in fake_st.query_params
 
+    # Same authorization code must not be exchanged again.
+    fake_st.query_params = {
+        "code": "one-time-auth-code",
+        "sp_oauth": "E" * 32,
+    }
+    again = ns["process_supabase_auth_callback"]()
+    assert again is True
+    assert "code" not in fake_st.query_params
+
+
+def test_email_sign_in_does_not_require_cookie_store() -> None:
+    start = SOURCE.index("def _auth_user_is_email_confirmed(")
+    end = SOURCE.index("def restore_email_auth_user(")
+    ns = {
+        "AUTH_MSG_INVALID": "invalid",
+        "AUTH_MSG_NOT_CONFIGURED": "missing",
+        "AUTH_MSG_UNCONFIRMED": "unconfirmed",
+        "AUTH_MSG_SERVICE": "service",
+    }
+    ns["missing_auth_config_names"] = lambda **_k: []
+    ns["log_missing_auth_config"] = lambda *_a, **_k: None
+    ns["log_auth_event"] = lambda *_a, **_k: None
+    ns["clear_email_auth_session"] = lambda: None
+    stored = {}
+
+    def _store(session, user, provider="email", persist_cookie=True):
+        stored["called"] = True
+        stored["persist_cookie"] = persist_cookie
+        stored["has_session"] = session is not None
+        return True
+
+    ns["_store_email_auth_session"] = _store
+    ns["classify_auth_error"] = (
+        lambda error, for_signup=False: "classified"
+    )
+
+    class User:
+        email_confirmed_at = None
+        confirmed_at = None
+
+    class Session:
+        access_token = "access"
+        refresh_token = "refresh"
+
+    class Auth:
+        def sign_in_with_password(self, credentials):
+            assert credentials == {
+                "email": "student@example.com",
+                "password": "correct-password",
+            }
+            return MagicMock(user=User(), session=Session())
+
+    ns["create_supabase_auth_client"] = lambda **_k: MagicMock(auth=Auth())
+    exec(SOURCE[start:end], ns)
+
+    ok, message = ns["sign_in_with_email"](
+        "student@example.com",
+        "correct-password",
+    )
+    assert ok is True, message
+    assert message == ""
+    assert stored["called"] is True
+    assert stored["has_session"] is True
+
+    class NoSessionAuth:
+        def sign_in_with_password(self, _credentials):
+            return MagicMock(user=User(), session=None)
+
+        def sign_out(self):
+            return None
+
+    ns["create_supabase_auth_client"] = lambda **_k: MagicMock(auth=NoSessionAuth())
+    ok, message = ns["sign_in_with_email"]("student@example.com", "correct-password")
+    assert ok is False
+    assert message == "unconfirmed"
+
+    class InvalidLogin(Exception):
+        code = "invalid_credentials"
+        message = "Invalid login credentials"
+        status = 400
+
+    class BadAuth:
+        def sign_in_with_password(self, _credentials):
+            raise InvalidLogin()
+
+    ns["create_supabase_auth_client"] = lambda **_k: MagicMock(auth=BadAuth())
+    ok, message = ns["sign_in_with_email"]("student@example.com", "wrong-password")
+    assert ok is False
+    assert message == "classified"
+
+    ns["missing_auth_config_names"] = lambda **_k: ["supabase.url"]
+    ok, message = ns["sign_in_with_email"]("student@example.com", "correct-password")
+    assert ok is False
+    assert message == "missing"
+
+    store_src = SOURCE[
+        SOURCE.index("def _store_email_auth_session(") : SOURCE.index(
+            "def password_meets_requirements("
+        )
+    ]
+    if store_src.count('"ticket_id": ticket_id') != 0:
+        fail("session store should not write oauth ticket ids")
+    ticket_src = SOURCE[
+        SOURCE.index("def _store_oauth_pkce_ticket(") : SOURCE.index(
+            "def _diagnose_oauth_pkce_ticket_failure("
+        )
+    ]
+    if ticket_src.count('"ticket_id": ticket_id') != 1:
+        fail("oauth ticket insert must contain ticket_id once")
+    boot = SOURCE[
+        SOURCE.index("# LOGIN / CREATE ACCOUNT") : SOURCE.index("if not app_user:")
+    ]
+    if boot.index("process_supabase_auth_callback") > boot.index("get_app_user"):
+        fail("oauth callback must run before authentication gating")
+
 
 if __name__ == "__main__":
     test_source_contracts()
@@ -509,4 +653,5 @@ if __name__ == "__main__":
     test_ticket_redirect_contains_only_opaque_ticket()
     test_consume_ticket_rejects_expired_and_reused()
     test_process_callback_uses_ticket_not_session_verifier()
+    test_email_sign_in_does_not_require_cookie_store()
     print("ALL_OFFLINE_OAUTH_TESTS_PASSED")

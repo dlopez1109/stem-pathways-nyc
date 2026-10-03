@@ -15917,6 +15917,18 @@ html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-
   flex: none !important;
 }
 
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stStatus"] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
 html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"],
 html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"],
 html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid="stVerticalBlockBorderWrapper"]:has(.sp-best-match-card),
@@ -15925,7 +15937,13 @@ html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid
   min-width: 0 !important;
   max-width: 100% !important;
   height: auto !important;
-  overflow: hidden !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  clip-path: none !important;
+  color: #083C5D !important;
   box-sizing: border-box !important;
   padding: 1.2rem 1.25rem 1.1rem !important;
   margin: 0 0 1rem 0 !important;
@@ -15934,6 +15952,21 @@ html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [data-testid
   border: 1px solid #D5E3EC !important;
   border-radius: 16px !important;
   box-shadow: 0 6px 18px rgba(8, 60, 93, 0.08) !important;
+}
+
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stVerticalBlockBorderWrapper"],
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stVerticalBlock"],
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-recommended_card_"] [data-testid="stElementContainer"],
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"] [data-testid="stVerticalBlockBorderWrapper"],
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"] [data-testid="stVerticalBlock"],
+html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) [class*="st-key-best_match_card_"] [data-testid="stElementContainer"] {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  clip-path: none !important;
 }
 
 html body .stApp [data-testid="stMain"]:has(.sp-opportunities-page) .sp-best-match-card,
@@ -16124,12 +16157,69 @@ def sync_browser_page_path(page_name):
 # Email/password Auth uses a separate per-session publishable-key client.
 # ============================================================
 
+def _stripped_secret(value):
+    return str(value or "").strip()
+
+
+def _supabase_toml_value(name):
+    """Read one supabase secret name. Never returns or logs the raw lookup error."""
+
+    try:
+        block = st.secrets["supabase"]
+    except Exception:
+        return ""
+    try:
+        return _stripped_secret(block.get(name, ""))
+    except Exception:
+        return ""
+
+
+def _env_secret(*names):
+    for name in names:
+        value = _stripped_secret(os.environ.get(name))
+        if value:
+            return value
+    return ""
+
+
+def _auth_secret_url():
+    """Streamlit secret first, then Render SUPABASE_URL."""
+
+    return _supabase_toml_value("url") or _env_secret(
+        "SUPABASE_URL",
+        "SP_SUPABASE_URL",
+    )
+
+
+def _auth_secret_publishable_key():
+    """Anon/publishable key for user auth. Never the service-role key."""
+
+    return _supabase_toml_value("key") or _env_secret(
+        "SUPABASE_ANON_KEY",
+        "SUPABASE_KEY",
+        "SP_SUPABASE_ANON_KEY",
+    )
+
+
+def _auth_secret_service_key():
+    """Service-role key for server tables only. Never send this to the browser."""
+
+    return _supabase_toml_value("service_key") or _env_secret(
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_SERVICE_KEY",
+        "SP_SUPABASE_SERVICE_KEY",
+    )
+
+
 @st.cache_resource
 def init_supabase():
-    return create_client(
-        st.secrets["supabase"]["url"],
-        st.secrets["supabase"]["service_key"]
-    )
+    url = _auth_secret_url()
+    service_key = _auth_secret_service_key()
+
+    if not url or not service_key:
+        raise RuntimeError("Required Supabase server configuration is missing.")
+
+    return create_client(url, service_key)
 
 
 try:
@@ -16137,8 +16227,9 @@ try:
     supabase_connected = True
 
 except Exception:
-    logger.exception(
-        "Supabase client initialization failed"
+    # Do not log the exception object: client init errors can echo secret values.
+    logger.warning(
+        "supabase_service_client_unavailable reason=init_failed"
     )
     supabase = None
     supabase_connected = False
@@ -29374,8 +29465,11 @@ AUTH_REVALIDATE_SECONDS = 10 * 60
 AUTH_IDLE_TOUCH_SECONDS = 30 * 60
 
 
+# Canonical browser origins. APP_BASE_URL overrides these when configured.
+APP_BASE_URL_LOCAL = "http://localhost:8501"
+APP_BASE_URL_PRODUCTION = "https://stempathwaysnyc.com"
 # Production Google OAuth redirect_to (must also be allow-listed in Supabase).
-SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD = "https://stempathwaysnyc.com"
+SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD = APP_BASE_URL_PRODUCTION
 SUPABASE_AUTH_STORAGE_KEY = "supabase.auth.token"
 OAUTH_PKCE_TICKET_TTL_SECONDS = 10 * 60
 OAUTH_PKCE_TICKETS_TABLE = "oauth_pkce_tickets"
@@ -29391,6 +29485,13 @@ AUTH_MSG_UNCONFIRMED = (
 )
 AUTH_MSG_SERVICE = (
     "Sign-in is temporarily unavailable. Please try again in a moment."
+)
+AUTH_MSG_NOT_CONFIGURED = (
+    "Sign-in is not configured. Required authentication settings are missing."
+)
+AUTH_MSG_GOOGLE_STORAGE = (
+    "Google sign-in is not configured. The server could not store the sign-in "
+    "ticket. Check the Supabase service key and the oauth_pkce_tickets table."
 )
 AUTH_MSG_SIGNUP_NEUTRAL = (
     "If this email can be registered, we sent a confirmation link. "
@@ -29410,24 +29511,45 @@ AUTH_MSG_GOOGLE_CALLBACK = (
 )
 
 
-def _auth_secret_publishable_key():
-    try:
-        value = st.secrets["supabase"].get("key", "")
-    except Exception:
-        value = ""
-    return str(value or "").strip()
+def missing_auth_config_names(*, require_service_role=False):
+    """
+    Names of missing auth settings. Values are never returned or logged.
+    Service-role is reported only when the caller actually needs it.
+    """
+
+    missing = []
+    if not _auth_secret_url():
+        missing.append("SUPABASE_URL")
+    if not _auth_secret_publishable_key():
+        missing.append("SUPABASE_ANON_KEY")
+    if require_service_role and not _auth_secret_service_key():
+        missing.append("SUPABASE_SERVICE_ROLE_KEY")
+    return missing
 
 
-def _auth_secret_url():
-    try:
-        value = st.secrets["supabase"].get("url", "")
-    except Exception:
-        value = ""
-    return str(value or "").strip()
+def log_missing_auth_config(missing, *, action="auth_config_missing"):
+    names = [
+        name
+        for name in (missing or [])
+        if name in {
+            "SUPABASE_URL",
+            "SUPABASE_ANON_KEY",
+            "SUPABASE_KEY",
+            "SUPABASE_SERVICE_ROLE_KEY",
+            "SUPABASE_SERVICE_KEY",
+            "APP_BASE_URL",
+            "SP_AUTH_PERSIST_SECRET",
+        }
+    ]
+    logger.warning(
+        "auth_config_missing action=%s names=%s",
+        str(action or "auth_config_missing")[:64],
+        ",".join(names) or "none",
+    )
 
 
 def supabase_auth_configured():
-    return bool(_auth_secret_url() and _auth_secret_publishable_key())
+    return not missing_auth_config_names()
 
 
 def _session_auth_storage():
@@ -29589,7 +29711,7 @@ def _safe_auth_error_message(error):
     return cleaned[:180]
 
 
-def log_auth_event(action, error=None):
+def log_auth_event(action, error=None, *, detail=""):
     """
     Sanitized auth logging only: action name, status, safe error code, and
     safe Supabase error message. Never logs passwords, tokens, emails,
@@ -29597,8 +29719,20 @@ def log_auth_event(action, error=None):
     """
 
     action_name = str(action or "auth_event").strip()[:64] or "auth_event"
+    safe_detail = re.sub(
+        r"[^a-z0-9_.:-]",
+        "",
+        str(detail or "").strip().lower(),
+    )[:80]
     if error is None:
-        logger.warning("auth_event action=%s", action_name)
+        if safe_detail:
+            logger.warning(
+                "auth_event action=%s detail=%s",
+                action_name,
+                safe_detail,
+            )
+        else:
+            logger.warning("auth_event action=%s", action_name)
         return
 
     status = _safe_auth_error_status(error)
@@ -29606,18 +29740,20 @@ def log_auth_event(action, error=None):
     message = _safe_auth_error_message(error)
     if status is None:
         logger.warning(
-            "auth_event action=%s code=%s message=%s",
+            "auth_event action=%s code=%s message=%s detail=%s",
             action_name,
             code,
             message,
+            safe_detail or "-",
         )
     else:
         logger.warning(
-            "auth_event action=%s status=%s code=%s message=%s",
+            "auth_event action=%s status=%s code=%s message=%s detail=%s",
             action_name,
             status,
             code,
             message,
+            safe_detail or "-",
         )
 
 
@@ -29677,10 +29813,17 @@ def _schedule_auth_cookie_clear():
     return True
 
 
+def _auth_cookie_routes_enabled():
+    """True only when this process mounted /auth/* in asgi_app.py."""
+
+    return os.environ.get("SP_AUTH_COOKIE_ROUTES") == "1"
+
+
 def flush_pending_auth_cookie_navigation():
     """
     Perform a full browser navigation to an /auth/* cookie route.
     Must run before rendering authenticated UI when a cookie write/clear is pending.
+    If those routes are not mounted, keep the Streamlit session and do not redirect.
     """
 
     target = st.session_state.pop(SP_AUTH_COOKIE_NAV_KEY, None)
@@ -29689,6 +29832,12 @@ def flush_pending_auth_cookie_navigation():
     target = str(target).strip()
     if not target.startswith("/auth/"):
         log_auth_event("auth_cookie_nav_invalid")
+        return False
+    if not _auth_cookie_routes_enabled():
+        log_auth_event(
+            "auth_cookie_route_unavailable",
+            detail="session_only_fallback",
+        )
         return False
     # Relative /auth path only — never embed tokens.
     safe = html_module.escape(target, quote=True)
@@ -29744,7 +29893,15 @@ def _persist_auth_session_server_side(
             provider=provider,
         )
     if not session_id:
-        log_auth_event("auth_server_session_persist_failed")
+        reason = "missing_session_row"
+        if not auth_persist.persist_secret_configured():
+            reason = "missing_persist_secret"
+        elif not supabase_connected or supabase is None:
+            reason = "missing_service_client"
+        log_auth_event(
+            "auth_server_session_persist_failed",
+            detail=reason,
+        )
         return None
     st.session_state[SP_AUTH_SESSION_ID_KEY] = session_id
     _schedule_auth_cookie_set(session_id)
@@ -29773,8 +29930,8 @@ def _store_email_auth_session(session, user, *, provider="email", persist_cookie
     if provider_name not in {"email", "google"}:
         provider_name = "email"
 
-    # Working copy for this Streamlit websocket only. Durable persistence is the
-    # opaque HttpOnly cookie + encrypted auth_sessions row (never tokens in cookie).
+    # Working copy for this Streamlit websocket only. Cookie persistence is
+    # attempted afterward and must not undo a successful Supabase login.
     st.session_state[SP_EMAIL_AUTH_STATE_KEY] = {
         "access_token": access_token,
         "refresh_token": refresh_token,
@@ -29784,13 +29941,21 @@ def _store_email_auth_session(session, user, *, provider="email", persist_cookie
         "provider": provider_name,
     }
     if persist_cookie:
-        _persist_auth_session_server_side(
-            access_token=access_token,
-            refresh_token=refresh_token,
-            user_id=str(user_id),
-            email=str(email),
-            provider=provider_name,
-        )
+        try:
+            persisted = _persist_auth_session_server_side(
+                access_token=access_token,
+                refresh_token=refresh_token,
+                user_id=str(user_id),
+                email=str(email),
+                provider=provider_name,
+            )
+            if not persisted:
+                log_auth_event(
+                    "auth_session_only_fallback",
+                    detail="cookie_persist_unavailable",
+                )
+        except Exception as error:
+            log_auth_event("auth_server_session_persist_failed", error)
     # Fresh login is already validated — enable restore fast path immediately.
     st.session_state[SP_AUTH_VALIDATED_AT_KEY] = time.time()
     st.session_state[SP_AUTH_TOUCHED_AT_KEY] = time.time()
@@ -29849,6 +30014,17 @@ def classify_auth_error(error, *, for_signup=False):
 
     if any(marker in code or marker in message for marker in unconfirmed_markers):
         return AUTH_MSG_UNCONFIRMED
+    if status is not None and status >= 500:
+        return AUTH_MSG_SERVICE
+    network_markers = (
+        "timeout",
+        "timed out",
+        "connection",
+        "network",
+        "temporarily unavailable",
+    )
+    if any(marker in message for marker in network_markers):
+        return AUTH_MSG_SERVICE
     if status in {400, 401} or any(
         marker in code or marker in message for marker in invalid_markers
     ):
@@ -29894,8 +30070,10 @@ def sign_up_with_email(email, password):
         return False, "Enter a valid email address."
     if not password_meets_requirements(password):
         return False, AUTH_MSG_PASSWORD_RULES
-    if not supabase_auth_configured():
-        return False, AUTH_MSG_SERVICE
+    missing_config = missing_auth_config_names()
+    if missing_config:
+        log_missing_auth_config(missing_config, action="email_sign_up")
+        return False, AUTH_MSG_NOT_CONFIGURED
 
     try:
         client = create_supabase_auth_client()
@@ -29934,6 +30112,21 @@ def sign_up_with_email(email, password):
         return False, message
 
 
+def _auth_user_is_email_confirmed(user):
+    """True when Supabase recorded email or account confirmation."""
+
+    if user is None:
+        return False
+    if isinstance(user, dict):
+        return bool(
+            user.get("email_confirmed_at") or user.get("confirmed_at")
+        )
+    return bool(
+        getattr(user, "email_confirmed_at", None)
+        or getattr(user, "confirmed_at", None)
+    )
+
+
 def sign_in_with_email(email, password, *, keep_signed_in=True):
     """Sign in via Supabase Auth. Returns (ok, message)."""
 
@@ -29942,8 +30135,10 @@ def sign_in_with_email(email, password, *, keep_signed_in=True):
 
     if not email or not password:
         return False, AUTH_MSG_INVALID
-    if not supabase_auth_configured():
-        return False, AUTH_MSG_SERVICE
+    missing_config = missing_auth_config_names()
+    if missing_config:
+        log_missing_auth_config(missing_config, action="email_sign_in")
+        return False, AUTH_MSG_NOT_CONFIGURED
 
     try:
         client = create_supabase_auth_client()
@@ -29955,9 +30150,13 @@ def sign_in_with_email(email, password, *, keep_signed_in=True):
         )
         user = getattr(response, "user", None)
         session = getattr(response, "session", None)
+        if user is None and isinstance(response, dict):
+            user = response.get("user")
+            session = response.get("session")
 
-        email_confirmed_at = getattr(user, "email_confirmed_at", None) if user else None
-        if user is not None and not email_confirmed_at:
+        # A session means Supabase accepted the password. Missing
+        # email_confirmed_at alone is not a failure when confirmation is off.
+        if session is None and user is not None and not _auth_user_is_email_confirmed(user):
             clear_email_auth_session()
             try:
                 client.auth.sign_out()
@@ -30231,13 +30430,38 @@ def _google_identity_provider_subs_from_auth_user(user):
     return sorted(subs)
 
 
-def supabase_google_oauth_redirect_to():
-    """
-    Canonical redirect_to for Supabase Google OAuth.
-    Production always uses https://stempathwaysnyc.com.
-    Local/dev falls back to the current request origin when available.
-    """
+def _normalize_app_base_url(value):
+    text = str(value or "").strip().rstrip("/")
+    if not text:
+        return ""
+    parsed = urlparse(text)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        return ""
+    return f"{parsed.scheme}://{parsed.netloc}".rstrip("/")
 
+
+def configured_app_base_url():
+    """Return APP_BASE_URL from secrets or Render, without logging it."""
+
+    candidates = []
+    for section in ("app", "auth"):
+        try:
+            block = st.secrets.get(section, {})
+        except Exception:
+            block = {}
+        try:
+            candidates.append(block.get("base_url", ""))
+        except Exception:
+            continue
+    candidates.append(os.environ.get("APP_BASE_URL", ""))
+    for candidate in candidates:
+        normalized = _normalize_app_base_url(candidate)
+        if normalized:
+            return normalized
+    return ""
+
+
+def _request_host_header():
     host = ""
     try:
         headers = getattr(st.context, "headers", None)
@@ -30245,17 +30469,34 @@ def supabase_google_oauth_redirect_to():
             host = str(headers.get("Host") or headers.get("host") or "").strip()
     except Exception:
         host = ""
+    return host
 
-    host_name = host.split(":")[0].strip().lower()
-    if host_name == "stempathwaysnyc.com" or host_name.endswith(".stempathwaysnyc.com"):
-        return SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD
+
+def resolve_app_base_url():
+    """
+    One origin for OAuth redirects.
+    APP_BASE_URL wins. Otherwise localhost stays local and every other host
+    uses the production site. An empty host is local unless this is Render.
+    """
+
+    configured = configured_app_base_url()
+    if configured:
+        return configured
+
+    host_name = _request_host_header().split(":")[0].strip().lower()
     if host_name in {"localhost", "127.0.0.1", "::1"}:
-        port = "8501"
-        if ":" in host:
-            port = host.split(":", 1)[1].strip() or "8501"
-        return f"http://{host_name}:{port}"
-    # Default to the production callback URL required by this deployment.
-    return SUPABASE_GOOGLE_OAUTH_REDIRECT_PROD
+        return APP_BASE_URL_LOCAL
+    if host_name:
+        return APP_BASE_URL_PRODUCTION
+    if os.environ.get("RENDER") or os.environ.get("RENDER_SERVICE_ID"):
+        return APP_BASE_URL_PRODUCTION
+    return APP_BASE_URL_LOCAL
+
+
+def supabase_google_oauth_redirect_to():
+    """Canonical redirect_to for Supabase Google OAuth."""
+
+    return resolve_app_base_url()
 
 
 def _clear_oauth_query_params():
@@ -30325,8 +30566,19 @@ def _store_oauth_pkce_ticket(code_verifier):
     """
 
     verifier = str(code_verifier or "").strip()
-    if not verifier or not supabase_connected or supabase is None:
-        log_auth_event("google_oauth_ticket_store_unavailable")
+    if not verifier:
+        log_auth_event("google_oauth_ticket_store_unavailable", detail="missing_verifier")
+        return None
+    if not supabase_connected or supabase is None or not _auth_secret_service_key():
+        missing_names = []
+        if not _auth_secret_url():
+            missing_names.append("SUPABASE_URL")
+        if not _auth_secret_service_key():
+            missing_names.append("SUPABASE_SERVICE_ROLE_KEY")
+        log_missing_auth_config(
+            missing_names or ["SUPABASE_SERVICE_ROLE_KEY"],
+            action="google_oauth_ticket_store_unavailable",
+        )
         return None
 
     ticket_id = secrets.token_urlsafe(32)
@@ -30335,8 +30587,11 @@ def _store_oauth_pkce_ticket(code_verifier):
         return None
 
     now = datetime.now(timezone.utc)
-    expires_at = now.timestamp() + OAUTH_PKCE_TICKET_TTL_SECONDS
-    expires_iso = datetime.fromtimestamp(expires_at, tz=timezone.utc).isoformat()
+    expires_at = datetime.fromtimestamp(
+        now.timestamp() + OAUTH_PKCE_TICKET_TTL_SECONDS,
+        tz=timezone.utc,
+    )
+    expires_iso = expires_at.isoformat()
 
     try:
         (
@@ -30355,7 +30610,24 @@ def _store_oauth_pkce_ticket(code_verifier):
         )
         return ticket_id
     except Exception as error:
-        log_auth_event("google_oauth_ticket_store_failed", error)
+        safe_message = _safe_auth_error_message(error).lower()
+        if (
+            "does not exist" in safe_message
+            or "42p01" in safe_message
+            or "schema cache" in safe_message
+        ):
+            log_auth_event(
+                "google_oauth_ticket_store_failed",
+                detail="missing_table",
+            )
+            return None
+        detail = "request_failed"
+        if "permission" in safe_message or "row-level security" in safe_message:
+            detail = "permission_denied"
+        log_auth_event(
+            "google_oauth_ticket_store_failed",
+            detail=detail,
+        )
         return None
 
 
@@ -30484,8 +30756,16 @@ def start_supabase_google_oauth():
     and sends only that ticket through the OAuth redirect_to URL.
     """
 
-    if not supabase_auth_configured():
-        return False, AUTH_MSG_GOOGLE_OAUTH
+    missing_config = missing_auth_config_names()
+    if missing_config:
+        log_missing_auth_config(missing_config, action="google_oauth_start")
+        return False, AUTH_MSG_NOT_CONFIGURED
+    if not supabase_connected or not _auth_secret_service_key():
+        log_missing_auth_config(
+            ["SUPABASE_SERVICE_ROLE_KEY"],
+            action="google_oauth_start",
+        )
+        return False, AUTH_MSG_GOOGLE_STORAGE
 
     try:
         client = create_supabase_auth_client(flow_type="pkce")
@@ -30517,7 +30797,7 @@ def start_supabase_google_oauth():
 
         ticket_id = _store_oauth_pkce_ticket(verifier)
         if not ticket_id:
-            return False, AUTH_MSG_GOOGLE_OAUTH
+            return False, AUTH_MSG_GOOGLE_STORAGE
 
         ticketed_url = _oauth_authorize_url_with_ticket(
             oauth_url,
@@ -30538,9 +30818,25 @@ def start_supabase_google_oauth():
         return False, AUTH_MSG_GOOGLE_OAUTH
 
 
+def _oauth_code_fingerprint(auth_code):
+    """Stable replay key. The authorization code itself is never stored or logged."""
+
+    import hashlib
+
+    return hashlib.sha256(str(auth_code or "").encode("utf-8")).hexdigest()
+
+
+def _read_oauth_query_param(params, key):
+    try:
+        return str(params.get(key) or "").strip()
+    except Exception:
+        return ""
+
+
 def process_supabase_auth_callback():
     """
     Complete Supabase OAuth PKCE callback when ?code= is present.
+    Reads code, error, and sp_oauth before any query-param cleanup.
     Consumes the opaque ticket, restores the verifier into Auth storage,
     exchanges the code, and stores Auth user.id as the canonical owner.
     Never logs authorization codes, tokens, tickets, or complete callback URLs.
@@ -30551,10 +30847,10 @@ def process_supabase_auth_callback():
     except Exception:
         return False
 
-    try:
-        error_code = str(params.get("error") or "").strip()
-    except Exception:
-        error_code = ""
+    # Capture callback values before navigation sync or query cleanup can drop them.
+    error_code = _read_oauth_query_param(params, "error")
+    auth_code = _read_oauth_query_param(params, "code")
+    ticket_id = _read_oauth_query_param(params, SP_OAUTH_TICKET_QUERY_KEY)
 
     if error_code:
         log_auth_event("google_oauth_callback_provider_error")
@@ -30562,35 +30858,47 @@ def process_supabase_auth_callback():
         _clear_oauth_query_params()
         return False
 
-    try:
-        auth_code = str(params.get("code") or "").strip()
-    except Exception:
-        auth_code = ""
-
     if not auth_code:
         return False
 
-    if not supabase_auth_configured():
-        st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+    fingerprint = _oauth_code_fingerprint(auth_code)
+    prior_fingerprint = str(
+        st.session_state.get("_sp_oauth_code_fingerprint") or ""
+    )
+    if prior_fingerprint and prior_fingerprint == fingerprint:
         _clear_oauth_query_params()
+        if st.session_state.get(SP_EMAIL_AUTH_STATE_KEY):
+            return True
+        st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+        log_auth_event("google_oauth_callback_replay_blocked")
         return False
 
-    try:
-        ticket_id = str(params.get(SP_OAUTH_TICKET_QUERY_KEY) or "").strip()
-    except Exception:
-        ticket_id = ""
+    if not supabase_auth_configured():
+        log_missing_auth_config(
+            missing_auth_config_names(),
+            action="google_oauth_callback",
+        )
+        st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_NOT_CONFIGURED
+        st.session_state["_sp_oauth_code_fingerprint"] = fingerprint
+        _clear_oauth_query_params()
+        return False
 
     if not ticket_id:
         log_auth_event("google_oauth_ticket_missing")
         st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+        st.session_state["_sp_oauth_code_fingerprint"] = fingerprint
         _clear_oauth_query_params()
         return False
 
     verifier = _consume_oauth_pkce_ticket(ticket_id)
     if not verifier:
         st.session_state[SP_OAUTH_CALLBACK_ERROR_KEY] = AUTH_MSG_GOOGLE_CALLBACK
+        st.session_state["_sp_oauth_code_fingerprint"] = fingerprint
         _clear_oauth_query_params()
         return False
+
+    # Mark this code before the network exchange so a rerun cannot exchange it twice.
+    st.session_state["_sp_oauth_code_fingerprint"] = fingerprint
 
     try:
         # Restore verifier into the Auth client's PKCE storage, then exchange.
@@ -30604,6 +30912,7 @@ def process_supabase_auth_callback():
             {
                 "auth_code": auth_code,
                 "code_verifier": verifier,
+                "redirect_to": supabase_google_oauth_redirect_to(),
             }
         )
         user = getattr(response, "user", None)
@@ -37935,6 +38244,8 @@ elif page == "Opportunities":
             st.session_state.setdefault("opportunity_filter_grades", [])
             st.session_state["opportunity_filters_v3_defaults"] = True
 
+        best_matches_above_filters = st.container()
+
         with st.container(key="opportunity_search_panel"):
             with st.form(
                 "opportunity_search_form",
@@ -38078,15 +38389,10 @@ elif page == "Opportunities":
                     type="primary",
                 )
 
-        opportunity_search_status = None
         opportunity_search_started = None
         if search_opportunities:
 
             opportunity_search_started = time.perf_counter()
-            opportunity_search_status = st.status(
-                "Searching opportunities…",
-                expanded=False,
-            )
 
             st.session_state[
                 "opportunity_search_submitted"
@@ -38613,10 +38919,6 @@ elif page == "Opportunities":
             )
 
 
-        # ----------------------------------------------------
-        # BEST MATCHES FOR YOU (above the full opportunity list)
-        # ----------------------------------------------------
-
         profile_ready = bool(
             st.session_state.get("profile_completed")
             and profile
@@ -38624,7 +38926,9 @@ elif page == "Opportunities":
             and (profile.get("interests") or [])
         )
 
-        if profile_ready and require_user_sub(user_sub):
+        def render_best_matches_for_you():
+            if not (profile_ready and require_user_sub(user_sub)):
+                return
 
             st.divider()
             st.header("Best matches for you")
@@ -38677,10 +38981,15 @@ elif page == "Opportunities":
                         "No best matches are available yet. Update your profile grade, "
                         "borough, age, and STEM interests, then return here."
                     )
-            else:
-                for rec_index, (scored, recommended_opportunity) in enumerate(
-                    best_matches
-                ):
+                return
+
+            for rec_index, (scored, recommended_opportunity) in enumerate(
+                best_matches
+            ):
+                opportunity_name = str(
+                    recommended_opportunity.get("name") or "this opportunity"
+                )
+                try:
                     with st.container(key=f"best_match_card_{rec_index}"):
                         st.html(
                             opportunity_recommendation_card_html(
@@ -38762,6 +39071,14 @@ elif page == "Opportunities":
                                 recommended_calendar_url,
                                 width="stretch",
                             )
+                except Exception as card_error:
+                    st.error(
+                        f"Could not display {opportunity_name}: {card_error}"
+                    )
+
+        if not search_submitted:
+            with best_matches_above_filters:
+                render_best_matches_for_you()
 
         # ----------------------------------------------------
         # SEARCH RESULTS
@@ -38935,12 +39252,11 @@ elif page == "Opportunities":
                     "opportunity_search",
                     opportunity_search_started,
                 )
-            if opportunity_search_status is not None:
-                opportunity_search_status.update(
-                    label=f"Found {len(search_results)} matching opportunities",
-                    state="complete",
-                    expanded=False,
-                )
+
+            result_count = len(search_results)
+            st.caption(
+                f"Found {result_count} matching opportunities"
+            )
 
             active_chips = []
             if active_keyword:
@@ -39018,12 +39334,7 @@ elif page == "Opportunities":
                     "</div>"
                 )
 
-            result_count = len(search_results)
             st.header("Search Results")
-            st.caption(
-                f"{result_count} "
-                f"{'opportunity' if result_count == 1 else 'opportunities'} found."
-            )
 
             clear_col, _ = st.columns([1, 2])
             with clear_col:
@@ -39156,154 +39467,167 @@ elif page == "Opportunities":
                 )
             ) in enumerate(page_results):
 
-                absolute_index = page_start + result_index
-                status_bucket = normalize_application_status_bucket(opportunity)
-                search_label = {
-                    "open": "Applications open",
-                    "opens_soon": "Opens soon",
-                    "closed": "Closed",
-                }.get(status_bucket, "Browse result")
-
-                personal = None
-                if profile_ready:
-                    personal = compute_opportunity_fit_score(
-                        opportunity,
-                        profile,
-                        potential_majors=profile_potential_majors(profile, limit=3),
+                opportunity_name = "this opportunity"
+                try:
+                    opportunity_name = str(
+                        opportunity.get("name") or "this opportunity"
                     )
 
-                with st.container(
-                    key=f"recommended_card_search_{absolute_index}"
-                ):
+                    absolute_index = page_start + result_index
+                    status_bucket = normalize_application_status_bucket(opportunity)
+                    search_label = {
+                        "open": "Applications open",
+                        "opens_soon": "Opens soon",
+                        "closed": "Closed",
+                    }.get(status_bucket, "Browse result")
 
-                    if personal is not None:
-                        st.html(
-                            opportunity_recommendation_card_html(
-                                opportunity,
-                                match_score=personal.get("fit_score"),
-                                match_label=personal.get("eligibility_label")
-                                or search_label,
-                                match_reasons=(
-                                    personal.get("reasons")
-                                    or (reasons[:4] if reasons else None)
-                                ),
-                                score_factors=personal.get("score_factors"),
-                                unverified=personal.get("unverified"),
-                                match_score_explanation=personal.get(
-                                    "match_score_explanation"
-                                ),
-                            )
-                        )
-                    else:
-                        st.html(
-                            opportunity_recommendation_card_html(
-                                opportunity,
-                                match_score=None,
-                                match_label=(
-                                    "Complete your profile to verify eligibility"
-                                ),
-                                match_reasons=(reasons[:4] if reasons else None),
-                            )
+                    personal = None
+                    if profile_ready:
+                        personal = compute_opportunity_fit_score(
+                            opportunity,
+                            profile,
+                            potential_majors=profile_potential_majors(profile, limit=3),
                         )
 
-                    with st.expander(
-                        "Why this matched your filters"
+                    with st.container(
+                        key=f"recommended_card_search_{absolute_index}"
                     ):
 
-                        if reasons:
-
-                            for reason in reasons:
-
-                                st.write(
-                                    f"• {reason}"
+                        if personal is not None:
+                            st.html(
+                                opportunity_recommendation_card_html(
+                                    opportunity,
+                                    match_score=personal.get("fit_score"),
+                                    match_label=personal.get("eligibility_label")
+                                    or search_label,
+                                    match_reasons=(
+                                        personal.get("reasons")
+                                        or (reasons[:4] if reasons else None)
+                                    ),
+                                    score_factors=personal.get("score_factors"),
+                                    unverified=personal.get("unverified"),
+                                    match_score_explanation=personal.get(
+                                        "match_score_explanation"
+                                    ),
                                 )
-
+                            )
                         else:
-
-                            st.write(
-                                "This result matches the filters you selected."
+                            st.html(
+                                opportunity_recommendation_card_html(
+                                    opportunity,
+                                    match_score=None,
+                                    match_label=(
+                                        "Complete your profile to verify eligibility"
+                                    ),
+                                    match_reasons=(reasons[:4] if reasons else None),
+                                )
                             )
 
-                        st.write(
-                            f"**Requirements:** "
-                            f"{opportunity.get('requirements', 'Check official site')}"
-                        )
-
-                        st.write(
-                            f"**Format:** "
-                            f"{opportunity.get('format', 'Check official site')}"
-                        )
-
-                    calendar_url = google_calendar_deadline_url(
-                        str(
-                            opportunity[
-                                "name"
-                            ]
-                        ),
-                        opportunity.get(
-                            "deadline"
-                        ),
-                        str(
-                            opportunity.get(
-                                "url",
-                                ""
-                            )
-                        ),
-                        str(
-                            opportunity.get(
-                                "organization",
-                                ""
-                            )
-                        )
-                    )
-
-                    official_url = safe_http_url(
-                        opportunity.get(
-                            "url"
-                        )
-                    )
-
-                    action1, action2 = st.columns(2)
-
-                    with action1:
-
-                        if st.button(
-                            "Save Opportunity",
-                            key=f"search_save_{absolute_index}_{opportunity['name']}",
-                            width="stretch"
+                        with st.expander(
+                            "Why this matched your filters"
                         ):
 
-                            if save_opportunity(
-                                user_sub,
-                                str(
-                                    opportunity[
-                                        "name"
-                                    ]
+                            if reasons:
+
+                                for reason in reasons:
+
+                                    st.write(
+                                        f"• {reason}"
+                                    )
+
+                            else:
+
+                                st.write(
+                                    "This result matches the filters you selected."
                                 )
+
+                            st.write(
+                                f"**Requirements:** "
+                                f"{opportunity.get('requirements', 'Check official site')}"
+                            )
+
+                            st.write(
+                                f"**Format:** "
+                                f"{opportunity.get('format', 'Check official site')}"
+                            )
+
+                        calendar_url = google_calendar_deadline_url(
+                            str(
+                                opportunity[
+                                    "name"
+                                ]
+                            ),
+                            opportunity.get(
+                                "deadline"
+                            ),
+                            str(
+                                opportunity.get(
+                                    "url",
+                                    ""
+                                )
+                            ),
+                            str(
+                                opportunity.get(
+                                    "organization",
+                                    ""
+                                )
+                            )
+                        )
+
+                        official_url = safe_http_url(
+                            opportunity.get(
+                                "url"
+                            )
+                        )
+
+                        action1, action2 = st.columns(2)
+
+                        with action1:
+
+                            if st.button(
+                                "Save Opportunity",
+                                key=f"search_save_{absolute_index}_{opportunity['name']}",
+                                width="stretch"
                             ):
 
-                                st.success(
-                                    "Saved to My Applications."
+                                if save_opportunity(
+                                    user_sub,
+                                    str(
+                                        opportunity[
+                                            "name"
+                                        ]
+                                    )
+                                ):
+
+                                    st.success(
+                                        "Saved to My Applications."
+                                    )
+                                    st.rerun()
+
+                        with action2:
+
+                            if official_url:
+
+                                st.link_button(
+                                    "View Official Opportunity",
+                                    official_url,
+                                    width="stretch"
                                 )
-                                st.rerun()
 
-                    with action2:
-
-                        if official_url:
+                        if calendar_url:
 
                             st.link_button(
-                                "View Official Opportunity",
-                                official_url,
+                                "Add to Google Calendar",
+                                calendar_url,
                                 width="stretch"
                             )
 
-                    if calendar_url:
+                except Exception as card_error:
+                    st.error(
+                        f"Could not display {opportunity_name}: {card_error}"
+                    )
 
-                        st.link_button(
-                            "Add to Google Calendar",
-                            calendar_url,
-                            width="stretch"
-                        )
+            render_best_matches_for_you()
 
             st.divider()
 
@@ -39318,7 +39642,7 @@ elif page == "Opportunities":
             if st.button(
                 "Search Again",
                 key="opportunity_search_again_bottom",
-                use_container_width=True
+                width="stretch"
             ):
 
                 st.session_state[

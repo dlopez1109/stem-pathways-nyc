@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import logging
 import os
 import re
 import secrets
@@ -24,6 +25,8 @@ import time
 from datetime import datetime, timezone
 from typing import Any, Callable
 from urllib.parse import quote
+
+logger = logging.getLogger("stem_pathways.auth_persist")
 
 COOKIE_NAME = "sp_sid"
 SESSIONS_TABLE = "auth_sessions"
@@ -35,6 +38,38 @@ PROD_HOST_MARKER = "stempathwaysnyc.com"
 _SESSION_ID_RE = re.compile(r"^[A-Za-z0-9_-]{20,128}$")
 
 ServiceClientFactory = Callable[[], Any]
+
+
+def _log_persist_failure(table: str, error: Exception) -> None:
+    """Log a missing table or request failure without tokens or credentials."""
+
+    text = " ".join(str(error or "").split()).lower()
+    text = re.sub(
+        r"eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+",
+        "[redacted-jwt]",
+        text,
+    )
+    if (
+        "does not exist" in text
+        or "42p01" in text
+        or "could not find the table" in text
+        or "schema cache" in text
+    ):
+        reason = "missing_table"
+    elif (
+        "permission" in text
+        or "row-level security" in text
+        or "42501" in text
+    ):
+        reason = "permission_denied"
+    else:
+        reason = "request_failed"
+    logger.warning(
+        "auth_persist_failed table=%s reason=%s error_type=%s",
+        str(table or "unknown")[:64],
+        reason,
+        type(error).__name__,
+    )
 
 
 def _utc_now() -> datetime:
@@ -61,13 +96,8 @@ def _parse_iso(value: Any) -> datetime | None:
 
 
 def _get_secret() -> str:
-    env = (
-        os.environ.get("SP_AUTH_PERSIST_SECRET")
-        or os.environ.get("AUTH_PERSIST_SECRET")
-        or ""
-    ).strip()
-    if env:
-        return env
+    """Secrets file first, then SP_AUTH_PERSIST_SECRET. Never log the value."""
+
     try:
         import streamlit as st
 
@@ -78,6 +108,10 @@ def _get_secret() -> str:
                 return value
     except Exception:
         pass
+    for name in ("SP_AUTH_PERSIST_SECRET", "AUTH_PERSIST_SECRET"):
+        value = str(os.environ.get(name) or "").strip()
+        if value:
+            return value
     return ""
 
 
@@ -133,27 +167,32 @@ def cookie_domain_for_host(host: str | None) -> str | None:
 
 
 def _service_client_from_env():
-    url = (
-        os.environ.get("SUPABASE_URL")
-        or os.environ.get("SP_SUPABASE_URL")
-        or ""
-    ).strip()
-    key = (
-        os.environ.get("SUPABASE_SERVICE_KEY")
-        or os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-        or os.environ.get("SP_SUPABASE_SERVICE_KEY")
-        or ""
-    ).strip()
-    if not url or not key:
-        try:
-            import streamlit as st
+    """Service-role client. Secrets first, then Render env. Never log key material."""
 
-            url = url or str(st.secrets["supabase"].get("url", "") or "").strip()
-            key = key or str(
-                st.secrets["supabase"].get("service_key", "") or ""
-            ).strip()
-        except Exception:
-            pass
+    url = ""
+    key = ""
+    try:
+        import streamlit as st
+
+        block = st.secrets["supabase"]
+        url = str(block.get("url", "") or "").strip()
+        key = str(block.get("service_key", "") or "").strip()
+    except Exception:
+        url = ""
+        key = ""
+    if not url:
+        url = str(
+            os.environ.get("SUPABASE_URL")
+            or os.environ.get("SP_SUPABASE_URL")
+            or ""
+        ).strip()
+    if not key:
+        key = str(
+            os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+            or os.environ.get("SUPABASE_SERVICE_KEY")
+            or os.environ.get("SP_SUPABASE_SERVICE_KEY")
+            or ""
+        ).strip()
     if not url or not key:
         return None
     from supabase import create_client
@@ -248,7 +287,8 @@ def create_server_session(
             .execute()
         )
         return session_id
-    except Exception:
+    except Exception as error:
+        _log_persist_failure(SESSIONS_TABLE, error)
         return None
 
 
@@ -307,7 +347,8 @@ def load_server_session(session_id: str, *, client=None) -> dict[str, Any] | Non
             "idle_expires_at": row.get("idle_expires_at"),
             "created_at": row.get("created_at"),
         }
-    except Exception:
+    except Exception as error:
+        _log_persist_failure(SESSIONS_TABLE, error)
         return None
 
 
@@ -338,7 +379,8 @@ def touch_server_session(session_id: str, *, client=None) -> bool:
             .execute()
         )
         return True
-    except Exception:
+    except Exception as error:
+        _log_persist_failure(SESSIONS_TABLE, error)
         return False
 
 
@@ -383,7 +425,8 @@ def update_server_session_tokens(
             .execute()
         )
         return True
-    except Exception:
+    except Exception as error:
+        _log_persist_failure(SESSIONS_TABLE, error)
         return False
 
 
@@ -403,7 +446,8 @@ def revoke_server_session(session_id: str, *, client=None) -> bool:
             .execute()
         )
         return True
-    except Exception:
+    except Exception as error:
+        _log_persist_failure(SESSIONS_TABLE, error)
         return False
 
 
@@ -476,7 +520,8 @@ def create_cookie_ticket(
             .execute()
         )
         return ticket_id
-    except Exception:
+    except Exception as error:
+        _log_persist_failure(COOKIE_TICKETS_TABLE, error)
         return None
 
 
@@ -521,7 +566,8 @@ def consume_cookie_ticket(ticket_id: str, *, client=None) -> dict[str, Any] | No
             .execute()
         )
         return {"purpose": purpose, "session_id": session_id}
-    except Exception:
+    except Exception as error:
+        _log_persist_failure(COOKIE_TICKETS_TABLE, error)
         return None
 
 

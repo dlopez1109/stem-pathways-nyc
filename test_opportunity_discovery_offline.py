@@ -22,6 +22,11 @@ def fail(message: str) -> None:
     sys.exit(1)
 
 
+MATCH_SCORE_EXPLANATION = (
+    "How well this opportunity fits your profile—not your chance of acceptance."
+)
+
+
 def test_source_contracts() -> None:
     required = [
         "def normalize_opportunity_cost_bucket(",
@@ -30,11 +35,16 @@ def test_source_contracts() -> None:
         "def normalize_opportunity_nyc_eligibility(",
         "def normalize_application_status_bucket(",
         "def evaluate_opportunity_profile_eligibility(",
+        "def compute_opportunity_fit_score(",
         "def score_best_match_opportunity(",
         "Best matches for you",
-        "Why this matches",
-        "Strong eligibility match",
-        "Potential match — confirm requirements",
+        "Match score",
+        MATCH_SCORE_EXPLANATION,
+        "Confirmed match",
+        "Potential match — verify requirements",
+        "Not enough information",
+        "Score factors",
+        "Still unverified",
         'opportunity_filter_cost',
         'opportunity_filter_location',
         'opportunity_filter_grades',
@@ -42,6 +52,7 @@ def test_source_contracts() -> None:
         "opportunity_search_page",
         "page_results",
         "Confirm this requirement on the official program website.",
+        "OPPORTUNITY_FIT_GRADE_POINTS",
     ]
     for item in required:
         if item not in SOURCE:
@@ -50,12 +61,15 @@ def test_source_contracts() -> None:
     if "Recommended for You" in SOURCE:
         fail("legacy Recommended for You section should be removed")
 
-    # Percentage match display must not remain on recommendation cards.
     card_start = SOURCE.index("def opportunity_recommendation_card_html(")
     card_end = SOURCE.index("\ndef _join_english(", card_start)
     card = SOURCE[card_start:card_end]
-    if "Your Match" in card and "match_safe}%" in card:
-        fail("recommendation card still shows percentage match")
+    if "Match type" in card:
+        fail("recommendation card still shows Match type badge")
+    if "Match score" not in card:
+        fail("recommendation card missing Match score label")
+    if "Your Match" in card:
+        fail("legacy Your Match admission-style label returned")
 
     # Ownership / hide-saved contracts remain intact.
     for item in [
@@ -66,6 +80,33 @@ def test_source_contracts() -> None:
     ]:
         if item not in SOURCE:
             fail(f"missing safety contract: {item}")
+
+    opp_start = SOURCE.index('elif page == "Opportunities":')
+    opp_end = SOURCE.index('elif page == "Deadline Calendar":')
+    opp_page = SOURCE[opp_start:opp_end]
+    if "st.status(" in opp_page:
+        fail("opportunity search still uses st.status")
+    if "Found {result_count} matching opportunities" not in opp_page:
+        fail("compact result count missing")
+    if "enumerate(page_results)" not in opp_page:
+        fail("page_results card loop missing")
+    if "Could not display" not in opp_page:
+        fail("per-card visible error handling missing")
+
+    count_pos = opp_page.index("Found {result_count} matching opportunities")
+    chips_pos = opp_page.index("sp-opp-active-filters")
+    header_pos = opp_page.index('st.header("Search Results")')
+    loop_pos = opp_page.index("enumerate(page_results)")
+    after_search_best = opp_page.rfind("render_best_matches_for_you()")
+    if not (count_pos < chips_pos < header_pos < loop_pos < after_search_best):
+        fail(
+            "after search, results must render as count, chips, heading, "
+            "cards, then Best matches"
+        )
+    slot_pos = opp_page.index("best_matches_above_filters = st.container()")
+    form_pos = opp_page.index('key="opportunity_search_panel"')
+    if slot_pos > form_pos:
+        fail("Best matches slot must be reserved above the filter form")
 
 
 def _slice(start_name: str, end_name: str) -> str:
@@ -293,8 +334,14 @@ def test_best_match_eligibility_and_explanations() -> None:
     scored = ns["score_best_match_opportunity"](eligible, profile)
     if scored is None:
         fail("eligible program excluded from best matches")
-    if scored["label"] != "Strong eligibility match":
-        fail(f"expected strong label, got {scored['label']}")
+    if scored["label"] != "Confirmed match":
+        fail(f"expected confirmed label, got {scored['label']}")
+    if scored.get("fit_score") is None:
+        fail("expected numeric fit_score for verified evidence")
+    if scored["fit_score"] != 95:
+        fail(f"expected absolute fit_score 95, got {scored['fit_score']}")
+    if scored["fit_score"] == 100:
+        fail("top-fit program must not be forced to 100%")
     joined = " | ".join(scored["reasons"]).lower()
     if "grade 10" not in joined:
         fail(f"missing grade reason: {scored['reasons']}")
@@ -304,11 +351,10 @@ def test_best_match_eligibility_and_explanations() -> None:
         fail(f"missing free reason: {scored['reasons']}")
     if "nyc students" not in joined:
         fail(f"missing NYC reason: {scored['reasons']}")
+    if not scored.get("score_factors"):
+        fail("missing score_factors transparency")
     if not (2 <= len(scored["reasons"]) <= 4):
         fail(f"expected 2-4 reasons, got {len(scored['reasons'])}")
-    # Open status may be omitted when four higher-priority reasons already exist.
-    if "currently open" not in joined and "free program" not in joined:
-        fail(f"expected open or free evidence: {scored['reasons']}")
 
     hard_ineligible = dict(eligible)
     hard_ineligible["grades"] = "11;12"
@@ -326,10 +372,18 @@ def test_best_match_eligibility_and_explanations() -> None:
     scored_unknown = ns["score_best_match_opportunity"](unknown, profile)
     if scored_unknown is None:
         fail("unknown eligibility should not hard-exclude")
-    if scored_unknown["label"] != "Potential match — confirm requirements":
-        fail(f"expected confirm label, got {scored_unknown['label']}")
-    if not any("Confirm" in reason for reason in scored_unknown["reasons"]):
-        fail(f"missing confirm wording: {scored_unknown['reasons']}")
+    if scored_unknown["label"] != "Potential match — verify requirements":
+        fail(f"expected verify label, got {scored_unknown['label']}")
+    if scored_unknown.get("fit_score") is None:
+        fail("unknown grade/age with verified location+interest should still score")
+    # Unknown requirements must not be awarded as satisfied grade/age points.
+    if scored_unknown["fit_score"] >= scored["fit_score"]:
+        fail("unknown requirements incorrectly scored as high as verified eligibility")
+    if not any(
+        "unverified" in note.lower() or "Confirm" in note
+        for note in (scored_unknown.get("unverified") or []) + scored_unknown["reasons"]
+    ):
+        fail(f"missing unverified wording: {scored_unknown}")
 
     # Outside NYC hard conflict
     outside = dict(eligible)
@@ -337,6 +391,171 @@ def test_best_match_eligibility_and_explanations() -> None:
     outside["location"] = "Rochester only"
     if ns["score_best_match_opportunity"](outside, profile) is not None:
         fail("outside-NYC conflict was not excluded")
+
+
+def test_fit_score_missing_info_and_conflicts() -> None:
+    ns, _ = _load_helpers()
+    base = {
+        "name": "Partial Evidence Program",
+        "grades": "9;10;11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "age_range": "14–18",
+        "fields": "Computer Science",
+        "cost": "Free",
+        "application_status": "OPEN NOW",
+        "format": "Virtual",
+        "eligible_interest_scope": "",
+    }
+
+    missing_interests = {
+        "grade": "10",
+        "borough": "Bronx",
+        "age": 16,
+        "interests": [],
+        "financial_support": False,
+    }
+    scored_missing = ns["compute_opportunity_fit_score"](base, missing_interests)
+    if scored_missing["fit_score"] is not None:
+        fail("missing interests must yield Not enough information (fit_score=None)")
+    if not any("interest" in note.lower() for note in scored_missing["unverified"]):
+        fail(f"missing interest unverified note: {scored_missing['unverified']}")
+
+    conflict = ns["compute_opportunity_fit_score"](
+        {**base, "grades": "12"},
+        {
+            "grade": "10",
+            "borough": "Bronx",
+            "age": 16,
+            "interests": ["Computer Science"],
+        },
+    )
+    if conflict["eligibility_status"] != "ineligible":
+        fail("conflicting eligibility not marked ineligible")
+    if ns["score_best_match_opportunity"](
+        {**base, "grades": "12"},
+        {
+            "grade": "10",
+            "borough": "Bronx",
+            "age": 16,
+            "interests": ["Computer Science"],
+        },
+    ) is not None:
+        fail("conflicting eligibility should be excluded from best matches")
+
+
+def test_fit_score_multiple_majors_and_any_major() -> None:
+    ns, _ = _load_helpers()
+    profile = {
+        "grade": "11",
+        "borough": "Queens",
+        "age": 17,
+        "interests": ["Biology"],
+        "financial_support": False,
+    }
+    multi_profile = {
+        "grade": "11",
+        "borough": "Queens",
+        "age": 17,
+        "interests": ["Biology", "Computer Science"],
+        "financial_support": False,
+    }
+    multi_fields = {
+        "name": "Bio + CS Research",
+        "grades": "11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "age_range": "16-18",
+        "fields": "Biology;Computer Science",
+        "cost": "Paid",
+        "application_status": "Future Cycle",
+        "format": "In person",
+        "eligible_interest_scope": "",
+    }
+    single = ns["score_best_match_opportunity"](multi_fields, profile)
+    multi = ns["score_best_match_opportunity"](
+        multi_fields,
+        multi_profile,
+        potential_majors=["Engineering"],
+    )
+    if single is None or multi is None:
+        fail("multi-major program unexpectedly excluded")
+    if multi["fit_score"] <= single["fit_score"]:
+        fail(
+            "multiple matched fields should score at least as high as one match "
+            f"({multi['fit_score']} vs {single['fit_score']})"
+        )
+    if multi["fit_score"] > 100:
+        fail("fit_score exceeded 100")
+
+    for name in ("Thrive Scholars", "LEDA Scholars Program"):
+        row = {
+            "name": name,
+            "grades": "11",
+            "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+            "age_range": "14-18",
+            "fields": "Any Major;All Fields;College Access",
+            "eligible_interest_scope": "Any major",
+            "cost": "Free",
+            "application_status": "Future Cycle",
+            "format": "In person",
+        }
+        scored = ns["score_best_match_opportunity"](row, profile)
+        if scored is None:
+            fail(f"{name} excluded despite any-major scope")
+        if scored.get("fit_score") is None:
+            fail(f"{name} should receive a fit score when interests exist")
+        if not any(
+            "general-access" in r.lower() or "across fields" in r.lower()
+            for r in scored["reasons"]
+        ) and not any("any-major" in f.lower() or "general-access" in f.lower() for f in scored["score_factors"]):
+            fail(f"{name} missing any-major explanation: {scored}")
+
+
+def test_fit_score_absolute_not_relative() -> None:
+    ns, _ = _load_helpers()
+    profile = {
+        "grade": "10",
+        "borough": "Bronx",
+        "age": 16,
+        "interests": ["Computer Science"],
+        "financial_support": True,
+    }
+    target = {
+        "name": "Target Program",
+        "grades": "9;10;11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "age_range": "14–18",
+        "fields": "Computer Science",
+        "cost": "Free",
+        "application_status": "OPEN NOW",
+        "format": "Virtual",
+        "eligible_interest_scope": "",
+    }
+    unrelated = {
+        "name": "Unrelated Biology Camp",
+        "grades": "9;10;11",
+        "boroughs_served": "Bronx;Brooklyn;Manhattan;Queens;Staten Island",
+        "age_range": "14–18",
+        "fields": "Biology",
+        "cost": "Paid",
+        "application_status": "CLOSED",
+        "format": "In person",
+        "eligible_interest_scope": "",
+    }
+    alone = ns["compute_opportunity_fit_score"](target, profile)["fit_score"]
+    # Scoring another unrelated program must not change the absolute target score.
+    _ = ns["compute_opportunity_fit_score"](unrelated, profile)
+    again = ns["compute_opportunity_fit_score"](target, profile)["fit_score"]
+    if alone != again:
+        fail(f"absolute score changed when unrelated programs scored ({alone} vs {again})")
+    if alone == 100:
+        fail("absolute rubric must not auto-award 100%")
+
+    catalog_scores = [
+        ns["compute_opportunity_fit_score"](row, profile)["fit_score"]
+        for row in (target, unrelated, dict(target, name="Clone"))
+    ]
+    if catalog_scores[0] != alone:
+        fail("target score changed inside a multi-program catalog pass")
 
 
 def test_thrive_leda_any_major() -> None:
@@ -408,11 +627,78 @@ def test_ambiguous_data_report_hook() -> None:
     assert ns["normalize_opportunity_nyc_eligibility"](ambiguous) == "unknown"
 
 
+def test_catalog_blank_stem_or_and_pagination() -> None:
+    """Blank filters, one STEM area, multi-area OR, and distinct pages."""
+
+    import csv
+
+    catalog_path = ROOT / "data" / "opportunities.csv"
+    with catalog_path.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    if len(rows) < 21:
+        fail(f"catalog too small for pagination: {len(rows)}")
+
+    page_size = 10
+    page1_names = [row.get("name") for row in rows[:page_size]]
+    page2_names = [row.get("name") for row in rows[page_size:page_size * 2]]
+    if len(page1_names) != 10:
+        fail("blank filters should expose the first 10 cards")
+    if page1_names == page2_names:
+        fail("next page should display different cards")
+
+    ns, _ = _load_helpers()
+    stem_fn = SOURCE[
+        SOURCE.index("def opportunity_matches_stem_selection("):
+        SOURCE.index("def opportunity_matches_format(")
+    ]
+    exec(stem_fn, ns)
+
+    cs_fields = [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Data Science",
+    ]
+    bio_fields = [
+        "Biology",
+        "Biomedical Engineering",
+    ]
+    cs_matches = [
+        row
+        for row in rows
+        if ns["opportunity_matches_stem_selection"](row.get("fields"), cs_fields)
+    ]
+    bio_matches = [
+        row
+        for row in rows
+        if ns["opportunity_matches_stem_selection"](row.get("fields"), bio_fields)
+    ]
+    or_matches = [
+        row
+        for row in rows
+        if ns["opportunity_matches_stem_selection"](
+            row.get("fields"),
+            cs_fields + bio_fields,
+        )
+    ]
+    if not cs_matches:
+        fail("one STEM area produced no matching cards")
+    if len(or_matches) < max(len(cs_matches), len(bio_matches)):
+        fail("multiple STEM areas should keep OR matching")
+    cs_names = {row.get("name") for row in cs_matches}
+    or_names = {row.get("name") for row in or_matches}
+    if not cs_names <= or_names:
+        fail("OR matching dropped a single-area result")
+
+
 def main() -> None:
     test_source_contracts()
     test_normalizers_and_filters()
     test_combined_filters()
+    test_catalog_blank_stem_or_and_pagination()
     test_best_match_eligibility_and_explanations()
+    test_fit_score_missing_info_and_conflicts()
+    test_fit_score_multiple_majors_and_any_major()
+    test_fit_score_absolute_not_relative()
     test_thrive_leda_any_major()
     test_hide_saved_and_uuid_ownership_still_present()
     test_ambiguous_data_report_hook()
