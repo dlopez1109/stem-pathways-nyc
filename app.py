@@ -287,7 +287,7 @@ for _proxy_key in (
 
 st.set_page_config(
     page_title="STEM Pathways NYC",
-    page_icon=str(SITE_FAVICON_PATH),
+    page_icon="🕹",
     layout="wide",
     initial_sidebar_state="expanded"
 )
