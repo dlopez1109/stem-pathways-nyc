@@ -38244,8 +38244,6 @@ elif page == "Opportunities":
             st.session_state.setdefault("opportunity_filter_grades", [])
             st.session_state["opportunity_filters_v3_defaults"] = True
 
-        best_matches_above_filters = st.container()
-
         with st.container(key="opportunity_search_panel"):
             with st.form(
                 "opportunity_search_form",
@@ -39076,28 +39074,11 @@ elif page == "Opportunities":
                         f"Could not display {opportunity_name}: {card_error}"
                     )
 
-        if not search_submitted:
-            with best_matches_above_filters:
-                render_best_matches_for_you()
-
         # ----------------------------------------------------
         # SEARCH RESULTS
         # ----------------------------------------------------
 
-        if not search_submitted:
-
-            st.markdown(
-                '<div class="sp-opp-guide-notice" role="note">'
-                '<span class="sp-opp-guide-notice-icon" aria-hidden="true">i</span>'
-                '<p class="sp-opp-guide-notice-text">'
-                "Set your filters above, then press "
-                '<strong class="sp-opp-guide-emphasis">Show Opportunities</strong>.'
-                "</p>"
-                "</div>",
-                unsafe_allow_html=True,
-            )
-
-        else:
+        if search_submitted:
 
             search_results = []
             search_hidden_saved = 0
@@ -39627,8 +39608,6 @@ elif page == "Opportunities":
                         f"Could not display {opportunity_name}: {card_error}"
                     )
 
-            render_best_matches_for_you()
-
             st.divider()
 
             st.divider()
@@ -39650,6 +39629,20 @@ elif page == "Opportunities":
                 ] = False
 
                 st.rerun()
+
+        render_best_matches_for_you()
+
+        if not search_submitted:
+            st.markdown(
+                '<div class="sp-opp-guide-notice" role="note">'
+                '<span class="sp-opp-guide-notice-icon" aria-hidden="true">i</span>'
+                '<p class="sp-opp-guide-notice-text">'
+                "Set your filters above, then press "
+                '<strong class="sp-opp-guide-emphasis">Show Opportunities</strong>.'
+                "</p>"
+                "</div>",
+                unsafe_allow_html=True,
+            )
 
         st.caption(
             "Best-match labels reflect eligibility fit with your profile; they are not admission probabilities. Always confirm age, grade, deadline, and eligibility on the official website."
